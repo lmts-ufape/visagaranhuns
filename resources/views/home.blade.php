@@ -5,14 +5,6 @@
     
     @auth
         @if (auth()->user()->tipo == "coordenador")
-            <div class="card-body">
-                <form method="GET" action="{{ route('listar.inspetores') }}">
-                    @csrf
-                    <button type="submit" class="btn btn-primary">
-                        {{ __('Register') }}
-                    </button>
-                </form>
-            </div>
             
             <div class="row justify-content-center">
                 <div class="col-md-8">
@@ -227,7 +219,7 @@
                     </div>
                 </div>
             </div>
-            
+        
         @elseif(auth()->user()->tipo == "empresa")
             <h1>PERFIL DA EMPRESA</h1>
         @elseif(auth()->user()->tipo == "inspetor")
