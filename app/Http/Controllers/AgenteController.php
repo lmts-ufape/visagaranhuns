@@ -3,19 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Fiscal;
+use App\Agente;
 use App\User;
 
-class FiscalController extends Controller
+class AgenteController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function listarAgentes()
     {
-        return view('fiscal.menu');
+        $agentes = Agente::all();
+        return view('home', [ 'agentes'  => $agentes ]);
     }
 
     /**
@@ -36,11 +37,10 @@ class FiscalController extends Controller
      */
     public function store(Request $request)
     {
-        // Cadastro temporário de fiscal
+        // Cadastro temporário de agente
         $validator = $request->validate([
             'name' => 'required|string',
             'formacao' => 'required|string',
-            'especializacao' => 'required|string',
             'email' => 'required|email',
             'password' => 'required',
         ]);
@@ -49,12 +49,11 @@ class FiscalController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'tipo' => "fiscal",
+            'tipo' => "agente",
         ]);
 
-        $fiscal = Fiscal::create([
+        $agente = Agente::create([
             'formacao' => $request->formacao,
-            'especializacao' => $request->especializacao,
             'user_id' => $user->id,
         ]);
 

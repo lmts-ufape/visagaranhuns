@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFiscaisTable extends Migration
+class CreateInspetorTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateFiscaisTable extends Migration
      */
     public function up()
     {
-        Schema::create('fiscais', function (Blueprint $table) {
+        Schema::create('inspetor', function (Blueprint $table) {
             $table->id();
             $table->string('formacao');
             $table->string('especializacao');
@@ -31,6 +31,6 @@ class CreateFiscaisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fiscais');
+        Schema::dropIfExists('inspetor');
     }
 }

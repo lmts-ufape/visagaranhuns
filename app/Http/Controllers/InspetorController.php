@@ -3,17 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Coordenador;
+use App\Inspetor;
 use App\User;
-use App\Agente;
 
-class CoordenadorController extends Controller
+class InspetorController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    public function listarInspetores()
+    {
+        $inspetores = Inspetor::all();
+        return view('home', [ 'inspetores'  => $inspetores ]);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -33,9 +37,11 @@ class CoordenadorController extends Controller
      */
     public function store(Request $request)
     {
- 
+        // Cadastro temporário de fiscal
         $validator = $request->validate([
             'name' => 'required|string',
+            'formacao' => 'required|string',
+            'especializacao' => 'required|string',
             'email' => 'required|email',
             'password' => 'required',
         ]);
@@ -44,11 +50,13 @@ class CoordenadorController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'tipo' => "supervisor",
+            'tipo' => "inspetor",
         ]);
 
-        $supervisor = Supervisor::create([
-            'userId' => $user->id,
+        $fiscal = Inspetor::create([
+            'formacao' => $request->formacao,
+            'especializacao' => $request->especializacao,
+            'user_id' => $user->id,
         ]);
 
         return redirect()->route('home');
