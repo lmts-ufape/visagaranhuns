@@ -27,6 +27,7 @@ Route::middleware(['OnlyAdmin'])->group(function () {
 });
 
 Route::middleware(['IsCoordenador'])->group(function () {
+    Route::get('/home/coordenador', 'CoordenadorController@home')->name('home.coordenador');
     Route::post("/inspetor/cadastro", "InspetorController@store")->name("cadastrar.inspetor");
     Route::post("/agente/cadastro", "AgenteController@store")->name("cadastrar.agente");
     Route::post("/area/cadastro", "AreaController@store")->name("cadastrar.area");
@@ -44,6 +45,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
 
 Route::middleware(['IsEmpresa'])->group(function () {
     //Empresa - Gerente
+    Route::get('/home/empresa', 'EmpresaController@home')->name('home.empresa');
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
     * Editar/Anexar dados da empresa
@@ -53,7 +55,7 @@ Route::middleware(['IsEmpresa'])->group(function () {
 });
 
 Route::middleware(['IsInspetor'])->group(function () {
-    
+    Route::get('/home/inspetor', 'InspetorController@home')->name('home.inspetor');
 /*
     (WEB)
     * Cadastrar/Editar/Deletar relatórios (Próprios)
@@ -68,7 +70,7 @@ Route::middleware(['IsInspetor'])->group(function () {
 });
 
 Route::middleware(['IsAgente'])->group(function () {
-    
+    Route::get('/home/agente', 'AgenteController@home')->name('home.agente');
     /*
         (WEB)
         * Cadastrar/Editar/Deletar relatórios (Próprios)

@@ -20,6 +20,11 @@ class EmpresaController extends Controller
         return view('home', [ 'empresas'  => $empresas ]);
     }
 
+    public function home()
+    {
+        return view('empresa.home_empresa');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

@@ -19,6 +19,11 @@ class InspetorController extends Controller
         return view('home', [ 'inspetores'  => $inspetores ]);
     }
 
+    public function home()
+    {
+        return view('inspetor.home_inspetor');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
