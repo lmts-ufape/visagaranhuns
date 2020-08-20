@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class IsFiscal
+class IsInspetor
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ class IsFiscal
         if ( !auth()->check() )
             return redirect()->route('login');
 
-        if (Auth::user()->tipo == "fiscal"){
+        if (Auth::user()->tipo == "inspetor"){
             return $next($request);    
         }
         abort(403);

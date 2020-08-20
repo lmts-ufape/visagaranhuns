@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Fiscal extends Model
+class Inspetor extends Model
 {
-    protected $table = 'fiscais';
+    protected $table = 'inspetor';
     /**
      * The attributes that are mass assignable.
      *

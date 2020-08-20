@@ -15,7 +15,9 @@ class EmpresaController extends Controller
      */
     public function index()
     {
-        //
+        $empresas = \App\Empresa::all();
+
+        return view('home', [ 'empresas'  => $empresas ]);
     }
 
     /**

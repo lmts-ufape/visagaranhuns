@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Coordenador;
-use App\User;
-use App\Agente;
 
-class CoordenadorController extends Controller
+class AreaController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    public function index()
+    {
+        //
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -33,25 +34,7 @@ class CoordenadorController extends Controller
      */
     public function store(Request $request)
     {
- 
-        $validator = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'tipo' => "supervisor",
-        ]);
-
-        $supervisor = Supervisor::create([
-            'userId' => $user->id,
-        ]);
-
-        return redirect()->route('home');
+        //
     }
 
     /**

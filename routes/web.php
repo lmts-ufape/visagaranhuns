@@ -20,22 +20,21 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::post("/empresa/cadastro", "EmpresaController@store")->name("cadastrar.empresa");
 
 Route::middleware(['OnlyAdmin'])->group(function () {
-    Route::post("/supervisor/cadastro", "SupervisorController@store")->name("cadastro.supervisor");
+    Route::post("/coordenador/cadastro", "CoordenadorController@store")->name("cadastrar.coordenador");
 });
 
 Route::middleware(['IsCoordenador'])->group(function () {
-    Route::post("/empresa/cadastro", "EmpresaController@store")->name("cadastrar.empresa");
-    Route::post("/fiscal/cadastro", "FiscalController@store")->name("cadastrar.fiscal");
+    Route::post("/inspetor/cadastro", "InspetorController@store")->name("cadastrar.inspetor");
+    Route::post("/agente/cadastro", "AgenteController@store")->name("cadastrar.agente");
     Route::post("/area/cadastro", "AreaController@store")->name("cadastrar.area");
+    Route::post("/cnae/cadastro", "CnaeController@store")->name("cadastrar.cnae");
+    Route::get("/listar/inspetores", "InspetorController@listarInspetores")->name("listar.inspetores");
+    Route::get("/listar/agentes", "AgenteController@listarAgentes")->name("listar.agentes");
     //Supervisor
 /*
-    * Cadastrar/Editar/Deletar Fiscal
-    * Cadastrar/Editar/Deletar Empresa
-    * Cadastrar/Editar/Deletar Responsável Técnico ?
-    * Cadastrar/Editar/Deletar Áreas
-    * Cadastrar/Editar/Deletar cnaes de áreas
     * Cadastrar/Editar/Deletar relatórios (Editar também relatórios criados pos outras pessoas)
     * Cadastrar/Editar/Deletar inspeções
     * Cadastrar/Editar/Deletar notificações de empresas
@@ -53,9 +52,8 @@ Route::middleware(['IsEmpresa'])->group(function () {
 */
 });
 
-Route::middleware(['IsFiscal'])->group(function () {
-    //Fiscal
-    Route::get("/area/fiscal", "FiscalController@index")->name("fiscal.area");
+Route::middleware(['IsInspetor'])->group(function () {
+    
 /*
     (WEB)
     * Cadastrar/Editar/Deletar relatórios (Próprios)
@@ -68,6 +66,21 @@ Route::middleware(['IsFiscal'])->group(function () {
     * Listar documentos anexados por empresa 
 */
 });
+
+Route::middleware(['IsAgente'])->group(function () {
+    
+    /*
+        (WEB)
+        * Cadastrar/Editar/Deletar relatórios (Próprios)
+        * Consultar suas inspeções
+        * Cadastrar/Editar/Deletar notificações de empresas
+        (APP)
+        * Concluir inspeção (Mudar status de inspeção)
+        * Cadastrar imagens
+        * Cadastrar áudio
+        * Listar documentos anexados por empresa 
+    */
+    });
 
 Route::middleware(['IsRespTecnico'])->group(function () {
     //Empresa - Responsável Técnico

@@ -66,7 +66,7 @@ class Kernel extends HttpKernel
         'OnlyAdmin'  => \App\Http\Middleware\OnlyAdmin::class,
         'IsCoordenador'  => \App\Http\Middleware\IsCoordenador::class,
         'IsEmpresa'  => \App\Http\Middleware\IsEmpresa::class,
-        'IsFiscal'  => \App\Http\Middleware\IsFiscal::class,
+        'IsInspetor'  => \App\Http\Middleware\IsInspetor::class,
         'IsAgente'  => \App\Http\Middleware\IsAgente::class,
         'IsRespTecnico'  => \App\Http\Middleware\IsRespTecnico::class,
     ];
