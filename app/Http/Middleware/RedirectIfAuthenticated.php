@@ -19,23 +19,7 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            if (Auth::user()->tipo == "coordenador"){
-                dd("NeyDay");
-                return redirect(RouteServiceProvider::HOME);
-            }
-            elseif (Auth::user()->tipo == "empresa") {
-                return redirect('empresa.menu');
-            }
-            elseif (Auth::user()->tipo == "agente") {
-                // return redirect('agente.menu');
-            }
-            elseif (Auth::user()->tipo == "resptecnico") {
-                // return redirect('resptecnico.menu');
-            }
-            elseif (Auth::user()->tipo == "fiscal") {
-                dd("AdultoNey");
-                return redirect('fiscal.menu');
-            }
+            return redirect(RouteServiceProvider::HOME);
         }
 
         return $next($request);

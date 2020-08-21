@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Empresa;
 use App\User;
+use App\Telefone;
+use App\Endereco;
 
 class EmpresaController extends Controller
 {
@@ -16,8 +18,12 @@ class EmpresaController extends Controller
     public function index()
     {
         $empresas = \App\Empresa::all();
-
         return view('home', [ 'empresas'  => $empresas ]);
+    }
+
+    public function home()
+    {
+        return view('empresa.home_empresa');
     }
 
     /**
@@ -40,14 +46,21 @@ class EmpresaController extends Controller
     {
         // Cadastro temporário de empresa
         $validator = $request->validate([
-            'name' => 'required|string',
-            'cnpjcpf' => 'required|string',
-            'status' => 'required|string',
-            'tipo' => 'required|string',
-            'email' => 'required|email',
+            'name'     => 'required|string',
+            'cnpjcpf'  => 'required|string',
+            'tipo'     => 'required|string',
+            'email'    => 'required|email',
             'password' => 'required',
+            'numeroTelefone'   => 'required|string',
+            'rua'      => 'required|string',
+            'numero'   => 'required|string',
+            'bairro'   => 'required|string',
+            'cidade'   => 'required|string',
+            'uf'       => 'required|string',
+            'cep'      => 'required|string',
+            'complemento' => 'required|string',
         ]);
-
+        
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -57,9 +70,26 @@ class EmpresaController extends Controller
 
         $empresa = Empresa::create([
             'cnpjcpf' => $request->cnpjcpf,
-            'status' => $request->status,
+            'status_inspecao' => "pendente",
+            'status_cadastro' => "pendente",
             'tipo' => $request->tipo,
             'user_id' => $user->id,
+        ]);
+
+        $telefone = Telefone::create([
+            'numero' => $request->numeroTelefone,
+            'empresa_id' => $empresa->id,
+        ]);
+        
+        $endereco = Endereco::create([
+            'rua' => $request->rua,
+            'numero' => $request->numero,
+            'bairro' => $request->bairro,
+            'cidade' => $request->cidade,
+            'uf' => $request->uf,
+            'cep' => $request->cep,
+            'complemento' => $request->complemento,
+            'empresa_id' => $empresa->id,
         ]);
 
         return redirect()->route('home');

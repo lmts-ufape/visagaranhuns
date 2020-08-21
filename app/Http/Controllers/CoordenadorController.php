@@ -25,6 +25,11 @@ class CoordenadorController extends Controller
         //
     }
 
+    public function home()
+    {
+        return view('coordenador.home_coordenador');
+    }
+
     /**
      * Store a newly created resource in storage.
      *

@@ -19,6 +19,11 @@ class AgenteController extends Controller
         return view('home', [ 'agentes'  => $agentes ]);
     }
 
+    public function home()
+    {
+        return view('agente.home_agente');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
