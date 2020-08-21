@@ -13,10 +13,28 @@ class CoordenadorSeeder extends Seeder
     public function run()
     {
         \App\User::create([
-            'name' => 'teste',
-            'email' => 'teste@teste.com',
+            'name' => 'coordenador',
+            'email' => 'coordenador@teste.com',
             'password' => Hash::make('123456'),
             'tipo' => 'coordenador'
+        ]);
+        \App\User::create([
+            'name' => 'empresa',
+            'email' => 'empresa@teste.com',
+            'password' => Hash::make('123456'),
+            'tipo' => 'empresa'
+        ]);
+        \App\User::create([
+            'name' => 'admin',
+            'email' => 'admin@teste.com',
+            'password' => Hash::make('123456'),
+            'tipo' => 'administrador'
+        ]);
+        \App\User::create([
+            'name' => 'inspetor',
+            'email' => 'inspetor@teste.com',
+            'password' => Hash::make('123456'),
+            'tipo' => 'inspetor'
         ]);
     }
 }

@@ -2,6 +2,6 @@
 
 @section('content')
 <div class="container">
-    HOME.BLADE
+   HOME DO INSPETOR (logado)
 </div>
 @endsection

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('nao_logado/home_nao_logado');
 });
 
 Auth::routes();
@@ -53,7 +53,7 @@ Route::middleware(['IsEmpresa'])->group(function () {
 });
 
 Route::middleware(['IsInspetor'])->group(function () {
-    
+
 /*
     (WEB)
     * Cadastrar/Editar/Deletar relatórios (Próprios)
@@ -63,12 +63,12 @@ Route::middleware(['IsInspetor'])->group(function () {
     * Concluir inspeção (Mudar status de inspeção)
     * Cadastrar imagens
     * Cadastrar áudio
-    * Listar documentos anexados por empresa 
+    * Listar documentos anexados por empresa
 */
 });
 
 Route::middleware(['IsAgente'])->group(function () {
-    
+
     /*
         (WEB)
         * Cadastrar/Editar/Deletar relatórios (Próprios)
@@ -78,7 +78,7 @@ Route::middleware(['IsAgente'])->group(function () {
         * Concluir inspeção (Mudar status de inspeção)
         * Cadastrar imagens
         * Cadastrar áudio
-        * Listar documentos anexados por empresa 
+        * Listar documentos anexados por empresa
     */
     });
 

@@ -2,6 +2,6 @@
 
 @section('content')
 <div class="container">
-    HOME.BLADE
+    PAGINA DA EMPRESA (logado)
 </div>
 @endsection

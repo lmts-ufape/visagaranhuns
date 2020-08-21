@@ -2,6 +2,6 @@
 
 @section('content')
 <div class="container">
-    <h1>Perfil de fiscalTT</h1>    
+    PAGINA DO COORDENADOR (logado)
 </div>
 @endsection

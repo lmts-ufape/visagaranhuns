@@ -17,12 +17,24 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Essa funcao redireciona o usuario para a sua tela principal de acordo com o tipo de usuario
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return view
      */
     public function index()
     {
-        return view('home');
+
+        if(auth()->user()->tipo == "coordenador"){
+            return view('coordenador/home_coordenador');
+
+        }elseif(auth()->user()->tipo == "empresa"){
+            return view('empresa/home_empresa');
+
+        }elseif(auth()->user()->tipo == "administrador"){
+            return view('admin/home_admin');
+
+        }elseif(auth()->user()->tipo == "inspetor"){
+            return view('inspetor/home_inspetor');
+        }
     }
 }

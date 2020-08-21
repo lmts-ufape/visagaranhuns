@@ -2,6 +2,6 @@
 
 @section('content')
 <div class="container">
-    HOME.BLADE
+    PAGINA DO USUARIO COMUM (nao_logado)
 </div>
 @endsection
