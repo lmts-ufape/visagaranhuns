@@ -20,12 +20,15 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+//Cadastro de empresa 
 Route::post("/empresa/cadastro", "EmpresaController@store")->name("cadastrar.empresa");
 
 Route::middleware(['OnlyAdmin'])->group(function () {
     Route::post("/coordenador/cadastro", "CoordenadorController@store")->name("cadastrar.coordenador");
 });
 
+// Grupo de rotas para coordenador
 Route::middleware(['IsCoordenador'])->group(function () {
     Route::get('/home/coordenador', 'CoordenadorController@home')->name('home.coordenador');
     Route::post("/inspetor/cadastro", "InspetorController@store")->name("cadastrar.inspetor");
@@ -43,6 +46,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
 */
 });
 
+// Grupo de rotas para empresa
 Route::middleware(['IsEmpresa'])->group(function () {
     //Empresa - Gerente
     Route::get('/home/empresa', 'EmpresaController@home')->name('home.empresa');
@@ -54,6 +58,7 @@ Route::middleware(['IsEmpresa'])->group(function () {
 */
 });
 
+// Grupo de rotas para inspetor
 Route::middleware(['IsInspetor'])->group(function () {
     Route::get('/home/inspetor', 'InspetorController@home')->name('home.inspetor');
 /*
@@ -69,6 +74,7 @@ Route::middleware(['IsInspetor'])->group(function () {
 */
 });
 
+// Grupo de rotas para Agente
 Route::middleware(['IsAgente'])->group(function () {
     Route::get('/home/agente', 'AgenteController@home')->name('home.agente');
     /*
@@ -82,8 +88,9 @@ Route::middleware(['IsAgente'])->group(function () {
         * Cadastrar áudio
         * Listar documentos anexados por empresa 
     */
-    });
+});
 
+// Grupo de rotas para responsável técnico
 Route::middleware(['IsRespTecnico'])->group(function () {
     //Empresa - Responsável Técnico
 /*
