@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,12 +15,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('naoLogado.home_naologado');
+    if (Auth::check()) {
+        if (Auth::user()->tipo == "coordenador") {
+            return view('coordenador.home_coordenador');
+        }
+        elseif (Auth::user()->tipo == "empresa") {
+            return view('empresa.home_empresa');
+        }
+        elseif (Auth::user()->tipo == "inspetor") {
+            return view('inspetor.home_inspetor');
+        }
+        elseif (Auth::user()->tipo == "agente") {
+            return view('agente.home_agente');
+        }
+    }
+    else {
+        return view('naoLogado.home_naologado');
+    }
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 //Cadastro de empresa 
 Route::post("/empresa/cadastro", "EmpresaController@store")->name("cadastrar.empresa");

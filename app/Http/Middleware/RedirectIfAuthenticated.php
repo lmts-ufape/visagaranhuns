@@ -19,7 +19,18 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect(RouteServiceProvider::HOME);
+            if (Auth::user()->tipo == "coordenador") {
+                return redirect("/home/coordenador");
+            }
+            elseif (Auth::user()->tipo == "empresa") {
+                return redirect("/home/empresa");
+            }
+            elseif (Auth::user()->tipo == "inspetor") {
+                return redirect("/home/inspetor");
+            }
+            elseif (Auth::user()->tipo == "agente") {
+                return redirect("/home/agente");
+            }
         }
 
         return $next($request);
