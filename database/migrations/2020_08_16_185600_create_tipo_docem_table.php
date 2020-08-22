@@ -18,7 +18,7 @@ class CreateTipoDocemTable extends Migration
             $table->id();
             $table->string('nome');
             $table->string('descricao');
-            $table->string('validade');
+            $table->integer('num_meses')->nullable();
 
             $table->timestamps();
         });

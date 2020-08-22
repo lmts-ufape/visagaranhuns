@@ -13,7 +13,7 @@ class Tipodocempresa extends Model
      * @var array
      */
     protected $fillable = [
-        'nome', 'descricao', 'validade',
+        'nome', 'descricao', 'num_meses',
     ];
 
     // Documentos de empresa
