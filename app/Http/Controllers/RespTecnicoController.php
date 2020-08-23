@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Cnae;
-use App\Area;
 
-class CnaeController extends Controller
+class RespTecnicoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +13,7 @@ class CnaeController extends Controller
      */
     public function index()
     {
-        // Listagem de cnaes
-        $cnaes = Cnae::all();
-        return view('coordenador.cnaes', ['cnaes' => $cnaes]);
+        //
     }
 
     /**
@@ -27,9 +23,8 @@ class CnaeController extends Controller
      */
     public function create()
     {
-        // Redireciona para página de cadastro de cnae, junto das areas já cadastradas
-        $areas = Area::all();
-        return view('cnae.cadastro', ['areas' => $areas]);
+        // Definir a pagina de cadastro de Responsavel Técnico
+        return view('respTecnico.cadastro');
     }
 
     /**
@@ -38,21 +33,33 @@ class CnaeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
+        $empresa = Empresa::where('user_id', $id)->first();
+
         $validator = $request->validate([
-            'codigo'    => 'required|string',
-            'descricao' => 'required|string',
-            'areas_id'  => 'required|integer',
+            'name'     => 'required|string',
+            'email'    => 'required|email',
+            'password' => 'required',
+            'formacao' => 'required|string',
+            'especializacao' => 'required|string',
         ]);
 
-        $cnae = Cnae::create([
-            'codigo'    => $request->codigo,
-            'descricao' => $request->codigo,
-            'areas_id'  => $request->codigo,
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'tipo' => "respTecnico",
         ]);
 
-        return view('coordenador.home_coordenador');
+        $respTec = RespTecnico::create([
+            'formacao' => $request->formacao,
+            'especializacao' => $request->especializacao,
+            'empresa_id' => $empresa->id,
+            'user_id' => $id,
+        ]);
+
+        return redirect()->route('/');
     }
 
     /**

@@ -17,7 +17,7 @@ class CreateTipoDocresTable extends Migration
         Schema::create('tipodocresp', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('descricao');
+            // $table->string('descricao');
             $table->string('validade');
             $table->timestamps();
         });

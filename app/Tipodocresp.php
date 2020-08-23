@@ -13,7 +13,8 @@ class Tipodocresp extends Model
      * @var array
      */
     protected $fillable = [
-        'nome', 'descricao', 'validade',
+        // 'nome', 'descricao', 'validade',
+        'nome', 'validade',
     ];
 
     // Documentos do responsável técnico
