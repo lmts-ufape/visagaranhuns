@@ -18,5 +18,20 @@ class CoordenadorSeeder extends Seeder
             'password' => Hash::make('123456'),
             'tipo' => 'coordenador'
         ]);
+
+        \App\User::create([
+            'name' => 'empresa',
+            'email' => 'empresa@teste.com',
+            'password' => Hash::make('123456'),
+            'tipo' => 'empresa'
+        ]);
+
+        \App\Empresa::create([
+            'cnpjcpf' => '10325647899',
+            'status_inspecao' => 'pendente',
+            'status_cadastro' => 'pendente',
+            'tipo' => 'mei',
+            'user_id' => '2',
+        ]);
     }
 }

@@ -17,8 +17,8 @@ class CreateTipoDocemTable extends Migration
         Schema::create('tipodocemp', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('descricao');
-            $table->integer('num_meses')->nullable();
+            // $table->string('descricao');
+            $table->integer('validade')->nullable();
 
             $table->timestamps();
         });

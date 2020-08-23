@@ -7,6 +7,10 @@ use App\Empresa;
 use App\User;
 use App\Telefone;
 use App\Endereco;
+use App\Docempresa;
+use App\Cnae;
+use App\CnaeEmpresa;
+use Illuminate\Support\Facades\Storage;
 
 class EmpresaController extends Controller
 {
@@ -18,7 +22,8 @@ class EmpresaController extends Controller
     public function index()
     {
         $empresas = \App\Empresa::all();
-        return view('home', [ 'empresas'  => $empresas ]);
+        // Escolher a página qem que as empresas serão listadas
+        return view('/', [ 'empresas'  => $empresas ]);
     }
 
     public function home()
@@ -44,7 +49,7 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
-        // Cadastro temporário de empresa
+        // Sujeito a mudanças
         $validator = $request->validate([
             'name'     => 'required|string',
             'cnpjcpf'  => 'required|string',
@@ -76,11 +81,13 @@ class EmpresaController extends Controller
             'user_id' => $user->id,
         ]);
 
+        // Cadastro de telefones
         $telefone = Telefone::create([
             'numero' => $request->numeroTelefone,
             'empresa_id' => $empresa->id,
         ]);
         
+        // Cadastro de endereços
         $endereco = Endereco::create([
             'rua' => $request->rua,
             'numero' => $request->numero,
@@ -93,12 +100,16 @@ class EmpresaController extends Controller
         ]);
 
         // Área para cadastro de cnaes
+        $cnae = $request['cnae'];
 
-        
-        
+        for($i = 0; $i < count($cnae); $i++) {
+            $cnaeEmpresa[] = CnaeEmpresa::create([
+                'empresa_id' => $empresa->id,
+                'cnae_id' => $cnae[$i]->id,
+            ]);
+        }
 
-
-        return redirect()->route('home');
+        return redirect()->route('/');
     }
 
     /**
@@ -118,9 +129,19 @@ class EmpresaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function editarEmpresa($id)
     {
-        //
+        $empresa = Empresa::where('user_id', $id)->first();
+        $telefone = Telefone::where('empresa_id', $empresa->id)->first();
+        $endereco = Endereco::where('empresa_id', $empresa->id)->first();
+
+
+    }
+
+    public function edit()
+    {
+        // Definir a página para a edição de empresa
+        return view('empresa.edit_empresa');
     }
 
     /**
@@ -130,10 +151,9 @@ class EmpresaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function atualizarDocumentosEmpresa(Request $request, $id)
+    public function anexarArquivos(Request $request)
     {
-        $empresa = Empresa::find($id)->get();
-        $docempresa = Docempresa::where("empresa_id", $empresa->id)->first();
+        $empresa = Empresa::where("user_id", $request->user_id)->first();
 
         /*
         Obs:
@@ -163,7 +183,7 @@ class EmpresaController extends Controller
             'cness'           => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:2000000'],
             'projeto_arquitetonico' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:2000000'],
             'certificado_curso_higiene' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:2000000'],
-            'afe/ae'          => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:2000000'],
+            'afeae'          => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:2000000'],
             'rgsocio'         => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:2000000'],
             'cpfsocio'        => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:2000000'],
             'declaracao_carropipa'  => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:2000000'],
@@ -190,7 +210,7 @@ class EmpresaController extends Controller
             'data_cness'              => ['nullable', 'date'],
             'data_projeto_arquitetonico'      => ['nullable', 'date'],
             'data_certificado_curso_higiene'  => ['nullable', 'date'],
-            'data_afe/ae'                     => ['nullable', 'date'],
+            'data_afeae'                     => ['nullable', 'date'],
             'data_declaracao_carropipa'       => ['nullable', 'date'],
             'data_crlv'                       => ['nullable', 'date'],
             'data_declaracao_fonte'           => ['nullable', 'date'],
@@ -205,8 +225,12 @@ class EmpresaController extends Controller
 
             Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
 
-            $docempresa->nome = $pathDocemp . $nomeDocemp;
-            $docempresa->data_emissao = $request->data_req_preenchido; 
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_req_preenchido,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "1",
+            ]);
         }
 
         if(isset($request->cnpj)){
@@ -216,10 +240,418 @@ class EmpresaController extends Controller
 
             Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
 
-            $docempresa->nome = $pathDocemp . $nomeDocemp;
-            $docempresa->data_emissao = $request->data_cnpj; 
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_cnpj,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "2",
+            ]);
         }
 
+        if(isset($request->contrato_social)){
+            $fileDocemp = $request->contrato_social;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->contrato_social->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_contrato_social,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "3",
+            ]);
+        }
+
+        if(isset($request->registro_firma)){
+            $fileDocemp = $request->registro_firma;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->registro_firma->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_registro_firma,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "4",
+            ]);
+        }
+
+        if(isset($request->certificado_mei)){
+            $fileDocemp = $request->certificado_mei;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->certificado_mei->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_certificado_mei,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "5",
+            ]);
+        }
+
+        if(isset($request->rg)){
+            // Rg sem data de emissão
+            $fileDocemp = $request->rg;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->rg->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "6",
+            ]);
+        }
+
+        if(isset($request->cpf)){
+            // Rg sem data de emissão
+            $fileDocemp = $request->cpf;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->cpf->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "7",
+            ]);
+        }
+
+        if(isset($request->regula_bombeiro)){
+            $fileDocemp = $request->regula_bombeiro;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->regula_bombeiro->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_regula_bombeiro,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "8",
+            ]);
+        }
+
+        if(isset($request->licenca_anterior)){
+            $fileDocemp = $request->licenca_anterior;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->licenca_anterior->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_licenca_anterior,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "9",
+            ]);
+        }
+
+        if(isset($request->cert_deteti)){
+            $fileDocemp = $request->cert_deteti;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->cert_deteti->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_cert_deteti,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "10",
+            ]);
+        }
+
+        if(isset($request->iptu_quitado)){
+            $fileDocemp = $request->iptu_quitado;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->iptu_quitado->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_iptu_quitado,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "11",
+            ]);
+        }
+
+        if(isset($request->licenca_adagro)){
+            $fileDocemp = $request->licenca_adagro;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->licenca_adagro->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_licenca_adagro,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "12",
+            ]);
+        }
+
+        if(isset($request->licenca_ambiental)){
+            $fileDocemp = $request->licenca_ambiental;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->licenca_ambiental->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_licenca_ambiental,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "13",
+            ]);
+        }
+        
+        if(isset($request->laudo_microbriolo)){
+            $fileDocemp = $request->laudo_microbriolo;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->laudo_microbriolo->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_laudo_microbriolo,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "14",
+            ]);
+        }
+
+        if(isset($request->taxa_vigilancia)){
+            $fileDocemp = $request->taxa_vigilancia;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->taxa_vigilancia->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_taxa_vigilancia,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "15",
+            ]);
+        }
+
+        if(isset($request->taxa_servico)){
+            $fileDocemp = $request->taxa_servico;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->taxa_servico->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_taxa_servico,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "16",
+            ]);
+        }
+
+        if(isset($request->pgrss)){
+            $fileDocemp = $request->pgrss;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->pgrss->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_pgrss,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "17",
+            ]);
+        }
+
+        if(isset($request->cness)){
+            $fileDocemp = $request->cness;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->cness->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_cness,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "18",
+            ]);
+        }
+
+        if(isset($request->projeto_arquitetonico)){
+            $fileDocemp = $request->projeto_arquitetonico;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->projeto_arquitetonico->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_projeto_arquitetonico,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "19",
+            ]);
+        }
+
+        if(isset($request->certificado_curso_higiene)){
+            $fileDocemp = $request->certificado_curso_higiene;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->certificado_curso_higiene->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_certificado_curso_higiene,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "20",
+            ]);
+        }
+
+        if(isset($request->afeae)){
+            $fileDocemp = $request->afeae;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->afeae->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_afeae,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "21",
+            ]);
+        }
+
+        if(isset($request->rgsocio)){
+            $fileDocemp = $request->rgsocio;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->rgsocio->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "22",
+            ]);
+        }
+
+        if(isset($request->cpfsocio)){
+            $fileDocemp = $request->cpfsocio;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->cpfsocio->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "23",
+            ]);
+        }
+
+        if(isset($request->declaracao_carropipa)){
+            $fileDocemp = $request->declaracao_carropipa;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->declaracao_carropipa->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_declaracao_carropipa,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "24",
+            ]);
+        }
+
+        if(isset($request->crlv)){
+            $fileDocemp = $request->crlv;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->crlv->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_crlv,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "25",
+            ]);
+        }
+
+        if(isset($request->declaracao_fonte)){
+            $fileDocemp = $request->declaracao_fonte;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->declaracao_fonte->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_declaracao_fonte,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "26",
+            ]);
+        }
+
+        if(isset($request->registro_antt)){
+            $fileDocemp = $request->registro_antt;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->registro_antt->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_registro_antt,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "27",
+            ]);
+        }
+
+        if(isset($request->cnh)){
+            $fileDocemp = $request->cnh;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->cnh->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_cnh,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "28",
+            ]);
+        }
+
+        if(isset($request->declaracao_revest)){
+            $fileDocemp = $request->declaracao_revest;
+            $pathDocemp = 'empresa/' . $empresa->id . '/';
+            $nomeDocemp = $request->declaracao_revest->getClientOriginalName();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            $docEmpresa = Docempresa::create([
+                'nome'  => $pathDocemp . $nomeDocemp,
+                'data_emissao' => $request->data_declaracao_revest,
+                'empresa_id'  => $empresa->id,
+                'tipodocemp_id' => "29",
+            ]);
+        }
+
+        return view('empresa.home_empresa');
         
     }
 

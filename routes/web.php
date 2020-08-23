@@ -34,7 +34,11 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::post("/inspetor/cadastro", "InspetorController@store")->name("cadastrar.inspetor");
     Route::post("/agente/cadastro", "AgenteController@store")->name("cadastrar.agente");
     Route::post("/area/cadastro", "AreaController@store")->name("cadastrar.area");
+    Route::get("/area/paginaCadastro", "AreaController@create")->name("pagina.area");
+    Route::get("/area/listagem", "AreaController@index")->name("listagem.area");
     Route::post("/cnae/cadastro", "CnaeController@store")->name("cadastrar.cnae");
+    Route::get("/cnae/paginaCadastro", "CnaeController@create")->name("pagina.cnae");
+    Route::get("/cnae/listagem", "CnaeController@index")->name("listagem.cnae");
     Route::get("/listar/inspetores", "InspetorController@listarInspetores")->name("listar.inspetores");
     Route::get("/listar/agentes", "AgenteController@listarAgentes")->name("listar.agentes");
     //Supervisor
@@ -50,6 +54,9 @@ Route::middleware(['IsCoordenador'])->group(function () {
 Route::middleware(['IsEmpresa'])->group(function () {
     //Empresa - Gerente
     Route::get('/home/empresa', 'EmpresaController@home')->name('home.empresa');
+    Route::post("/empresa/arquivos", "EmpresaController@anexarArquivos")->name("arquivos.empresa");
+    Route::get("/empresa/pagina/responsavelTecnico", "RespTecController@create")->name("pagina.respTec");
+    Route::post("/empresa/cadastro/responsavelTecnico", "RespTecController@store")->name("cadastrar.respTec");
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
     * Editar/Anexar dados da empresa

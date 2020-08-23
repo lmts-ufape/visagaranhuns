@@ -13,7 +13,7 @@ class Docempresa extends Model
      * @var array
      */
     protected $fillable = [
-        'nome', 'empresa_id', 'tipodocemp_id',
+        'nome', 'data_emissao', 'empresa_id', 'tipodocemp_id',
     ];
 
     public function empresa() {

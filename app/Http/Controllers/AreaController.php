@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Area;
 
 class AreaController extends Controller
 {
@@ -13,7 +14,9 @@ class AreaController extends Controller
      */
     public function index()
     {
-        //
+        // Listagem de todas as areas
+        $areas = Area::all();
+        return view('coordenador.areas', ['areas' => $areas]);
     }
 
     /**
@@ -23,7 +26,8 @@ class AreaController extends Controller
      */
     public function create()
     {
-        //
+        // Redireciona para página de cadastro de área
+        return view('area.cadastro');
     }
 
     /**
@@ -34,7 +38,15 @@ class AreaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nome' => 'required|string',
+        ]);
+
+        $area = Area::create([
+            'nome' => $request->nome,
+        ]);
+
+        return view('coordenador.home_coordenador');
     }
 
     /**

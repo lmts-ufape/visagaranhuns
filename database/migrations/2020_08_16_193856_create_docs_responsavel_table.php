@@ -16,6 +16,7 @@ class CreateDocsResponsavelTable extends Migration
         Schema::create('docs_responsavel', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
+            $table->date('data_emissao');
 
             $table->bigInteger("resptecnicos_id")->nullable();
             $table->foreign("resptecnicos_id")->references("id")->on("resptecnicos");

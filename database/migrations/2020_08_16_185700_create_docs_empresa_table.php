@@ -16,7 +16,7 @@ class CreateDocsEmpresaTable extends Migration
         Schema::create('docs_empresa', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->date('data_emissao');
+            $table->date('data_emissao')->nullable();
 
             $table->bigInteger("empresa_id")->nullable();
             $table->foreign("empresa_id")->references("id")->on("empresas");
