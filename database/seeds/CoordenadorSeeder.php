@@ -13,8 +13,8 @@ class CoordenadorSeeder extends Seeder
     public function run()
     {
         \App\User::create([
-            'name' => 'teste',
-            'email' => 'teste@teste.com',
+            'name' => 'coordenador',
+            'email' => 'coordenador@teste.com',
             'password' => Hash::make('123456'),
             'tipo' => 'coordenador'
         ]);
@@ -32,6 +32,18 @@ class CoordenadorSeeder extends Seeder
             'status_cadastro' => 'pendente',
             'tipo' => 'mei',
             'user_id' => '2',
+        ]);
+        \App\User::create([
+            'name' => 'inspetor',
+            'email' => 'inspetor@teste.com',
+            'password' => Hash::make('123456'),
+            'tipo' => 'inspetor'
+        ]);
+        \App\User::create([
+            'name' => 'agente',
+            'email' => 'agente@teste.com',
+            'password' => Hash::make('123456'),
+            'tipo' => 'agente'
         ]);
     }
 }
