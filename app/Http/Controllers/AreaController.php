@@ -15,8 +15,8 @@ class AreaController extends Controller
     public function index()
     {
         // Listagem de todas as areas
-        $areas = Area::all();
-        return view('coordenador.areas', ['areas' => $areas]);
+        $areas = Area::orderBy('nome', 'ASC')->paginate(50);
+        return view('coordenador/areas_coordenador', ['areas' => $areas]);
     }
 
     /**

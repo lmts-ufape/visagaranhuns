@@ -36,7 +36,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-//Cadastro de empresa 
+//Cadastro de empresa
 Route::post("/empresa/cadastro", "EmpresaController@store")->name("cadastrar.empresa");
 
 Route::middleware(['OnlyAdmin'])->group(function () {
@@ -92,7 +92,7 @@ Route::middleware(['IsInspetor'])->group(function () {
     * Concluir inspeção (Mudar status de inspeção)
     * Cadastrar imagens
     * Cadastrar áudio
-    * Listar documentos anexados por empresa 
+    * Listar documentos anexados por empresa
 */
 });
 
@@ -108,7 +108,7 @@ Route::middleware(['IsAgente'])->group(function () {
         * Concluir inspeção (Mudar status de inspeção)
         * Cadastrar imagens
         * Cadastrar áudio
-        * Listar documentos anexados por empresa 
+        * Listar documentos anexados por empresa
     */
 });
 
