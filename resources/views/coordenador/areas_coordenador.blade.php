@@ -34,13 +34,33 @@
     </div>
     <div class="container">
         <div class="row justify-content-left" style="margin-left:0px;">
-            @foreach ($areas as $item)
+            {{-- @foreach ($areas as $item)
                 <a href="{{ route('listagem.cnae',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;cursor:pointer;color:black;">
                     <div class="cardArea">
                         <div class="col-12" style="margin-top:10px;">{{$item->nome}}</div>
                     </div>
                 </a>
-            @endforeach
+            @endforeach --}}
+            @if(count($areas)>0)
+                @foreach ($areas as $item)
+                    <a href="{{ route('listagem.cnae',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;cursor:pointer;color:black;">
+                        <div class="cardArea">
+                            <div class="col-12">
+                                @if(strlen($item->nome) > 56)
+                                    @php
+                                        $str = substr($item->nome, 0, 56) . '...';
+                                    @endphp
+                                    <label style="width:100%; margin-top:10px;margin-left:-5px;margin-right:-20px;text-decoration:none;cursor:pointer;color:black;">{{$str}}</label>
+                                @else
+                                    <label style="width:100%; margin-top:10px;margin-left:-5px;margin-right:-20px;text-decoration:none;cursor:pointer;color:black;">{{$item->nome}}</label>
+                                @endif
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            @else
+                <div class="col-12" style="text-align:center;color:gray;font-weight:bold;margin-top:4rem; margin-bottom:5rem;font-size:20px;font-family:Arial, Helvetica, sans-serif;">Nenhuma área cadastrada!</div>
+            @endif
         </div>
     </div>
     <!-- Paginacao -->

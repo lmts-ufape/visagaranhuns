@@ -34,11 +34,25 @@
     </div>
     <div class="container">
         <div class="row justify-content-left" style="margin-left:0px;">
-            @foreach ($cnaes as $item)
-                <div class="cardArea">
-                    <div class="col-12" style="margin-top:10px;">{{$item->descricao}}</div>
-                </div>
-            @endforeach
+            @if(count($cnaes)>0)
+                @foreach ($cnaes as $item)
+                    <div class="cardArea">
+                        <div class="col-12" style="text-align:right;color:gray;margin-left:8px;">{{$item->codigo}}</div>
+                        <div class="col-12" style="margin-top:-10px;">
+                            @if(strlen($item->descricao) > 56)
+                                @php
+                                    $str = substr($item->descricao, 0, 56) . '...';
+                                @endphp
+                                <label style="width:100%; margin-top:10px;margin-left:-5px;margin-right:-20px;text-decoration:none;cursor:pointer;color:black;">{{$str}}</label>
+                            @else
+                                <label style="width:100%; margin-top:10px;margin-left:-5px;margin-right:-20px;text-decoration:none;cursor:pointer;color:black;">{{$item->descricao}}</label>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <div class="col-12" style="text-align:center;color:gray;font-weight:bold;margin-top:4rem; margin-bottom:5rem;font-size:20px;font-family:Arial, Helvetica, sans-serif;">Nenhum CNAE cadastrado!</div>
+            @endif
         </div>
     </div>
     <!-- Paginacao -->
