@@ -14,28 +14,28 @@
             </div>
             {{-- <div class="p-2">
                 <img src="{{ asset('/imagens/logo_lupa_1.png') }}" alt="Logo" style="margin-right:13px;"/>
-            </div> --}}
-            <div class="p-2">
+            </div>
+           <div class="p-2">
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Ações
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" href="#">Criar cnae</a>
-                        {{-- <a class="dropdown-item" href="#">Editar área</a>
-                        <a class="dropdown-item" href="#">Deletar área</a> --}}
+                         <a class="dropdown-item" href="#">Editar área</a>
+                        <a class="dropdown-item" href="#">Deletar área</a>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
     <div class="container">
-        <div style="font-size:20px; font-weight:bold; color:#707070; margin-top:14px; margin-left:20px;">CNAE</div>
+        <div style="font-size:20px; font-weight:bold; color:#707070; margin-top:14px; margin-left:20px;">Empresas</div>
     </div>
     <div class="container">
         <div class="row justify-content-left" style="margin-left:0px;">
-            @if(count($cnaes)>0)
-                @foreach ($cnaes as $item)
+            @if(count($empresas)>0)
+                @foreach ($empresas as $item)
                     <a href="{{ route('listagem.empresas',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;cursor:pointer;color:black;">
                         <div class="cardArea">
                             <div class="col-12" style="text-align:right;color:gray;margin-left:8px;">{{$item->codigo}}</div>
@@ -53,16 +53,16 @@
                     </a>
                 @endforeach
             @else
-                <div class="col-12" style="text-align:center;color:gray;font-weight:bold;margin-top:4rem; margin-bottom:5rem;font-size:20px;font-family:Arial, Helvetica, sans-serif;">Nenhum CNAE cadastrado!</div>
+                <div class="col-12" style="text-align:center;color:gray;font-weight:bold;margin-top:4rem; margin-bottom:5rem;font-size:20px;font-family:Arial, Helvetica, sans-serif;">Nenhuma empresa cadastrada!</div>
             @endif
         </div>
     </div>
     <!-- Paginacao -->
-    <div class="col-md-12" style="margin-bottom:2rem;">
+    {{-- <div class="col-md-12" style="margin-bottom:2rem;">
         <div class="row justify-content-center">
-            <span>{{$cnaes->links()}}</span>
+            <span>{{$empresas->links()}}</span>
         </div>
-        </div>
+        </div> --}}
         <!--x Paginacao x-->
 </div>
 @endsection
