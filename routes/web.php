@@ -58,6 +58,11 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get("/cnae/listagem", "CnaeController@index")->name("listagem.cnae");
     Route::get("/listar/inspetores", "InspetorController@listarInspetores")->name("listar.inspetores");
     Route::get("/listar/agentes", "AgenteController@listarAgentes")->name("listar.agentes");
+
+    // Rota para listar empresas com cadastro pendentes
+    Route::get("/cadastros/pendentes", "CoordenadorController@listarPendente")->name("listar.cadastroPendente");
+    // Rota para avaliação de cadastro de empresa
+    Route::get("/pagina/detalhes", "CoordenadorController@paginaDetalhes")->name("pagina.detalhes");
     //Supervisor
 /*
     * Cadastrar/Editar/Deletar relatórios (Editar também relatórios criados pos outras pessoas)

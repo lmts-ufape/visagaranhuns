@@ -19,11 +19,20 @@ class EmpresaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+    // Função para listar empresas por cnaes
+    public function index($id)
     {
-        $empresas = \App\Empresa::all();
+        $cnaeEmp = CnaeEmpresa::where("cnae_id", $id)->get();
+        $empresas = array();
+        foreach ($cnaeEmp as $indice) {
+
+            $empresa = Empresa::find($indice->empresa_id);
+            array_push($empresas, $empresa);
+        }
+
         // Escolher a página qem que as empresas serão listadas
-        return view('/', [ 'empresas'  => $empresas ]);
+        return view('/', [ 'empresas'  => $empresas]);
     }
 
     public function home()
@@ -168,6 +177,18 @@ class EmpresaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function listarArquivos($id)
+    {
+        $docempresa = Docempresa::where("empresa_id", $id)->get();
+        // Definir a página para a listagem de arquivos de uma empresa
+        return view('/', ["arquivos" => $docempresa]);
+    }
+
+    public function baixarArquivos(Request $request)
+    {
+        return response()->download(storage_path('app/'.$request->arquivo));
+    }
+
     public function anexarArquivos(Request $request)
     {
         $empresa = Empresa::where("user_id", $request->user_id)->first();
