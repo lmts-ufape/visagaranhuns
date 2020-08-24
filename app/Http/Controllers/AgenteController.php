@@ -15,8 +15,9 @@ class AgenteController extends Controller
      */
     public function listarAgentes()
     {
+        // Definir pagina para listagem
         $agentes = Agente::all();
-        return view('home', [ 'agentes'  => $agentes ]);
+        return view('/', [ 'agentes'  => $agentes ]);
     }
 
     public function home()
@@ -31,7 +32,8 @@ class AgenteController extends Controller
      */
     public function create()
     {
-        //
+        // Definir tela para cadastro de agente
+        return view('agente.cadastro');
     }
 
     /**
