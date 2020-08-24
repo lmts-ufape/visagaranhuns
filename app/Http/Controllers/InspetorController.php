@@ -31,7 +31,8 @@ class InspetorController extends Controller
      */
     public function create()
     {
-        //
+        // Definir tela para cadastro de inspetor
+        return view('inspetor.cadastro');
     }
 
     /**

@@ -47,7 +47,9 @@ Route::middleware(['OnlyAdmin'])->group(function () {
 Route::middleware(['IsCoordenador'])->group(function () {
     Route::get('/home/coordenador', 'CoordenadorController@home')->name('home.coordenador');
     Route::post("/inspetor/cadastro", "InspetorController@store")->name("cadastrar.inspetor");
+    Route::get("/inspetor/paginaCadastro", "InspetorController@create")->name("pagina.inspetor");
     Route::post("/agente/cadastro", "AgenteController@store")->name("cadastrar.agente");
+    Route::get("/agente/paginaCadastro", "AgenteController@create")->name("pagina.agente");
     Route::post("/area/cadastro", "AreaController@store")->name("cadastrar.area");
     Route::get("/area/paginaCadastro", "AreaController@create")->name("pagina.area");
     Route::get("/area/listagem", "AreaController@index")->name("listagem.area");

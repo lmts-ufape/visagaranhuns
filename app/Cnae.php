@@ -13,7 +13,7 @@ class Cnae extends Model
      * @var array
      */
     protected $fillable = [
-        'codigo', 'descricao', 'area_id',
+        'codigo', 'descricao', 'areas_id',
     ];
 
     public function area() {

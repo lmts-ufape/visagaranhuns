@@ -38,7 +38,24 @@ class EmpresaController extends Controller
      */
     public function create()
     {
-        //
+        $ensino       = Cnae::where("areas_id", "1")->get();
+        $saude        = Cnae::where("areas_id", "2")->get();
+        $distrSaude   = Cnae::where("areas_id", "3")->get();
+        $camPipa      = Cnae::where("areas_id", "4")->get();
+        $tratAgua     = Cnae::where("areas_id", "5")->get();
+        $mei          = Cnae::where("areas_id", "6")->get();
+        $diversos     = Cnae::where("areas_id", "7")->get();
+        $meiAlimentos = Cnae::where("areas_id", "8")->get();
+
+        return view('empresa.cadastro', [
+            'ensino'     => $ensino,
+            'saude'      => saude,
+            'distrSaude' => $distrSaude,
+            'camPipa'    => $camPipa,
+            'tratAgua'   => $tratAgua,
+            'mei'        => $mei,
+            'diversos'   => $diversos,
+        ]);
     }
 
     /**
