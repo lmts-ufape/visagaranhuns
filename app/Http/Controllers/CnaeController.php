@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Cnae;
 use App\Area;
+use Illuminate\Support\Facades\Crypt;
 
 class CnaeController extends Controller
 {
@@ -13,11 +14,11 @@ class CnaeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Listagem de cnaes
-        $cnaes = Cnae::all();
-        return view('coordenador.cnaes', ['cnaes' => $cnaes]);
+        // // Listagem de cnaes
+        $cnaes = Cnae::where('areas_id','=',Crypt::decrypt($request->value))->orderBy('descricao', 'ASC')->paginate(50);
+        return view('coordenador/cnaes_coordenador', ['cnaes' => $cnaes]);
     }
 
     /**
