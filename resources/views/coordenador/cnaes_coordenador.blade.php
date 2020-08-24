@@ -33,7 +33,7 @@
         <div style="font-size:20px; font-weight:bold; color:#707070; margin-top:14px; margin-left:20px;">CNAE</div>
     </div>
     <div class="container">
-        <div class="row justify-content-left" style="margin-left:0px;">
+        <div class="row justify-content-left" style="margin-left:0px;padding-bottom:20rem;">
             @if(count($cnaes)>0)
                 @foreach ($cnaes as $item)
                     <a href="{{ route('listagem.empresas',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;cursor:pointer;color:black;">
