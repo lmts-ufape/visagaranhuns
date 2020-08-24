@@ -57,6 +57,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get("/listar/inspetores", "InspetorController@listarInspetores")->name("listar.inspetores");
     Route::get("/listar/agentes", "AgenteController@listarAgentes")->name("listar.agentes");
     Route::get("/empresa/listagem", "EmpresaController@index")->name("listagem.empresas");
+    Route::get("/show/empresa", "EmpresaController@show")->name("mostrar.empresas");
     //Supervisor
 /*
     * Cadastrar/Editar/Deletar relatórios (Editar também relatórios criados pos outras pessoas)

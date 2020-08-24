@@ -45,7 +45,7 @@
                             </a>
                         </div>
                         <div class="p-2">
-                            <a href="" style="text-decoration:none;">
+                            <a href="{{ route('mostrar.empresas',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;">
                                 <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
                             </a>
                         </div>

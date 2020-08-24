@@ -127,7 +127,10 @@ class EmpresaController extends Controller
      */
     public function show(Request $request)
     {
-        //
+        $resultadoEmpresa = Empresa::where('id','=', Crypt::decrypt($request->value))->first();
+        $resultadoEndereco = Endereco::where('empresa_id','=', Crypt::decrypt($request->value))->first();
+        $resultadoTelefone = Telefone::where('empresa_id','=', Crypt::decrypt($request->value))->first();
+        return view('coordenador/show_empresa_coordenador', ['empresa' => $resultadoEmpresa, 'endereco' => $resultadoEndereco, 'telefone' =>$resultadoTelefone]);
     }
 
     /**
