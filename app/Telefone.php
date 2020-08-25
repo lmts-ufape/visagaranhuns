@@ -13,7 +13,7 @@ class Telefone extends Model
      * @var array
      */
     protected $fillable = [
-        'numero', 'empresa_id',
+        'telefone1', 'telefone2', 'empresa_id',
     ];
 
     public function empresa() {

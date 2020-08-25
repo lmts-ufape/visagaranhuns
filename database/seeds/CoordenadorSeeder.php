@@ -77,12 +77,12 @@ class CoordenadorSeeder extends Seeder
         ]);
 
         \App\Telefone::create([
-            'numero' => '37956447',
+            'telefone1' => '37956447',
             'empresa_id' => '2',
         ]);
 
         \App\Telefone::create([
-            'numero' => '00000000',
+            'telefone1' => '00000000',
             'empresa_id' => '2',
         ]);
 
