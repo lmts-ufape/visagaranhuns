@@ -58,6 +58,14 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get("/cnae/listagem", "CnaeController@index")->name("listagem.cnae");
     Route::get("/listar/inspetores", "InspetorController@listarInspetores")->name("listar.inspetores");
     Route::get("/listar/agentes", "AgenteController@listarAgentes")->name("listar.agentes");
+
+    // Listar e baixar arquivos de uma empresa
+    Route::get("/empresa/arquivos", "EmpresaController@listarArquivos")->name("empresa.arquivos");
+    Route::get("/baixar/arquivos", "EmpresaController@baixarArquivos")->name("baixar.arquivos");
+    // Rota para listar empresas com cadastro pendentes
+    Route::get("/cadastros/pendentes", "CoordenadorController@listarPendente")->name("listar.cadastroPendente");
+    // Rota para avaliação de cadastro de empresa
+    Route::get("/pagina/detalhes", "CoordenadorController@paginaDetalhes")->name("pagina.detalhes");
     Route::get("/empresa/listagem", "EmpresaController@index")->name("listagem.empresas");
     Route::get("/show/empresa", "EmpresaController@show")->name("mostrar.empresas");
     //Supervisor
@@ -73,7 +81,10 @@ Route::middleware(['IsCoordenador'])->group(function () {
 Route::middleware(['IsEmpresa'])->group(function () {
     //Empresa - Gerente
     Route::get('/home/empresa', 'EmpresaController@home')->name('home.empresa');
+    Route::get("/pagina/editar", "EmpresaController@edit")->name("editar.empresa");
+    Route::post("/editar/empresa", "EmpresaController@editarEmpresa")->name("editar.empresa");
     Route::post("/empresa/arquivos", "EmpresaController@anexarArquivos")->name("arquivos.empresa");
+    Route::get("/listar/arquivos", "EmpresaController@listarArquivos")->name("listar.arquivos");
     Route::get("/empresa/pagina/responsavelTecnico", "RespTecController@create")->name("pagina.respTec");
     Route::post("/empresa/cadastro/responsavelTecnico", "RespTecController@store")->name("cadastrar.respTec");
 /*

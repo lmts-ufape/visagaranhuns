@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Coordenador;
 use App\User;
 use App\Agente;
+use App\Empresa;
 
 class CoordenadorController extends Controller
 {
@@ -30,6 +31,105 @@ class CoordenadorController extends Controller
         return view('coordenador.home_coordenador');
     }
 
+    /* Função para listar em tela todas empresas que se cadastraram
+    e que o acesso não foi liberado.
+    */
+    public function listarPendente()
+    {
+        $empresas = Empresa::where("status_cadastro","pendente")->get();
+        return view('coordenador.cadastro_pendente', ["empresa" => $empresas]);
+    }
+
+    /* Função para selecionar e exibir na página a empresa que será
+    Avaliada 
+    */ 
+    public function paginaDetalhes(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'empresa_id' => 'required|integer',
+        ]);
+
+        $empresa = Empresa::find($request->empresa_id);
+        return view("coordenador.avaliarEmpresa")->with([
+            "empresa" => $empresa,
+        ]);
+    }
+
+    public function julgar(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'empresa_id' => 'required|integer',
+            'decisao'    => 'required|string'
+        ]);
+
+        
+        // Encontrar email do perfil da empresa
+        //*******************************************************
+        $user = User::where('id', $request->empresa_id)->first();
+        // ****************************************************** 
+        
+        $empresa = Empresa::find($request->empresa_id);
+
+        if($empresa->status_cadastro == "pendente"){
+
+            if($request->decisao == 'true'){
+
+                // Enviar e-mai de comprovação de cadastro
+                //************************************** */
+                
+                $user = new \stdClass();
+                $user->name = $userfound[0]->name;
+                $user->email = $userfound[0]->email;
+    
+                \Illuminate\Support\Facades\Mail::send(new \App\Mail\SendMailUser($user));
+                // *************************************
+                
+                $empresa->status_cadastro = "aprovado";
+                $empresa->save();
+    
+                session()->flash('success', 'Cadastro aprovado com sucesso');
+                return redirect()->route('/');
+            }
+            else{
+              $empresa->status_cadastro = "reprovado";
+              $empresa->save();
+    
+              session()->flash('success', 'Cadastro reprovado com sucesso');
+              return redirect()->route('/');
+            }
+
+        }
+
+        // Trecho para o caso de coordenador precisar reavaliar cadastro de empresa
+        // elseif ($estabelecimento->status == "Aprovado" || $estabelecimento->status == "Reprovado") {
+            
+        //     if($request->decisao == 'true'){
+
+        //         // Enviar e-mai de comprovação de cadastro
+        //         //************************************** */
+                
+        //         $user = new \stdClass();
+        //         $user->name = $userfound[0]->name;
+        //         $user->email = $userfound[0]->email;
+    
+        //         \Illuminate\Support\Facades\Mail::send(new \App\Mail\SendMailUser($user));
+        //         // *************************************
+                
+        //         $estabelecimento->status = "Aprovado";
+        //         $estabelecimento->save();
+    
+        //         session()->flash('success', 'Estabelecimento aprovado com sucesso');
+        //         return redirect()->route('estabelecimentoAdmin.revisar');
+        //     }
+        //     else{
+        //       $estabelecimento->status = "Reprovado";
+        //       $estabelecimento->save();
+    
+        //       session()->flash('success', 'Estabelecimento reprovado com sucesso');
+        //       return redirect()->route('estabelecimentoAdmin.revisar');
+        //     }
+        // } 
+    }
     /**
      * Store a newly created resource in storage.
      *

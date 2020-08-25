@@ -11,6 +11,7 @@ use App\Docempresa;
 use App\Cnae;
 use App\CnaeEmpresa;
 use Illuminate\Support\Facades\Storage;
+use Auth;
 use Illuminate\Support\Facades\Crypt;
 
 class EmpresaController extends Controller
@@ -56,7 +57,7 @@ class EmpresaController extends Controller
 
         return view('empresa.cadastro', [
             'ensino'     => $ensino,
-            'saude'      => saude,
+            'saude'      => $saude,
             'distrSaude' => $distrSaude,
             'camPipa'    => $camPipa,
             'tratAgua'   => $tratAgua,
@@ -165,19 +166,76 @@ class EmpresaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editarEmpresa($id)
+    public function editarEmpresa(Request $request, $id)
     {
-        $empresa = Empresa::where('user_id', $id)->first();
+        $empresa = Empresa::find($id);
+        $user = User::find(Auth::user()->id);
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
         $endereco = Endereco::where('empresa_id', $empresa->id)->first();
 
+        $validator = $request->validate([
+            'name'     => 'nullable|string',
+            'cnpjcpf'  => 'nullable|string',
+            'tipo'     => 'nullable|string',
+            'numeroTelefone'  => 'nullable|string',
+            'rua'      => 'nullable|string',
+            'numero'   => 'nullable|string',
+            'bairro'   => 'nullable|string',
+            'cidade'   => 'nullable|string',
+            'uf'       => 'nullable|string',
+            'cep'      => 'nullable|string',
+            'complemento'  => 'nullable|string',
+        ]);
+
+        $user->name = $request->name;
+        $user->save();
+
+        $empresa->cnpjcpf = $request->cnpjcpf;
+        $empresa->tipo    = $request->tipo;
+        $empresa->save();
+
+        $telefone->numero = $request->numeroTelefone;
+        $telefone->save();
+        
+        $endereco->rua         = $request->rua;
+        $endereco->numero      = $request->numero;
+        $endereco->bairro      = $request->bairro;
+        $endereco->cidade      = $request->cidade;
+        $endereco->uf          = $request->uf;
+        $endereco->cep         = $request->cep;
+        $endereco->complemento = $request->complemento;
+
+        $endereco->save();
+
+        return redirect()->route('/');
 
     }
 
-    public function edit()
+    public function edit($id)
     {
+        // Empresa que será editada
+        $empresa = Empresa::where("user_id", $id)->first();
+        // Cnaes que podem ser escolhidos para troca
+        $ensino       = Cnae::where("areas_id", "1")->get();
+        $saude        = Cnae::where("areas_id", "2")->get();
+        $distrSaude   = Cnae::where("areas_id", "3")->get();
+        $camPipa      = Cnae::where("areas_id", "4")->get();
+        $tratAgua     = Cnae::where("areas_id", "5")->get();
+        $mei          = Cnae::where("areas_id", "6")->get();
+        $diversos     = Cnae::where("areas_id", "7")->get();
+        $meiAlimentos = Cnae::where("areas_id", "8")->get();
+
         // Definir a página para a edição de empresa
-        return view('empresa.edit_empresa');
+        return view('empresa.editar', [
+            'empresa'    => $empresa,
+            'ensino'     => $ensino,
+            'saude'      => $saude,
+            'distrSaude' => $distrSaude,
+            'camPipa'    => $camPipa,
+            'tratAgua'   => $tratAgua,
+            'mei'        => $mei,
+            'diversos'   => $diversos,
+        ]);
     }
 
     /**
@@ -187,6 +245,18 @@ class EmpresaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function listarArquivos($id)
+    {
+        $docempresa = Docempresa::where("empresa_id", $id)->get();
+        // Definir a página para a listagem de arquivos de uma empresa
+        return view('/', ["arquivos" => $docempresa]);
+    }
+
+    public function baixarArquivos(Request $request)
+    {
+        return response()->download(storage_path('app/'.$request->arquivo));
+    }
+
     public function anexarArquivos(Request $request)
     {
         $empresa = Empresa::where("user_id", $request->user_id)->first();
