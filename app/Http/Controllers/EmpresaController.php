@@ -74,6 +74,7 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         // Sujeito a mudanças
         $validator = $request->validate([
             'name'     => 'required|string',
@@ -196,7 +197,7 @@ class EmpresaController extends Controller
 
         $telefone->numero = $request->numeroTelefone;
         $telefone->save();
-        
+
         $endereco->rua         = $request->rua;
         $endereco->numero      = $request->numero;
         $endereco->bairro      = $request->bairro;
@@ -770,5 +771,9 @@ class EmpresaController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function cadastrar(){
+        // dd("opa");
+        return view('naoLogado/cadastrar_empresa');
     }
 }
