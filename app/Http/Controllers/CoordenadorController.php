@@ -138,7 +138,7 @@ class CoordenadorController extends Controller
      */
     public function store(Request $request)
     {
- 
+
         $validator = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
