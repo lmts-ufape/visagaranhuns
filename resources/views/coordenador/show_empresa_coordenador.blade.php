@@ -39,29 +39,29 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputPassword4">CNAE:</label>
-                    <input type="text" class="form-control" id="inputPassword4" >
+                    <input type="text" class="form-control" id="inputPassword4" placeholder="{{$cnae[0]->descricao}}">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="inputEmail4">E-mail:</label>
-                    <input type="email" class="form-control" id="inputEmail4" placeholder="{{$empresa->email}}">
+                    <input type="email" class="form-control" id="inputEmail4" placeholder="{{$empresa->user->email}}">
                 </div>
                 <div class="form-grtextoup col-md-4">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputEmail4">Telefone 1:</label>
-                            <input type="text" class="form-control" id="inputEmail4" placeholder="{{$empresa}}">
+                            <input type="text" class="form-control" id="inputEmail4" placeholder="{{$telefone->numero}}">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputPassword4">Telefone 2:</label>
-                            <input type="text" class="form-control" id="inputPassword4"  placeholder="{{$empresa}}">
+                            <input type="text" class="form-control" id="inputPassword4"  placeholder="{{$telefone->numero}}">
                         </div>
                     </div>
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputPassword4">Nº CNAE:</label>
-                    <input type="text" class="form-control" id="inputPassword4"  placeholder="{{$empresa}}">
+                        <input type="text" class="form-control" id="inputPassword4"  placeholder="{{$cnae[0]->codigo}}">
                 </div>
             </div>
         </fieldset>
@@ -90,21 +90,21 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label for="inputPassword4">Complemento:</label>
-                        <input type="password" class="form-control" id="inputPassword4" placeholder="{{$empresa->endereco}}">
+                        <input type="password" class="form-control" id="inputPassword4" placeholder="{{$endereco->complemento}}">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="inputEmail4">Bairro:</label>
-                        <input type="email" class="form-control" id="inputEmail4" placeholder="{{$empresa->endereco}}">
+                        <input type="email" class="form-control" id="inputEmail4" placeholder="{{$endereco->bairro}}">
                     </div>
                     <div class="form-group col-md-4">
                             <label for="inputEmail4">Cidade/UF:</label>
-                    <input type="email" class="form-control" id="inputEmail4" placeholder="{{$empresa->endereco}}/{{$empresa->endereco}}">
+                    <input type="email" class="form-control" id="inputEmail4" placeholder="{{$endereco->cidade}}/{{$endereco->uf}}">
                         </div>
                     <div class="form-group col-md-4">
                         <label for="inputPassword4">CEP:</label>
-                        <input type="password" class="form-control" id="inputPassword4" placeholder="{{$empresa->endereco}}">
+                        <input type="password" class="form-control" id="inputPassword4" placeholder="{{$endereco->cep}}">
                     </div>
                     </div>
                 </div>
