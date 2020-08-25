@@ -131,7 +131,15 @@ class EmpresaController extends Controller
         $empresa = Empresa::find($id);
         $endereco = Endereco::where('empresa_id', $empresa->id)->first();
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
-        return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone]);
+        $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $id)->get();
+
+        $cnae = array();
+        foreach($cnaeEmpresa as $indice){
+            $cnaes = Cnae::find($indice->cnae_id);
+            array_push($cnae, $cnaes);
+        }
+
+        return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae]);
     }
 
     /**
