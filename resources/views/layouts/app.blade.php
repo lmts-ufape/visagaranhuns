@@ -20,6 +20,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/menu_rodape.css') }}" rel="stylesheet">
     <link href="{{ asset('css/naoLogado.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/coordenador.css') }}" rel="stylesheet">
 
 </head>
 <body>
@@ -82,7 +83,7 @@
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Inspetores') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Empresas') }}</a>
+                                    <a class="nav-link" href="{{ route('listagem.area') }}">{{ __('Empresas') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">

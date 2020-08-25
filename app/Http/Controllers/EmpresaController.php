@@ -11,6 +11,7 @@ use App\Docempresa;
 use App\Cnae;
 use App\CnaeEmpresa;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Crypt;
 
 class EmpresaController extends Controller
 {
@@ -19,11 +20,17 @@ class EmpresaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $empresas = \App\Empresa::all();
-        // Escolher a página qem que as empresas serão listadas
-        return view('/', [ 'empresas'  => $empresas ]);
+
+        //Escolher a página qem que as empresas serão listadas
+        $cnaeEmp = CnaeEmpresa::where("cnae_id", Crypt::decrypt($request->value))->get();
+        $empresas = array();
+        foreach($cnaeEmp as $indice){
+            $empresa = Empresa::find($indice->empresa_id);
+            array_push($empresas, $empresa);
+        }
+        return view('coordenador/empresas_coordenador', ['empresas' => $empresas]);
     }
 
     public function home()
@@ -82,7 +89,7 @@ class EmpresaController extends Controller
             'cep'      => 'required|string',
             'complemento'      => 'required|string',
         ]);
-        
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -103,7 +110,7 @@ class EmpresaController extends Controller
             'numero' => $request->numeroTelefone,
             'empresa_id' => $empresa->id,
         ]);
-        
+
         // Cadastro de endereços
         $endereco = Endereco::create([
             'rua' => $request->rua,
@@ -135,9 +142,21 @@ class EmpresaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $id = Crypt::decrypt($request->value);
+        $empresa = Empresa::find($id);
+        $endereco = Endereco::where('empresa_id', $empresa->id)->first();
+        $telefone = Telefone::where('empresa_id', $empresa->id)->first();
+        $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $id)->get();
+
+        $cnae = array();
+        foreach($cnaeEmpresa as $indice){
+            $cnaes = Cnae::find($indice->cnae_id);
+            array_push($cnae, $cnaes);
+        }
+
+        return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae]);
     }
 
     /**
@@ -429,7 +448,7 @@ class EmpresaController extends Controller
                 'tipodocemp_id' => "13",
             ]);
         }
-        
+
         if(isset($request->laudo_microbriolo)){
             $fileDocemp = $request->laudo_microbriolo;
             $pathDocemp = 'empresa/' . $empresa->id . '/';
@@ -669,7 +688,7 @@ class EmpresaController extends Controller
         }
 
         return view('empresa.home_empresa');
-        
+
     }
 
     /**

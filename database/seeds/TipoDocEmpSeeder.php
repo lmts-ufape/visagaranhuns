@@ -40,6 +40,6 @@ class TipoDocEmpSeeder extends Seeder
         \App\Tipodocempresa::create([ 'nome' => 'Registro da ANTT', 'validade' => '5']);
         \App\Tipodocempresa::create([ 'nome' => 'CNH', 'validade' => '5']);
         \App\Tipodocempresa::create([ 'nome' => 'Declaração do Material de Revestimento Interno do Tanque', 'validade' => '5']);
-        
+
     }
 }

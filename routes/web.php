@@ -36,7 +36,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-//Cadastro de empresa 
+//Cadastro de empresa
 Route::post("/empresa/cadastro", "EmpresaController@store")->name("cadastrar.empresa");
 
 Route::middleware(['OnlyAdmin'])->group(function () {
@@ -58,6 +58,8 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get("/cnae/listagem", "CnaeController@index")->name("listagem.cnae");
     Route::get("/listar/inspetores", "InspetorController@listarInspetores")->name("listar.inspetores");
     Route::get("/listar/agentes", "AgenteController@listarAgentes")->name("listar.agentes");
+    Route::get("/empresa/listagem", "EmpresaController@index")->name("listagem.empresas");
+    Route::get("/show/empresa", "EmpresaController@show")->name("mostrar.empresas");
     //Supervisor
 /*
     * Cadastrar/Editar/Deletar relatórios (Editar também relatórios criados pos outras pessoas)
@@ -94,7 +96,7 @@ Route::middleware(['IsInspetor'])->group(function () {
     * Concluir inspeção (Mudar status de inspeção)
     * Cadastrar imagens
     * Cadastrar áudio
-    * Listar documentos anexados por empresa 
+    * Listar documentos anexados por empresa
 */
 });
 
@@ -110,7 +112,7 @@ Route::middleware(['IsAgente'])->group(function () {
         * Concluir inspeção (Mudar status de inspeção)
         * Cadastrar imagens
         * Cadastrar áudio
-        * Listar documentos anexados por empresa 
+        * Listar documentos anexados por empresa
     */
 });
 
