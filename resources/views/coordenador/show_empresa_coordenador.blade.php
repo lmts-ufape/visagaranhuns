@@ -86,7 +86,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label for="inputPassword4">Número:</label>
-                        <input type="password" class="form-control" id="inputPassword4" placeholder="{{$empresa->endereco}}">
+                        <input type="password" class="form-control" id="inputPassword4" placeholder="{{$endereco->numero}}">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="inputPassword4">Complemento:</label>

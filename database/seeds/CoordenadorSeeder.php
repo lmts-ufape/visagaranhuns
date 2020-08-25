@@ -48,6 +48,43 @@ class CoordenadorSeeder extends Seeder
             'tipo' => 'mei',
             'user_id' => '3',
         ]);
+        
+        \App\Endereco::create([
+            'rua' => 'Rivendell',
+            'numero' => '888',
+            'bairro' => 'Eriador',
+            'cidade' => 'Eregion',
+            'uf' => 'TM',
+            'cep' => '00000000',
+            'complemento' => 'Sudeste de Rhudaur',
+            'empresa_id' => '1',
+        ]);
+
+        \App\Endereco::create([
+            'rua' => 'Ithil',
+            'numero' => '000',
+            'bairro' => 'White Tower',
+            'cidade' => 'Minas Tirith',
+            'uf' => 'TM',
+            'cep' => '00000000',
+            'complemento' => 'Noroeste da Terra Média',
+            'empresa_id' => '2',
+        ]);
+
+        \App\Telefone::create([
+            'numero' => '37626159',
+            'empresa_id' => '1',
+        ]);
+
+        \App\Telefone::create([
+            'numero' => '37956447',
+            'empresa_id' => '2',
+        ]);
+
+        \App\Telefone::create([
+            'numero' => '00000000',
+            'empresa_id' => '2',
+        ]);
 
         \App\User::create([
             'name' => 'inspetor',
