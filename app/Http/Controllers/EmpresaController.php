@@ -77,12 +77,14 @@ class EmpresaController extends Controller
         // Sujeito a mudanças
         $validator = $request->validate([
             'name'     => 'required|string',
-            'cnpjcpf'  => 'required|string',
-            'tipo'     => 'required|string',
             'email'    => 'required|email',
             'password' => 'required',
+            'nome'     => 'required|string',
+            'cnpjcpf'  => 'required|string',
+            'tipo'     => 'required|string',
+            'emailEmpresa' => 'nullable|email',
             'telefone1' => 'required|string',
-            'telefone2' => 'required|string',
+            'telefone2' => 'nullable|string',
             'rua'      => 'required|string',
             'numero' => 'required|string',
             'bairro'   => 'required|string',
@@ -100,6 +102,8 @@ class EmpresaController extends Controller
         ]);
 
         $empresa = Empresa::create([
+            'nome' => $request->nome,
+            'email' => $request->emailEmpresa,
             'cnpjcpf' => $request->cnpjcpf,
             'status_inspecao' => "pendente",
             'status_cadastro' => "pendente",
@@ -108,17 +112,11 @@ class EmpresaController extends Controller
         ]);
 
         // Cadastro de telefones
-        $telefone1 = Telefone::create([
+        $telefone = Telefone::create([
             'telefone1' => $request->telefone1,
+            'telefone2' => $request->telefone2,
             'empresa_id' => $empresa->id,
         ]);
-
-        if (isset($request->telefone2)) {
-            $telefone2 = Telefone::create([
-                'telefone2' => $request->telefone2,
-                'empresa_id' => $empresa->id,
-            ]);
-        }
 
         // Cadastro de endereços
         $endereco = Endereco::create([
@@ -136,9 +134,10 @@ class EmpresaController extends Controller
         $cnae = $request['cnae'];
 
         for($i = 0; $i < count($cnae); $i++) {
-            $cnaeEmpresa[] = CnaeEmpresa::create([
+            $cnaes = Cnae::find($cnae[$i]);
+            $cnaeEmpresa = CnaeEmpresa::create([
                 'empresa_id' => $empresa->id,
-                'cnae_id' => $cnae[$i]->id,
+                'cnae_id' => $cnaes->id,
             ]);
         }
 
@@ -151,13 +150,12 @@ class EmpresaController extends Controller
         
         // Sujeito a mudanças
         $validator = $request->validate([
-            'name'     => 'required|string',
+            'nome'     => 'required|string',
             'cnpjcpf'  => 'required|string',
             'tipo'     => 'required|string',
-            'email'    => 'required|email',
-            'password' => 'required',
+            'email'    => 'nullable|email',
             'telefone1' => 'required|string',
-            'telefone2' => 'required|string',
+            'telefone2' => 'nullable|string',
             'rua'      => 'required|string',
             'numero' => 'required|string',
             'bairro'   => 'required|string',
@@ -168,25 +166,21 @@ class EmpresaController extends Controller
         ]);
 
         $empresa = Empresa::create([
+            'nome' => $request->nome,
+            'email' => $request->emailEmpresa,
             'cnpjcpf' => $request->cnpjcpf,
             'status_inspecao' => "pendente",
             'status_cadastro' => "pendente",
             'tipo' => $request->tipo,
-            'user_id' => $user->$user->id,
+            'user_id' => $user->id,
         ]);
 
         // Cadastro de telefones
-        $telefone1 = Telefone::create([
+        $telefone = Telefone::create([
             'telefone1' => $request->telefone1,
+            'telefone2' => $request->telefone2,
             'empresa_id' => $empresa->id,
         ]);
-
-        if (isset($request->telefone2)) {
-            $telefone2 = Telefone::create([
-                'telefone2' => $request->telefone2,
-                'empresa_id' => $empresa->id,
-            ]);
-        }
 
         // Cadastro de endereços
         $endereco = Endereco::create([
@@ -204,9 +198,10 @@ class EmpresaController extends Controller
         $cnae = $request['cnae'];
 
         for($i = 0; $i < count($cnae); $i++) {
-            $cnaeEmpresa[] = CnaeEmpresa::create([
+            $cnaes = Cnae::find($cnae[$i]);
+            $cnaeEmpresa = CnaeEmpresa::create([
                 'empresa_id' => $empresa->id,
-                'cnae_id' => $cnae[$i]->id,
+                'cnae_id' => $cnaes->id,
             ]);
         }
 
