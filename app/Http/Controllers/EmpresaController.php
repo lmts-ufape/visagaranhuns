@@ -55,7 +55,7 @@ class EmpresaController extends Controller
         $diversos     = Cnae::where("areas_id", "7")->get();
         $meiAlimentos = Cnae::where("areas_id", "8")->get();
 
-        return view('empresa.cadastro', [
+        return view('naoLogado/cadastrar_empresa', [
             'ensino'     => $ensino,
             'saude'      => $saude,
             'distrSaude' => $distrSaude,
@@ -74,6 +74,7 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
+
         // Sujeito a mudanças
         $validator = $request->validate([
             'name'     => 'required|string',
@@ -267,7 +268,7 @@ class EmpresaController extends Controller
 
         $telefone->numero = $request->numeroTelefone;
         $telefone->save();
-        
+
         $endereco->rua         = $request->rua;
         $endereco->numero      = $request->numero;
         $endereco->bairro      = $request->bairro;
@@ -841,5 +842,9 @@ class EmpresaController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function cadastrar(){
+        // dd("opa");
+        return view('naoLogado/cadastrar_empresa');
     }
 }

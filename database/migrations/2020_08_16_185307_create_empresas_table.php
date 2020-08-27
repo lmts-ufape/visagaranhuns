@@ -16,7 +16,7 @@ class CreateEmpresasTable extends Migration
         Schema::create('empresas', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('cnpjcpf');
             $table->string('status_inspecao');
             $table->string('status_cadastro');

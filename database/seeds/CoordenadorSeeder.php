@@ -20,20 +20,21 @@ class CoordenadorSeeder extends Seeder
         ]);
 
         \App\User::create([
-            'name' => 'empresa',
+            'name' => 'Isildur',
             'email' => 'empresa@teste.com',
             'password' => Hash::make('123456'),
             'tipo' => 'empresa'
         ]);
 
         \App\User::create([
-            'name' => 'empresa 2',
+            'name' => 'Anarion',
             'email' => 'empresa2@teste.com',
             'password' => Hash::make('123456'),
             'tipo' => 'empresa'
         ]);
 
         \App\Empresa::create([
+            'nome' => 'Minas Morgul',
             'cnpjcpf' => '10325647899',
             'status_inspecao' => 'pendente',
             'status_cadastro' => 'pendente',
@@ -42,6 +43,7 @@ class CoordenadorSeeder extends Seeder
         ]);
 
         \App\Empresa::create([
+            'nome' => 'Minas Tirith',
             'cnpjcpf' => '10325647899',
             'status_inspecao' => 'pendente',
             'status_cadastro' => 'pendente',
@@ -72,17 +74,12 @@ class CoordenadorSeeder extends Seeder
         ]);
 
         \App\Telefone::create([
-            'numero' => '37626159',
+            'telefone1' => '37626159',
             'empresa_id' => '1',
         ]);
 
         \App\Telefone::create([
             'telefone1' => '37956447',
-            'empresa_id' => '2',
-        ]);
-
-        \App\Telefone::create([
-            'telefone1' => '00000000',
             'empresa_id' => '2',
         ]);
 
