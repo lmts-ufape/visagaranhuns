@@ -83,7 +83,7 @@
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Inspetores') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('listagem.area') }}">{{ __('Empresas') }}</a>
+                                    <a class="nav-link" href="{{ route('listagem.area') }}">{{ __('Estabelecimentos') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">
@@ -111,6 +111,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
                                 </li>
+                                <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('listar.empresas') }}">{{ __('Estabelecimentos') }}</a>
+                                    </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Licenças') }}</a>
                                 </li>
@@ -244,6 +247,7 @@
                                 <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Empresa</a></div>
                             @elseif(Auth::user()->tipo == "empresa")
                                 <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Início</a></div>
+                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Empresas</a></div>
                                 <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Licenças</a></div>
                                 <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Responsável Técnico</a></div>
                                 <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Documentação</a></div>

@@ -148,7 +148,7 @@ class EmpresaController extends Controller
     public function adicionarEmpresa(Request $request)
     {
         $user = $request->user_id;
-        
+
         // Sujeito a mudanças
         $validator = $request->validate([
             'nome'     => 'required|string',
@@ -230,6 +230,16 @@ class EmpresaController extends Controller
         }
 
         return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae]);
+    }
+
+    /**
+     * Listar empresas
+     * View: empresa/listar_empresas.blade.php
+    */
+    public function listarEmpresas(){
+        //Preciso da função para carregar a página
+        $resultado = Empresa::paginate(20);
+        return view('empresa/listar_empresas',['empresas' => $resultado]);
     }
 
     /**
@@ -843,8 +853,29 @@ class EmpresaController extends Controller
     {
         //
     }
-    public function cadastrar(){
+    public function paginaCadastrarEmpresa(){
         // dd("opa");
-        return view('naoLogado/cadastrar_empresa');
+        return view('empresa/cadastrar_empresa');
+    }
+    /**
+     * Funcao: Redireciona o dono do estabelecimento para a tela de perfil do estabelecimento
+     * View de destino: empresa/show_empresa.blade.php
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showEmpresa(Request $request){
+        $id = Crypt::decrypt($request->value);
+        $empresa = Empresa::find($id);
+        $endereco = Endereco::where('empresa_id', $empresa->id)->first();
+        $telefone = Telefone::where('empresa_id', $empresa->id)->first();
+        $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $id)->get();
+
+        $cnae = array();
+        foreach($cnaeEmpresa as $indice){
+            $cnaes = Cnae::find($indice->cnae_id);
+            array_push($cnae, $cnaes);
+        }
+        return view('empresa/show_empresa',['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae]);
     }
 }
