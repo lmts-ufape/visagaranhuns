@@ -38,6 +38,7 @@ Auth::routes();
 
 //Cadastro de empresa
 Route::post("/empresa/cadastro", "EmpresaController@store")->name("cadastrar.empresa");
+Route::get("/home/cadastro/empresa", "EmpresaController@create")->name("home.cadastrar");
 
 Route::middleware(['OnlyAdmin'])->group(function () {
     Route::post("/coordenador/cadastro", "CoordenadorController@store")->name("cadastrar.coordenador");
@@ -87,6 +88,10 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get("/listar/arquivos", "EmpresaController@listarArquivos")->name("listar.arquivos");
     Route::get("/empresa/pagina/responsavelTecnico", "RespTecController@create")->name("pagina.respTec");
     Route::post("/empresa/cadastro/responsavelTecnico", "RespTecController@store")->name("cadastrar.respTec");
+    Route::get("/empresa/adicionar/", "EmpresaController@paginaAdicionar")->name("adicionar.empresa");
+    Route::post("/empresa/cadastro/responsavelTecnico", "EmpresaController@adicionarEmpresa")->name("adicionar.empresa");
+
+
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
     * Editar/Anexar dados da empresa

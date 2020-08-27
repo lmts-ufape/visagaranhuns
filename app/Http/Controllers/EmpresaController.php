@@ -55,7 +55,7 @@ class EmpresaController extends Controller
         $diversos     = Cnae::where("areas_id", "7")->get();
         $meiAlimentos = Cnae::where("areas_id", "8")->get();
 
-        return view('empresa.cadastro', [
+        return view('naoLogado/cadastrar_empresa', [
             'ensino'     => $ensino,
             'saude'      => $saude,
             'distrSaude' => $distrSaude,
@@ -74,21 +74,25 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
+
         // Sujeito a mudanças
         $validator = $request->validate([
             'name'     => 'required|string',
-            'cnpjcpf'  => 'required|string',
-            'tipo'     => 'required|string',
             'email'    => 'required|email',
             'password' => 'required',
-            'numeroTelefone'   => 'required|string',
+            'nome'     => 'required|string',
+            'cnpjcpf'  => 'required|string',
+            'tipo'     => 'required|string',
+            'emailEmpresa' => 'nullable|email',
+            'telefone1' => 'required|string',
+            'telefone2' => 'nullable|string',
             'rua'      => 'required|string',
-            'numero'   => 'required|string',
+            'numero' => 'required|string',
             'bairro'   => 'required|string',
             'cidade'   => 'required|string',
             'uf'       => 'required|string',
             'cep'      => 'required|string',
-            'complemento'      => 'required|string',
+            'complemento' => 'required|string',
         ]);
 
         $user = User::create([
@@ -99,6 +103,8 @@ class EmpresaController extends Controller
         ]);
 
         $empresa = Empresa::create([
+            'nome' => $request->nome,
+            'email' => $request->emailEmpresa,
             'cnpjcpf' => $request->cnpjcpf,
             'status_inspecao' => "pendente",
             'status_cadastro' => "pendente",
@@ -108,7 +114,8 @@ class EmpresaController extends Controller
 
         // Cadastro de telefones
         $telefone = Telefone::create([
-            'numero' => $request->numeroTelefone,
+            'telefone1' => $request->telefone1,
+            'telefone2' => $request->telefone2,
             'empresa_id' => $empresa->id,
         ]);
 
@@ -128,9 +135,74 @@ class EmpresaController extends Controller
         $cnae = $request['cnae'];
 
         for($i = 0; $i < count($cnae); $i++) {
-            $cnaeEmpresa[] = CnaeEmpresa::create([
+            $cnaes = Cnae::find($cnae[$i]);
+            $cnaeEmpresa = CnaeEmpresa::create([
                 'empresa_id' => $empresa->id,
-                'cnae_id' => $cnae[$i]->id,
+                'cnae_id' => $cnaes->id,
+            ]);
+        }
+
+        return redirect()->route('/');
+    }
+
+    public function adicionarEmpresa(Request $request)
+    {
+        $user = $request->user_id;
+        
+        // Sujeito a mudanças
+        $validator = $request->validate([
+            'nome'     => 'required|string',
+            'cnpjcpf'  => 'required|string',
+            'tipo'     => 'required|string',
+            'email'    => 'nullable|email',
+            'telefone1' => 'required|string',
+            'telefone2' => 'nullable|string',
+            'rua'      => 'required|string',
+            'numero' => 'required|string',
+            'bairro'   => 'required|string',
+            'cidade'   => 'required|string',
+            'uf'       => 'required|string',
+            'cep'      => 'required|string',
+            'complemento' => 'required|string',
+        ]);
+
+        $empresa = Empresa::create([
+            'nome' => $request->nome,
+            'email' => $request->emailEmpresa,
+            'cnpjcpf' => $request->cnpjcpf,
+            'status_inspecao' => "pendente",
+            'status_cadastro' => "pendente",
+            'tipo' => $request->tipo,
+            'user_id' => $user->id,
+        ]);
+
+        // Cadastro de telefones
+        $telefone = Telefone::create([
+            'telefone1' => $request->telefone1,
+            'telefone2' => $request->telefone2,
+            'empresa_id' => $empresa->id,
+        ]);
+
+        // Cadastro de endereços
+        $endereco = Endereco::create([
+            'rua' => $request->rua,
+            'numero' => $request->numero,
+            'bairro' => $request->bairro,
+            'cidade' => $request->cidade,
+            'uf' => $request->uf,
+            'cep' => $request->cep,
+            'complemento' => $request->complemento,
+            'empresa_id' => $empresa->id,
+        ]);
+
+        // Área para cadastro de cnaes
+        $cnae = $request['cnae'];
+
+        for($i = 0; $i < count($cnae); $i++) {
+            $cnaes = Cnae::find($cnae[$i]);
+            $cnaeEmpresa = CnaeEmpresa::create([
+                'empresa_id' => $empresa->id,
+                'cnae_id' => $cnaes->id,
             ]);
         }
 
@@ -196,7 +268,7 @@ class EmpresaController extends Controller
 
         $telefone->numero = $request->numeroTelefone;
         $telefone->save();
-        
+
         $endereco->rua         = $request->rua;
         $endereco->numero      = $request->numero;
         $endereco->bairro      = $request->bairro;
@@ -770,5 +842,9 @@ class EmpresaController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function cadastrar(){
+        // dd("opa");
+        return view('naoLogado/cadastrar_empresa');
     }
 }
