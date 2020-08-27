@@ -50,8 +50,10 @@ class CoordenadorController extends Controller
         ]);
 
         $empresa = Empresa::find($request->empresa_id);
+        $user = User::where("id", $empresa->user_id)->first();
         return view("coordenador.avaliarEmpresa")->with([
             "empresa" => $empresa,
+            "user"    => $user,
         ]);
     }
 
@@ -59,13 +61,14 @@ class CoordenadorController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'empresa_id' => 'required|integer',
+            'user_id'    => 'required|integer',
             'decisao'    => 'required|string'
         ]);
 
         
         // Encontrar email do perfil da empresa
         //*******************************************************
-        $user = User::where('id', $request->empresa_id)->first();
+        $user = User::find($request->user_id);
         // ****************************************************** 
         
         $empresa = Empresa::find($request->empresa_id);
@@ -81,7 +84,7 @@ class CoordenadorController extends Controller
                 $user->name = $userfound[0]->name;
                 $user->email = $userfound[0]->email;
     
-                \Illuminate\Support\Facades\Mail::send(new \App\Mail\SendMailUser($user));
+                \Illuminate\Support\Facades\Mail::send(new \App\Mail\ConfirmaCadastro($user));
                 // *************************************
                 
                 $empresa->status_cadastro = "aprovado";

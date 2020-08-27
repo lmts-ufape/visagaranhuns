@@ -33,6 +33,45 @@ class CnaeController extends Controller
         return view('cnae.cadastro', ['areas' => $areas]);
     }
 
+    public function busca()
+    {
+        $termo = $request->pesquisa;
+        $cnae = Cnae::whereRaw('unaccent(nome) ilike unaccent(\'%' . $termo . '%\')')->select('id')->get();
+        $usuarios = \App\User::whereRaw('unaccent(name) ilike unaccent(\'%' . $term. '%\') AND tipo like \'ESTABELECIMENTO\'')->select('id')->get();
+
+        $cidade = (Session::has('cidade'))?Session::get('cidade'):'Garanhuns';
+
+        $lista = \App\Estabelecimento::
+            whereIn("modalidade_id", $categorias)
+            ->where('status', 'Aprovado')
+            ->orWhereIn("user_id", $usuarios)
+            ->where('status', 'Aprovado')->get();
+
+        $estabelecimentos = array();
+        foreach($lista as $estabelecimento) {
+            if($estabelecimento->endereco->cidade == $cidade) {
+                $estabelecimentos[] = $estabelecimento;
+            }
+        }
+
+
+       // DB::enableQueryLog();
+        //if(!Session::has('cidade'))
+        //    Session::put('cidade', 'Garanhuns');
+        /*$estabelecimentos = \App\Estabelecimento::
+            whereIn("modalidade_id", $categorias)
+            ->where('status', 'Aprovado')
+            ->orWhereIn("user_id", $usuarios)
+            ->where('status', 'Aprovado')
+            ->join('enderecos', function ($join) {
+                $join->on('enderecos.id', '=', 'estabelecimentos.endereco_id')
+                ->where('cidade', 'ilike', Session::get('cidade'));
+            })
+            ->get();*/
+        //dd(DB::getQueryLog());
+        return view("categoria.show")->with(['estabelecimentos' => $estabelecimentos]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

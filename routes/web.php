@@ -40,6 +40,9 @@ Auth::routes();
 Route::post("/empresa/cadastro", "EmpresaController@store")->name("cadastrar.empresa");
 Route::get("/home/cadastro/empresa", "EmpresaController@create")->name("home.cadastrar");
 
+// Rota para busca de cnaes
+Route::get("/cnaes/busca", "CnaeController@busca")->name("cnae.busca");
+
 Route::middleware(['OnlyAdmin'])->group(function () {
     Route::post("/coordenador/cadastro", "CoordenadorController@store")->name("cadastrar.coordenador");
 });
