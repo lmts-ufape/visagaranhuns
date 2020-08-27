@@ -62,6 +62,57 @@
             <div class="d-flex">
                 <div class="mr-auto p-2">
                     <div class="btn-group">
+                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Cnae</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container" style="margin-top:1rem;margin-left:1px;">
+            {{-- <div class="barraMenu">
+                <div class="form-row">
+                   <div class="container" style="margin-top:10px; margin-bottom:10px;text-align:center;">Clique aqui para adicionar um cnae</div>
+                </div>
+            </div> --}}
+            <div class="container" style="margin-left:7px;padding-top:15px;padding-bottom:15px">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="exampleFormControlSelect1">Áreas</label>
+                        <select class="form-control" id="idSelecionarArea" onChange="selecionarArea(this)">
+                            <option>-- Selecione --</option>
+                            @foreach ($areas as $item)
+                                <option value={{$item->id}}>{{$item->nome}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                            <label for="inputPassword4">Meus CNAES:<span style="color:red">*</span></label>
+                            <input type="text" class="form-control" name="cnpjcpf" placeholder="">
+                        </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputPassword4">CNAES:</label>
+                        {{-- <div id="idArea">
+                            <table class="table table table-sm" id="idTexto">
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div> --}}
+                        <div style="cursor: pointer; width:100%; height:250px; display: inline-block; border: 1.5px solid #f2f2f2; border-radius: 2px; overflow:auto;">
+                                <table cellspacing="0" cellpadding="1"width="300" >
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="barraMenu" style="margin-top:0.7rem;">
+            <div class="d-flex">
+                <div class="mr-auto p-2">
+                    <div class="btn-group">
                         <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Endereço</div>
                     </div>
                 </div>
@@ -135,11 +186,33 @@
                     <div class="mr-auto p-2">
                     </div>
                 <div class="p-2">
-                    <button type="submit" class="btn btn-success" style="width:340px;">Adicionar</button>
+                    <button type="submit" class="btn btn-success" style="width:340px;">Cadastrar</button>
                 </div>
             </div>
         </div>
     </form>
+
+<script>
+    function selecionarArea(){
+        //area
+        var historySelectList = $('select#idSelecionarArea');
+        var $id_area = $('option:selected', historySelectList).val();
+        // console.log($id_area);
+        //cnaes
+        $.ajax({
+            url:"{{route('ajax.lista.cnaes')}}",
+            type:"get",
+            dataType:'json',
+            data: {"id_area": $id_area},
+            success: function(response){
+                $('tbody').html(response.table_data);
+                document.getElementById('idArea');
+                // $('#idTabela').animate({scrollTop: $('#idTabela')[0].scrollHeight},1000);
+            }
+        });
+
+    }
+</script>
 </div>
 @endsection
 

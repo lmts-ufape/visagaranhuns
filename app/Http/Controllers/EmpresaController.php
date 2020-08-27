@@ -8,6 +8,7 @@ use App\User;
 use App\Telefone;
 use App\Endereco;
 use App\Docempresa;
+use App\Area;
 use App\Cnae;
 use App\CnaeEmpresa;
 use Illuminate\Support\Facades\Storage;
@@ -855,7 +856,8 @@ class EmpresaController extends Controller
     }
     public function paginaCadastrarEmpresa(){
         // dd("opa");
-        return view('empresa/cadastrar_empresa');
+        $areas = Area::orderBy('nome', 'ASC')->get();
+        return view('empresa/cadastrar_empresa', ['areas' => $areas]);
     }
     /**
      * Funcao: Redireciona o dono do estabelecimento para a tela de perfil do estabelecimento
@@ -877,5 +879,29 @@ class EmpresaController extends Controller
             array_push($cnae, $cnaes);
         }
         return view('empresa/show_empresa',['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae]);
+    }
+    public function ajaxCnaes(Request $request){
+        $this->listar($request->id_area);
+    }
+    public function listar($idArea){
+        $resultado = Cnae::where('areas_id','=',$idArea)->orderBy('descricao', 'ASC')->get();
+        // return view('coordenador/cnaes_coordenador', ['cnaes' => $cnaes]);
+        $output = '';
+            if($resultado->count() > 0){
+                foreach($resultado as $item){
+                    $output .= '
+                    <div style="margin:10px; padding:10px; border: 1.5px solid #f2f2f2; border-radius: 8px; width:470px">'.$item->descricao.'</div>
+                    ';
+                }
+            }else{
+                $output .= '
+                        <label>vazio</label>
+                    ';
+            }
+            $data = array(
+                'success'   => true,
+                'table_data' => $output,
+            );
+            echo json_encode($data);
     }
 }
