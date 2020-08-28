@@ -893,6 +893,10 @@ class EmpresaController extends Controller
                     <div onclick="add('.$item->id.')" class="adicionarCnae" id="'.$item->id.'" style="margin:10px; padding:10px; border: 1.5px solid #f2f2f2; border-radius: 8px; width:470px; cursor: pointer; ">'.$item->descricao.'</div>
                     ';
                 }
+            }elseif($idArea == -2){
+                $output .= '
+                        <label></label>
+                    ';
             }else{
                 $output .= '
                         <label>vazio</label>

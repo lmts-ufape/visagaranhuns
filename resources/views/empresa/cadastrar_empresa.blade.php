@@ -53,7 +53,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
         <div class="barraMenu" style="margin-top:0.7rem;">
@@ -74,16 +74,16 @@
                             <div class="form-group col-md-12" >
                                 <label for="exampleFormControlSelect1">Áreas</label>
                                 <select class="form-control" id="idSelecionarArea" onChange="selecionarArea(this)" required>
-                                    <option>-- Selecione --</option>
+                                    <option value=-2>-- Selecione --</option>
                                     @foreach ($areas as $item)
                                         <option value={{$item->id}}>{{$item->nome}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="btn-group col-md-12">
-                                <div class="col-md-6" style="margin-left:-15px;margin-right:30px;">CNAE</div>
+                                <div class="col-md-6" style="margin-left:-15px;margin-right:30px;margin-bottom:10px;">CNAE</div>
                                 <div class="col-md-6 input-group input-group-sm mb-2">
-                                    <input type="text" class="form-control" placeholder="Nome ou código do CNAE">
+                                    {{-- <input type="text" class="form-control" placeholder="Nome ou código do CNAE"> --}}
                                 </div>
 
                             </div>
