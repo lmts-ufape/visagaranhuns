@@ -40,6 +40,9 @@ Auth::routes();
 Route::post("/empresa/cadastro", "EmpresaController@store")->name("cadastrar.empresa");
 Route::get("/home/cadastro/empresa", "EmpresaController@create")->name("home.cadastrar");
 
+// Rota para busca de cnaes
+Route::get("/cnaes/busca", "CnaeController@busca")->name("cnae.busca");
+
 Route::middleware(['OnlyAdmin'])->group(function () {
     Route::post("/coordenador/cadastro", "CoordenadorController@store")->name("cadastrar.coordenador");
 });
@@ -81,15 +84,18 @@ Route::middleware(['IsCoordenador'])->group(function () {
 // Grupo de rotas para empresa
 Route::middleware(['IsEmpresa'])->group(function () {
     //Empresa - Gerente
-    Route::get('/home/empresa', 'EmpresaController@home')->name('home.empresa');
-    Route::get("/pagina/editar", "EmpresaController@edit")->name("editar.empresa");
-    Route::post("/editar/empresa", "EmpresaController@editarEmpresa")->name("editar.empresa");
-    Route::post("/empresa/arquivos", "EmpresaController@anexarArquivos")->name("arquivos.empresa");
-    Route::get("/listar/arquivos", "EmpresaController@listarArquivos")->name("listar.arquivos");
-    Route::get("/empresa/pagina/responsavelTecnico", "RespTecController@create")->name("pagina.respTec");
+    Route::get('/home/empresa',                         'EmpresaController@home')->name('home.empresa');
+    Route::get("/pagina/editar",                        "EmpresaController@edit")->name("editar.empresa");
+    Route::post("/editar/empresa",                      "EmpresaController@editarEmpresa")->name("editar.empresa");
+    Route::post("/empresa/arquivos",                    "EmpresaController@anexarArquivos")->name("arquivos.empresa");
+    Route::get("/listar/arquivos",                      "EmpresaController@listarArquivos")->name("listar.arquivos");
+    Route::get("/empresa/pagina/responsavelTecnico",    "RespTecController@create")->name("pagina.respTec");
     Route::post("/empresa/cadastro/responsavelTecnico", "RespTecController@store")->name("cadastrar.respTec");
-    Route::get("/empresa/adicionar/", "EmpresaController@paginaAdicionar")->name("adicionar.empresa");
+    Route::get("/estabelecimento/adicionar/",           "EmpresaController@paginaCadastrarEmpresa")->name("pagina.adicionar.empresa");
+    Route::get("/estabelecimento/perfil/",              "EmpresaController@showEmpresa")->name("pagina.mostrar.empresa");
     Route::post("/empresa/cadastro/responsavelTecnico", "EmpresaController@adicionarEmpresa")->name("adicionar.empresa");
+    Route::get("/listar/empresas/",                     "EmpresaController@listarEmpresas")->name("listar.empresas");
+    Route::get("/estabelecimento/lista/cnae",           "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes");
 
 
 /*

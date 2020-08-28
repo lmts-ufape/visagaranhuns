@@ -8,6 +8,7 @@ use App\User;
 use App\Telefone;
 use App\Endereco;
 use App\Docempresa;
+use App\Area;
 use App\Cnae;
 use App\CnaeEmpresa;
 use Illuminate\Support\Facades\Storage;
@@ -74,7 +75,7 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
-
+        dd($request);
         // Sujeito a mudanças
         $validator = $request->validate([
             'name'     => 'required|string',
@@ -147,8 +148,8 @@ class EmpresaController extends Controller
 
     public function adicionarEmpresa(Request $request)
     {
-        $user = $request->user_id;
-        
+        $user_id = $request->user;
+
         // Sujeito a mudanças
         $validator = $request->validate([
             'nome'     => 'required|string',
@@ -173,7 +174,7 @@ class EmpresaController extends Controller
             'status_inspecao' => "pendente",
             'status_cadastro' => "pendente",
             'tipo' => $request->tipo,
-            'user_id' => $user->id,
+            'user_id' => $user_id,
         ]);
 
         // Cadastro de telefones
@@ -230,6 +231,16 @@ class EmpresaController extends Controller
         }
 
         return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae]);
+    }
+
+    /**
+     * Listar empresas
+     * View: empresa/listar_empresas.blade.php
+    */
+    public function listarEmpresas(){
+        //Preciso da função para carregar a página
+        $resultado = Empresa::paginate(20);
+        return view('empresa/listar_empresas',['empresas' => $resultado]);
     }
 
     /**
@@ -843,8 +854,54 @@ class EmpresaController extends Controller
     {
         //
     }
-    public function cadastrar(){
+    public function paginaCadastrarEmpresa(){
         // dd("opa");
-        return view('naoLogado/cadastrar_empresa');
+        $areas = Area::orderBy('nome', 'ASC')->get();
+        return view('empresa/cadastrar_empresa', ['areas' => $areas]);
+    }
+    /**
+     * Funcao: Redireciona o dono do estabelecimento para a tela de perfil do estabelecimento
+     * View de destino: empresa/show_empresa.blade.php
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showEmpresa(Request $request){
+        $id = Crypt::decrypt($request->value);
+        $empresa = Empresa::find($id);
+        $endereco = Endereco::where('empresa_id', $empresa->id)->first();
+        $telefone = Telefone::where('empresa_id', $empresa->id)->first();
+        $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $id)->get();
+
+        $cnae = array();
+        foreach($cnaeEmpresa as $indice){
+            $cnaes = Cnae::find($indice->cnae_id);
+            array_push($cnae, $cnaes);
+        }
+        return view('empresa/show_empresa',['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae]);
+    }
+    public function ajaxCnaes(Request $request){
+        $this->listar($request->id_area);
+    }
+    public function listar($idArea){
+        $resultado = Cnae::where('areas_id','=',$idArea)->orderBy('descricao', 'ASC')->get();
+        // return view('coordenador/cnaes_coordenador', ['cnaes' => $cnaes]);
+        $output = '';
+            if($resultado->count() > 0){
+                foreach($resultado as $item){
+                    $output .= '
+                    <div onclick="add('.$item->id.')" class="adicionarCnae" id="'.$item->id.'" style="margin:10px; padding:10px; border: 1.5px solid #f2f2f2; border-radius: 8px; width:470px; cursor: pointer; ">'.$item->descricao.'</div>
+                    ';
+                }
+            }else{
+                $output .= '
+                        <label>vazio</label>
+                    ';
+            }
+            $data = array(
+                'success'   => true,
+                'table_data' => $output,
+            );
+            echo json_encode($data);
     }
 }
