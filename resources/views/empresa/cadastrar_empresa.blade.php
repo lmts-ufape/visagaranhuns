@@ -147,7 +147,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputPassword4">CEP:<span style="color:red">*</span></label>
-                    <input value="{{old('cep')}}" onblur="pesquisacep(this.value);" id="cep" type="text" class="form-control" name="cep" required autocomplete="cep" autofocus placeholder="" size="10" maxlength="9">
+                    <input value="{{old('cep')}}" onblur="pesquisacep(this.value);" id="cep" type="text" class="form-control" name="cep" required autocomplete="cep" placeholder="" size="10" maxlength="9">
                 </div>
             </div>
         </div>
