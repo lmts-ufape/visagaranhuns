@@ -151,7 +151,7 @@
                 </div>
             </div>
         </div>
-        <div class="barraMenu" style="margin-top:0.7rem;">
+        {{-- <div class="barraMenu" style="margin-top:0.7rem;">
             <div class="d-flex">
                 <div class="mr-auto p-2">
                     <div class="btn-group">
@@ -177,7 +177,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <hr size = 7>
         <div style="margin-bottom:10rem;">
