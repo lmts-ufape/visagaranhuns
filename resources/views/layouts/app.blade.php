@@ -11,6 +11,12 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/cadastrar_empresa.js')}}" defer></script>
+
+    <!-- load jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.4.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -83,7 +89,7 @@
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Inspetores') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('listagem.area') }}">{{ __('Empresas') }}</a>
+                                    <a class="nav-link" href="{{ route('listagem.area') }}">{{ __('Estabelecimentos') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">
@@ -111,6 +117,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
                                 </li>
+                                <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('listar.empresas') }}">{{ __('Estabelecimentos') }}</a>
+                                    </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Licenças') }}</a>
                                 </li>
@@ -244,6 +253,7 @@
                                 <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Empresa</a></div>
                             @elseif(Auth::user()->tipo == "empresa")
                                 <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Início</a></div>
+                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Empresas</a></div>
                                 <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Licenças</a></div>
                                 <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Responsável Técnico</a></div>
                                 <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Documentação</a></div>
