@@ -13,32 +13,29 @@ window.selecionarArea = function(){
         }
     });
 }
-//
-// window.add = function($id_cnae){
-//     // console.log("opa");
-//     $.ajax({
-//         url:'/estabelecimento/add/meusCnae',
-//         type:"get",
-//         dataType:'json',
-//         data: {"id_cnae": $id_cnae},
-//         success: function(response){
-//             $('tbodyz').html(response.table_data);
-//             // document.getElementById('idArea');
-//         }
-//     });
-// }
 
-window.add = function(id) {
-    // innerText sempre pegará o primero texto da lista
-    var elemento = document.getElementById(id).innerText;
-    linha = montarLinhaInput(id,elemento);
-    $('#adicionar').append(linha);
+//array criado para armazenar os cnaes selecionados
+var arrayTemp = [];
+
+window.add = function($id) {
+    if(arrayTemp.findIndex(element => element == $id) == -1){ //consicao para add o cnae na lista (meus cnaes)
+
+        // innerText sempre pegará o primero texto da lista
+        var elemento = document.getElementById($id).innerText;
+        linha = montarLinhaInput($id,elemento);
+        $('#adicionar').append(linha);
+        arrayTemp.push($id);
+    }
 }
 
-
 window.deletar = function(obj){
-    obj.closest('.form-gerado').remove();
-    return false;
+
+    var index = arrayTemp.findIndex(element => element == obj.value); //encontrar o indice no arrayTemp
+    if ( index > -1) {
+        arrayTemp.splice(index, 1); //remover o elemento do array
+        obj.closest('.form-gerado').remove();
+        return false;
+    }
 }
 
 window.montarLinhaInput = function(id,elemento){
@@ -49,7 +46,7 @@ window.montarLinhaInput = function(id,elemento){
     "               <input type='hidden' name='cnae[]' value='"+id+"'>\n"+
     "           </div>\n"+
     "           <div class='col-md-1'>\n" +
-    "               <input type='button' class='btn btn-danger' value='X' onclick='deletar(this)' />\n" +
+    "               <button type='button' class='btn btn-danger' value='"+id+"' onclick='deletar(this)'>X</button>\n" +
     "           </div>\n"+
     "       </div>\n";
 }
