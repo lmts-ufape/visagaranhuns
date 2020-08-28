@@ -25,15 +25,15 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="inputEmail4">Nome/Razão Social:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control" name="nome" placeholder="">
+                    <input type="text" class="form-control" name="nome" placeholder="" required>
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputPassword4">CNPJ/CPF:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control" name="cnpjcpf" placeholder="">
+                    <input type="text" class="form-control" name="cnpjcpf" placeholder="" required>
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputPassword4">TIPO:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control"  name="tipo" placeholder="">
+                    <input type="text" class="form-control"  name="tipo" placeholder="" required>
                 </div>
             </div>
             <div class="form-row">
@@ -45,7 +45,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputEmail4">Telefone 1:<span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="telefone1" id="inputTelefone1" placeholder="">
+                            <input type="text" class="form-control" name="telefone1" id="inputTelefone1" placeholder="" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputPassword4">Telefone 2:</label>
@@ -73,7 +73,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-12" >
                                 <label for="exampleFormControlSelect1">Áreas</label>
-                                <select class="form-control" id="idSelecionarArea" onChange="selecionarArea(this)">
+                                <select class="form-control" id="idSelecionarArea" onChange="selecionarArea(this)" required>
                                     <option>-- Selecione --</option>
                                     @foreach ($areas as $item)
                                         <option value={{$item->id}}>{{$item->nome}}</option>
@@ -121,33 +121,33 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="inputEmail4">Rua:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control" name="rua" placeholder="">
+                    <input value="{{old('rua')}}" id="rua" type="text" class="form-control" name="rua" placeholder="" required>
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputPassword4">Número:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control" name="numero" placeholder="">
+                    <input type="text" class="form-control" name="numero" placeholder="" required>
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputPassword4">Complemento:</label>
-                    <input type="text" class="form-control" name="complemento" placeholder="">
+                    <input type="text" class="form-control" name="complemento" placeholder="" required>
                 </div>
             </div>
             <div class="form-row" style="padding-bottom:1.5rem;">
                 <div class="form-group col-md-4">
                     <label for="inputEmail4">Bairro:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control" name="bairro" placeholder="">
+                    <input value="{{old('bairro')}}" id="bairro" type="text" class="form-control" name="bairro" placeholder="" required>
                 </div>
                 <div class="form-group col-md-4">
                         <label for="inputEmail4">Cidade:<span style="color:red">*</span></label>
-                        <input type="text" class="form-control" name="cidade" placeholder="">
+                        <input readonly id="cidade" type="text" class="form-control" name="cidade" placeholder="" required value="{{ old('cidade') }}">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputEmail4">UF:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control" name="uf" placeholder="">
+                    <input readonly type="text" class="form-control" name="uf" placeholder="" id="uf" value="{{ old('uf') }}">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputPassword4">CEP:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control" name="cep" placeholder="">
+                    <input value="{{old('cep')}}" onblur="pesquisacep(this.value);" id="cep" type="text" class="form-control" name="cep" required autocomplete="cep" autofocus placeholder="" size="10" maxlength="9">
                 </div>
             </div>
         </div>
