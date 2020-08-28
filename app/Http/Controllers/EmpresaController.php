@@ -148,7 +148,7 @@ class EmpresaController extends Controller
 
     public function adicionarEmpresa(Request $request)
     {
-        $user = $request->user_id;
+        $user_id = $request->user;
 
         // Sujeito a mudanças
         $validator = $request->validate([
@@ -174,7 +174,7 @@ class EmpresaController extends Controller
             'status_inspecao' => "pendente",
             'status_cadastro' => "pendente",
             'tipo' => $request->tipo,
-            'user_id' => $user->id,
+            'user_id' => $user_id,
         ]);
 
         // Cadastro de telefones

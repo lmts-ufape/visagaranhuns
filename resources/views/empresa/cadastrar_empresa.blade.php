@@ -18,8 +18,9 @@
         <div style="font-size:20px; font-weight:bold; color:#707070; margin-top:14px; margin-left:20px;">Adicionar um novo estabelecimento</div>
     </div>
 
-    <form id="teste" method="POST" action="{{ route('cadastrar.empresa') }}">
+    <form id="teste" method="POST" action="{{ route('adicionar.empresa') }}">
         @csrf
+        <input type="hidden" name="user" value="{{Auth::user()->id}}">
         <div class="container" style="margin-top:1rem;margin-left:10px;">
             <div class="form-row">
                 <div class="form-group col-md-4">
@@ -44,18 +45,15 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputEmail4">Telefone 1:<span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="telefone1" id="inputEmail4" placeholder="">
+                            <input type="text" class="form-control" name="telefone1" id="inputTelefone1" placeholder="">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputPassword4">Telefone 2:</label>
-                            <input type="text" class="form-control" name="telefone2" placeholder="">
+                            <input type="text" class="form-control" name="telefone2" id="inputTelefone1" placeholder="">
                         </div>
                     </div>
                 </div>
-                <div class="form-group col-md-4">
-                    <label for="inputPassword4">Nº CNAE:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control" name="telefone2" placeholder="">
-                </div>
+                
             </div>
         </div>
         <div class="barraMenu" style="margin-top:0.7rem;">
