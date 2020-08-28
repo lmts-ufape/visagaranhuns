@@ -120,6 +120,24 @@
         <div class="container" style="margin-top:1rem;margin-left:10px;">
             <div class="form-row">
                 <div class="form-group col-md-4">
+                    <label for="inputPassword4">CEP:<span style="color:red">*</span></label>
+                    <input value="{{old('cep')}}" onblur="pesquisacep(this.value);" id="cep" type="text" class="form-control" name="cep" required autocomplete="cep" placeholder="" size="10" maxlength="9">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputEmail4">UF:<span style="color:red">*</span></label>
+                    <input readonly type="text" class="form-control" name="uf" placeholder="" id="uf" value="{{ old('uf') }}">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputEmail4">Cidade:<span style="color:red">*</span></label>
+                    <input readonly id="cidade" type="text" class="form-control" name="cidade" placeholder="" required value="{{ old('cidade') }}">
+                </div>
+            </div>
+            <div class="form-row" style="padding-bottom:1.5rem;">
+                <div class="form-group col-md-4">
+                    <label for="inputEmail4">Bairro:<span style="color:red">*</span></label>
+                    <input value="{{old('bairro')}}" id="bairro" type="text" class="form-control" name="bairro" placeholder="" required>
+                </div>
+                <div class="form-group col-md-4">
                     <label for="inputEmail4">Rua:<span style="color:red">*</span></label>
                     <input value="{{old('rua')}}" id="rua" type="text" class="form-control" name="rua" placeholder="" required>
                 </div>
@@ -130,24 +148,6 @@
                 <div class="form-group col-md-4">
                     <label for="inputPassword4">Complemento:</label>
                     <input type="text" class="form-control" name="complemento" placeholder="" required>
-                </div>
-            </div>
-            <div class="form-row" style="padding-bottom:1.5rem;">
-                <div class="form-group col-md-4">
-                    <label for="inputEmail4">Bairro:<span style="color:red">*</span></label>
-                    <input value="{{old('bairro')}}" id="bairro" type="text" class="form-control" name="bairro" placeholder="" required>
-                </div>
-                <div class="form-group col-md-4">
-                        <label for="inputEmail4">Cidade:<span style="color:red">*</span></label>
-                        <input readonly id="cidade" type="text" class="form-control" name="cidade" placeholder="" required value="{{ old('cidade') }}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="inputEmail4">UF:<span style="color:red">*</span></label>
-                    <input readonly type="text" class="form-control" name="uf" placeholder="" id="uf" value="{{ old('uf') }}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="inputPassword4">CEP:<span style="color:red">*</span></label>
-                    <input value="{{old('cep')}}" onblur="pesquisacep(this.value);" id="cep" type="text" class="form-control" name="cep" required autocomplete="cep" placeholder="" size="10" maxlength="9">
                 </div>
             </div>
         </div>
