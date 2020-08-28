@@ -33,7 +33,16 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputPassword4">TIPO:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control"  name="tipo" placeholder="" required>
+                    {{-- <input type="text" class="form-control"  name="tipo" placeholder="" required> --}}
+                    <select class="form-control" name="tipo" required>
+                        <option value="" disable="" selected="" hidden="">-- Selecionar o Tipo --</option>
+                        <option value="Sociedade Empresária Limitada (LTDA)">Sociedade Empresária Limitada (LTDA)</option>
+                        <option value="Empresa Individual de Responsabilidade Limitada (Eireli)">Empresa Individual de Responsabilidade Limitada (Eireli)</option>
+                        <option value="Empresa Individual">Empresa Individual</option>
+                        <option value="Microempreendedor Individual (MEI)">Microempreendedor Individual (MEI)</option>
+                        <option value="Sociedade Simples(SS)">Sociedade Simples(SS)</option>
+                        <option value="Sociedade Anônima(SA)">Sociedade Anônima(SA)</option>
+                    </select>
                 </div>
             </div>
             <div class="form-row">
@@ -74,7 +83,7 @@
                             <div class="form-group col-md-12" >
                                 <label for="exampleFormControlSelect1">Áreas</label>
                                 <select class="form-control" id="idSelecionarArea" onChange="selecionarArea(this)" required>
-                                    <option value=-2>-- Selecione --</option>
+                                    <option value=-2>-- Selecionar a Área --</option>
                                     @foreach ($areas as $item)
                                         <option value={{$item->id}}>{{$item->nome}}</option>
                                     @endforeach
@@ -147,7 +156,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputPassword4">Complemento:</label>
-                    <input type="text" class="form-control" name="complemento" placeholder="" required>
+                    <input type="text" class="form-control" name="complemento" placeholder="">
                 </div>
             </div>
         </div>
