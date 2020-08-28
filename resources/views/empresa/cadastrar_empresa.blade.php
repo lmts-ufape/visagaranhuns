@@ -91,14 +91,14 @@
                             </div>
                             <div class="btn-group col-md-12">
                                 <div class="col-md-6" style="margin-left:-15px;margin-right:30px;margin-bottom:10px;">CNAE</div>
-                                <div class="col-md-6 input-group input-group-sm mb-2">
+                                <div class="col-md-12 input-group input-group-sm mb-2">
                                     {{-- <input type="text" class="form-control" placeholder="Nome ou código do CNAE"> --}}
                                 </div>
 
                             </div>
                             <div class="form-row col-md-12">
                                 <div style="width:100%; height:250px; display: inline-block; border: 1.5px solid #f2f2f2; border-radius: 2px; overflow:auto;">
-                                    <table cellspacing="0" cellpadding="1"width="300" >
+                                    <table cellspacing="0" cellpadding="1"width="100%" >
                                         <tbody>
 
                                         </tbody>
@@ -109,7 +109,8 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="exampleFormControlSelect1">Meus CNAES</label>
-                        <div class="form-group col-md-12" id="adicionar" style="width:100%; height:339px; display: inline-block; border: 1.5px solid #f2f2f2; border-radius: 2px; overflow:auto;">
+                        <div class="form-group col-md-12 areaMeusCnaes" id="adicionar">
+
                         </div>
                     </div>
                 </div>

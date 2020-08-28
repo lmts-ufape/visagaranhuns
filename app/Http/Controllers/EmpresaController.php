@@ -890,7 +890,7 @@ class EmpresaController extends Controller
             if($resultado->count() > 0){
                 foreach($resultado as $item){
                     $output .= '
-                    <div onclick="add('.$item->id.')" class="adicionarCnae" id="'.$item->id.'" style="margin:10px; padding:10px; border: 1.5px solid #f2f2f2; border-radius: 8px; width:470px; cursor: pointer; ">'.$item->descricao.'</div>
+                    <div onclick="add('.$item->id.')" class="cardMeuCnae" id="'.$item->id.'" style="margin:10px; padding:10px; border: 1.5px solid #f2f2f2; border-radius: 8px; width:95%; cursor: pointer; ">'.$item->descricao.'</div>
                     ';
                 }
             }elseif($idArea == -2){

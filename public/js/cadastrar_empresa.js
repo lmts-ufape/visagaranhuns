@@ -40,14 +40,16 @@ window.deletar = function(obj){
 
 window.montarLinhaInput = function(id,elemento){
 
-    return " <div class='form-gerado'>\n"+
-    "           <div style='margin:10px; padding:10px; border: 1.5px solid #f2f2f2; border-radius: 8px; width:470px;'>\n"+
+    return " <div class='form-gerado cardMeuCnae'>\n"+
+    "           <div class='d-flex'>\n"+
+    "           <div class='mr-auto p-2'>\n"+
     "               "+elemento+"\n"+
     "               <input type='hidden' name='cnae[]' value='"+id+"'>\n"+
     "           </div>\n"+
-    "           <div class='col-md-1'>\n" +
+    "           <div class='p-2'>\n" +
     "               <button type='button' class='btn btn-danger' value='"+id+"' onclick='deletar(this)'>X</button>\n" +
     "           </div>\n"+
+    "           <div>\n"+
     "       </div>\n";
 }
 
