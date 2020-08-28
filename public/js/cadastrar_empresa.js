@@ -41,7 +41,7 @@ window.deletar = function(obj){
 window.montarLinhaInput = function(id,elemento){
 
     return " <div class='form-gerado'>\n"+
-    "           <div style='margin:10px; padding:10px; border: 1.5px solid #f2f2f2; border-radius: 8px; width:470px'>\n"+
+    "           <div style='margin:10px; padding:10px; border: 1.5px solid #f2f2f2; border-radius: 8px; width:470px;'>\n"+
     "               "+elemento+"\n"+
     "               <input type='hidden' name='cnae[]' value='"+id+"'>\n"+
     "           </div>\n"+

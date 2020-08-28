@@ -68,47 +68,46 @@
             </div>
         </div>
         <div class="container" style="margin-top:1rem;margin-left:1px;">
-            {{-- <div class="barraMenu">
-                <div class="form-row">
-                   <div class="container" style="margin-top:10px; margin-bottom:10px;text-align:center;">Clique aqui para adicionar um cnae</div>
-                </div>
-            </div> --}}
-            <div class="container" style="margin-left:7px;padding-top:15px;padding-bottom:15px">
+
+            <div class="container">
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="exampleFormControlSelect1">Áreas</label>
-                        <select class="form-control" id="idSelecionarArea" onChange="selecionarArea(this)">
-                            <option>-- Selecione --</option>
-                            @foreach ($areas as $item)
-                                <option value={{$item->id}}>{{$item->nome}}</option>
-                            @endforeach
-                        </select>
+                        <div class="form-row">
+                            <div class="form-group col-md-12" >
+                                <label for="exampleFormControlSelect1">Áreas</label>
+                                <select class="form-control" id="idSelecionarArea" onChange="selecionarArea(this)">
+                                    <option>-- Selecione --</option>
+                                    @foreach ($areas as $item)
+                                        <option value={{$item->id}}>{{$item->nome}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="btn-group col-md-12">
+                                <div class="col-md-6" style="margin-left:-15px;margin-right:30px;">CNAE</div>
+                                <div class="col-md-6 input-group input-group-sm mb-2">
+                                    <input type="text" class="form-control" placeholder="Nome ou código do CNAE">
+                                </div>
+
+                            </div>
+                            <div class="form-row col-md-12">
+                                <div style="width:100%; height:250px; display: inline-block; border: 1.5px solid #f2f2f2; border-radius: 2px; overflow:auto;">
+                                    <table cellspacing="0" cellpadding="1"width="300" >
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group col-md-6">
-                            <label for="inputPassword4">Meus CNAES:<span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="cnpjcpf" placeholder="">
+                        <label for="exampleFormControlSelect1">Meus CNAES</label>
+                        <div class="form-group col-md-12" id="adicionar" style="width:100%; height:339px; display: inline-block; border: 1.5px solid #f2f2f2; border-radius: 2px; overflow:auto;">
                         </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">CNAES:</label>
-                        {{-- <div id="idArea">
-                            <table class="table table table-sm" id="idTexto">
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div> --}}
-                        <div style="cursor: pointer; width:100%; height:250px; display: inline-block; border: 1.5px solid #f2f2f2; border-radius: 2px; overflow:auto;">
-                                <table cellspacing="0" cellpadding="1"width="300" >
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6" id="adicionar">
-
                     </div>
                 </div>
             </div>
+
         </div>
 
         <div class="barraMenu" style="margin-top:0.7rem;">
