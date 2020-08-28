@@ -75,7 +75,7 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
-
+        dd($request);
         // Sujeito a mudanças
         $validator = $request->validate([
             'name'     => 'required|string',
@@ -890,7 +890,7 @@ class EmpresaController extends Controller
             if($resultado->count() > 0){
                 foreach($resultado as $item){
                     $output .= '
-                    <div style="margin:10px; padding:10px; border: 1.5px solid #f2f2f2; border-radius: 8px; width:470px">'.$item->descricao.'</div>
+                    <div onclick="add('.$item->id.')" class="adicionarCnae" id="'.$item->id.'" style="margin:10px; padding:10px; border: 1.5px solid #f2f2f2; border-radius: 8px; width:470px">'.$item->descricao.'</div>
                     ';
                 }
             }else{
