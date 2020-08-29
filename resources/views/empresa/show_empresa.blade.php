@@ -31,7 +31,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="inputEmail4">Nome/Razão Social:</label>
-                        <input type="text" class="form-control" id="inputEmail4" placeholder="{{$empresa->user->name}}">
+                        <input type="text" class="form-control" id="inputEmail4" placeholder="{{$empresa->nome}}">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="inputPassword4">CNPJ/CPF:</label>
@@ -45,17 +45,17 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="inputEmail4">E-mail:</label>
-                        <input type="email" class="form-control" id="inputEmail4" placeholder="{{$empresa->user->email}}">
+                        <input type="email" class="form-control" id="inputEmail4" placeholder="{{$empresa->email}}">
                     </div>
                     <div class="form-grtextoup col-md-4">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputEmail4">Telefone 1:</label>
-                                <input type="text" class="form-control" id="inputEmail4" placeholder="{{$telefone->numero}}">
+                                <input type="text" class="form-control" id="inputEmail4" placeholder="{{$telefone->telefone1}}">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="inputPassword4">Telefone 2:</label>
-                                <input type="text" class="form-control" id="inputPassword4"  placeholder="{{$telefone->numero}}">
+                                <input type="text" class="form-control" id="inputPassword4"  placeholder="{{$telefone->telefone2}}">
                             </div>
                         </div>
                     </div>

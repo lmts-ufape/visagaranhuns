@@ -82,8 +82,8 @@
                         <div class="form-row">
                             <div class="form-group col-md-12" >
                                 <label for="exampleFormControlSelect1">Áreas</label>
-                                <select class="form-control" id="idSelecionarArea" onChange="selecionarArea(this)" required>
-                                    <option value=-2>-- Selecionar a Área --</option>
+                                <select required class="form-control" id="idSelecionarArea" onChange="selecionarArea(this)">
+                                    <option value="">-- Selecionar a Área --</option>
                                     @foreach ($areas as $item)
                                         <option value={{$item->id}}>{{$item->nome}}</option>
                                     @endforeach

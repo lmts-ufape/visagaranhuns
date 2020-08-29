@@ -237,10 +237,10 @@ class EmpresaController extends Controller
      * Listar empresas
      * View: empresa/listar_empresas.blade.php
     */
-    public function listarEmpresas(){
+    public function listarEmpresas(Request $request){
         //Preciso da função para carregar a página
-        $resultado = Empresa::paginate(20);
-        return view('empresa/listar_empresas',['empresas' => $resultado]);
+        $empresa = Empresa::where('user_id', $request->user)->paginate(20);
+        return view('empresa/listar_empresas',['empresas' => $empresa]);
     }
 
     /**
@@ -893,7 +893,7 @@ class EmpresaController extends Controller
                     <div onclick="add('.$item->id.')" class="cardMeuCnae" id="'.$item->id.'" style="margin:10px; padding:10px; border: 1.5px solid #f2f2f2; border-radius: 8px; width:95%; cursor: pointer; ">'.$item->descricao.'</div>
                     ';
                 }
-            }elseif($idArea == -2){
+            }elseif($idArea == ""){
                 $output .= '
                         <label></label>
                     ';

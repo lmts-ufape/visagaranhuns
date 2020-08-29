@@ -81,7 +81,7 @@
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Requerimento') }}</a>
+                                    <a class="nav-link" href="{{ route('pagina.detalhes') }}">{{ __('Requerimento') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Programação') }}</a>
@@ -119,7 +119,7 @@
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('listar.empresas') }}">{{ __('Estabelecimentos') }}</a>
+                                        <a class="nav-link" href="{{ route('listar.empresas', ['user' => Auth::user()->id]) }}">{{ __('Estabelecimentos') }}</a>
                                     </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Licenças') }}</a>

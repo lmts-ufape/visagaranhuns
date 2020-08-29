@@ -68,9 +68,12 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get("/baixar/arquivos", "EmpresaController@baixarArquivos")->name("baixar.arquivos");
     // Rota para listar empresas com cadastro pendentes
     Route::get("/cadastros/pendentes", "CoordenadorController@listarPendente")->name("listar.cadastroPendente");
-    // Rota para avaliação de cadastro de empresa
+    // Rota para avaliação de primeiro cadastro de usuario e empresa
     Route::get("/pagina/detalhes", "CoordenadorController@paginaDetalhes")->name("pagina.detalhes");
+    Route::post("/julgar/cadastro", "CoordenadorController@julgar")->name("julgar.cadastro");
+
     Route::get("/empresa/listagem", "EmpresaController@index")->name("listagem.empresas");
+
     Route::get("/show/empresa", "EmpresaController@show")->name("mostrar.empresas");
     //Supervisor
 /*

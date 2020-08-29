@@ -7,6 +7,9 @@ use App\Coordenador;
 use App\User;
 use App\Agente;
 use App\Empresa;
+use App\Endereco;
+use App\Telefone;
+use App\CnaeEmpresa;
 
 class CoordenadorController extends Controller
 {
@@ -45,32 +48,30 @@ class CoordenadorController extends Controller
     */ 
     public function paginaDetalhes(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'empresa_id' => 'required|integer',
-        ]);
+        $empresa = Empresa::find($request->empresa);
+        $user = User::where('id', $empresa->user_id)->first();
 
-        $empresa = Empresa::find($request->empresa_id);
-        $user = User::where("id", $empresa->user_id)->first();
-        return view("coordenador.avaliarEmpresa")->with([
+        // $empresa = Empresa::find("1");
+        // $user = User::where('id', "2")->first();
+        $endereco = Endereco::where('empresa_id', $empresa->id)->first();
+        $telefone = Telefone::where('empresa_id', $empresa->id)->first();
+        $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $empresa->id)->get();
+
+        return view("coordenador/avaliar_cadastro")->with([
             "empresa" => $empresa,
             "user"    => $user,
+            "endereco" => $endereco,
+            "telefone" => $telefone,
+            "cnae" => $cnaeEmpresa,
         ]);
     }
 
     public function julgar(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'empresa_id' => 'required|integer',
-            'user_id'    => 'required|integer',
-            'decisao'    => 'required|string'
-        ]);
-
-        
         // Encontrar email do perfil da empresa
         //*******************************************************
-        $user = User::find($request->user_id);
+        $useremail = User::find($request->user_id);
         // ****************************************************** 
-        
         $empresa = Empresa::find($request->empresa_id);
 
         if($empresa->status_cadastro == "pendente"){
@@ -81,8 +82,8 @@ class CoordenadorController extends Controller
                 //************************************** */
                 
                 $user = new \stdClass();
-                $user->name = $userfound[0]->name;
-                $user->email = $userfound[0]->email;
+                $user->name = $useremail->name;
+                $user->email = $useremail->email;
     
                 \Illuminate\Support\Facades\Mail::send(new \App\Mail\ConfirmaCadastro($user));
                 // *************************************
