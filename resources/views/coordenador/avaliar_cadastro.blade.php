@@ -130,15 +130,19 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                     <label for="inputEmail4">Bairro:</label>
                     <input type="text" class="form-control" id="inputEmail4" placeholder="{{$endereco->bairro}}">
                 </div>
-                <div class="form-group col-md-4">
-                        <label for="inputEmail4">Cidade/UF:</label>
-                <input type="email" class="form-control" id="inputEmail4" placeholder="{{$endereco->cidade}}/{{$endereco->uf}}">
-                    </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
+                    <label for="inputEmail4">Cidade:</label>
+                    <input type="email" class="form-control" id="inputEmail4" placeholder="{{$endereco->cidade}}">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="inputEmail4">UF:</label>
+                    <input type="email" class="form-control" id="inputEmail4" placeholder="{{$endereco->uf}}">
+                </div>
+                <div class="form-group col-md-3">
                     <label for="inputPassword4">CEP:</label>
                     <input type="text" class="form-control" id="inputPassword4" placeholder="{{$endereco->cep}}">
                 </div>
