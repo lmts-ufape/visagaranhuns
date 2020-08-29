@@ -33,7 +33,16 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputPassword4">TIPO:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control"  name="tipo" placeholder="" required>
+                    {{-- <input type="text" class="form-control"  name="tipo" placeholder="" required> --}}
+                    <select class="form-control" name="tipo" required>
+                        <option value="" disable="" selected="" hidden="">-- Selecionar o Tipo --</option>
+                        <option value="Sociedade Empresária Limitada (LTDA)">Sociedade Empresária Limitada (LTDA)</option>
+                        <option value="Empresa Individual de Responsabilidade Limitada (Eireli)">Empresa Individual de Responsabilidade Limitada (Eireli)</option>
+                        <option value="Empresa Individual">Empresa Individual</option>
+                        <option value="Microempreendedor Individual (MEI)">Microempreendedor Individual (MEI)</option>
+                        <option value="Sociedade Simples(SS)">Sociedade Simples(SS)</option>
+                        <option value="Sociedade Anônima(SA)">Sociedade Anônima(SA)</option>
+                    </select>
                 </div>
             </div>
             <div class="form-row">
@@ -53,7 +62,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
         <div class="barraMenu" style="margin-top:0.7rem;">
@@ -74,22 +83,22 @@
                             <div class="form-group col-md-12" >
                                 <label for="exampleFormControlSelect1">Áreas</label>
                                 <select class="form-control" id="idSelecionarArea" onChange="selecionarArea(this)" required>
-                                    <option>-- Selecione --</option>
+                                    <option value=-2>-- Selecionar a Área --</option>
                                     @foreach ($areas as $item)
                                         <option value={{$item->id}}>{{$item->nome}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="btn-group col-md-12">
-                                <div class="col-md-6" style="margin-left:-15px;margin-right:30px;">CNAE</div>
-                                <div class="col-md-6 input-group input-group-sm mb-2">
-                                    <input type="text" class="form-control" placeholder="Nome ou código do CNAE">
+                                <div class="col-md-6" style="margin-left:-15px;margin-right:30px;margin-bottom:10px;">CNAE</div>
+                                <div class="col-md-12 input-group input-group-sm mb-2">
+                                    {{-- <input type="text" class="form-control" placeholder="Nome ou código do CNAE"> --}}
                                 </div>
 
                             </div>
                             <div class="form-row col-md-12">
                                 <div style="width:100%; height:250px; display: inline-block; border: 1.5px solid #f2f2f2; border-radius: 2px; overflow:auto;">
-                                    <table cellspacing="0" cellpadding="1"width="300" >
+                                    <table cellspacing="0" cellpadding="1"width="100%" >
                                         <tbody>
 
                                         </tbody>
@@ -100,7 +109,8 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="exampleFormControlSelect1">Meus CNAES</label>
-                        <div class="form-group col-md-12" id="adicionar" style="width:100%; height:339px; display: inline-block; border: 1.5px solid #f2f2f2; border-radius: 2px; overflow:auto;">
+                        <div class="form-group col-md-12 areaMeusCnaes" id="adicionar">
+
                         </div>
                     </div>
                 </div>
@@ -120,6 +130,24 @@
         <div class="container" style="margin-top:1rem;margin-left:10px;">
             <div class="form-row">
                 <div class="form-group col-md-4">
+                    <label for="inputPassword4">CEP:<span style="color:red">*</span></label>
+                    <input value="{{old('cep')}}" onblur="pesquisacep(this.value);" id="cep" type="text" class="form-control" name="cep" required autocomplete="cep" placeholder="" size="10" maxlength="9">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputEmail4">UF:<span style="color:red">*</span></label>
+                    <input readonly type="text" class="form-control" name="uf" placeholder="" id="uf" value="{{ old('uf') }}">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputEmail4">Cidade:<span style="color:red">*</span></label>
+                    <input readonly id="cidade" type="text" class="form-control" name="cidade" placeholder="" required value="{{ old('cidade') }}">
+                </div>
+            </div>
+            <div class="form-row" style="padding-bottom:1.5rem;">
+                <div class="form-group col-md-4">
+                    <label for="inputEmail4">Bairro:<span style="color:red">*</span></label>
+                    <input value="{{old('bairro')}}" id="bairro" type="text" class="form-control" name="bairro" placeholder="" required>
+                </div>
+                <div class="form-group col-md-4">
                     <label for="inputEmail4">Rua:<span style="color:red">*</span></label>
                     <input value="{{old('rua')}}" id="rua" type="text" class="form-control" name="rua" placeholder="" required>
                 </div>
@@ -129,29 +157,11 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="inputPassword4">Complemento:</label>
-                    <input type="text" class="form-control" name="complemento" placeholder="" required>
-                </div>
-            </div>
-            <div class="form-row" style="padding-bottom:1.5rem;">
-                <div class="form-group col-md-4">
-                    <label for="inputEmail4">Bairro:<span style="color:red">*</span></label>
-                    <input value="{{old('bairro')}}" id="bairro" type="text" class="form-control" name="bairro" placeholder="" required>
-                </div>
-                <div class="form-group col-md-4">
-                        <label for="inputEmail4">Cidade:<span style="color:red">*</span></label>
-                        <input readonly id="cidade" type="text" class="form-control" name="cidade" placeholder="" required value="{{ old('cidade') }}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="inputEmail4">UF:<span style="color:red">*</span></label>
-                    <input readonly type="text" class="form-control" name="uf" placeholder="" id="uf" value="{{ old('uf') }}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="inputPassword4">CEP:<span style="color:red">*</span></label>
-                    <input value="{{old('cep')}}" onblur="pesquisacep(this.value);" id="cep" type="text" class="form-control" name="cep" required autocomplete="cep" autofocus placeholder="" size="10" maxlength="9">
+                    <input type="text" class="form-control" name="complemento" placeholder="">
                 </div>
             </div>
         </div>
-        <div class="barraMenu" style="margin-top:0.7rem;">
+        {{-- <div class="barraMenu" style="margin-top:0.7rem;">
             <div class="d-flex">
                 <div class="mr-auto p-2">
                     <div class="btn-group">
@@ -177,7 +187,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <hr size = 7>
         <div style="margin-bottom:10rem;">

@@ -1,0 +1,14 @@
+.areaMeusCnaes{
+    width:100%; height:339px; display: inline-block; border: 1.5px solid #f2f2f2; border-radius: 2px; overflow:auto;
+}
+.cardMeuCnae{
+    width:100%;
+    margin:0.5rem;
+    border: 1.5px solid #f5f5f5;
+    border-radius: 10px;
+    border-color:#e3e3e3;
+    -webkit-box-shadow: 0px 0px 17px -2px rgba(219,219,219,1);
+    -moz-box-shadow: 0px 0px 17px -2px rgba(219,219,219,1);
+    box-shadow: 0px 0px 17px -2px rgba(219,219,219,1);
+    margin:10px; margin-left:-5px; padding:10px; border: 1.5px solid #f2f2f2; border-radius: 8px;
+}

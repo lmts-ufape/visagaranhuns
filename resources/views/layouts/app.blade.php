@@ -27,6 +27,7 @@
     <link href="{{ asset('css/menu_rodape.css') }}" rel="stylesheet">
     <link href="{{ asset('css/naoLogado.css') }}" rel="stylesheet">
     <link href="{{ asset('css/coordenador.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/cadastrar_empresa.css') }}" rel="stylesheet">
 
 </head>
 <body>
