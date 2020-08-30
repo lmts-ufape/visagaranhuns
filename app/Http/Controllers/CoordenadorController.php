@@ -92,7 +92,7 @@ class CoordenadorController extends Controller
                 $empresa->save();
     
                 session()->flash('success', 'Cadastro aprovado com sucesso');
-                return redirect()->route('confirma.cadastro');
+                return redirect()->route('/');
             }
             else{
               $empresa->status_cadastro = "reprovado";

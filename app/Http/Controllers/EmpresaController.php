@@ -207,7 +207,7 @@ class EmpresaController extends Controller
             ]);
         }
 
-        return redirect()->route('/');
+        return redirect()->route('confirma.cadastro');
     }
 
     /**

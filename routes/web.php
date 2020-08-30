@@ -40,6 +40,11 @@ Auth::routes();
 Route::post("/empresa/cadastro", "EmpresaController@store")->name("cadastrar.empresa");
 Route::get("/home/cadastro/empresa", "EmpresaController@create")->name("home.cadastrar");
 
+// Aviso de pendencia de empresa
+Route::get("/confirma/cadastro", function () {
+    return view('empresa/aviso_empresa');
+})->name("confirma.cadastro");
+
 // Rota para busca de cnaes
 Route::get("/cnaes/busca", "CnaeController@busca")->name("cnae.busca");
 
@@ -71,9 +76,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
     // Rota para avaliação de primeiro cadastro de usuario e empresa
     Route::get("/pagina/detalhes", "CoordenadorController@paginaDetalhes")->name("pagina.detalhes");
     Route::post("/julgar/cadastro", "CoordenadorController@julgar")->name("julgar.cadastro");
-    Route::get("/confirma/cadastro", function () {
-        return view('coordenador/aviso_coordenador');
-    })->name("confirma.cadastro");
+    
 
     Route::get("/empresa/listagem", "EmpresaController@index")->name("listagem.empresas");
 
