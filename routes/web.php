@@ -66,7 +66,11 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get("/cnae/paginaCadastro", "CnaeController@create")->name("pagina.cnae");
     Route::get("/cnae/listagem", "CnaeController@index")->name("listagem.cnae");
     Route::get("/listar/inspetores", "InspetorController@listarInspetores")->name("listar.inspetores");
-    Route::get("/listar/agentes", "AgenteController@listarAgentes")->name("listar.agentes");
+    Route::get("/listar/agentes", "AgenteController@listarAgentes")->name("listar.agentes"); //requerimento_coordenador
+
+    //Tela de Requerimento
+    Route::get("/requerimento/inspetor", "CoordenadorController@listarRequerimentoInspetorEAgente")->name("pagina.requerimento");
+    Route::get("/requerimento", "CoordenadorController@ajaxListarRequerimento")->name("lista.requerimento");
 
     // Listar e baixar arquivos de uma empresa
     Route::get("/empresa/arquivos", "EmpresaController@listarArquivos")->name("empresa.arquivos");
