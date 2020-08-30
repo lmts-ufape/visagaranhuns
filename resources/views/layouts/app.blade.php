@@ -81,7 +81,7 @@
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('pagina.detalhes') }}">{{ __('Requerimento') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Requerimento') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Programação') }}</a>

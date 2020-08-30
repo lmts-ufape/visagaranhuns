@@ -32,7 +32,7 @@ Route::get('/', function () {
     else {
         return view('naoLogado.home_naologado');
     }
-});
+})->name("/");
 
 Auth::routes();
 
@@ -71,6 +71,9 @@ Route::middleware(['IsCoordenador'])->group(function () {
     // Rota para avaliação de primeiro cadastro de usuario e empresa
     Route::get("/pagina/detalhes", "CoordenadorController@paginaDetalhes")->name("pagina.detalhes");
     Route::post("/julgar/cadastro", "CoordenadorController@julgar")->name("julgar.cadastro");
+    Route::get("/confirma/cadastro", function () {
+        return view('coordenador/aviso_coordenador');
+    })->name("confirma.cadastro");
 
     Route::get("/empresa/listagem", "EmpresaController@index")->name("listagem.empresas");
 
