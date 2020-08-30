@@ -49,7 +49,7 @@ class CoordenadorController extends Controller
     */
     public function paginaDetalhes(Request $request)
     {
-        dd($request->empresa);
+        dd($request);
         $empresa = Empresa::find($request->empresa);
         $user = User::where('id', $empresa->user_id)->first();
 
@@ -73,7 +73,7 @@ class CoordenadorController extends Controller
         // Encontrar email do perfil da empresa
         //*******************************************************
         $useremail = User::find($request->user_id);
-        // ****************************************************** 
+        // ******************************************************
         $empresa = Empresa::find($request->empresa_id);
 
         if($empresa->status_cadastro == "pendente"){
@@ -86,7 +86,7 @@ class CoordenadorController extends Controller
                 $user = new \stdClass();
                 $user->name = $useremail->name;
                 $user->email = $useremail->email;
-    
+
                 \Illuminate\Support\Facades\Mail::send(new \App\Mail\ConfirmaCadastro($user));
                 // *************************************
 
@@ -278,7 +278,7 @@ class CoordenadorController extends Controller
                                                     <div>CNPJ/CPF: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
                                                     <div>Responsável Técnico:<span class="textoCampo">Fulano de Tal</span></div>
                                                     <div>Última Inspeção: <span class="textoCampo">Ainda não foi realizada</span></div>
-                                                    <button type="button" onclick="empresaId('.$id.')" class="btn btn-info">Avaliar</button>
+                                                    <button type="button" onclick="empresaId('.$item->id.')" class="btn btn-info">Avaliar</button>
                                                 </div>
                                             </div>
                                         </div>

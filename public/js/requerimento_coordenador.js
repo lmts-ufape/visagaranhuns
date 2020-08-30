@@ -20,7 +20,7 @@ window.mostrar = function($id){
 }
 
 window.empresaId = function($empresaId) {
-    console.log(empresaId);
-    document.getElementById("inputSubmeterId").value = empresaId;
+    console.log($empresaId);
+    document.getElementById("inputSubmeterId").value = $empresaId;
     document.getElementById("submeterId").submit();
 }
