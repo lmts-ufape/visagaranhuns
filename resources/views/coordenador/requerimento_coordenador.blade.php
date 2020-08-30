@@ -132,7 +132,10 @@
 
     </div>
 
-
+<form id="submeterId" method="POST" action="{{route('pagina.detalhes')}}">
+    @csrf
+    <input id="inputSubmeterId" type="hidden" name="empresa" value="">
+</form>
 </div>
 @endsection
 

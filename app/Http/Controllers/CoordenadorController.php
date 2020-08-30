@@ -49,6 +49,7 @@ class CoordenadorController extends Controller
     */
     public function paginaDetalhes(Request $request)
     {
+        dd($request->empresa);
         $empresa = Empresa::find($request->empresa);
         $user = User::where('id', $empresa->user_id)->first();
 
@@ -238,7 +239,9 @@ class CoordenadorController extends Controller
         $output = '';
 
         if($resultado->count() > 0){
+            $rota = "pagina.detalhes";
             foreach($resultado as $item){
+                $id = $item->id;
                 if($filtro == "all"){
                     if($item->status_cadastro == "pendente"){
                         $output .= '
@@ -275,6 +278,7 @@ class CoordenadorController extends Controller
                                                     <div>CNPJ/CPF: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
                                                     <div>Responsável Técnico:<span class="textoCampo">Fulano de Tal</span></div>
                                                     <div>Última Inspeção: <span class="textoCampo">Ainda não foi realizada</span></div>
+                                                    <button type="button" onclick="empresaId('.$id.')" class="btn btn-info">Avaliar</button>
                                                 </div>
                                             </div>
                                         </div>

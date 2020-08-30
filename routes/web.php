@@ -78,7 +78,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
     // Rota para listar empresas com cadastro pendentes
     Route::get("/cadastros/pendentes", "CoordenadorController@listarPendente")->name("listar.cadastroPendente");
     // Rota para avaliação de primeiro cadastro de usuario e empresa
-    Route::get("/pagina/detalhes", "CoordenadorController@paginaDetalhes")->name("pagina.detalhes");
+    Route::post("/pagina/detalhes", "CoordenadorController@paginaDetalhes")->name("pagina.detalhes");
     Route::post("/julgar/cadastro", "CoordenadorController@julgar")->name("julgar.cadastro");
     
 

@@ -18,3 +18,9 @@ window.mostrar = function($id){
         document.getElementById("cardEstabelecimento"+$id).style.display = "none";
     }
 }
+
+window.empresaId = function($empresaId) {
+    console.log(empresaId);
+    document.getElementById("inputSubmeterId").value = empresaId;
+    document.getElementById("submeterId").submit();
+}
