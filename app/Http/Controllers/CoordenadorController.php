@@ -49,7 +49,6 @@ class CoordenadorController extends Controller
     */
     public function paginaDetalhes(Request $request)
     {
-        dd($request);
         $empresa = Empresa::find($request->empresa);
         $user = User::where('id', $empresa->user_id)->first();
 
@@ -76,7 +75,57 @@ class CoordenadorController extends Controller
         // ******************************************************
         $empresa = Empresa::find($request->empresa_id);
 
-        if($empresa->status_cadastro == "pendente"){
+        if($useremail->status_cadastro == "pendente" && $empresa->status_cadastro == "pendente"){
+
+            if($request->decisao == 'true'){
+                
+                // Enviar e-mai de comprovação de cadastro de usuário e empresa
+                //************************************** */
+                $user = new \stdClass();
+                $user->name = $useremail->name;
+                $user->email = $useremail->email;
+                $emp = new \stdClass();
+                $emp->nome = $empresa->nome;
+                $decisao = new \stdClass();
+                $decisao = $request->decisao;
+
+                \Illuminate\Support\Facades\Mail::send(new \App\Mail\ConfirmaCadastroUser($user,$emp,$decisao));
+                // *************************************
+
+                $empresa->status_cadastro = "aprovado";
+                $useremail->status_cadastro = "aprovado";
+                $empresa->save();
+                $useremail->save();
+
+                session()->flash('success', 'Cadastros aprovados com sucesso');
+                return redirect()->route('/');
+            }
+            else{
+
+                // Enviar e-mai de reprovação de cadastro de usuário e empresa
+                //************************************** */
+                $user = new \stdClass();
+                $user->name = $useremail->name;
+                $user->email = $useremail->email;
+                $emp = new \stdClass();
+                $emp->nome = $empresa->nome;
+                $decisao = new \stdClass();
+                $decisao = $request->decisao;
+
+                \Illuminate\Support\Facades\Mail::send(new \App\Mail\ConfirmaCadastroUser($user,$emp,$decisao));
+                // *************************************
+
+                $empresa->status_cadastro = "reprovado";
+                $useremail->status_cadastro = "reprovado";
+                $empresa->save();
+                $useremail->save();
+
+              session()->flash('success', 'Cadastros reprovados com sucesso');
+              return redirect()->route('/');
+            }
+
+        }
+        elseif($useremail->status_cadastro == "aprovado" && $empresa->status_cadastro == "pendente"){
 
             if($request->decisao == 'true'){
 

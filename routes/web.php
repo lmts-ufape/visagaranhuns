@@ -52,6 +52,8 @@ Route::middleware(['OnlyAdmin'])->group(function () {
     Route::post("/coordenador/cadastro", "CoordenadorController@store")->name("cadastrar.coordenador");
 });
 
+Route::get("/empresa/lista/cnae",  "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes.comum");
+
 // Grupo de rotas para coordenador
 Route::middleware(['IsCoordenador'])->group(function () {
     Route::get('/home/coordenador', 'CoordenadorController@home')->name('home.coordenador');
