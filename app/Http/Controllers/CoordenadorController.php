@@ -135,8 +135,12 @@ class CoordenadorController extends Controller
                 $user = new \stdClass();
                 $user->name = $useremail->name;
                 $user->email = $useremail->email;
+                $emp = new \stdClass();
+                $emp->nome = $empresa->nome;
+                $decisao = new \stdClass();
+                $decisao = $request->decisao;
 
-                \Illuminate\Support\Facades\Mail::send(new \App\Mail\ConfirmaCadastro($user));
+                \Illuminate\Support\Facades\Mail::send(new \App\Mail\ConfirmaCadastroEmpresa($user,$empresa,$decisao));
                 // *************************************
 
                 $empresa->status_cadastro = "aprovado";
@@ -146,11 +150,25 @@ class CoordenadorController extends Controller
                 return redirect()->route('/');
             }
             else{
-              $empresa->status_cadastro = "reprovado";
-              $empresa->save();
 
-              session()->flash('success', 'Cadastro reprovado com sucesso');
-              return redirect()->route('/');
+                // Enviar e-mai de comprovação de cadastro
+                //************************************** */
+
+                $user = new \stdClass();
+                $user->name = $useremail->name;
+                $user->email = $useremail->email;
+                $emp = new \stdClass();
+                $emp->nome = $empresa->nome;
+                $decisao = new \stdClass();
+                $decisao = $request->decisao;
+
+                \Illuminate\Support\Facades\Mail::send(new \App\Mail\ConfirmaCadastroEmpresa($user,$empresa,$decisao));
+                // *************************************
+                $empresa->status_cadastro = "reprovado";
+                $empresa->save();
+
+                session()->flash('success', 'Cadastro reprovado com sucesso');
+                return redirect()->route('/');
             }
 
         }
