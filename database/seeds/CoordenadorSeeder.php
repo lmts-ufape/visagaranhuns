@@ -16,25 +16,28 @@ class CoordenadorSeeder extends Seeder
             'name' => 'coordenador',
             'email' => 'coordenador@teste.com',
             'password' => Hash::make('123456'),
-            'tipo' => 'coordenador'
+            'tipo' => 'coordenador',
+            'status_cadastro' => 'aprovado',
         ]);
 
         \App\User::create([
             'name' => 'Isildur',
             'email' => 'empresa@teste.com',
             'password' => Hash::make('123456'),
-            'tipo' => 'empresa'
+            'tipo' => 'empresa',
+            'status_cadastro' => 'aprovado',
         ]);
 
         \App\User::create([
             'name' => 'Anarion',
             'email' => 'empresa2@teste.com',
             'password' => Hash::make('123456'),
-            'tipo' => 'empresa'
+            'tipo' => 'empresa',
+            'status_cadastro' => 'aprovado',
         ]);
 
         \App\Empresa::create([
-            'nome' => 'Minas Morgul',
+            'nome' => 'Minas Tirith',
             'cnpjcpf' => '10325647899',
             'status_inspecao' => 'pendente',
             'status_cadastro' => 'pendente',
@@ -43,7 +46,7 @@ class CoordenadorSeeder extends Seeder
         ]);
 
         \App\Empresa::create([
-            'nome' => 'Minas Tirith',
+            'nome' => 'Minas Morgul',
             'cnpjcpf' => '10325647899',
             'status_inspecao' => 'pendente',
             'status_cadastro' => 'pendente',
@@ -87,13 +90,15 @@ class CoordenadorSeeder extends Seeder
             'name' => 'inspetor',
             'email' => 'inspetor@teste.com',
             'password' => Hash::make('123456'),
-            'tipo' => 'inspetor'
+            'tipo' => 'inspetor',
+            'status_cadastro' => 'aprovado',
         ]);
         \App\User::create([
             'name' => 'agente',
             'email' => 'agente@teste.com',
             'password' => Hash::make('123456'),
-            'tipo' => 'agente'
+            'tipo' => 'agente',
+            'status_cadastro' => 'aprovado',
         ]);
         
         \App\CnaeEmpresa::create([ 'empresa_id' => '1', 'cnae_id' => '1' ]);

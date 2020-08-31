@@ -12,6 +12,8 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/cadastrar_empresa.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/cadastrar_empresa_comum.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/requerimento_coordenador.js')}}" defer></script>
 
     <!-- load jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -81,7 +83,7 @@
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Requerimento') }}</a>
+                                    <a class="nav-link" href="{{ route('pagina.requerimento') }}">{{ __('Requerimento') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Programação') }}</a>
@@ -119,7 +121,7 @@
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('listar.empresas') }}">{{ __('Estabelecimentos') }}</a>
+                                        <a class="nav-link" href="{{ route('listar.empresas', ['user' => Auth::user()->id]) }}">{{ __('Estabelecimentos') }}</a>
                                     </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Licenças') }}</a>

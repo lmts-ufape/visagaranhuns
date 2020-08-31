@@ -47,24 +47,8 @@ class EmpresaController extends Controller
      */
     public function create()
     {
-        $ensino       = Cnae::where("areas_id", "1")->get();
-        $saude        = Cnae::where("areas_id", "2")->get();
-        $distrSaude   = Cnae::where("areas_id", "3")->get();
-        $camPipa      = Cnae::where("areas_id", "4")->get();
-        $tratAgua     = Cnae::where("areas_id", "5")->get();
-        $mei          = Cnae::where("areas_id", "6")->get();
-        $diversos     = Cnae::where("areas_id", "7")->get();
-        $meiAlimentos = Cnae::where("areas_id", "8")->get();
-
-        return view('naoLogado/cadastrar_empresa', [
-            'ensino'     => $ensino,
-            'saude'      => $saude,
-            'distrSaude' => $distrSaude,
-            'camPipa'    => $camPipa,
-            'tratAgua'   => $tratAgua,
-            'mei'        => $mei,
-            'diversos'   => $diversos,
-        ]);
+        $areas = Area::orderBy('nome', 'ASC')->get();
+        return view('naoLogado/cadastrar_empresa', ['areas' => $areas]);
     }
 
     /**
@@ -75,8 +59,6 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
-        // Sujeito a mudanças
         $validator = $request->validate([
             'name'     => 'required|string',
             'email'    => 'required|email',
@@ -101,6 +83,7 @@ class EmpresaController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'tipo' => "empresa",
+            'status_cadastro' => "pendente",
         ]);
 
         $empresa = Empresa::create([
@@ -143,7 +126,7 @@ class EmpresaController extends Controller
             ]);
         }
 
-        return redirect()->route('/');
+        return redirect()->route('confirma.cadastro');
     }
 
     public function adicionarEmpresa(Request $request)
@@ -207,7 +190,7 @@ class EmpresaController extends Controller
             ]);
         }
 
-        return redirect()->route('/');
+        return redirect()->route('confirma.cadastro');
     }
 
     /**
@@ -237,10 +220,10 @@ class EmpresaController extends Controller
      * Listar empresas
      * View: empresa/listar_empresas.blade.php
     */
-    public function listarEmpresas(){
+    public function listarEmpresas(Request $request){
         //Preciso da função para carregar a página
-        $resultado = Empresa::paginate(20);
-        return view('empresa/listar_empresas',['empresas' => $resultado]);
+        $empresa = Empresa::where('user_id', $request->user)->paginate(20);
+        return view('empresa/listar_empresas',['empresas' => $empresa]);
     }
 
     /**
@@ -893,7 +876,7 @@ class EmpresaController extends Controller
                     <div onclick="add('.$item->id.')" class="cardMeuCnae" id="'.$item->id.'" style="margin:10px; padding:10px; border: 1.5px solid #f2f2f2; border-radius: 8px; width:95%; cursor: pointer; ">'.$item->descricao.'</div>
                     ';
                 }
-            }elseif($idArea == -2){
+            }elseif($idArea == ""){
                 $output .= '
                         <label></label>
                     ';

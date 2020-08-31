@@ -32,7 +32,7 @@ Route::get('/', function () {
     else {
         return view('naoLogado.home_naologado');
     }
-});
+})->name("/");
 
 Auth::routes();
 
@@ -40,12 +40,19 @@ Auth::routes();
 Route::post("/empresa/cadastro", "EmpresaController@store")->name("cadastrar.empresa");
 Route::get("/home/cadastro/empresa", "EmpresaController@create")->name("home.cadastrar");
 
+// Aviso de pendencia de empresa
+Route::get("/confirma/cadastro", function () {
+    return view('empresa/aviso_empresa');
+})->name("confirma.cadastro");
+
 // Rota para busca de cnaes
 Route::get("/cnaes/busca", "CnaeController@busca")->name("cnae.busca");
 
 Route::middleware(['OnlyAdmin'])->group(function () {
     Route::post("/coordenador/cadastro", "CoordenadorController@store")->name("cadastrar.coordenador");
 });
+
+Route::get("/empresa/lista/cnae",  "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes.comum");
 
 // Grupo de rotas para coordenador
 Route::middleware(['IsCoordenador'])->group(function () {
@@ -61,16 +68,24 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get("/cnae/paginaCadastro", "CnaeController@create")->name("pagina.cnae");
     Route::get("/cnae/listagem", "CnaeController@index")->name("listagem.cnae");
     Route::get("/listar/inspetores", "InspetorController@listarInspetores")->name("listar.inspetores");
-    Route::get("/listar/agentes", "AgenteController@listarAgentes")->name("listar.agentes");
+    Route::get("/listar/agentes", "AgenteController@listarAgentes")->name("listar.agentes"); //requerimento_coordenador
+
+    //Tela de Requerimento
+    Route::get("/requerimento/inspetor", "CoordenadorController@listarRequerimentoInspetorEAgente")->name("pagina.requerimento");
+    Route::get("/requerimento", "CoordenadorController@ajaxListarRequerimento")->name("lista.requerimento");
 
     // Listar e baixar arquivos de uma empresa
     Route::get("/empresa/arquivos", "EmpresaController@listarArquivos")->name("empresa.arquivos");
     Route::get("/baixar/arquivos", "EmpresaController@baixarArquivos")->name("baixar.arquivos");
     // Rota para listar empresas com cadastro pendentes
     Route::get("/cadastros/pendentes", "CoordenadorController@listarPendente")->name("listar.cadastroPendente");
-    // Rota para avaliação de cadastro de empresa
-    Route::get("/pagina/detalhes", "CoordenadorController@paginaDetalhes")->name("pagina.detalhes");
+    // Rota para avaliação de primeiro cadastro de usuario e empresa
+    Route::post("/pagina/detalhes", "CoordenadorController@paginaDetalhes")->name("pagina.detalhes");
+    Route::post("/julgar/cadastro", "CoordenadorController@julgar")->name("julgar.cadastro");
+    
+
     Route::get("/empresa/listagem", "EmpresaController@index")->name("listagem.empresas");
+
     Route::get("/show/empresa", "EmpresaController@show")->name("mostrar.empresas");
     //Supervisor
 /*

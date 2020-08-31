@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 use App\Coordenador;
 use App\User;
 use App\Agente;
+use App\Inspetor;
 use App\Empresa;
+use App\Endereco;
+use App\Telefone;
+use App\CnaeEmpresa;
 
 class CoordenadorController extends Controller
 {
@@ -41,62 +45,110 @@ class CoordenadorController extends Controller
     }
 
     /* Função para selecionar e exibir na página a empresa que será
-    Avaliada 
-    */ 
+    Avaliada
+    */
     public function paginaDetalhes(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'empresa_id' => 'required|integer',
-        ]);
+        $empresa = Empresa::find($request->empresa);
+        $user = User::where('id', $empresa->user_id)->first();
 
-        $empresa = Empresa::find($request->empresa_id);
-        $user = User::where("id", $empresa->user_id)->first();
-        return view("coordenador.avaliarEmpresa")->with([
+        // $empresa = Empresa::find("1");
+        // $user = User::where('id', "2")->first();
+        $endereco = Endereco::where('empresa_id', $empresa->id)->first();
+        $telefone = Telefone::where('empresa_id', $empresa->id)->first();
+        $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $empresa->id)->get();
+
+        return view("coordenador/avaliar_cadastro")->with([
             "empresa" => $empresa,
             "user"    => $user,
+            "endereco" => $endereco,
+            "telefone" => $telefone,
+            "cnae" => $cnaeEmpresa,
         ]);
     }
 
     public function julgar(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'empresa_id' => 'required|integer',
-            'user_id'    => 'required|integer',
-            'decisao'    => 'required|string'
-        ]);
-
-        
         // Encontrar email do perfil da empresa
         //*******************************************************
-        $user = User::find($request->user_id);
-        // ****************************************************** 
-        
+        $useremail = User::find($request->user_id);
+        // ******************************************************
         $empresa = Empresa::find($request->empresa_id);
 
-        if($empresa->status_cadastro == "pendente"){
+        if($useremail->status_cadastro == "pendente" && $empresa->status_cadastro == "pendente"){
+
+            if($request->decisao == 'true'){
+                
+                // Enviar e-mai de comprovação de cadastro de usuário e empresa
+                //************************************** */
+                $user = new \stdClass();
+                $user->name = $useremail->name;
+                $user->email = $useremail->email;
+                $emp = new \stdClass();
+                $emp->nome = $empresa->nome;
+                $decisao = new \stdClass();
+                $decisao = $request->decisao;
+
+                \Illuminate\Support\Facades\Mail::send(new \App\Mail\ConfirmaCadastroUser($user,$emp,$decisao));
+                // *************************************
+
+                $empresa->status_cadastro = "aprovado";
+                $useremail->status_cadastro = "aprovado";
+                $empresa->save();
+                $useremail->save();
+
+                session()->flash('success', 'Cadastros aprovados com sucesso');
+                return redirect()->route('/');
+            }
+            else{
+
+                // Enviar e-mai de reprovação de cadastro de usuário e empresa
+                //************************************** */
+                $user = new \stdClass();
+                $user->name = $useremail->name;
+                $user->email = $useremail->email;
+                $emp = new \stdClass();
+                $emp->nome = $empresa->nome;
+                $decisao = new \stdClass();
+                $decisao = $request->decisao;
+
+                \Illuminate\Support\Facades\Mail::send(new \App\Mail\ConfirmaCadastroUser($user,$emp,$decisao));
+                // *************************************
+
+                $empresa->status_cadastro = "reprovado";
+                $useremail->status_cadastro = "reprovado";
+                $empresa->save();
+                $useremail->save();
+
+              session()->flash('success', 'Cadastros reprovados com sucesso');
+              return redirect()->route('/');
+            }
+
+        }
+        elseif($useremail->status_cadastro == "aprovado" && $empresa->status_cadastro == "pendente"){
 
             if($request->decisao == 'true'){
 
                 // Enviar e-mai de comprovação de cadastro
                 //************************************** */
-                
+
                 $user = new \stdClass();
-                $user->name = $userfound[0]->name;
-                $user->email = $userfound[0]->email;
-    
+                $user->name = $useremail->name;
+                $user->email = $useremail->email;
+
                 \Illuminate\Support\Facades\Mail::send(new \App\Mail\ConfirmaCadastro($user));
                 // *************************************
-                
+
                 $empresa->status_cadastro = "aprovado";
                 $empresa->save();
-    
+
                 session()->flash('success', 'Cadastro aprovado com sucesso');
                 return redirect()->route('/');
             }
             else{
               $empresa->status_cadastro = "reprovado";
               $empresa->save();
-    
+
               session()->flash('success', 'Cadastro reprovado com sucesso');
               return redirect()->route('/');
             }
@@ -105,33 +157,33 @@ class CoordenadorController extends Controller
 
         // Trecho para o caso de coordenador precisar reavaliar cadastro de empresa
         // elseif ($estabelecimento->status == "Aprovado" || $estabelecimento->status == "Reprovado") {
-            
+
         //     if($request->decisao == 'true'){
 
         //         // Enviar e-mai de comprovação de cadastro
         //         //************************************** */
-                
+
         //         $user = new \stdClass();
         //         $user->name = $userfound[0]->name;
         //         $user->email = $userfound[0]->email;
-    
+
         //         \Illuminate\Support\Facades\Mail::send(new \App\Mail\SendMailUser($user));
         //         // *************************************
-                
+
         //         $estabelecimento->status = "Aprovado";
         //         $estabelecimento->save();
-    
+
         //         session()->flash('success', 'Estabelecimento aprovado com sucesso');
         //         return redirect()->route('estabelecimentoAdmin.revisar');
         //     }
         //     else{
         //       $estabelecimento->status = "Reprovado";
         //       $estabelecimento->save();
-    
+
         //       session()->flash('success', 'Estabelecimento reprovado com sucesso');
         //       return redirect()->route('estabelecimentoAdmin.revisar');
         //     }
-        // } 
+        // }
     }
     /**
      * Store a newly created resource in storage.
@@ -205,5 +257,112 @@ class CoordenadorController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Funcao: abre a tela de requerimento
+     * Tela: requerimento_coordenador.blade.php
+     *
+     * @param
+     * @return \Illuminate\Http\Response
+     */
+    public function listarRequerimentoInspetorEAgente()
+    {
+        $inspetores = Inspetor::get();
+        $agentes = Agente::get();
+        return view('coordenador/requerimento_coordenador',["inspetores" => $inspetores,"agentes" => $agentes]);
+    }
+    /**
+     * Funcao: listar todos os requerimentos
+     * Tela: requerimento_coordenador.blade.php
+     *
+     * @param
+     * @return \Illuminate\Http\Response
+     */
+    public function ajaxListarRequerimento(Request $request)
+    {
+        $this->listarRequerimentos($request->filtro);
+    }
+    public function listarRequerimentos($filtro){
+        $resultado = Empresa::get();
+        $output = '';
+
+        if($resultado->count() > 0){
+            $rota = "pagina.detalhes";
+            foreach($resultado as $item){
+                $id = $item->id;
+                if($filtro == "all"){
+                    if($item->status_cadastro == "pendente"){
+                        $output .= '
+                            <div class="container cardListagem">
+                                <div class="d-flex">
+                                    <div class="mr-auto p-2">
+                                        <div class="btn-group" style="margin-bottom:-15px;">
+                                            <div class="form-group" style="font-size:15px;">
+                                                <div class="textoCampo">'.$item->nome.'</div>
+                                                <span>Cadastro pendente</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="form-group" style="font-size:15px;">
+                                            <div>'.$item->created_at->format('d/m/Y').'</div>
+                                        </div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="dropdown">
+                                            <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton" onclick="mostrar('.$item->id.')">
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="cardEstabelecimento'.$item->id.'" style="display:none;">
+                                    <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
+                                    <div class="d-flex">
+                                        <div class="mr-auto p-2">
+                                            <div class="btn-group" style="margin-bottom:-15px;">
+                                                <div class="form-group" style="font-size:15px;">
+                                                    <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
+                                                    <div>CNPJ/CPF: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
+                                                    <div>Responsável Técnico:<span class="textoCampo">Fulano de Tal</span></div>
+                                                    <div>Última Inspeção: <span class="textoCampo">Ainda não foi realizada</span></div>
+                                                    <button type="button" onclick="empresaId('.$item->id.')" class="btn btn-info">Avaliar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="idTabela">
+                                    <table>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        ';
+                        }
+                    }
+                }
+        }else{
+            $output .= '
+                    <tr>
+                        <td>'.'Nenhum Requerimento!'.'</td>
+                    </tr>
+                    ';
+                $data = array(
+                    'success'   => false,
+                    'table_data' => $output,
+                );
+                echo json_encode($data);
+        }
+
+
+        $data = array(
+            'success'   => true,
+            'table_data' => $output,
+        );
+        echo json_encode($data);
     }
 }
