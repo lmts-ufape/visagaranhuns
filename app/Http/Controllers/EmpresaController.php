@@ -222,7 +222,7 @@ class EmpresaController extends Controller
     */
     public function listarEmpresas(Request $request){
         //Preciso da função para carregar a página
-        $empresa = Empresa::where('user_id', $request->user)->paginate(20);
+        $empresa = Empresa::where('user_id', Crypt::decrypt($request->user))->paginate(20);
         return view('empresa/listar_empresas',['empresas' => $empresa]);
     }
 
