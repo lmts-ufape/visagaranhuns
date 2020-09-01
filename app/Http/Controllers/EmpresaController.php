@@ -871,10 +871,22 @@ class EmpresaController extends Controller
         return view('empresa/show_empresa',['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae]);
     }
     public function showDocumentacao(Request $request){
-        //dd(Crypt::decrypt($request->value));
-        $empresa = Empresa::where('id', Crypt::decrypt($request->value))->get();
-        // dd($empresa[0]->nome);
-        return view('empresa/documentacao_empresa',['nome'=>$empresa[0]->nome]);
+
+        $idEmpresa = Crypt::decrypt($request->value);
+        $empresa = Empresa::where('id', $idEmpresa)->first();
+        $cnaempresa = CnaeEmpresa::where("empresa_id", $idEmpresa)->pluck('cnae_id');
+        $cnaes = [];
+        $areas = [];
+        
+        foreach ($cnaempresa as $indice) {
+            array_push($cnaes, Cnae::find($indice));
+        }
+        foreach ($cnaes as $indice) {
+            array_push($areas, $indice->areas_id);
+        }
+
+
+        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome, 'areas' => $areas]);
     }
     public function ajaxCnaes(Request $request){
         $this->listar($request->id_area);

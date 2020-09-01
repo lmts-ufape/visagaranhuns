@@ -20,86 +20,944 @@
 
     <div class="container" style="margin-top:1rem;margin-left:10px;">
         <div class="form-row" style="margin-bottom:2rem;">
-            <div class="form-group col-md-6">
-                <label for="inputEmail4">Contrato Social ou Registro de Firma Individual ou Certificado de MEI:<span style="color:red">*</span></label>
+            
+            @if (in_array("1", $areas))
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Requerimento Preenchido:<span style="color:red">*</span></label>
 
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile01"
-                    aria-describedby="inputGroupFileAddon01" lang="PT">
-                    <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01" lang="PT">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
                 </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">CNPJ<span style="color:red">*</span></label>
 
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputPassword4">Atestado de regularidade do corpo de bombeiro<span style="color:red">*</span></label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
 
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile01"
-                    aria-describedby="inputGroupFileAddon01">
-                    <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
                 </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Contrato Social ou Registro de firma individual ou Certificado de MEI<span style="color:red">*</span></label>
 
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputPassword4">Licença anterior<span style="color:red">*</span></label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
 
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile01"
-                    aria-describedby="inputGroupFileAddon01">
-                    <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
                 </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">RG e Cpf<span style="color:red">*</span></label>
 
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputPassword4">Certificado de dedetização<span style="color:red">*</span></label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
 
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile01"
-                    aria-describedby="inputGroupFileAddon01">
-                    <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
                 </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Atestado de regularidade do corpo de bombeiro<span style="color:red">*</span></label>
 
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputPassword4">Licença Sanitária<span style="color:red">*</span></label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
 
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile01"
-                    aria-describedby="inputGroupFileAddon01">
-                    <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
                 </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Licença Anterior<span style="color:red">*</span></label>
 
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputPassword4">IPTU quitado<span style="color:red">*</span></label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
 
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile01"
-                    aria-describedby="inputGroupFileAddon01">
-                    <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
                 </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Certificado de detetizadora + Licença Sanitária<span style="color:red">*</span></label>
 
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputPassword4">Licença Ambiental<span style="color:red">*</span></label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
 
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile01"
-                    aria-describedby="inputGroupFileAddon01">
-                    <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
                 </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">IPTU Quitado<span style="color:red">*</span></label>
 
-            </div>
-            <div class="form-group col-md-6">
-                <label for="inputPassword4">Taxa de Vigilância Sanitária<span style="color:red">*</span></label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
 
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile01"
-                    aria-describedby="inputGroupFileAddon01">
-                    <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
                 </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Licença Ambiental<span style="color:red">*</span></label>
 
-            </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Taxa de vigilância sanitária<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>    
+            @endif
+            @if (in_array("2", $areas))
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Requerimento Preenchido:<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01" lang="PT">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">CNPJ<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Contrato Social ou Registro de firma individual ou Certificado de MEI<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">RG e Cpf<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Atestado de regularidade do corpo de bombeiro<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Certificado de detetizadora + Licença Sanitária<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">IPTU Quitado<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Licença Ambiental<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">PGRSS<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Comprovante de pagamento de taxa de vigilância sanitária<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">CNESS<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                
+            @endif
+            @if (in_array("3", $areas))
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Requerimento Preenchido:<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01" lang="PT">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">CNPJ<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Contrato Social ou Registro de firma individual ou Certificado de MEI<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">RG e Cpf<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Atestado de regularidade do corpo de bombeiro<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Licença anterior<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Certificado de detetizadora + Licença sanitária<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">IPTU Quitado<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Licença ambiental<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Projeto arquitetônico aprovado pela APEVISA<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Laudo de água microbiológico e Físico-Qumico<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">PGRSS<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">AFE/AE (Fabricar/Distribuir/Transportar)<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Taxa de vigilância sanitária<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+            @endif
+            @if (in_array("4", $areas))
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Requerimento Preenchido:<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01" lang="PT">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">CNPJ<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Contrato Social ou Registro de firma individual ou Certificado de MEI<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">RG e Cpf<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Declaração dos carros pipa na empresa<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Documentação dos veículos - CRLV<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Declaração da fonte<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Registro da ANTT<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Carteira nacional de habilitação dos motoristas - CNH<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Declaração do material de revestimento interno do tanque (No caso de não ser inox) <span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Laudo da água (Análise Físico-Quimica e Microbiológica)<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Taxa de vigilância sanitária<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+            @endif
+            @if (in_array("5", $areas))
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Requerimento Preenchido:<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01" lang="PT">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">CNPJ<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Contrato Social ou Registro de firma individual ou Certificado de MEI<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">RG e Cpf<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Atestado de regularidade do corpo de bombeiros<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Licença Anterior<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Certificado de detetizadora + licença sanitária<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Licença ambiental (Secretária De Desenvolvimento Rural E Meio Ambiente CPRH)<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Laudo de água microbiológico e Físico-Quimico<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+            @endif
+            @if (in_array("6", $areas))
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Requerimento Preenchido:<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01" lang="PT">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">CNPJ<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Certificado de MEI<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">RG e Cpf<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Atestado de regularidade do corpo de bombeiros<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Licença Anterior<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Certificado de detetizadora + licença sanitária<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">IPTU Quitado<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Licença da Adagro<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Licença Ambiental (Secretária de Desenvolvimento Rural E Meio Ambiente)<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Laudo de água microbiológico e físico-quimico<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+            @endif
+            @if (in_array("7", $areas))
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Requerimento Preenchido:<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01" lang="PT">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">CNPJ<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Contrato Social ou Registro de firma individual ou Certificado de MEI<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">RG e Cpf<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Atestado de regularidade do corpo de bombeiros<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Licença Anterior<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Certificado de detetizadora + licença sanitária<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">IPTU Quitado<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Licença Ambiental (Secretária de Desenvolvimento Rural E Meio Ambiente)<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Projeto Arquitetônico Aprovado pela APEVISA<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Laudo de Água Microbiológico e Físico-Químico<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Taxa de Vigilância Sanitária<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+            @endif
+            @if (in_array("8", $areas))
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Requerimento Preenchido:<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01" lang="PT">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">CNPJ<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Contrato Social ou Registro de firma individual ou Certificado de MEI<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">RG e Cpf<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Atestado de regularidade do corpo de bombeiros<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Licença Anterior<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Licença Adagro<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Certificado do Curso de Higiene e Manipulação de Alimentos<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Certificado de detetizadora + licença sanitária<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">IPTU Quitado<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Licença Ambiental (Secretária de Desenvolvimento Rural E Meio Ambiente)<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Laudo de Água Microbiológico e Físico-Quimico (Se tiver poço)<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Taxa de Serviço do Estabelecimento (PAGO)<span style="color:red">*</span></label>
+
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    </div>
+
+                </div>
+            @endif
 
         </div>
     </div>
