@@ -28,6 +28,19 @@ window.selecionarFiltro = function(){
     });
 }
 
+window.selecionarFiltroRequerimento = function($filtro){
+    // console.log($filtro);
+    $.ajax({
+        url:'/requerimento',
+        type:"get",
+        dataType:'json',
+        data: {"filtro": $filtro },
+        success: function(response){
+            $('tbody_').html(response.table_data);
+        }
+    });
+}
+
 window.mostrar = function($id){
     if(document.getElementById("cardEstabelecimento"+$id).style.display == "none"){
         document.getElementById("cardEstabelecimento"+$id).style.display = "block";

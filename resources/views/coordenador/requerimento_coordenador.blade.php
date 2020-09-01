@@ -26,28 +26,32 @@
             </div> --}}
         </div>
     </div>
-    <div class="container">
-        <div style="font-size:20px; font-weight:bold; color:#707070; margin-top:1.5rem; margin-left:20px;">Requerimento</div>
-        <div class="form-row" style="font-size:18px; font-weight:bold; color:#707070; margin-top:0.5rem; margin-left:13px;">
-            <div class="form-group col-md-4" >
-                <label for="exampleFormControlSelect1">Filtros</label>
-                <select required class="form-control" id="idSelecionarFiltro" onChange="selecionarFiltro(this)">
-                    <option value="">-- Selecionar Filtro --</option>
-                    <option value="1">Cadastro Pendente</option>
-                    <option value="2">Cadastro Aprovado</option>
-                    <option value="3">Cadastro Reprovado</option>
-                    <option value="4">Denúncia</option>
-                    {{-- @foreach ($areas as $item)
-                        <option value={{$item->id}}>{{$item->nome}}</option>
-                    @endforeach --}}
-                </select>
-            </div>
-        </div>
-    </div>
 
-    <div class="container" style="margin-top:1rem;margin-left:10px;">
+    <div class="container" style="margin-top:2rem;margin-left:10px;">
         <div class="form-row">
             <div class="form-group col-md-8">
+                    <div class="d-flex">
+                            <div class="mr-auto p-2">
+                                    <div class="btn-group">
+                                        <div style="font-size:20px; font-weight:bold; color:#707070; margin-left:0px;">Requerimento</div>
+                                    </div>
+                            </div>
+                           <div class="p-2">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Filtro
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('aprovado')" style="text-decoration:none;cursor:pointer">Aprovado</a>
+                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('denuncia')" style="text-decoration:none;cursor:pointer">Denúncia</a>
+                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('pendente')" style="text-decoration:none;cursor:pointer">Pendente</a>
+                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('primeira_licenca')" style="text-decoration:none;cursor:pointer">Primeira Licença</a>
+                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('renovacao_de_licenca')" style="text-decoration:none;cursor:pointer">Renovação de Licença</a>
+                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('all')" style="text-decoration:none;cursor:pointer">Mostrar Tudo</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 <div id="idTabela">
                     <table style="width:100%">
                         <tbody_>
