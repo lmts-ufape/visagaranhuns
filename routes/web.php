@@ -82,7 +82,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
     // Rota para avaliação de primeiro cadastro de usuario e empresa
     Route::post("/pagina/detalhes", "CoordenadorController@paginaDetalhes")->name("pagina.detalhes");
     Route::post("/julgar/cadastro", "CoordenadorController@julgar")->name("julgar.cadastro");
-    
+
 
     Route::get("/empresa/listagem", "EmpresaController@index")->name("listagem.empresas");
 
@@ -108,6 +108,7 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::post("/empresa/cadastro/responsavelTecnico", "RespTecController@store")->name("cadastrar.respTec");
     Route::get("/estabelecimento/adicionar/",           "EmpresaController@paginaCadastrarEmpresa")->name("pagina.adicionar.empresa");
     Route::get("/estabelecimento/perfil/",              "EmpresaController@showEmpresa")->name("pagina.mostrar.empresa");
+    Route::get("/estabelecimento/documentacao/",        "EmpresaController@showDocumentacao")->name("pagina.mostrar.documentacao");
     Route::post("/empresa/cadastro/responsavelTecnico", "EmpresaController@adicionarEmpresa")->name("adicionar.empresa");
     Route::get("/listar/empresas/",                     "EmpresaController@listarEmpresas")->name("listar.empresas");
     Route::get("/estabelecimento/lista/cnae",           "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes");

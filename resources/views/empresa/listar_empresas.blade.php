@@ -15,20 +15,26 @@
             {{-- <div class="p-2">
                 <img src="{{ asset('/imagens/logo_lupa_1.png') }}" alt="Logo" style="margin-right:13px;"/>
             </div> --}}
-           <div class="p-2">
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Ações
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="{{ route('pagina.adicionar.empresa') }}">Adicionar empresa</a>
+            @if($tipo == "estabelecimentos")
+                <div class="p-2">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Ações
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{ route('pagina.adicionar.empresa') }}">Adicionar empresa</a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
     <div class="container">
-        <div style="font-size:20px; font-weight:bold; color:#707070; margin-top:14px; margin-left:20px;">Estabelecimentos</div>
+        @if($tipo == "estabelecimentos")
+            <div style="font-size:20px; font-weight:bold; color:#707070; margin-top:14px; margin-left:20px;">Estabelecimentos</div>
+        @elseif($tipo == "documentacao")
+            <div style="font-size:20px; font-weight:bold; color:#707070; margin-top:14px; margin-left:20px;">Documentação</div>
+        @endif
     </div>
     <div class="container">
         <div class="row justify-content-left" style="margin-left:0px;padding-bottom:20rem;">
@@ -58,9 +64,15 @@
                             </div>
                         @endif
                         <div class="p-2">
-                            <a href="{{ route('pagina.mostrar.empresa',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;">
-                                <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
-                            </a>
+                            @if($tipo == "estabelecimentos")
+                                <a href="{{ route('pagina.mostrar.empresa',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            @elseif($tipo == "documentacao")
+                                <a href="{{ route('pagina.mostrar.documentacao',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            @endif
                         </div>
                     </div>
                 @endforeach
