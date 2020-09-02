@@ -222,8 +222,15 @@ class EmpresaController extends Controller
     */
     public function listarEmpresas(Request $request){
         //Preciso da função para carregar a página
-        $empresa = Empresa::where('user_id', $request->user)->paginate(20);
-        return view('empresa/listar_empresas',['empresas' => $empresa]);
+        // $empresa = Empresa::where('user_id', Crypt::decrypt($request->user))->paginate(20);
+        // return view('empresa/listar_empresas',['empresas' => $empresa]);
+        if($request->tipo == 'estabelecimentos'){
+            $empresa = Empresa::where('user_id', Crypt::decrypt($request->user))->paginate(20);
+            return view('empresa/listar_empresas',['empresas' => $empresa, 'tipo' => 'estabelecimentos']);
+        }elseif($request->tipo == 'documentacao'){
+            $empresa = Empresa::where('user_id', Crypt::decrypt($request->user))->paginate(20);
+            return view('empresa/listar_empresas',['empresas' => $empresa, 'tipo' => 'documentacao']);
+        }
     }
 
     /**
@@ -862,6 +869,24 @@ class EmpresaController extends Controller
             array_push($cnae, $cnaes);
         }
         return view('empresa/show_empresa',['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae]);
+    }
+    public function showDocumentacao(Request $request){
+
+        $idEmpresa = Crypt::decrypt($request->value);
+        $empresa = Empresa::where('id', $idEmpresa)->first();
+        $cnaempresa = CnaeEmpresa::where("empresa_id", $idEmpresa)->pluck('cnae_id');
+        $cnaes = [];
+        $areas = [];
+        
+        foreach ($cnaempresa as $indice) {
+            array_push($cnaes, Cnae::find($indice));
+        }
+        foreach ($cnaes as $indice) {
+            array_push($areas, $indice->areas_id);
+        }
+
+
+        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome, 'areas' => $areas]);
     }
     public function ajaxCnaes(Request $request){
         $this->listar($request->id_area);

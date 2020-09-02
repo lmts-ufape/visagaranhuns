@@ -121,7 +121,7 @@
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('listar.empresas', ['user' => Auth::user()->id]) }}">{{ __('Estabelecimentos') }}</a>
+                                    <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'estabelecimentos']) }}">{{ __('Estabelecimentos') }}</a>
                                     </li>
                                 @if(Auth::user()->status_cadastro == "aprovado")
                                     <li class="nav-item">
@@ -131,7 +131,7 @@
                                         <a class="nav-link" href="{{ route('login') }}">{{ __('Responsável Técnico') }}</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('login') }}">{{ __('Documentação') }}</a>
+                                        <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'documentacao']) }}">{{ __('Documentacao') }}</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('login') }}" style="margin-right:30px;">{{ __('Notificação') }}</a>
