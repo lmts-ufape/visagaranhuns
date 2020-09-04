@@ -121,20 +121,22 @@
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('listar.empresas', ['user' => Auth::user()->id]) }}">{{ __('Estabelecimentos') }}</a>
+                                    <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'estabelecimentos']) }}">{{ __('Estabelecimentos') }}</a>
                                     </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Licenças') }}</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Responsável Técnico') }}</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Documentação') }}</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}" style="margin-right:30px;">{{ __('Notificação') }}</a>
-                                </li>
+                                @if(Auth::user()->status_cadastro == "aprovado")
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('login') }}">{{ __('Licenças') }}</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('login') }}">{{ __('Responsável Técnico') }}</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'documentacao']) }}">{{ __('Documentacao') }}</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('login') }}" style="margin-right:30px;">{{ __('Notificação') }}</a>
+                                    </li>
+                                @endif
                                 <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         Olá, <span style="font-weight:bold; color:black;">{{ Auth::user()->name }}</span> <span class="caret"></span>
@@ -253,14 +255,16 @@
                                 <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Requerimento</a></div>
                                 <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Programação</a></div>
                                 <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Inspetores</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Empresa</a></div>
+                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Estabelecimentos</a></div>
                             @elseif(Auth::user()->tipo == "empresa")
                                 <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Início</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Empresas</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Licenças</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Responsável Técnico</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Documentação</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Notificação</a></div>
+                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Estabelecimentos</a></div>
+                                @if(Auth::user()->status_cadastro == "aprovado")
+                                    <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Licenças</a></div>
+                                    <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Responsável Técnico</a></div>
+                                    <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Documentação</a></div>
+                                    <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Notificação</a></div>
+                                @endif
                             @elseif(Auth::user()->tipo == "agente")
                                 <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Início</a></div>
                                 <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Programação</a></div>

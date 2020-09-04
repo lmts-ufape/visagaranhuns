@@ -18,10 +18,10 @@ class CreateDocsEmpresaTable extends Migration
             $table->string('nome');
             $table->date('data_emissao')->nullable();
 
-            $table->bigInteger("empresa_id")->nullable();
+            $table->bigInteger("empresa_id");
             $table->foreign("empresa_id")->references("id")->on("empresas");
 
-            $table->bigInteger("tipodocemp_id")->nullable();
+            $table->bigInteger("tipodocemp_id");
             $table->foreign("tipodocemp_id")->references("id")->on("tipodocemp");
             $table->timestamps();
         });

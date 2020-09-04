@@ -10,7 +10,7 @@ use App\User;
 use App\Empresa;
 use Illuminate\Support\Facades\Mail;
 
-class ConfirmaCadastroUser extends Mailable
+class ConfirmaCadastroEmpresa extends Mailable
 {
     use Queueable, SerializesModels;
     private $user;
