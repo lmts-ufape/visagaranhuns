@@ -418,8 +418,11 @@ class EmpresaController extends Controller
             array_push($areas, $indice->areas_id);
         }
 
+        // LISTAR OS TIPOS DE DOCS NA PROXIMA PAGINA!
+        // $docsEmpresa = Docempresa::where('tipodocemp_id', )->get();
 
-        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome, 'areas' => $areas, 'id' => $empresa->id]);
+
+        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome, 'areas' => $areas, 'id' => $empresa->id, 'status' => $empresa->status_cadastro]);
     }
     public function ajaxCnaes(Request $request){
         $this->listar($request->id_area);

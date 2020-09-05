@@ -23,241 +23,1398 @@
         <div class="container" style="margin-top:1rem;margin-left:10px;">
             <div class="form-row" style="margin-bottom:2rem;">
                 
+                
                 @if (in_array("1", $areas))
+
                     <div class="container">
                         <div style="font-size:20px; font-weight:bold; color:#707070; margin-top:2rem;">Serviço de Ensino</div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputEmail4">Requerimento Preenchido:<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01" name="req_preenchido[]"
-                            aria-describedby="inputGroupFileAddon01" lang="PT">
-                            <input type="hidden" name="data[]" value="28/05/1994">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Requerimento Preenchido</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">CNPJ<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01" name="req_preenchido[]"
-                            aria-describedby="inputGroupFileAddon01">
-                            <input type="hidden" name="data[]" value="28/05/1994">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">CNPJ</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Contrato Social ou Registro de firma individual ou Certificado de MEI<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01" name="req_preenchido[]"
-                            aria-describedby="inputGroupFileAddon01">
-                            <input type="hidden" name="data[]" value="28/05/1994">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Contrato Social ou Registro de firma individual ou Certificado de MEI</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">RG e Cpf<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01" name="rg"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">RG</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Atestado de regularidade do corpo de bombeiro<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01" name="regula_bombeiro"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">CPF</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Licença Anterior<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01" name="licenca_anterior"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Atestado de regularidade do corpo de bombeiro</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Certificado de detetizadora + Licença Sanitária<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01" name="cert_deteti"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Licença Anterior</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">IPTU Quitado<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01" name="iptu_quitado"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Certificado de detetizadora + Licença Sanitária</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Licença Ambiental<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01" name="licenca_ambiental"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+
+                    
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">IPTU Quitado</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Taxa de vigilância sanitária<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01" name="taxa_vigilancia"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Licença Ambiental</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
+                    </div>
+
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Taxa de vigilância sanitária</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <hr/>
                 @endif
+
                 @if (in_array("2", $areas))
+
+                
                     <div class="container">
                         <div style="font-size:20px; font-weight:bold; color:#707070; margin-top:2rem;">Serviços de Saúde/Interesse a saúde/outros</div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputEmail4">Requerimento Preenchido:<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01"
-                            aria-describedby="inputGroupFileAddon01" lang="PT">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Requerimento Preenchido:</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">CNPJ<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">CNPJ</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Contrato Social ou Registro de firma individual ou Certificado de MEI<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Contrato Social ou Registro de firma individual ou Certificado de MEI</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">RG e Cpf<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">RG</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Atestado de regularidade do corpo de bombeiro<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Cpf</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Certificado de detetizadora + Licença Sanitária<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Atestado de regularidade do corpo de bombeiro</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">IPTU Quitado<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Certificado de detetizadora</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Licença Ambiental<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Licença Sanitária</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">PGRSS<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">IPTU Quitado</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Comprovante de pagamento de taxa de vigilância sanitária<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Licença Ambiental</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">CNESS<span style="color:red">*</span></label>
-    
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01"
-                            aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">-- Clique aqui para selecionar o aquivo --</label>
+
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">PGRSS</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-    
                     </div>
+                    
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Comprovante de pagamento de taxa de vigilância sanitária</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row justify-content-left" style="margin-left:0px;">
+                            <div class="d-flex cardEmpresa">
+                                <div class="mr-auto p-1">
+                                    <a style="text-decoration:none;cursor:null;color:black;">
+                                        <div class="form-group">
+                                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">CNESS</div>
+                                            <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @if ($status == "pendente")
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="p-2">
+                                        <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                            <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                        </div>
+                                    </div>
+                                @endif
+                                
+                                <div class="p-2">
+                                    <a href="" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                     <hr/>
+                @endif
+                @if (in_array("3", $areas))
+                <div class="container">
+                    <div style="font-size:20px; font-weight:bold; color:#707070; margin-top:2rem;">Distribuidora de serviços de saúde</div>
+                </div>
+                <div class="container">
+                    <div class="row justify-content-left" style="margin-left:0px;">
+                        <div class="d-flex cardEmpresa">
+                            <div class="mr-auto p-1">
+                                <a style="text-decoration:none;cursor:null;color:black;">
+                                    <div class="form-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Requerimento Preenchido</div>
+                                        <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                    </div>
+                                </a>
+                            </div>
+                            @if ($status == "pendente")
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <a href="" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row justify-content-left" style="margin-left:0px;">
+                        <div class="d-flex cardEmpresa">
+                            <div class="mr-auto p-1">
+                                <a style="text-decoration:none;cursor:null;color:black;">
+                                    <div class="form-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">CNPJ</div>
+                                        <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                    </div>
+                                </a>
+                            </div>
+                            @if ($status == "pendente")
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <a href="" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row justify-content-left" style="margin-left:0px;">
+                        <div class="d-flex cardEmpresa">
+                            <div class="mr-auto p-1">
+                                <a style="text-decoration:none;cursor:null;color:black;">
+                                    <div class="form-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Contrato Social ou Registro de firma individual ou Certificado de MEI</div>
+                                        <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                    </div>
+                                </a>
+                            </div>
+                            @if ($status == "pendente")
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <a href="" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="container">
+                    <div class="row justify-content-left" style="margin-left:0px;">
+                        <div class="d-flex cardEmpresa">
+                            <div class="mr-auto p-1">
+                                <a style="text-decoration:none;cursor:null;color:black;">
+                                    <div class="form-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">RG</div>
+                                        <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                    </div>
+                                </a>
+                            </div>
+                            @if ($status == "pendente")
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <a href="" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row justify-content-left" style="margin-left:0px;">
+                        <div class="d-flex cardEmpresa">
+                            <div class="mr-auto p-1">
+                                <a style="text-decoration:none;cursor:null;color:black;">
+                                    <div class="form-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">CPF</div>
+                                        <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                    </div>
+                                </a>
+                            </div>
+                            @if ($status == "pendente")
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <a href="" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row justify-content-left" style="margin-left:0px;">
+                        <div class="d-flex cardEmpresa">
+                            <div class="mr-auto p-1">
+                                <a style="text-decoration:none;cursor:null;color:black;">
+                                    <div class="form-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Atestado de regularidade do corpo de bombeiro</div>
+                                        <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                    </div>
+                                </a>
+                            </div>
+                            @if ($status == "pendente")
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <a href="" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row justify-content-left" style="margin-left:0px;">
+                        <div class="d-flex cardEmpresa">
+                            <div class="mr-auto p-1">
+                                <a style="text-decoration:none;cursor:null;color:black;">
+                                    <div class="form-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Licença Anterior</div>
+                                        <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                    </div>
+                                </a>
+                            </div>
+                            @if ($status == "pendente")
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <a href="" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row justify-content-left" style="margin-left:0px;">
+                        <div class="d-flex cardEmpresa">
+                            <div class="mr-auto p-1">
+                                <a style="text-decoration:none;cursor:null;color:black;">
+                                    <div class="form-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Certificado de detetizadora</div>
+                                        <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                    </div>
+                                </a>
+                            </div>
+                            @if ($status == "pendente")
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <a href="" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row justify-content-left" style="margin-left:0px;">
+                        <div class="d-flex cardEmpresa">
+                            <div class="mr-auto p-1">
+                                <a style="text-decoration:none;cursor:null;color:black;">
+                                    <div class="form-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Licença Sanitária</div>
+                                        <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                    </div>
+                                </a>
+                            </div>
+                            @if ($status == "pendente")
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <a href="" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="container">
+                    <div class="row justify-content-left" style="margin-left:0px;">
+                        <div class="d-flex cardEmpresa">
+                            <div class="mr-auto p-1">
+                                <a style="text-decoration:none;cursor:null;color:black;">
+                                    <div class="form-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">IPTU Quitado</div>
+                                        <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                    </div>
+                                </a>
+                            </div>
+                            @if ($status == "pendente")
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <a href="" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row justify-content-left" style="margin-left:0px;">
+                        <div class="d-flex cardEmpresa">
+                            <div class="mr-auto p-1">
+                                <a style="text-decoration:none;cursor:null;color:black;">
+                                    <div class="form-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Licença Ambiental</div>
+                                        <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                    </div>
+                                </a>
+                            </div>
+                            @if ($status == "pendente")
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <a href="" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row justify-content-left" style="margin-left:0px;">
+                        <div class="d-flex cardEmpresa">
+                            <div class="mr-auto p-1">
+                                <a style="text-decoration:none;cursor:null;color:black;">
+                                    <div class="form-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Projeto arquitetônico aprovado pela APEVISA</div>
+                                        <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                    </div>
+                                </a>
+                            </div>
+                            @if ($status == "pendente")
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <a href="" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row justify-content-left" style="margin-left:0px;">
+                        <div class="d-flex cardEmpresa">
+                            <div class="mr-auto p-1">
+                                <a style="text-decoration:none;cursor:null;color:black;">
+                                    <div class="form-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Laudo de água microbiologico e físico-quimico</div>
+                                        <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                    </div>
+                                </a>
+                            </div>
+                            @if ($status == "pendente")
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <a href="" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row justify-content-left" style="margin-left:0px;">
+                        <div class="d-flex cardEmpresa">
+                            <div class="mr-auto p-1">
+                                <a style="text-decoration:none;cursor:null;color:black;">
+                                    <div class="form-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">PGRSS</div>
+                                        <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                    </div>
+                                </a>
+                            </div>
+                            @if ($status == "pendente")
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <a href="" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row justify-content-left" style="margin-left:0px;">
+                        <div class="d-flex cardEmpresa">
+                            <div class="mr-auto p-1">
+                                <a style="text-decoration:none;cursor:null;color:black;">
+                                    <div class="form-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">AFE/AE (FABRICAR/DÍSTRIBUIR/TRANSPORTAR)</div>
+                                        <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                    </div>
+                                </a>
+                            </div>
+                            @if ($status == "pendente")
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <a href="" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row justify-content-left" style="margin-left:0px;">
+                        <div class="d-flex cardEmpresa">
+                            <div class="mr-auto p-1">
+                                <a style="text-decoration:none;cursor:null;color:black;">
+                                    <div class="form-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Taxa de vigilância sanitária</div>
+                                        <div style="margin-left:10px;font-size:11px;">Nome do doc</div>
+                                    </div>
+                                </a>
+                            </div>
+                            @if ($status == "pendente")
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="p-2">
+                                    <div style="margin-top:2.4px;margin-right:15px;font-size:15px;">
+                                        <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <div class="p-2">
+                                <a href="" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+                @if (in_array("4", $areas))
+                @endif
+                @if (in_array("5", $areas))
+                @endif
+                @if (in_array("6", $areas))
+                @endif
+                @if (in_array("7", $areas))
+                @endif
+                @if (in_array("8", $areas))
                 @endif
             </div>
         </div>
-        <div style="margin-bottom:10rem;">
+        {{-- <div style="margin-bottom:10rem;">
             <div class="d-flex">
                 <div class="mr-auto p-2">
                 </div>
             <div class="p-2">
                 <button type="submit" class="btn btn-success" style="width:340px;">Cadastrar</button>
             </div>
-        </div>
+        </div> --}}
         </div>
     </form>
 
