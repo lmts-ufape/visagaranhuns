@@ -17,7 +17,7 @@ class InspetorController extends Controller
     public function listarInspetores()
     {
         $inspetores = Inspetor::all();
-        return view('home', [ 'inspetores'  => $inspetores ]);
+        return view('coordenador/inspetores_coordenador', [ 'inspetores'  => $inspetores ]);
     }
 
     public function home()
