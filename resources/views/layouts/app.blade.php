@@ -31,6 +31,8 @@
     <link href="{{ asset('css/naoLogado.css') }}" rel="stylesheet">
     <link href="{{ asset('css/coordenador.css') }}" rel="stylesheet">
     <link href="{{ asset('css/cadastrar_empresa.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/geral.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/agentes.css') }}" rel="stylesheet">
 
 </head>
 <body>
@@ -89,9 +91,17 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Programação') }}</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Inspetores') }}</a>
-                                </li>
+                                <li class="nav-item dropdown">
+                                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                            Membros<span class="caret"></span>
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="{{ route('listar.agentes') }}">Agentes</a>
+                                            <a class="dropdown-item" href="{{ route('logout') }}">Inspetores</a>
+                                            <a class="dropdown-item" href="{{ route('logout') }}">Representante Téc.</a>
+                                        </div>
+                                    </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('listagem.area') }}">{{ __('Estabelecimentos') }}</a>
                                 </li>
