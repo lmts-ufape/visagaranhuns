@@ -98,8 +98,7 @@
 
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                             <a class="dropdown-item" href="{{ route('listar.agentes') }}">Agentes</a>
-                                            <a class="dropdown-item" href="{{ route('logout') }}">Inspetores</a>
-                                            <a class="dropdown-item" href="{{ route('logout') }}">Representante Téc.</a>
+                                            <a class="dropdown-item" href="{{ route('listar.inspetores') }}">Inspetores</a>
                                         </div>
                                     </li>
                                 <li class="nav-item">
