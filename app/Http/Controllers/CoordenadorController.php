@@ -203,6 +203,76 @@ class CoordenadorController extends Controller
         //     }
         // }
     }
+
+    public function cadastroEmailInspetor(Request $request)
+    {
+        $validationData = $this->validate($request,[
+            'email'=>'required|string|email',
+        ]);
+
+        if ($request->tipo == "inspetor") {
+            
+            $user = User::where('email',$request->input('email'))->first();
+            $empresa = Empresa::where('id', $request->empresa)->first();
+    
+            if($user == null){
+              $passwordTemporario = Str::random(8);
+              Mail::to($request->email)->send(new CadastroUsuarioPorEmail(Auth()->user()->name, $passwordTemporario, $request->tipo));
+              $user = User::create([
+                'name'            => "Preencher",
+                'email'           => $request->email,
+                'password'        => bcrypt($passwordTemporario),
+                'tipo'            => "inspetor",
+                'status_cadastro' => "aprovado",
+              ]);
+            }
+        }
+
+        elseif ($request->tipo == "agente") {
+
+            $user = User::where('email',$request->input('email'))->first();
+            $empresa = Empresa::where('id', $request->empresa)->first();
+    
+            if($user == null){
+              $passwordTemporario = Str::random(8);
+              Mail::to($request->email)->send(new CadastroUsuarioPorEmail(Auth()->user()->name, $passwordTemporario));
+              $user = User::create([
+                'name'            => "Preencher",
+                'email'           => $request->email,
+                'password'        => bcrypt($passwordTemporario),
+                'tipo'            => "inspetor",
+                'status_cadastro' => "aprovado",
+              ]);
+            }
+        }
+
+        return redirect()->route('coord.detalhesEvento', ['eventoId' => $request->eventoId]);
+    }
+
+    public function cadastroEmailInspetor(Request $request)
+    {
+        $validationData = $this->validate($request,[
+            'email'=>'required|string|email',
+        ]);
+
+        $user = User::where('email',$request->input('email'))->first();
+        $empresa = Empresa::where('id', $request->empresa)->first();
+
+        if($user == null){
+          $passwordTemporario = Str::random(8);
+          Mail::to($request->email)->send(new CadastroUsuarioPorEmail(Auth()->user()->name, $passwordTemporario));
+          $user = User::create([
+            'name'            => "Preencher",
+            'email'           => $request->email,
+            'password'        => bcrypt($passwordTemporario),
+            'tipo'            => "inspetor",
+            'status_cadastro' => "aprovado",
+          ]);
+        }
+
+
+        return redirect()->route('coord.detalhesEvento', ['eventoId' => $request->eventoId]);
+    }
     /**
      * Store a newly created resource in storage.
      *

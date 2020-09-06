@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Inspetor;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class InspetorController extends Controller
 {
@@ -43,27 +44,26 @@ class InspetorController extends Controller
      */
     public function store(Request $request)
     {
-        // Cadastro temporário de fiscal
+        $user = User::find(Auth::user()->id);
+        
         $validator = $request->validate([
-            'name' => 'required|string',
+            'nome'     => 'required|string',
             'formacao' => 'required|string',
             'especializacao' => 'required|string',
-            'email' => 'required|email',
-            'password' => 'required',
+            'password'       => 'required',
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'tipo' => "inspetor",
-        ]);
+        // Atualiza dados de user para inspetor
+        $user->name = $request->nome;
+        $user->password = bcrypt($request->password);
+        $user->save();
 
-        $fiscal = Inspetor::create([
-            'formacao' => $request->formacao,
+        $inspetor = Inspetor::create([
+            'formacao'       => $request->formacao,
             'especializacao' => $request->especializacao,
-            'user_id' => $user->id,
+            'user_id'        => $user->id,
         ]);
+
 
         return redirect()->route('home');
     }

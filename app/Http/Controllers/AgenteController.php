@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Agente;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class AgenteController extends Controller
 {
@@ -44,24 +45,22 @@ class AgenteController extends Controller
      */
     public function store(Request $request)
     {
-        // Cadastro temporário de agente
+        $user = User::find(Auth::user()->id);
+        
         $validator = $request->validate([
-            'name' => 'required|string',
+            'nome'     => 'required|string',
             'formacao' => 'required|string',
-            'email' => 'required|email',
-            'password' => 'required',
+            'password'       => 'required',
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'tipo' => "agente",
-        ]);
+        // Atualiza dados de user para agente
+        $user->name = $request->nome;
+        $user->password = bcrypt($request->password);
+        $user->save();
 
         $agente = Agente::create([
-            'formacao' => $request->formacao,
-            'user_id' => $user->id,
+            'formacao'       => $request->formacao,
+            'user_id'        => $user->id,
         ]);
 
         return redirect()->route('home');
