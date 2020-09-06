@@ -11,6 +11,8 @@ use App\Empresa;
 use App\Endereco;
 use App\Telefone;
 use App\CnaeEmpresa;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
 class CoordenadorController extends Controller
 {
@@ -204,27 +206,34 @@ class CoordenadorController extends Controller
         // }
     }
 
-    public function cadastroEmailInspetor(Request $request)
+    public function convidarEmail(Request $request)
     {
         $validationData = $this->validate($request,[
-            'email'=>'required|string|email',
+            'email'=>'required|email',
         ]);
-
+        
         if ($request->tipo == "inspetor") {
             
             $user = User::where('email',$request->input('email'))->first();
             $empresa = Empresa::where('id', $request->empresa)->first();
     
             if($user == null){
+
               $passwordTemporario = Str::random(8);
-              Mail::to($request->email)->send(new CadastroUsuarioPorEmail(Auth()->user()->name, $passwordTemporario, $request->tipo));
+              Mail::to($request->email)->send(new \App\Mail\CadastroUsuarioPorEmail($passwordTemporario, $request->tipo));
               $user = User::create([
-                'name'            => "Preencher",
+                'name'            => "Inspetor",
                 'email'           => $request->email,
                 'password'        => bcrypt($passwordTemporario),
                 'tipo'            => "inspetor",
-                'status_cadastro' => "aprovado",
+                'status_cadastro' => "pendente",
               ]);
+              session()->flash('success', 'Um e-mail com o convite foi enviado para o endereço especificado.');
+              return back();
+            }
+            else {
+                session()->flash('error', 'O e-mail já está cadastrado no sistema!');
+                return back();
             }
         }
 
@@ -234,45 +243,27 @@ class CoordenadorController extends Controller
             $empresa = Empresa::where('id', $request->empresa)->first();
     
             if($user == null){
+
               $passwordTemporario = Str::random(8);
-              Mail::to($request->email)->send(new CadastroUsuarioPorEmail(Auth()->user()->name, $passwordTemporario));
+              Mail::to($request->email)->send(new \App\Mail\CadastroUsuarioPorEmail($passwordTemporario, $request->tipo));
               $user = User::create([
-                'name'            => "Preencher",
+                'name'            => "Agente",
                 'email'           => $request->email,
                 'password'        => bcrypt($passwordTemporario),
-                'tipo'            => "inspetor",
-                'status_cadastro' => "aprovado",
+                'tipo'            => "agente",
+                'status_cadastro' => "pendente",
               ]);
+              session()->flash('success', 'Um e-mail com o convite foi enviado para o endereço especificado.');
+              return back();
+            }
+            else {
+                session()->flash('error', 'O e-mail já está cadastrado no sistema!');
+                return back();
             }
         }
-
-        return redirect()->route('coord.detalhesEvento', ['eventoId' => $request->eventoId]);
     }
 
-    public function cadastroEmailInspetor(Request $request)
-    {
-        $validationData = $this->validate($request,[
-            'email'=>'required|string|email',
-        ]);
-
-        $user = User::where('email',$request->input('email'))->first();
-        $empresa = Empresa::where('id', $request->empresa)->first();
-
-        if($user == null){
-          $passwordTemporario = Str::random(8);
-          Mail::to($request->email)->send(new CadastroUsuarioPorEmail(Auth()->user()->name, $passwordTemporario));
-          $user = User::create([
-            'name'            => "Preencher",
-            'email'           => $request->email,
-            'password'        => bcrypt($passwordTemporario),
-            'tipo'            => "inspetor",
-            'status_cadastro' => "aprovado",
-          ]);
-        }
-
-
-        return redirect()->route('coord.detalhesEvento', ['eventoId' => $request->eventoId]);
-    }
+   
     /**
      * Store a newly created resource in storage.
      *

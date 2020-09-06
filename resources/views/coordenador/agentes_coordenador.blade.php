@@ -2,6 +2,17 @@
 
 @section('content')
 <div class="container">
+    @if ($message = Session::get('success'))
+        <div class="alert alert-success alert-block fade show">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{$message}}</strong>
+        </div>
+    @elseif ($message = Session::get('error'))
+    <div class="alert alert-warning alert-block fade show">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{{$message}}</strong>
+    </div>
+    @endif
     <div class="barraMenu">
         <div class="d-flex justify-content-center">
             <div class="mr-auto p-2 styleBarraPrincipalMOBILE">
@@ -23,7 +34,7 @@
                         Ações
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item btn btn-primary" data-toggle="modal" data-target="#exampleModal">Cadastrar agente</a>
+                        <a class="dropdown-item btn btn-primary" data-toggle="modal" data-target="#exampleModal">Convidar agente</a>
                     </div>
                 </div>
             </div>
@@ -35,14 +46,14 @@
             <div class="form-group col-md-12">
 
                 @if(count($agentes)>0)
-                    @foreach($item as $agentes)
+                    @foreach($agentes as $item)
                         <div class="cardListagem" >
                             <div class="container">
                                 <div class="d-flex">
                                     <div class="mr-auto p-2">
                                         <div class="btn-group" style="margin-bottom:-15px;">
                                             <div class="form-group" style="font-size:15px;">
-                                                <div class="textoCampo">Fulano de Tal</div>
+                                                <div class="textoCampo">{{$item->name}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -59,7 +70,7 @@
                     <div class="row justify-content-center" style="margin-top:4rem;margin-bottom:10rem">
                         <div class="col-12" style="text-align:center;color:gray;font-size:15px;font-weight:bold;">Nenhum agente cadastrado!</div>
                         <div class="col-5" style="text-align:center">
-                            <a data-toggle="modal" data-target="#exampleModal" style="color:#1493e6; cursor:pointer">Clique aqui para cadastrar um agente</a>
+                            <a data-toggle="modal" data-target="#exampleModal" style="color:#1493e6; cursor:pointer">Clique aqui para convidar um agente</a>
                         </div>
                     </div>
                 @endif
@@ -76,27 +87,31 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Cadastrar agente</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Convidar agente</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-                <div class="form-row">
-                    <div class="col-md-12">
-                        <label>Para cadastar um agente, basta enviar um e-mail:</label>
+            <form method="POST" action="{{route('convidar.agente')}}">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label>Para convidar um agente, basta enviar um e-mail:</label>
+                        </div>
+                        <div class="col-md-12">
+                            <label>E-mail:</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp">
+                            <input type="hidden" name="tipo" value="agente">
+                        </div>
+    
                     </div>
-                    <div class="col-md-12">
-                        <label>E-mail:</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                    </div>
-
                 </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
-              <button type="button" class="btn btn-success">Enviar convite</button>
-            </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
+                  <button type="submit" class="btn btn-success">Enviar convite</button>
+                </div>
+            </form>
           </div>
         </div>
       </div>

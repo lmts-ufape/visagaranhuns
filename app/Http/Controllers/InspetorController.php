@@ -16,7 +16,7 @@ class InspetorController extends Controller
      */
     public function listarInspetores()
     {
-        $inspetores = Inspetor::all();
+        $inspetores = User::where("tipo", "inspetor")->where("status_cadastro", "aprovado")->get();
         return view('coordenador/inspetores_coordenador', [ 'inspetores'  => $inspetores ]);
     }
 
@@ -56,6 +56,7 @@ class InspetorController extends Controller
         // Atualiza dados de user para inspetor
         $user->name = $request->nome;
         $user->password = bcrypt($request->password);
+        $user->status_cadastro = "aprovado";
         $user->save();
 
         $inspetor = Inspetor::create([

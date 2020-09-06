@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 class CadastroUsuarioPorEmail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $nomeUsuario;
+    // public $nomeUsuario;
     // public $nomeEmpresa;
     public $passwordTemporario;
     public $tipo;
@@ -20,9 +20,9 @@ class CadastroUsuarioPorEmail extends Mailable
      *
      * @return void
      */
-    public function __construct(String $nomeUsuario, $passwordTemporario, $tipo)
+    public function __construct(String $passwordTemporario, $tipo)
     {
-      $this->nomeUsuario    = $nomeUsuario;
+      // $this->nomeUsuario    = $nomeUsuario;
       //$this->nomeEmpresa  = $nomeEmpresa;
       $this->passwordTemporario    = $passwordTemporario;
       $this->tipo                  = $tipo;

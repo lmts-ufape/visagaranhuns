@@ -17,7 +17,7 @@ class AgenteController extends Controller
     public function listarAgentes()
     {
         // Definir pagina para listagem
-        $agentes = Agente::all();
+        $agentes = User::where("tipo", "agente")->where("status_cadastro", "aprovado")->get();
         return view('coordenador/agentes_coordenador', [ 'agentes'  => $agentes ]);
     }
 
@@ -56,6 +56,7 @@ class AgenteController extends Controller
         // Atualiza dados de user para agente
         $user->name = $request->nome;
         $user->password = bcrypt($request->password);
+        $user->status_cadastro = "aprovado";
         $user->save();
 
         $agente = Agente::create([
