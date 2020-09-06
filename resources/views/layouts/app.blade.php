@@ -33,6 +33,7 @@
     <link href="{{ asset('css/cadastrar_empresa.css') }}" rel="stylesheet">
     <link href="{{ asset('css/geral.css') }}" rel="stylesheet">
     <link href="{{ asset('css/agentes.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/documentos_empresa.css') }}" rel="stylesheet">
 
 </head>
 <body>

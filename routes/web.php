@@ -145,6 +145,7 @@ Route::middleware(['IsInspetor'])->group(function () {
 // Grupo de rotas para Agente
 Route::middleware(['IsAgente'])->group(function () {
     Route::get('/home/agente', 'AgenteController@home')->name('home.agente');
+    Route::get('cadastrar/agente', function () {return view('agente/cadastrar_agente');})->name('cadastrar.agente');
     /*
         (WEB)
         * Cadastrar/Editar/Deletar relatórios (Próprios)
