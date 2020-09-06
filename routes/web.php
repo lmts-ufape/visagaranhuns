@@ -112,6 +112,7 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::post("/empresa/cadastro/responsavelTecnico", "EmpresaController@adicionarEmpresa")->name("adicionar.empresa");
     Route::get("/listar/empresas/",                     "EmpresaController@listarEmpresas")->name("listar.empresas");
     Route::get("/estabelecimento/lista/cnae",           "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes");
+    Route::get("/listar/responsavelTecnico",            "EmpresaController@listarResponsavelTec")->name("listar.responsavelTec");
 
 
 /*
