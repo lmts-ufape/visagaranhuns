@@ -14,7 +14,7 @@
                 </div>
                 <div class="mr-auto p-2 styleBarraPrincipalPC">
                     <div class="btn-group">
-                        <div style="font-size:20px; font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;margin-bottom:-5px">Cadastrar agente</div>
+                        <div style="font-size:20px; font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;margin-bottom:-5px">Cadastrar responsável técnico</div>
                     </div>
                 </div>
                 <div class="p-2">
