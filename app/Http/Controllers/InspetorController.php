@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Inspetor;
 use App\User;
-use Illuminate\Support\Facades\Auth;
+use Auth;
 
 class InspetorController extends Controller
 {
@@ -32,8 +32,9 @@ class InspetorController extends Controller
      */
     public function create()
     {
-        // Definir tela para cadastro de inspetor
-        return view('inspetor.cadastro');
+        $user = User::find(Auth::user()->id);
+        // Tela de conclusão de cadastro de agente
+        return view('inspetor.cadastrar_inspetor')->with(["user" => $user->email]);
     }
 
     /**
@@ -49,7 +50,9 @@ class InspetorController extends Controller
         $validator = $request->validate([
             'nome'     => 'required|string',
             'formacao' => 'required|string',
-            'especializacao' => 'required|string',
+            'especializacao' => 'nullable|string',
+            'cpf'            => 'required|string',
+            'telefone'       => 'required|string',
             'password'       => 'required',
         ]);
 
@@ -62,11 +65,13 @@ class InspetorController extends Controller
         $inspetor = Inspetor::create([
             'formacao'       => $request->formacao,
             'especializacao' => $request->especializacao,
+            'cpf'            => $request->cpf,
+            'telefone'       => $request->telefone,
             'user_id'        => $user->id,
         ]);
 
 
-        return redirect()->route('home');
+        return redirect()->route('/');
     }
 
     /**

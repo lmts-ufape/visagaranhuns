@@ -23,7 +23,7 @@
                         Ações
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item btn btn-primary" data-toggle="modal" data-target="#exampleModal">Cadastrar responsável técnico</a>
+                        <a class="dropdown-item btn btn-primary" href="{{ route('cadastrar.rt') }}">Cadastrar responsável técnico</a>
                     </div>
                 </div>
             </div>
@@ -58,9 +58,6 @@
                 {{-- @else --}}
                     <div class="row justify-content-center" style="margin-top:4rem;margin-bottom:10rem">
                         <div class="col-12" style="text-align:center;color:gray;font-size:15px;font-weight:bold;">Nenhum responsável técnico cadastrado!</div>
-                        <div class="col-5" style="text-align:center">
-                            <a data-toggle="modal" data-target="#exampleModal" style="color:#1493e6; cursor:pointer">Clique aqui para cadastrar um responsável técnico</a>
-                        </div>
                     </div>
                 {{-- @endif --}}
 
@@ -72,34 +69,36 @@
 
 
       <!-- Modal -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      {{-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Cadastrar responsável técnico</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Convidar responsável técnico</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-                <div class="form-row">
-                    <div class="col-md-12">
-                        <label>Para cadastar um responsável técnico, basta enviar um e-mail:</label>
+            <form method="POST" action="{{route('cadastrar.rt')}}">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label>Para convidar um responsável técnico, basta enviar um e-mail:</label>
+                        </div>
+                        <div class="col-md-12">
+                            <label>E-mail:</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp">
+                        </div>
                     </div>
-                    <div class="col-md-12">
-                        <label>E-mail:</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                    </div>
-
                 </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
-              <button type="button" class="btn btn-success">Enviar convite</button>
-            </div>
-          </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
+                  <button type="submit" class="btn btn-success">Enviar convite</button>
+                </div>
+              </div>
+            </form>
         </div>
-      </div>
+      </div> --}}
 @endsection
 
 

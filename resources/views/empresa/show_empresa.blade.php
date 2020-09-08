@@ -108,20 +108,66 @@
                         </div>
                         </div>
                     </div>
-                    <div class="barraMenu" style="margin-top:0.7rem;">
+                    <div class="barraMenu">
                         <div class="d-flex">
                             <div class="mr-auto p-2">
-                                <div class="btn-group">
-                                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Documentos do estabelecimento</div>
+                                <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
+                                    <div class="btn-group">
+                                        <div style="margin-top:1px;margin-left:5px;"></div>
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Responsável Técnico</div>
+                                    </div>
+                                </a>
+                            </div>
+                           <div class="p-2">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Ações
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" style="cursor:pointer" href="{{ route('cadastrar.rt.pagina', ['empresaId' => $empresaId]) }}" onclick="editarEstabelecimento()">Cadastrar Resp. Técnico</a>
+                                         <a class="dropdown-item" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal" onclick="deletarEstabelecimento('{{$empresa->user->name}}')">Deletar Resp. Técnico</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="container" style="margin-top:1rem;margin-left:10px;">
+                        @if ($respTecnico == null)
+                            <div class="col-12" style="text-align:center;color:gray;font-weight:bold;margin-top:2rem; margin-bottom:3rem;font-size:20px;font-family:Arial, Helvetica, sans-serif;">Nenhum Responsável Técnico Cadastrado!</div>
+                        @else
+                        <fieldset disabled id="idFieldset">
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="inputEmail4">Nome:</label>
+                                    <input type="text" class="form-control" id="inputEmail4" placeholder="{{$respTecnico->user->name}}">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="inputPassword4">CPF:</label>
+                                    <input type="text" class="form-control" id="inputPassword4" placeholder="{{$empresa->cnpjcpf}}">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="inputPassword4">Formação:</label>
+                                    <input type="text" class="form-control" id="inputPassword4" placeholder="{{$respTecnico->formacao}}">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="inputPassword4">Especialização:</label>
+                                    <input type="text" class="form-control" id="inputPassword4" placeholder="{{$respTecnico->especializacao}}">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="inputEmail4">Telefone:</label>
+                                    <input type="text" class="form-control" id="inputEmail4" placeholder="{{$respTecnico->user->name}}">
+                                </div>
+                            </div>
+                        </fieldset>
+                        @endif
                     </div>
                     <div class="barraMenu" style="margin-top:0.7rem;">
                         <div class="d-flex">
                             <div class="mr-auto p-2">
                                 <div class="btn-group">
-                                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Documentos do representante (Dono/Gerente)</div>
+                                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Documentos do Responsável Técnico</div>
                                 </div>
                             </div>
                         </div>

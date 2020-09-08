@@ -36,6 +36,14 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// Completar cadastro de Inpetor
+Route::get('/completar/cadastro/inspetor','InspetorController@create')->name('completar.cadastro.inspetor');
+Route::post('/completar/cadastro/inspetor','InspetorController@store')->name('completar.cadastro.inspetor');
+
+// Completar cadastro de Agente
+Route::get('/completar/cadastro/agente','AgenteController@create')->name('completar.cadastro.agente');
+Route::post('/completar/cadastro/agente','AgenteController@store')->name('completar.cadastro.agente');
+
 //Cadastro de empresa
 Route::post("/empresa/cadastro", "EmpresaController@store")->name("cadastrar.empresa");
 Route::get("/home/cadastro/empresa", "EmpresaController@create")->name("home.cadastrar");
@@ -117,6 +125,9 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get("/estabelecimento/lista/cnae",           "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes");
     Route::get("/listar/responsavelTecnico",            "EmpresaController@listarResponsavelTec")->name("listar.responsavelTec");
 
+    // Cadastro de Responsável Técnico
+    Route::get('/cadastro/respTecnico','RespTecnicoController@create')->name('cadastrar.rt.pagina');
+    Route::post('/cadastro/respTecnico','RespTecnicoController@store')->name('cadastrar.rt');
 
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
@@ -161,6 +172,7 @@ Route::middleware(['IsAgente'])->group(function () {
 
 // Grupo de rotas para responsável técnico
 Route::middleware(['IsRespTecnico'])->group(function () {
+    
     //Empresa - Responsável Técnico
 /*
     * Editar/Anexar dados da empresa

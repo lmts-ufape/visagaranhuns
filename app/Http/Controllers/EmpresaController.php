@@ -11,6 +11,7 @@ use App\Docempresa;
 use App\Area;
 use App\Cnae;
 use App\CnaeEmpresa;
+use App\RespTecnico;
 use Illuminate\Support\Facades\Storage;
 use Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -37,6 +38,7 @@ class EmpresaController extends Controller
 
     public function listarResponsavelTec(){
 
+        $empresas = Empresa::where("user_id", Auth::user()->id);
         return view('empresa/responsavel_tec_empresa');
     }
 
@@ -400,13 +402,20 @@ class EmpresaController extends Controller
         $endereco = Endereco::where('empresa_id', $empresa->id)->first();
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
         $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $id)->get();
+        $respTecnicos = RespTecnico::where("empresa_id", $empresa->id)->first();
 
         $cnae = array();
         foreach($cnaeEmpresa as $indice){
             $cnaes = Cnae::find($indice->cnae_id);
             array_push($cnae, $cnaes);
         }
-        return view('empresa/show_empresa',['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae]);
+        return view('empresa/show_empresa',['empresa' => $empresa,
+         'endereco' => $endereco, 
+         'telefone' =>$telefone, 
+         'cnae' => $cnae,
+         'respTecnico' => $respTecnicos,
+         'empresaId'     => $empresa->id,
+         ]);
     }
     public function showDocumentacao(Request $request){
 

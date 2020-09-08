@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\RespTecnico;
+use App\User;
+use App\Empresa;
+use Auth;
 
 class RespTecnicoController extends Controller
 {
@@ -21,10 +25,12 @@ class RespTecnicoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        // Definir a pagina de cadastro de Responsavel Técnico
-        return view('respTecnico.cadastro');
+        $user = User::find(Auth::user()->id);
+
+        // Tela de conclusão de cadastro de Responsavel Técnico
+        return view('responsavel_tec.cadastrar_responsavel_tec')->with(["user" => $user, "empresaId" => $request->empresaId]);
     }
 
     /**
@@ -33,30 +39,34 @@ class RespTecnicoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
+    public function store(Request $request)
     {
-        $empresa = Empresa::where('user_id', $id)->first();
 
         $validator = $request->validate([
-            'name'     => 'required|string',
+            'nome'     => 'required|string',
             'email'    => 'required|email',
-            'password' => 'required',
             'formacao' => 'required|string',
-            'especializacao' => 'required|string',
+            'especializacao' => 'nullable|string',
+            'cpf'            => 'required|string',
+            'telefone'       => 'required|string',
+            'password'       => 'required',
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'tipo' => "respTecnico",
+            'name'            => $request->nome,
+            'email'           => $request->email,
+            'password'        => bcrypt($request->password),
+            'tipo'            => "rt",
+            'status_cadastro' => "pendente",
         ]);
 
         $respTec = RespTecnico::create([
-            'formacao' => $request->formacao,
+            'formacao'       => $request->formacao,
             'especializacao' => $request->especializacao,
-            'empresa_id' => $empresa->id,
-            'user_id' => $id,
+            'cpf'            => $request->cpf,
+            'telefone'       => $request->telefone,
+            'user_id'        => $user->id,
+            'empresa_id'     => $request->empresaId,
         ]);
 
         return redirect()->route('/');

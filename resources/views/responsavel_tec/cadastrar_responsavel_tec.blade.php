@@ -3,6 +3,23 @@
 @section('content')
 <div class="container">
     <div class="barraMenu">
+        <div class="d-flex">
+            <div class="mr-auto p-2">
+                <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
+                    <div class="btn-group">
+                        <div style="margin-top:1px;margin-left:5px;"><img src="{{ asset('/imagens/logo_voltar.png') }}" alt="Logo" style="width:13px;"/></div>
+                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Voltar</div>
+                    </div>
+                </a>
+            </div>
+           <div class="p-2">
+                <div class="dropdown">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="barraMenu">
             <div class="d-flex justify-content-center">
                 <div class="mr-auto p-2 styleBarraPrincipalMOBILE">
                     <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
@@ -24,9 +41,9 @@
             </div>
         </div>
 
-    <form id="teste" method="POST" action="{{ route('/') }}">
+    <form id="teste" method="POST" action="{{ route('cadastrar.rt') }}">
         @csrf
-        <input type="hidden" name="user" value="{{Auth::user()->id}}">
+        <input type="hidden" name="empresaId" value="{{$empresaId}}">
         <div class="container" style="margin-top:1rem;margin-left:10px;">
             <div class="form-row">
                 <div class="form-group col-md-4">
@@ -45,17 +62,16 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="inputEmail4">Especialização:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control" name="emailEmpresa" placeholder="" required>
+                    <input type="text" class="form-control" name="especializacao" placeholder="" required>
                 </div>
                 <div class="form-grtextoup col-md-4">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputEmail4">Telefone:<span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="telefone1" id="inputTelefone1" placeholder="" required>
+                            <input type="text" class="form-control" name="telefone" id="inputTelefone1" placeholder="" required>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="barraMenu" style="margin-top:0.7rem;">
@@ -72,15 +88,15 @@
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="inputEmail4">E-mail:<span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="nome" placeholder="exemplo@email.com" disabled>
+                            <input type="email" class="form-control" name="email">
                         </div>
                         <div class="form-group col-md-4">
                             <label for="inputPassword4">Senha:<span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="cpf" placeholder="" required>
+                            <input id="password" type="password" class="form-control" name="password" required autocomplete="new-password">
                         </div>
                         <div class="form-group col-md-4">
                             <label for="inputPassword4">Confirmar senha:<span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="formacao" placeholder="" required>
+                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                         </div>
                     </div>
                 </div>

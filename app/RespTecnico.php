@@ -13,7 +13,7 @@ class RespTecnico extends Model
      * @var array
      */
     protected $fillable = [
-        'formacao', 'especializacao', 'user_id', 'empresa_id'
+        'formacao', 'especializacao', 'cpf', 'telefone', 'user_id', 'empresa_id'
     ];
 
     public function empresa() {

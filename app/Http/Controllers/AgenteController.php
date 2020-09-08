@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Agente;
 use App\User;
-use Illuminate\Support\Facades\Auth;
+use Auth;
 
 class AgenteController extends Controller
 {
@@ -33,8 +33,9 @@ class AgenteController extends Controller
      */
     public function create()
     {
-        // Definir tela para cadastro de agente
-        return view('agente.cadastro');
+        $user = User::find(Auth::user()->id);
+        // Tela de conclusão de cadastro de agente
+        return view('agente.cadastrar_agente')->with(["user"=>$user->email]);
     }
 
     /**
@@ -50,6 +51,9 @@ class AgenteController extends Controller
         $validator = $request->validate([
             'nome'     => 'required|string',
             'formacao' => 'required|string',
+            'especializacao' => 'nullable|string',
+            'cpf'            => 'required|string',
+            'telefone'       => 'required|string',
             'password'       => 'required',
         ]);
 
@@ -61,6 +65,9 @@ class AgenteController extends Controller
 
         $agente = Agente::create([
             'formacao'       => $request->formacao,
+            'especializacao' => $request->especializacao,
+            'cpf'            => $request->cpf,
+            'telefone'       => $request->telefone,
             'user_id'        => $user->id,
         ]);
 

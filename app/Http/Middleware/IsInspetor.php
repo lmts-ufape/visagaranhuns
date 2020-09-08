@@ -20,7 +20,12 @@ class IsInspetor
             return redirect()->route('login');
 
         if (Auth::user()->tipo == "inspetor"){
-            return $next($request);    
+            if (Auth::user()->status_cadastro == "pendente") {
+                return redirect()->route('completar.cadastro.inspetor');
+            }
+            else {
+                return $next($request);
+            }
         }
         abort(403);
     }
