@@ -7,6 +7,7 @@ use App\RespTecnico;
 use App\User;
 use App\Empresa;
 use Auth;
+use Illuminate\Support\Str;
 
 class RespTecnicoController extends Controller
 {
@@ -42,6 +43,8 @@ class RespTecnicoController extends Controller
     public function store(Request $request)
     {
 
+        $empresa = Empresa::find($request->empresaId);
+
         $validator = $request->validate([
             'nome'     => 'required|string',
             'email'    => 'required|email',
@@ -49,16 +52,19 @@ class RespTecnicoController extends Controller
             'especializacao' => 'nullable|string',
             'cpf'            => 'required|string',
             'telefone'       => 'required|string',
-            'password'       => 'required',
         ]);
+
+        $passwordTemporario = Str::random(8);
 
         $user = User::create([
             'name'            => $request->nome,
             'email'           => $request->email,
-            'password'        => bcrypt($request->password),
+            'password'        => bcrypt($passwordTemporario),
             'tipo'            => "rt",
-            'status_cadastro' => "pendente",
+            'status_cadastro' => "aprovado",
         ]);
+
+        \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTEmail($request->email, $passwordTemporario, $empresa->nome));
 
         $respTec = RespTecnico::create([
             'formacao'       => $request->formacao,
@@ -89,9 +95,14 @@ class RespTecnicoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        $user = User::find($request->user);
+        $respTecnico = RespTecnico::where('user_id', $user->id)->first();
+
+        return view('responsavel_tec/editar_dados_responsavel_tec', 
+        ['user' => $user,
+         'respTecnico' => $respTecnico]);
     }
 
     /**
@@ -101,9 +112,32 @@ class RespTecnicoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $respTecnico = RespTecnico::find($request->respTecnico);
+        $user = User::where('id', $respTecnico->user_id)->first();
+
+        $validator = $request->validate([
+            'nome'     => 'required|string',
+            'formacao' => 'required|string',
+            'especializacao' => 'nullable|string',
+            'cpf'            => 'required|string',
+            'telefone'       => 'required|string',
+        ]);
+
+        $user->name = $request->nome;
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        $respTecnico->formacao = $request->formacao;
+        if(isset($request->especializacao)){
+            $respTecnico->especializacao = $request->especializacao;
+        }
+        $respTecnico->cpf = $request->cpf;
+        $respTecnico->telefone = $request->telefone;
+        $respTecnico->save();
+
+        return redirect()->route('/');
     }
 
     /**

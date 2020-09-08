@@ -78,7 +78,7 @@
                 <div class="d-flex">
                     <div class="mr-auto p-2">
                         <div class="btn-group">
-                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Login de acesso ao sistema</div>
+                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Email para login de acesso ao sistema</div>
                         </div>
                     </div>
                 </div>
@@ -90,14 +90,14 @@
                             <label for="inputEmail4">E-mail:<span style="color:red">*</span></label>
                             <input type="email" class="form-control" name="email">
                         </div>
-                        <div class="form-group col-md-4">
+                        {{-- <div class="form-group col-md-4">
                             <label for="inputPassword4">Senha:<span style="color:red">*</span></label>
                             <input id="password" type="password" class="form-control" name="password" required autocomplete="new-password">
                         </div>
                         <div class="form-group col-md-4">
                             <label for="inputPassword4">Confirmar senha:<span style="color:red">*</span></label>
                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

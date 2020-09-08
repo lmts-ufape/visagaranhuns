@@ -2,6 +2,6 @@
 
 @section('content')
 <div class="container">
-    <h1>Perfil de Inspetor</h1>    
+    <h1>Perfil de RT</h1>    
 </div>
 @endsection

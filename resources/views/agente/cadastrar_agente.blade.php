@@ -76,7 +76,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label for="inputPassword4">Alterar senha:<span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="password" placeholder="" required>
+                            <input type="password" class="form-control" name="password" placeholder="" required>
                         </div>
                     </div>
                 </div>

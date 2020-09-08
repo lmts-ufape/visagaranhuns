@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Auth;
 
 class IsRespTecnico
 {
@@ -19,13 +20,15 @@ class IsRespTecnico
             return redirect()->route('login');
 
         if (Auth::user()->tipo == "rt"){
-            if (Auth::user()->status_cadastro == "pendente") {
-                return redirect()->route('completar.cadastro.rt');
-            }
-            else {
-                return $next($request);
-            }   
+            return $next($request);
+            // if (Auth::user()->status_cadastro == "aprovado") {
+            //     return redirect()->route('home.rt');
+            // }
+            // else {
+            //     return $next($request);
+            // }   
         }
         abort(403);
+        // return $next($request);
     }
 }

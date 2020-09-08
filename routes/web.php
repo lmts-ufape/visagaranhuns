@@ -28,6 +28,9 @@ Route::get('/', function () {
         elseif (Auth::user()->tipo == "agente") {
             return view('agente.home_agente');
         }
+        elseif (Auth::user()->tipo == "rt") {
+            return view('responsavel_tec.home_rt');
+        }
     }
     else {
         return view('naoLogado.home_naologado');
@@ -172,7 +175,9 @@ Route::middleware(['IsAgente'])->group(function () {
 
 // Grupo de rotas para responsável técnico
 Route::middleware(['IsRespTecnico'])->group(function () {
-    
+    Route::get('/editar/dados', 'RespTecnicoController@edit')->name('editar.dados');
+    Route::get('/home/rt', function () {return view('responsavel_tec/home_rt');})->name('home.rt');
+    Route::post('/atualizar/rt','RespTecnicoController@update')->name('update.rt');
     //Empresa - Responsável Técnico
 /*
     * Editar/Anexar dados da empresa
