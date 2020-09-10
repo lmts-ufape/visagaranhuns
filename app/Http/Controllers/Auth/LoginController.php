@@ -41,6 +41,9 @@ class LoginController extends Controller
         if ( $user->tipo == "agente" ) {
             return redirect()->route('home.agente');
         }
+        if ( $user->tipo == "rt" ) {
+            return redirect()->route('home.rt');
+        }
 
     // return redirect('/home');
     }
