@@ -136,30 +136,32 @@
                             <div class="col-12" style="text-align:center;color:gray;font-weight:bold;margin-top:2rem; margin-bottom:3rem;font-size:20px;font-family:Arial, Helvetica, sans-serif;">Nenhum Responsável Técnico Cadastrado!</div>
                         @else
                         <fieldset disabled id="idFieldset">
-                            <div class="form-row">
-                                <div class="form-group col-md-3">
-                                    <label for="inputEmail4">Nome:</label>
-                                    <input type="text" class="form-control" id="inputEmail4" placeholder="{{$respTecnico->user->name}}">
+                            @foreach ($respTecnico as $item)
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label for="inputEmail4">Nome:</label>
+                                        <input type="text" class="form-control" id="inputEmail4" placeholder="{{$item->user->name}}">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="inputPassword4">CPF:</label>
+                                        <input type="text" class="form-control" id="inputPassword4" placeholder="{{$item->cpf}}">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="inputPassword4">Formação:</label>
+                                        <input type="text" class="form-control" id="inputPassword4" placeholder="{{$item->formacao}}">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="inputPassword4">Especialização:</label>
+                                        <input type="text" class="form-control" id="inputPassword4" placeholder="{{$item->especializacao}}">
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label for="inputPassword4">CPF:</label>
-                                    <input type="text" class="form-control" id="inputPassword4" placeholder="{{$empresa->cnpjcpf}}">
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label for="inputEmail4">Telefone:</label>
+                                        <input type="text" class="form-control" id="inputEmail4" placeholder="{{$item->user->name}}">
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label for="inputPassword4">Formação:</label>
-                                    <input type="text" class="form-control" id="inputPassword4" placeholder="{{$respTecnico->formacao}}">
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label for="inputPassword4">Especialização:</label>
-                                    <input type="text" class="form-control" id="inputPassword4" placeholder="{{$respTecnico->especializacao}}">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-3">
-                                    <label for="inputEmail4">Telefone:</label>
-                                    <input type="text" class="form-control" id="inputEmail4" placeholder="{{$respTecnico->user->name}}">
-                                </div>
-                            </div>
+                            @endforeach
                         </fieldset>
                         @endif
                     </div>

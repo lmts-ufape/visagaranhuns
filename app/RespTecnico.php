@@ -13,11 +13,12 @@ class RespTecnico extends Model
      * @var array
      */
     protected $fillable = [
-        'formacao', 'especializacao', 'cpf', 'telefone', 'user_id', 'empresa_id'
+        // 'formacao', 'especializacao', 'cpf', 'telefone', 'user_id', 'empresa_id'
+        'formacao', 'especializacao', 'cpf', 'telefone', 'user_id'
     ];
 
     public function empresa() {
-        return $this->belongsTo("\App\Empresa");
+        return $this->belongsToMany("\App\Empresa");
     }
 
     public function user() {

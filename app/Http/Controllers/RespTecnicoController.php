@@ -8,6 +8,7 @@ use App\User;
 use App\Empresa;
 use Auth;
 use Illuminate\Support\Str;
+use App\RtEmpresa;
 
 class RespTecnicoController extends Controller
 {
@@ -44,38 +45,66 @@ class RespTecnicoController extends Controller
     {
 
         $empresa = Empresa::find($request->empresaId);
+        $user    = User::where("email", $request->email)->first(); 
+        
+        if ($user != null) {
 
-        $validator = $request->validate([
-            'nome'     => 'required|string',
-            'email'    => 'required|email',
-            'formacao' => 'required|string',
-            'especializacao' => 'nullable|string',
-            'cpf'            => 'required|string',
-            'telefone'       => 'required|string',
-        ]);
+            $found = true;
+            $resptecnico = RespTecnico::where('user_id', $user->id)->first();
+            $passwordTemporario = Str::random(8);
 
-        $passwordTemporario = Str::random(8);
+            \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTEmail($request->email, $passwordTemporario, $empresa->nome));
 
-        $user = User::create([
-            'name'            => $request->nome,
-            'email'           => $request->email,
-            'password'        => bcrypt($passwordTemporario),
-            'tipo'            => "rt",
-            'status_cadastro' => "aprovado",
-        ]);
+            $rtempresa = RtEmpresa::create([
+                'resptec_id' => $resptecnico->id,
+                'empresa_id' => $request->empresaId,
+            ]);
 
-        \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTEmail($request->email, $passwordTemporario, $empresa->nome));
+            return redirect()->route('/');
+        }
 
-        $respTec = RespTecnico::create([
-            'formacao'       => $request->formacao,
-            'especializacao' => $request->especializacao,
-            'cpf'            => $request->cpf,
-            'telefone'       => $request->telefone,
-            'user_id'        => $user->id,
-            'empresa_id'     => $request->empresaId,
-        ]);
+        else {
+            $found = false;
 
-        return redirect()->route('/');
+            $validator = $request->validate([
+                'nome'     => 'required|string',
+                'email'    => 'required|email',
+                'formacao' => 'required|string',
+                'especializacao' => 'nullable|string',
+                'cpf'            => 'required|string',
+                'telefone'       => 'required|string',
+            ]);
+    
+            $passwordTemporario = Str::random(8);
+    
+            $user = User::create([
+                'name'            => $request->nome,
+                'email'           => $request->email,
+                'password'        => bcrypt($passwordTemporario),
+                'tipo'            => "rt",
+                'status_cadastro' => "aprovado",
+            ]);
+    
+            \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTEmail($request->email, $passwordTemporario, $empresa->nome));
+    
+            $respTec = RespTecnico::create([
+                'formacao'       => $request->formacao,
+                'especializacao' => $request->especializacao,
+                'cpf'            => $request->cpf,
+                'telefone'       => $request->telefone,
+                'user_id'        => $user->id,
+                // 'empresa_id'     => $request->empresaId,
+            ]);
+    
+            $rtempresa = RtEmpresa::create([
+                'resptec_id' => $respTec->id,
+                'empresa_id' => $request->empresaId,
+            ]);
+    
+            return redirect()->route('/');
+        }
+
+
     }
 
     /**

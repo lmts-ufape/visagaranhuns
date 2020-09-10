@@ -12,6 +12,7 @@ use App\Area;
 use App\Cnae;
 use App\CnaeEmpresa;
 use App\RespTecnico;
+use App\RtEmpresa;
 use Illuminate\Support\Facades\Storage;
 use Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -132,6 +133,20 @@ class EmpresaController extends Controller
                 'cnae_id' => $cnaes->id,
             ]);
         }
+
+        // Cnaes por empresa
+        $cnaempresa = CnaeEmpresa::where("empresa_id", $empresa->id)->pluck('cnae_id');
+        $cnaes = [];
+        $areas = [];
+
+        foreach ($cnaempresa as $indice) {
+            array_push($cnaes, Cnae::find($indice));
+        }
+        foreach ($cnaes as $indice) {
+            array_push($areas, $indice->areas_id);
+        }
+
+        dd($areas);
 
         return redirect()->route('confirma.cadastro');
     }
@@ -402,7 +417,13 @@ class EmpresaController extends Controller
         $endereco = Endereco::where('empresa_id', $empresa->id)->first();
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
         $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $id)->get();
-        $respTecnicos = RespTecnico::where("empresa_id", $empresa->id)->first();
+        // $respTecnicos = RespTecnico::where("empresa_id", $empresa->id)->first();
+        $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->pluck('resptec_id');
+
+        $resptecnicos = [];
+        for ($i=0; $i < count($rtempresa); $i++) { 
+            array_push($resptecnicos, RespTecnico::find($rtempresa[$i]));
+        }
 
         $cnae = array();
         foreach($cnaeEmpresa as $indice){
@@ -413,7 +434,7 @@ class EmpresaController extends Controller
          'endereco' => $endereco, 
          'telefone' =>$telefone, 
          'cnae' => $cnae,
-         'respTecnico' => $respTecnicos,
+         'respTecnico' => $resptecnicos,
          'empresaId'     => $empresa->id,
          ]);
     }
