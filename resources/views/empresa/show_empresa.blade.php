@@ -116,6 +116,77 @@
                     <div class="barraMenu">
                         <div class="d-flex">
                             <div class="mr-auto p-2">
+                                <div class="btn-group">
+                                    <div style="margin-top:1.4px;margin-left:10px;font-size:15px;">Documentos do estabelecimento</div>
+                                </div>
+                            </div>
+                            <div class="p-2">
+                                <a href="{{ route('pagina.mostrar.documentacao',["value" => Crypt::encrypt($empresa->id)]) }}" style="margin-right:15px">Abrir</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="barraMenu" style="margin-top:1rem;">
+                            <div class="d-flex">
+                                <div class="mr-auto p-2">
+                                    <div class="btn-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Documentos - CNAE</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container" style="margin-bottom:5rem">
+    
+                            <div class="cardDocumentos">
+                                <div class="d-flex justify-content-center">
+                                    <div class="mr-auto p-2">
+                                        <div class="form-group">
+                                            <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Exemplo1<span style="color:red">*</span></div>
+                                            <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
+                                        </div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="dropdown show">
+                                            <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Ação
+                                            </a>
+    
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                <a class="dropdown-item" href="#">Abrir</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="cardDocumentos">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="mr-auto p-2">
+                                            <div class="form-group">
+                                                <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Exemplo2<span style="color:red">*</span></div>
+                                                <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
+                                            </div>
+                                        </div>
+                                        <div class="p-2">
+                                            <div class="dropdown show">
+                                                <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Ação
+                                                </a>
+    
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                    <a class="dropdown-item" href="#">Abrir</a>
+                                                    <a class="dropdown-item" href="#">Adicionar</a>
+                                                    <a class="dropdown-item" href="#">Deletar</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    {{-- RT Inicio --}}
+                    <div class="barraMenu">
+                        <div class="d-flex">
+                            <div class="mr-auto p-2">
                                 <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
                                     <div class="btn-group">
                                         <div style="margin-top:1px;margin-left:5px;"></div>
@@ -170,6 +241,7 @@
                         </fieldset>
                         @endif
                     </div>
+                    {{-- RT Fim --}}
             </div>
 
 
