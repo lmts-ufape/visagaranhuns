@@ -11,6 +11,8 @@ use App\Empresa;
 use App\Endereco;
 use App\Telefone;
 use App\CnaeEmpresa;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
 class CoordenadorController extends Controller
 {
@@ -203,6 +205,65 @@ class CoordenadorController extends Controller
         //     }
         // }
     }
+
+    public function convidarEmail(Request $request)
+    {
+        $validationData = $this->validate($request,[
+            'email'=>'required|email',
+        ]);
+        
+        if ($request->tipo == "inspetor") {
+            
+            $user = User::where('email',$request->input('email'))->first();
+            $empresa = Empresa::where('id', $request->empresa)->first();
+    
+            if($user == null){
+
+              $passwordTemporario = Str::random(8);
+              Mail::to($request->email)->send(new \App\Mail\CadastroUsuarioPorEmail($passwordTemporario, $request->tipo));
+              $user = User::create([
+                'name'            => "Inspetor",
+                'email'           => $request->email,
+                'password'        => bcrypt($passwordTemporario),
+                'tipo'            => "inspetor",
+                'status_cadastro' => "pendente",
+              ]);
+              session()->flash('success', 'Um e-mail com o convite foi enviado para o endereço especificado.');
+              return back();
+            }
+            else {
+                session()->flash('error', 'O e-mail já está cadastrado no sistema!');
+                return back();
+            }
+        }
+
+        elseif ($request->tipo == "agente") {
+
+            $user = User::where('email',$request->input('email'))->first();
+            $empresa = Empresa::where('id', $request->empresa)->first();
+    
+            if($user == null){
+
+              $passwordTemporario = Str::random(8);
+              Mail::to($request->email)->send(new \App\Mail\CadastroUsuarioPorEmail($passwordTemporario, $request->tipo));
+              $user = User::create([
+                'name'            => "Agente",
+                'email'           => $request->email,
+                'password'        => bcrypt($passwordTemporario),
+                'tipo'            => "agente",
+                'status_cadastro' => "pendente",
+              ]);
+              session()->flash('success', 'Um e-mail com o convite foi enviado para o endereço especificado.');
+              return back();
+            }
+            else {
+                session()->flash('error', 'O e-mail já está cadastrado no sistema!');
+                return back();
+            }
+        }
+    }
+
+   
     /**
      * Store a newly created resource in storage.
      *

@@ -14,6 +14,7 @@
     <script type="text/javascript" src="{{URL::asset('js/cadastrar_empresa.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/cadastrar_empresa_comum.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/requerimento_coordenador.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/naologado.js')}}" defer></script>
 
     <!-- load jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -23,6 +24,9 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hammersmith+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Noto+Sans+SC:wght@100;300;400;700;900&family=Roboto&display=swap" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -30,6 +34,9 @@
     <link href="{{ asset('css/naoLogado.css') }}" rel="stylesheet">
     <link href="{{ asset('css/coordenador.css') }}" rel="stylesheet">
     <link href="{{ asset('css/cadastrar_empresa.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/geral.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/agentes.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/documentos_empresa.css') }}" rel="stylesheet">
 
 </head>
 <body>
@@ -88,9 +95,16 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Programação') }}</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Inspetores') }}</a>
-                                </li>
+                                <li class="nav-item dropdown">
+                                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                            Membros<span class="caret"></span>
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="{{ route('listar.agentes') }}">Agentes</a>
+                                            <a class="dropdown-item" href="{{ route('listar.inspetores') }}">Inspetores</a>
+                                        </div>
+                                    </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('listagem.area') }}">{{ __('Estabelecimentos') }}</a>
                                 </li>
@@ -127,9 +141,9 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('login') }}">{{ __('Licenças') }}</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('login') }}">{{ __('Responsável Técnico') }}</a>
-                                    </li>
+                                    {{-- <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('listar.responsavelTec') }}">{{ __('Responsável Técnico') }}</a>
+                                    </li> --}}
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'documentacao']) }}">{{ __('Documentacao') }}</a>
                                     </li>
@@ -198,6 +212,36 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+                                    </div>
+                                </li>
+                            @elseif(Auth::user()->tipo == "rt")
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
+                                </li>
+                                {{-- <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Programação') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('login') }}" style="margin-right:30px;">{{ __('Histórico') }}</a>
+                                </li> --}}
+                                <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        Olá, <span style="font-weight:bold; color:black;">{{ Auth::user()->name }}</span> <span class="caret"></span>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('editar.dados', ['user' => Auth::user()->id]) }}">
+                                            {{ __('Editar dados') }}
+                                        </a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">

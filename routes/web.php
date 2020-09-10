@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     if (Auth::check()) {
+        // dd('dkjbfkdsjbfskdj');
         if (Auth::user()->tipo == "coordenador") {
             return view('coordenador.home_coordenador');
         }
@@ -28,6 +29,9 @@ Route::get('/', function () {
         elseif (Auth::user()->tipo == "agente") {
             return view('agente.home_agente');
         }
+        elseif (Auth::user()->tipo == "rt") {
+            return view('responsavel_tec.home_rt');
+        }
     }
     else {
         return view('naoLogado.home_naologado');
@@ -35,6 +39,14 @@ Route::get('/', function () {
 })->name("/");
 
 Auth::routes();
+
+// Completar cadastro de Inpetor
+Route::get('/completar/cadastro/inspetor','InspetorController@create')->name('completar.cadastro.inspetor');
+Route::post('/completar/cadastro/inspetor','InspetorController@store')->name('completar.cadastro.inspetor');
+
+// Completar cadastro de Agente
+Route::get('/completar/cadastro/agente','AgenteController@create')->name('completar.cadastro.agente');
+Route::post('/completar/cadastro/agente','AgenteController@store')->name('completar.cadastro.agente');
 
 //Cadastro de empresa
 Route::post("/empresa/cadastro", "EmpresaController@store")->name("cadastrar.empresa");
@@ -85,8 +97,11 @@ Route::middleware(['IsCoordenador'])->group(function () {
 
 
     Route::get("/empresa/listagem", "EmpresaController@index")->name("listagem.empresas");
-
     Route::get("/show/empresa", "EmpresaController@show")->name("mostrar.empresas");
+
+    // Rotas para convidar Inspetores e agente
+    Route::post("/convidar/inspetor", "CoordenadorController@convidarEmail")->name("convidar.inspetor");
+    Route::post("/convidar/agente", "CoordenadorController@convidarEmail")->name("convidar.agente");
     //Supervisor
 /*
     * Cadastrar/Editar/Deletar relatórios (Editar também relatórios criados pos outras pessoas)
@@ -112,7 +127,11 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::post("/empresa/cadastro/responsavelTecnico", "EmpresaController@adicionarEmpresa")->name("adicionar.empresa");
     Route::get("/listar/empresas/",                     "EmpresaController@listarEmpresas")->name("listar.empresas");
     Route::get("/estabelecimento/lista/cnae",           "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes");
+    Route::get("/listar/responsavelTecnico",            "EmpresaController@listarResponsavelTec")->name("listar.responsavelTec");
 
+    // Cadastro de Responsável Técnico
+    Route::get('/cadastro/respTecnico','RespTecnicoController@create')->name('cadastrar.rt.pagina');
+    Route::post('/cadastro/respTecnico','RespTecnicoController@store')->name('cadastrar.rt');
 
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
@@ -141,6 +160,7 @@ Route::middleware(['IsInspetor'])->group(function () {
 // Grupo de rotas para Agente
 Route::middleware(['IsAgente'])->group(function () {
     Route::get('/home/agente', 'AgenteController@home')->name('home.agente');
+    Route::get('cadastrar/agente', function () {return view('agente/cadastrar_agente');})->name('cadastrar.agente');
     /*
         (WEB)
         * Cadastrar/Editar/Deletar relatórios (Próprios)
@@ -156,6 +176,9 @@ Route::middleware(['IsAgente'])->group(function () {
 
 // Grupo de rotas para responsável técnico
 Route::middleware(['IsRespTecnico'])->group(function () {
+    Route::get('/editar/dados', 'RespTecnicoController@edit')->name('editar.dados');
+    Route::get('/home/rt', function () {return view('responsavel_tec/home_rt');})->name('home.rt');
+    Route::post('/atualizar/rt','RespTecnicoController@update')->name('update.rt');
     //Empresa - Responsável Técnico
 /*
     * Editar/Anexar dados da empresa

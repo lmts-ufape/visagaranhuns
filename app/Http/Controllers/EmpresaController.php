@@ -11,6 +11,8 @@ use App\Docempresa;
 use App\Area;
 use App\Cnae;
 use App\CnaeEmpresa;
+use App\RespTecnico;
+use App\RtEmpresa;
 use Illuminate\Support\Facades\Storage;
 use Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -33,6 +35,12 @@ class EmpresaController extends Controller
             array_push($empresas, $empresa);
         }
         return view('coordenador/empresas_coordenador', ['empresas' => $empresas]);
+    }
+
+    public function listarResponsavelTec(){
+
+        $empresas = Empresa::where("user_id", Auth::user()->id);
+        return view('empresa/responsavel_tec_empresa');
     }
 
     public function home()
@@ -125,6 +133,19 @@ class EmpresaController extends Controller
                 'cnae_id' => $cnaes->id,
             ]);
         }
+
+        // Cnaes por empresa
+        $cnaempresa = CnaeEmpresa::where("empresa_id", $empresa->id)->pluck('cnae_id');
+        $cnaes = [];
+        $areas = [];
+
+        foreach ($cnaempresa as $indice) {
+            array_push($cnaes, Cnae::find($indice));
+        }
+        foreach ($cnaes as $indice) {
+            array_push($areas, $indice->areas_id);
+        }
+
 
         return redirect()->route('confirma.cadastro');
     }
@@ -339,7 +360,7 @@ class EmpresaController extends Controller
 
             'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:2000000'],
             'data'    => ['nullable', 'date'],
-        
+
         ]);
 
         /*
@@ -395,13 +416,26 @@ class EmpresaController extends Controller
         $endereco = Endereco::where('empresa_id', $empresa->id)->first();
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
         $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $id)->get();
+        // $respTecnicos = RespTecnico::where("empresa_id", $empresa->id)->first();
+        $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->pluck('resptec_id');
+
+        $resptecnicos = [];
+        for ($i=0; $i < count($rtempresa); $i++) { 
+            array_push($resptecnicos, RespTecnico::find($rtempresa[$i]));
+        }
 
         $cnae = array();
         foreach($cnaeEmpresa as $indice){
             $cnaes = Cnae::find($indice->cnae_id);
             array_push($cnae, $cnaes);
         }
-        return view('empresa/show_empresa',['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae]);
+        return view('empresa/show_empresa',['empresa' => $empresa,
+         'endereco' => $endereco, 
+         'telefone' =>$telefone, 
+         'cnae' => $cnae,
+         'respTecnico' => $resptecnicos,
+         'empresaId'     => $empresa->id,
+         ]);
     }
     public function showDocumentacao(Request $request){
 
@@ -410,7 +444,7 @@ class EmpresaController extends Controller
         $cnaempresa = CnaeEmpresa::where("empresa_id", $idEmpresa)->pluck('cnae_id');
         $cnaes = [];
         $areas = [];
-        
+
         foreach ($cnaempresa as $indice) {
             array_push($cnaes, Cnae::find($indice));
         }

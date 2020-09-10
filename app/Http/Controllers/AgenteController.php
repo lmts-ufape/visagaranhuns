@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Agente;
 use App\User;
+use Auth;
 
 class AgenteController extends Controller
 {
@@ -16,8 +17,8 @@ class AgenteController extends Controller
     public function listarAgentes()
     {
         // Definir pagina para listagem
-        $agentes = Agente::all();
-        return view('/', [ 'agentes'  => $agentes ]);
+        $agentes = User::where("tipo", "agente")->where("status_cadastro", "aprovado")->get();
+        return view('coordenador/agentes_coordenador', [ 'agentes'  => $agentes ]);
     }
 
     public function home()
@@ -32,8 +33,9 @@ class AgenteController extends Controller
      */
     public function create()
     {
-        // Definir tela para cadastro de agente
-        return view('agente.cadastro');
+        $user = User::find(Auth::user()->id);
+        // Tela de conclusão de cadastro de agente
+        return view('agente.cadastrar_agente')->with(["user"=>$user->email]);
     }
 
     /**
@@ -44,27 +46,32 @@ class AgenteController extends Controller
      */
     public function store(Request $request)
     {
-        // Cadastro temporário de agente
+        $user = User::find(Auth::user()->id);
+        
         $validator = $request->validate([
-            'name' => 'required|string',
+            'nome'     => 'required|string',
             'formacao' => 'required|string',
-            'email' => 'required|email',
-            'password' => 'required',
+            'especializacao' => 'nullable|string',
+            'cpf'            => 'required|string',
+            'telefone'       => 'required|string',
+            'password'       => 'required',
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'tipo' => "agente",
-        ]);
+        // Atualiza dados de user para agente
+        $user->name = $request->nome;
+        $user->password = bcrypt($request->password);
+        $user->status_cadastro = "aprovado";
+        $user->save();
 
         $agente = Agente::create([
-            'formacao' => $request->formacao,
-            'user_id' => $user->id,
+            'formacao'       => $request->formacao,
+            'especializacao' => $request->especializacao,
+            'cpf'            => $request->cpf,
+            'telefone'       => $request->telefone,
+            'user_id'        => $user->id,
         ]);
 
-        return redirect()->route('home');
+        return redirect()->route('/');
     }
 
     /**

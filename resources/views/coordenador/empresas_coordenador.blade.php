@@ -40,7 +40,7 @@
                         <div class="mr-auto p-2">
                             <a style="text-decoration:none;cursor:null;color:black;">
                                 <div class="btn-group">
-                                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">{{$item->user->name}}</div>
+                                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">{{$item->nome}}</div>
                                 </div>
                             </a>
                         </div>
