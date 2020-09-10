@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Auth;
 
-class IsRespTecnico
+class IsRT
 {
     /**
      * Handle an incoming request.
@@ -20,9 +20,8 @@ class IsRespTecnico
             return redirect()->route('login');
 
         if (Auth::user()->tipo == "rt"){
-            return $next($request);
+            return $next($request);    
         }
         abort(403);
-        // return $next($request);
     }
 }
