@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\RespTecnico;
+use App\User;
+use App\Empresa;
+use Auth;
+use Illuminate\Support\Str;
+use App\RtEmpresa;
 
 class RespTecnicoController extends Controller
 {
@@ -21,10 +27,12 @@ class RespTecnicoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        // Definir a pagina de cadastro de Responsavel Técnico
-        return view('respTecnico.cadastro');
+        $user = User::find(Auth::user()->id);
+
+        // Tela de conclusão de cadastro de Responsavel Técnico
+        return view('responsavel_tec.cadastrar_responsavel_tec')->with(["user" => $user, "empresaId" => $request->empresaId]);
     }
 
     /**
@@ -33,33 +41,70 @@ class RespTecnicoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
+    public function store(Request $request)
     {
-        $empresa = Empresa::where('user_id', $id)->first();
 
-        $validator = $request->validate([
-            'name'     => 'required|string',
-            'email'    => 'required|email',
-            'password' => 'required',
-            'formacao' => 'required|string',
-            'especializacao' => 'required|string',
-        ]);
+        $empresa = Empresa::find($request->empresaId);
+        $user    = User::where("email", $request->email)->first(); 
+        
+        if ($user != null) {
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'tipo' => "respTecnico",
-        ]);
+            $found = true;
+            $resptecnico = RespTecnico::where('user_id', $user->id)->first();
+            $passwordTemporario = Str::random(8);
 
-        $respTec = RespTecnico::create([
-            'formacao' => $request->formacao,
-            'especializacao' => $request->especializacao,
-            'empresa_id' => $empresa->id,
-            'user_id' => $id,
-        ]);
+            \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTEmail($request->email, $passwordTemporario, $empresa->nome));
 
-        return redirect()->route('/');
+            $rtempresa = RtEmpresa::create([
+                'resptec_id' => $resptecnico->id,
+                'empresa_id' => $request->empresaId,
+            ]);
+
+            return redirect()->route('/');
+        }
+
+        else {
+            $found = false;
+
+            $validator = $request->validate([
+                'nome'     => 'required|string',
+                'email'    => 'required|email',
+                'formacao' => 'required|string',
+                'especializacao' => 'nullable|string',
+                'cpf'            => 'required|string',
+                'telefone'       => 'required|string',
+            ]);
+    
+            $passwordTemporario = Str::random(8);
+    
+            $user = User::create([
+                'name'            => $request->nome,
+                'email'           => $request->email,
+                'password'        => bcrypt($passwordTemporario),
+                'tipo'            => "rt",
+                'status_cadastro' => "aprovado",
+            ]);
+    
+            \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTEmail($request->email, $passwordTemporario, $empresa->nome));
+    
+            $respTec = RespTecnico::create([
+                'formacao'       => $request->formacao,
+                'especializacao' => $request->especializacao,
+                'cpf'            => $request->cpf,
+                'telefone'       => $request->telefone,
+                'user_id'        => $user->id,
+                // 'empresa_id'     => $request->empresaId,
+            ]);
+    
+            $rtempresa = RtEmpresa::create([
+                'resptec_id' => $respTec->id,
+                'empresa_id' => $request->empresaId,
+            ]);
+    
+            return redirect()->route('/');
+        }
+
+
     }
 
     /**
@@ -79,9 +124,14 @@ class RespTecnicoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        $user = User::find($request->user);
+        $respTecnico = RespTecnico::where('user_id', $user->id)->first();
+
+        return view('responsavel_tec/editar_dados_responsavel_tec', 
+        ['user' => $user,
+         'respTecnico' => $respTecnico]);
     }
 
     /**
@@ -91,9 +141,32 @@ class RespTecnicoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $respTecnico = RespTecnico::find($request->respTecnico);
+        $user = User::where('id', $respTecnico->user_id)->first();
+
+        $validator = $request->validate([
+            'nome'     => 'required|string',
+            'formacao' => 'required|string',
+            'especializacao' => 'nullable|string',
+            'cpf'            => 'required|string',
+            'telefone'       => 'required|string',
+        ]);
+
+        $user->name = $request->nome;
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        $respTecnico->formacao = $request->formacao;
+        if(isset($request->especializacao)){
+            $respTecnico->especializacao = $request->especializacao;
+        }
+        $respTecnico->cpf = $request->cpf;
+        $respTecnico->telefone = $request->telefone;
+        $respTecnico->save();
+
+        return redirect()->route('/');
     }
 
     /**

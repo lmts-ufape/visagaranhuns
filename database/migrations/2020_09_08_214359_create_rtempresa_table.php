@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChecklistempTable extends Migration
+class CreateRtempresaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,14 @@ class CreateChecklistempTable extends Migration
      */
     public function up()
     {
-        Schema::create('checklistemp', function (Blueprint $table) {
+        Schema::create('rtempresa', function (Blueprint $table) {
             $table->id();
-            $table->boolean('anexado');
-
-            $table->bigInteger("areas_id")->nullable();
-            $table->foreign("areas_id")->references("id")->on("areas");
-
-            $table->bigInteger("tipodocemp_id")->nullable();
-            $table->foreign("tipodocemp_id")->references("id")->on("tipodocemp");
 
             $table->bigInteger("empresa_id")->nullable();
             $table->foreign("empresa_id")->references("id")->on("empresas");
+
+            $table->bigInteger("resptec_id")->nullable();
+            $table->foreign("resptec_id")->references("id")->on("resptecnicos");
             $table->timestamps();
         });
     }
@@ -36,6 +32,6 @@ class CreateChecklistempTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('checklistemp');
+        Schema::dropIfExists('rtempresa');
     }
 }

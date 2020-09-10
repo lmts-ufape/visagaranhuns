@@ -16,6 +16,9 @@ class CreateAgenteTable extends Migration
         Schema::create('agente', function (Blueprint $table) {
             $table->id();
             $table->string('formacao');
+            $table->string('especializacao')->nullable();
+            $table->string('cpf');
+            $table->string('telefone');
 
             $table->bigInteger("user_id")->nullable();
             $table->foreign("user_id")->references("id")->on("users");

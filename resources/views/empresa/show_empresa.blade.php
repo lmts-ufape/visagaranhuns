@@ -113,70 +113,34 @@
                         </div>
                         </div>
                     </div>
-
-
-                    <hr size = 7>
-                    <div id="idBotaoAtualizar" style="margin-bottom:3rem; display:none;">
-                            <div class="d-flex">
-                                <div class="mr-auto p-2">Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo.
-                                </div>
-                            <div class="p-2">
-                                <button type="submit" class="btn btn-success" style="width:340px;">Atualizar</button>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
-            <div class="barraMenu">
-                    <div class="d-flex">
-                        <div class="mr-auto p-2">
-                            <div class="btn-group">
-                                <div style="margin-top:1.4px;margin-left:10px;font-size:15px;">Documentos do estabelecimento</div>
-                            </div>
-                        </div>
-                        <div class="p-2">
-                            <a href="{{ route('pagina.mostrar.documentacao',["value" => Crypt::encrypt($empresa->id)]) }}" style="margin-right:15px">Abrir</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="barraMenu" style="margin-top:1rem;">
+                    <div class="barraMenu">
                         <div class="d-flex">
                             <div class="mr-auto p-2">
                                 <div class="btn-group">
-                                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Documentos - CNAE</div>
+                                    <div style="margin-top:1.4px;margin-left:10px;font-size:15px;">Documentos do estabelecimento</div>
                                 </div>
+                            </div>
+                            <div class="p-2">
+                                <a href="{{ route('pagina.mostrar.documentacao',["value" => Crypt::encrypt($empresa->id)]) }}" style="margin-right:15px">Abrir</a>
                             </div>
                         </div>
                     </div>
-                    <div class="container" style="margin-bottom:5rem">
-
-                        <div class="cardDocumentos">
-                            <div class="d-flex justify-content-center">
+                    <div class="barraMenu" style="margin-top:1rem;">
+                            <div class="d-flex">
                                 <div class="mr-auto p-2">
-                                    <div class="form-group">
-                                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Exemplo1<span style="color:red">*</span></div>
-                                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                                    </div>
-                                </div>
-                                <div class="p-2">
-                                    <div class="dropdown show">
-                                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Ação
-                                        </a>
-
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <a class="dropdown-item" href="#">Abrir</a>
-                                        </div>
+                                    <div class="btn-group">
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Documentos - CNAE</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="cardDocumentos">
+                        <div class="container" style="margin-bottom:5rem">
+    
+                            <div class="cardDocumentos">
                                 <div class="d-flex justify-content-center">
                                     <div class="mr-auto p-2">
                                         <div class="form-group">
-                                            <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Exemplo2<span style="color:red">*</span></div>
+                                            <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Exemplo1<span style="color:red">*</span></div>
                                             <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
                                         </div>
                                     </div>
@@ -185,17 +149,99 @@
                                             <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Ação
                                             </a>
-
+    
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                 <a class="dropdown-item" href="#">Abrir</a>
-                                                <a class="dropdown-item" href="#">Adicionar</a>
-                                                <a class="dropdown-item" href="#">Deletar</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+    
+                            <div class="cardDocumentos">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="mr-auto p-2">
+                                            <div class="form-group">
+                                                <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Exemplo2<span style="color:red">*</span></div>
+                                                <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
+                                            </div>
+                                        </div>
+                                        <div class="p-2">
+                                            <div class="dropdown show">
+                                                <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Ação
+                                                </a>
+    
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                    <a class="dropdown-item" href="#">Abrir</a>
+                                                    <a class="dropdown-item" href="#">Adicionar</a>
+                                                    <a class="dropdown-item" href="#">Deletar</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
                     </div>
+                    {{-- RT Inicio --}}
+                    <div class="barraMenu">
+                        <div class="d-flex">
+                            <div class="mr-auto p-2">
+                                <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
+                                    <div class="btn-group">
+                                        <div style="margin-top:1px;margin-left:5px;"></div>
+                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Responsável Técnico</div>
+                                    </div>
+                                </a>
+                            </div>
+                           <div class="p-2">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Ações
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" style="cursor:pointer" href="{{ route('cadastrar.rt.pagina', ['empresaId' => $empresaId]) }}" onclick="editarEstabelecimento()">Cadastrar Resp. Técnico</a>
+                                         <a class="dropdown-item" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal" onclick="deletarEstabelecimento('{{$empresa->user->name}}')">Deletar Resp. Técnico</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container" style="margin-top:1rem;margin-left:10px;">
+                        @if ($respTecnico == null)
+                            <div class="col-12" style="text-align:center;color:gray;font-weight:bold;margin-top:2rem; margin-bottom:3rem;font-size:20px;font-family:Arial, Helvetica, sans-serif;">Nenhum Responsável Técnico Cadastrado!</div>
+                        @else
+                        <fieldset disabled id="idFieldset">
+                            @foreach ($respTecnico as $item)
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label for="inputEmail4">Nome:</label>
+                                        <input type="text" class="form-control" id="inputEmail4" placeholder="{{$item->user->name}}">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="inputPassword4">CPF:</label>
+                                        <input type="text" class="form-control" id="inputPassword4" placeholder="{{$item->cpf}}">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="inputPassword4">Formação:</label>
+                                        <input type="text" class="form-control" id="inputPassword4" placeholder="{{$item->formacao}}">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="inputPassword4">Especialização:</label>
+                                        <input type="text" class="form-control" id="inputPassword4" placeholder="{{$item->especializacao}}">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label for="inputEmail4">Telefone:</label>
+                                        <input type="text" class="form-control" id="inputEmail4" placeholder="{{$item->user->name}}">
+                                    </div>
+                                </div>
+                            @endforeach
+                        </fieldset>
+                        @endif
+                    </div>
+                    {{-- RT Fim --}}
             </div>
 
 

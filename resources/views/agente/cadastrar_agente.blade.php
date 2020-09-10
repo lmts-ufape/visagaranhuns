@@ -24,7 +24,7 @@
             </div>
         </div>
 
-    <form id="teste" method="POST" action="{{ route('/') }}">
+    <form id="teste" method="POST" action="{{ route('completar.cadastro.agente') }}">
         @csrf
         <input type="hidden" name="user" value="{{Auth::user()->id}}">
         <div class="container" style="margin-top:1rem;margin-left:10px;">
@@ -45,13 +45,13 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="inputEmail4">Especialização:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control" name="emailEmpresa" placeholder="" required>
+                    <input type="text" class="form-control" name="especializacao" placeholder="" required>
                 </div>
                 <div class="form-grtextoup col-md-4">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputEmail4">Telefone:<span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="telefone1" id="inputTelefone1" placeholder="" required>
+                            <input type="text" class="form-control" name="telefone" id="inputTelefone1" placeholder="" required>
                         </div>
                     </div>
                 </div>
@@ -72,15 +72,11 @@
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="inputEmail4">E-mail:<span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="nome" placeholder="exemplo@email.com" disabled>
+                            <input type="text" class="form-control" name="" placeholder="{{$user}}" disabled>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="inputPassword4">Senha:<span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="cpf" placeholder="" required>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputPassword4">Confirmar senha:<span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="formacao" placeholder="" required>
+                            <label for="inputPassword4">Alterar senha:<span style="color:red">*</span></label>
+                            <input type="password" class="form-control" name="password" placeholder="" required>
                         </div>
                     </div>
                 </div>

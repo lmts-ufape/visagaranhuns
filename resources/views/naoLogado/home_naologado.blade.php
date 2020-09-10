@@ -67,12 +67,12 @@
             </div>
         </div>
 
-        <div class="col-md-12" style="margin-left:10px;margin-top:10px; font-family:'Roboto'; font-size:18px; margin-bottom:5px;">Contato</div>
+        <div class="col-md-12" style="margin-left:10px;margin-top:10px; font-family:'Roboto'; font-size:18px; margin-bottom:5px;">Endereços</div>
 
         <div class="form-group col-md-4">
             <div  style="padding:1rem; width:350px; height:300px;">
                 <div class="form-row">
-                    <img id="img1" class="styleMapa" src="{{ asset('/imagens/mapa_ssg.png') }}" alt="Logo" style="width:100%; height:100%; display:none"/>
+                    <img id="img1" class="styleMapa" src="{{ asset('/imagens/mapa_ssg.png') }}" alt="Logo" style="width:100%; height:100%; display:block"/>
                     <img id="img2" class="styleMapa" src="{{ asset('/imagens/mapa_sms.png') }}" alt="Logo" style="width:100%; height:100%; display:none"/>
                 </div>
             </div>
@@ -91,7 +91,7 @@
                                 <div style="margin-right:10px; cursor:pointer;" onclick="mostrar('mostrar1','texto1','img1')"><span id="texto1">Mostrar</span></div>
                             </div>
                         </div>
-                        <div id="mostrar1" style="display:none;">
+                        <div id="mostrar1" style="display:block;">
                             <div class="container" style="margin-left:3px; font-family:arial;">R. Amauri de Medeiros, 215-387 - Heliópolis, Garanhuns - PE, 55295-430</div>
                             <div class="container" style="margin-left:3px; font-family:arial; color:red">Segunda a Sexta - 08:00-14:00</div>
                             <div class="container" style="margin-left:3px; margin-bottom:10px; font-family:arial;"></div>

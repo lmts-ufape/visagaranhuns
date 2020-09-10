@@ -20,7 +20,12 @@ class IsAgente
             return redirect()->route('login');
 
         if (Auth::user()->tipo == "agente"){
-            return $next($request);    
+            if (Auth::user()->status_cadastro == "pendente") {
+                return redirect()->route('completar.cadastro.agente');
+            }
+            else {
+                return $next($request);
+            }
         }
         abort(403);
     }

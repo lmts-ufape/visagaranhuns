@@ -13,7 +13,7 @@ class Agente extends Model
      * @var array
      */
     protected $fillable = [
-        'formacao', 'user_id',
+        'formacao', 'especializacao', 'cpf', 'telefone', 'user_id',
     ];
 
     public function user() {
