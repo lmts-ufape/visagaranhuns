@@ -165,25 +165,6 @@
                         </fieldset>
                         @endif
                     </div>
-                    <div class="barraMenu" style="margin-top:0.7rem;">
-                        <div class="d-flex">
-                            <div class="mr-auto p-2">
-                                <div class="btn-group">
-                                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Documentos do Responsável Técnico</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr size = 7>
-                    <div id="idBotaoAtualizar" style="margin-bottom:10rem; display:none;">
-                            <div class="d-flex">
-                                <div class="mr-auto p-2">
-                                </div>
-                            <div class="p-2">
-                                <button type="submit" class="btn btn-success" style="width:340px;">Atualizar</button>
-                            </div>
-                        </div>
-                    </div>
                 </fieldset>
             </div>
     </form>
