@@ -35,6 +35,11 @@ class EmpresaController extends Controller
         return view('coordenador/empresas_coordenador', ['empresas' => $empresas]);
     }
 
+    public function listarResponsavelTec(){
+
+        return view('empresa/responsavel_tec_empresa');
+    }
+
     public function home()
     {
         return view('empresa.home_empresa');
@@ -339,7 +344,7 @@ class EmpresaController extends Controller
 
             'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:2000000'],
             'data'    => ['nullable', 'date'],
-        
+
         ]);
 
         /*
@@ -410,7 +415,7 @@ class EmpresaController extends Controller
         $cnaempresa = CnaeEmpresa::where("empresa_id", $idEmpresa)->pluck('cnae_id');
         $cnaes = [];
         $areas = [];
-        
+
         foreach ($cnaempresa as $indice) {
             array_push($cnaes, Cnae::find($indice));
         }

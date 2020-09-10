@@ -17,7 +17,7 @@ class AgenteController extends Controller
     {
         // Definir pagina para listagem
         $agentes = Agente::all();
-        return view('/', [ 'agentes'  => $agentes ]);
+        return view('coordenador/agentes_coordenador', [ 'agentes'  => $agentes ]);
     }
 
     public function home()

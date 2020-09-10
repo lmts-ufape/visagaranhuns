@@ -22,7 +22,7 @@
                             Ações
                         </button>
                         @if (Auth::user()->status_cadastro == "pendente")
-                            
+
                         @else
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="{{ route('pagina.adicionar.empresa') }}">Adicionar empresa</a>

@@ -110,5 +110,38 @@ box-shadow: 0px 0px 11px -4px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 0px 20px -14px rgba(0,0,0,0.75);
     box-shadow: 0px 0px 20px -14px rgba(0,0,0,0.75);
 }
+.cardDashboard{
+    margin:0.4rem;
+    width:200px;
+    height:300px;
+    padding-top:1rem;
+    margin-top:1rem;
+    border-radius: 12px;
+    border: 1.5px solid #e3e3e3;
+    -webkit-box-shadow: 0px 0px 11px -7px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 11px -7px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 11px -7px rgba(0,0,0,0.75);
+    margin:5px;
+}
+.cardDashboard:hover{
+    margin:0.4rem;
+    width:200px;
+    height:300px;
+    padding-top:1rem;
+    margin-top:1rem;
+    border-radius: 12px;
+    border: 1.5px solid #e3e3e3;
+    -webkit-box-shadow: 0px 0px 15px -7px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 15px -7px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 15px -7px rgba(0,0,0,0.75);
+    margin:5px;
+}
 
-
+.cardDashboard.conteudo{
+    margin-bottom:10px;
+}
+.cardDashboard_titulo{
+    color:gray;
+    font-family:'Hammersmith One';
+    font-size:17px;
+}

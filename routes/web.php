@@ -112,6 +112,7 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::post("/empresa/cadastro/responsavelTecnico", "EmpresaController@adicionarEmpresa")->name("adicionar.empresa");
     Route::get("/listar/empresas/",                     "EmpresaController@listarEmpresas")->name("listar.empresas");
     Route::get("/estabelecimento/lista/cnae",           "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes");
+    Route::get("/listar/responsavelTecnico",            "EmpresaController@listarResponsavelTec")->name("listar.responsavelTec");
 
 
 /*
@@ -141,6 +142,7 @@ Route::middleware(['IsInspetor'])->group(function () {
 // Grupo de rotas para Agente
 Route::middleware(['IsAgente'])->group(function () {
     Route::get('/home/agente', 'AgenteController@home')->name('home.agente');
+    Route::get('cadastrar/agente', function () {return view('agente/cadastrar_agente');})->name('cadastrar.agente');
     /*
         (WEB)
         * Cadastrar/Editar/Deletar relatórios (Próprios)
