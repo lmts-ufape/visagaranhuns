@@ -146,7 +146,6 @@ class EmpresaController extends Controller
             array_push($areas, $indice->areas_id);
         }
 
-        dd($areas);
 
         return redirect()->route('confirma.cadastro');
     }

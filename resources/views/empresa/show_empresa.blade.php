@@ -2,29 +2,34 @@
 
 @section('content')
 <div class="container">
-    <div class="barraMenu">
-        <div class="d-flex">
-            <div class="mr-auto p-2">
-                <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
+        <div class="barraMenu">
+            <div class="d-flex justify-content-center">
+                <div class="mr-auto p-2 styleBarraPrincipalMOBILE">
+                    <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
+                        <div class="btn-group">
+                            <div style="margin-top:1px;margin-left:5px;"><img src="{{ asset('/imagens/logo_voltar.png') }}" alt="Logo" style="width:13px;"/></div>
+                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Voltar</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="mr-auto p-2 styleBarraPrincipalPC">
                     <div class="btn-group">
-                        <div style="margin-top:1px;margin-left:5px;"><img src="{{ asset('/imagens/logo_voltar.png') }}" alt="Logo" style="width:13px;"/></div>
-                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Voltar</div>
+                        <div style="font-size:20px; font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;margin-bottom:-5px">Informações</div>
                     </div>
-                </a>
-            </div>
-           <div class="p-2">
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Ações
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" style="cursor:pointer" onclick="editarEstabelecimento()">Editar estabelecimento</a>
-                         <a class="dropdown-item" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal" onclick="deletarEstabelecimento('{{$empresa->user->name}}')">Deletar estabelecimento</a>
+                </div>
+                <div class="p-2">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Ações
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" style="cursor:pointer" onclick="editarEstabelecimento()">Editar estabelecimento</a>
+                                <a class="dropdown-item" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal" onclick="deletarEstabelecimento('{{$empresa->user->name}}')">Deletar estabelecimento</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     <form action="">
         <div class="container" style="margin-top:1rem;margin-left:10px;">
             <fieldset disabled id="idFieldset">
@@ -165,9 +170,8 @@
                         </fieldset>
                         @endif
                     </div>
-                </fieldset>
             </div>
-    </form>
+
 
 <!-- Modal - campo deletar estabelecimento-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
