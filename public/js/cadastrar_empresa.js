@@ -120,3 +120,17 @@ window.pesquisacep = function(valor) {
     }
 }
 
+var tempIdCard = -1;
+window.mostrarBotaoAdicionar = function(valor){
+    if(tempIdCard == -1){
+        document.getElementById("cardSelecionado"+valor).style.display = "block";
+        this.tempIdCard=document.getElementById("cardSelecionado"+valor);
+    }else if(tempIdCard != -1){
+        tempIdCard.style.display = "none";
+        document.getElementById("cardSelecionado"+valor).style.display = "block";
+        this.tempIdCard=document.getElementById("cardSelecionado"+valor);
+
+    }
+
+}
+
