@@ -211,12 +211,12 @@ class CoordenadorController extends Controller
         $validationData = $this->validate($request,[
             'email'=>'required|email',
         ]);
-        
+
         if ($request->tipo == "inspetor") {
-            
+
             $user = User::where('email',$request->input('email'))->first();
             $empresa = Empresa::where('id', $request->empresa)->first();
-    
+
             if($user == null){
 
               $passwordTemporario = Str::random(8);
@@ -241,7 +241,7 @@ class CoordenadorController extends Controller
 
             $user = User::where('email',$request->input('email'))->first();
             $empresa = Empresa::where('id', $request->empresa)->first();
-    
+
             if($user == null){
 
               $passwordTemporario = Str::random(8);
@@ -263,7 +263,7 @@ class CoordenadorController extends Controller
         }
     }
 
-   
+
     /**
      * Store a newly created resource in storage.
      *
@@ -403,9 +403,8 @@ class CoordenadorController extends Controller
                                                 <div class="form-group" style="font-size:15px;">
                                                     <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
                                                     <div>CNPJ/CPF: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
-                                                    <div>Responsável Técnico:<span class="textoCampo">Fulano de Tal</span></div>
-                                                    <div>Última Inspeção: <span class="textoCampo">Ainda não foi realizada</span></div>
-                                                    <button type="button" onclick="empresaId('.$item->id.')" class="btn btn-info">Avaliar</button>
+
+                                                    <button style="margin-top:5px;" type="button" onclick="empresaId('.$item->id.')" class="btn btn-info">Avaliar</button>
                                                 </div>
                                             </div>
                                         </div>
