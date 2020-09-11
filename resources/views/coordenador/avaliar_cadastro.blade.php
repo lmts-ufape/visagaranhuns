@@ -3,8 +3,8 @@
 @section('content')
 <div class="container">
     <div class="barraMenu">
-        <div class="d-flex">
-            <div class="mr-auto p-2">
+        <div class="d-flex justify-content-center">
+            <div class="mr-auto p-2 styleBarraPrincipalMOBILE">
                 <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
                     <div class="btn-group">
                         <div style="margin-top:1px;margin-left:5px;"><img src="{{ asset('/imagens/logo_voltar.png') }}" alt="Logo" style="width:13px;"/></div>
@@ -12,26 +12,30 @@
                     </div>
                 </a>
             </div>
-           <div class="p-2">
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="mr-auto p-2 styleBarraPrincipalPC">
+                <div class="btn-group">
+                    <div class="tituloBarraPrincipal">Avaliar empresa</div>
+                </div>
+            </div>
+            <div class="p-2">
+                <div class="dropdown" style="width:50px">
+                    {{-- <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Ações
                     </button>
-                    {{-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" style="cursor:pointer" onclick="editarEstabelecimento()">Editar estabelecimento</a>
-                         <a class="dropdown-item" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal" onclick="deletarEstabelecimento('{{$empresa->user->name}}')">Deletar estabelecimento</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item btn btn-primary" data-toggle="modal" data-target="#exampleModal">Convidar agente</a>
                     </div> --}}
                 </div>
             </div>
         </div>
     </div>
-    
+
     <div class="barraMenu" style="margin-top:0.7rem;">
         <div class="d-flex">
             <div class="mr-auto p-2">
                 <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
                     <div class="btn-group">
-                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Usuário</div>
+                        <div class="subtituloBarraPrincipal">Responsável (Gerente)</div>
                     </div>
                 </a>
             </div>
@@ -56,7 +60,7 @@
             <div class="mr-auto p-2">
                 <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
                     <div class="btn-group">
-                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Empresa</div>
+                        <div class="subtituloBarraPrincipal">Empresa</div>
                     </div>
                 </a>
             </div>
@@ -107,7 +111,7 @@
             <div class="mr-auto p-2">
                 <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
                     <div class="btn-group">
-                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Endereço</div>
+                        <div class="subtituloBarraPrincipal">Endereço</div>
                     </div>
                 </a>
             </div>
