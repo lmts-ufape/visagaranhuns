@@ -13,8 +13,14 @@ class CreateAreaTipodocempsTable extends Migration
      */
     public function up()
     {
-        Schema::create('area_tipodocemps', function (Blueprint $table) {
+        Schema::create('areatipodocemps', function (Blueprint $table) {
             $table->id();
+
+            $table->bigInteger("area_id")->nullable();
+            $table->foreign("area_id")->references("id")->on("areas");
+
+            $table->bigInteger("tipodocemp_id")->nullable();
+            $table->foreign("tipodocemp_id")->references("id")->on("tipodocemp");
             $table->timestamps();
         });
     }

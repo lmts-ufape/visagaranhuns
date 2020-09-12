@@ -15,6 +15,8 @@ use App\RespTecnico;
 use App\RtEmpresa;
 use Illuminate\Support\Facades\Storage;
 use Auth;
+use App\AreaTipodocemp;
+use App\Checklistemp;
 use Illuminate\Support\Facades\Crypt;
 
 class EmpresaController extends Controller
@@ -66,7 +68,8 @@ class EmpresaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+
         $validator = $request->validate([
             'name'     => 'required|string',
             'email'    => 'required|email',
@@ -144,6 +147,26 @@ class EmpresaController extends Controller
         }
         foreach ($cnaes as $indice) {
             array_push($areas, $indice->areas_id);
+        }
+        
+        $resultAreas = array_unique($areas);
+        $areasOrdenado = [];
+
+        for ($i=0; $i < count($resultAreas); $i++) { 
+            array_push($areasOrdenado, $resultAreas[$i]);
+        }
+        dd($areas);
+        for ($i=0; $i < count($resultAreas); $i++) { 
+            $areatipodocemp = AreaTipodocemp::where('area_id', $resultAreas[$i])->get();
+
+            foreach ($areatipodocemp as $indice) {
+                $cnaeEmpresa = Checklistemp::create([
+                    'anexado' => 'false',
+                    'areas_id' => $resultAreas[$i],
+                    'nomeDoc' => $indice->tipodocemp->nome,
+                    'empresa_id' => $empresa->id,
+                ]);
+            }
         }
 
 
@@ -452,11 +475,13 @@ class EmpresaController extends Controller
             array_push($areas, $indice->areas_id);
         }
 
+        $checklist = Checklist::where('empresa_id', $empresa->id);
+        dd($checklist);
         // LISTAR OS TIPOS DE DOCS NA PROXIMA PAGINA!
         // $docsEmpresa = Docempresa::where('tipodocemp_id', )->get();
 
 
-        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome, 'areas' => $areas, 'id' => $empresa->id, 'status' => $empresa->status_cadastro]);
+        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome, 'areas' => $areas, 'id' => $empresa->id]);
     }
     public function ajaxCnaes(Request $request){
         $this->listar($request->id_area);

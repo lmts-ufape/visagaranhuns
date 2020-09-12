@@ -15,13 +15,11 @@ class CreateChecklistempTable extends Migration
     {
         Schema::create('checklistemp', function (Blueprint $table) {
             $table->id();
-            $table->boolean('anexado');
+            $table->string('anexado');
+            $table->string('nomeDoc');
 
             $table->bigInteger("areas_id")->nullable();
             $table->foreign("areas_id")->references("id")->on("areas");
-
-            $table->bigInteger("tipodocemp_id")->nullable();
-            $table->foreign("tipodocemp_id")->references("id")->on("tipodocemp");
 
             $table->bigInteger("empresa_id")->nullable();
             $table->foreign("empresa_id")->references("id")->on("empresas");

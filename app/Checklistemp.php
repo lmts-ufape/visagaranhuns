@@ -13,7 +13,7 @@ class Checklistemp extends Model
      * @var array
      */
     protected $fillable = [
-        'anexado', 'area_id', 'tipodocemp_id', 'empresa_id',
+        'anexado', 'areas_id', 'nomeDoc', 'empresa_id',
     ];
 
     // Areas
