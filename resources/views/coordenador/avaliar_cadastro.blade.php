@@ -129,11 +129,11 @@
                     <label style="font-size:19px;margin-top:0px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">CNAE</label>
                 </div>
                 @foreach($cnae as $item)
-                    <div class="form col-md-12" style="margin-top:-10px;">
-                        <img src="{{ asset('/imagens/logo_ponto.png') }}" alt="Logo" style="margin-top:-5px; margin-right:5px;"/>
-                        <label style="  ">Código </label> |
-                        <span style="color:#707070">Nome do cnae</span>
-                    </div>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <img src="{{ asset('/imagens/logo_ponto.png') }}" alt="Logo" style="margin-top:-5px; margin-right:5px;"/>
+                            <label style="  ">{{$item->cnae->codigo}} </label> |
+                            <span style="color:#707070">{{$item->cnae->descricao}}</span>
+                        </div>
                 @endforeach
             </div>
             <hr size = 7 style="margin-bottom:-15px;">
