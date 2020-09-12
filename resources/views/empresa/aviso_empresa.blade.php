@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container" style="margin-bottom: 5rem;">
-        <div class="barraMenu" style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
+    <div class="container" style="margin-bottom: 0.5rem;">
+        <div class="barraMenu" style="margin-top:2rem; margin-bottom:-2.5rem;padding:15px;">
             <div class="container" style="margin-top:1rem;">
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -30,10 +30,21 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
         </div>
+        <div style="margin-top:0.5rem; margin-bottom:4rem;padding:0px;">
+            <div class="container" style="margin-top:2rem;">
+                <div class="row" style="padding-top:15px;">
+                    <div class="col-6">
+                        <a href="http://ww3.uag.ufrpe.br/" style="font-family: 'Roboto', sans-serif; text-decoration:none; color:black;">VISA-GARANHUNS foi desenvolvido pela Universidade Federal do Agreste de Pernambuco - UFAPE</a>
+                    </div>
+                    <div class="col-6" style="margin-top:-10px; text-align:right">
+                        <img src="{{ asset('/imagens/logo_visa_menu.png') }}" alt="Logo" style="width:200px; margin-bottom:0px;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 @endsection
