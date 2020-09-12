@@ -14,7 +14,7 @@
             </div>
             <div class="mr-auto p-2 styleBarraPrincipalPC">
                 <div class="btn-group">
-                    <div class="tituloBarraPrincipal">Avaliar empresa</div>
+                    <div class="tituloBarraPrincipal">Avaliar estabelecimento</div>
                 </div>
             </div>
             <div class="p-2">
@@ -30,207 +30,184 @@
         </div>
     </div>
 
-    <div class="barraMenu" style="margin-top:0.7rem;">
-        <div class="d-flex">
-            <div class="mr-auto p-2">
-                <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
-                    <div class="btn-group">
-                        <div class="subtituloBarraPrincipal">Responsável (Gerente)</div>
+    <div class="barraMenu" style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
+        <div class="container" style="margin-top:1rem;">
+            <div class="form-row">
+                <div class="form-group col-md-12" >
+                    <div>
+                        <label style="color:black; font-size:35px;  margin-bottom:-10px; font-weight:400; font-family: 'Libre Baskerville', serif;;
+                        ;">{{$empresa->nome}}</label>
                     </div>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="container" style="margin-top:1rem;margin-left:10px;">
-        <fieldset disabled id="idFieldset">
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="inputEmail4">Nome:</label>
-                    <input type="text" class="form-control" id="inputEmail4" placeholder="{{$empresa->user->name}}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="inputPassword4">Email:</label>
-                    <input type="text" class="form-control" id="inputPassword4" placeholder="{{$empresa->user->email}}">
-                </div>
-            </div>
-        </fieldset>
-    </div>
-    <div class="barraMenu" style="margin-top:0.7rem;">
-        <div class="d-flex">
-            <div class="mr-auto p-2">
-                <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
-                    <div class="btn-group">
-                        <div class="subtituloBarraPrincipal">Empresa</div>
+                    <div>
+                        <div style="font-size:13px;margin-top:2px; margin-bottom:-10px;color:gray;">Início > Requerimento > Avaliar estabelecimento </div>
                     </div>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="container" style="margin-top:1rem;margin-left:10px;">
-        <fieldset disabled id="idFieldset">
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="inputEmail4">Nome/Razão Social:</label>
-                    <input type="text" class="form-control" id="inputEmail4" placeholder="{{$empresa->nome}}">
+                    <hr size = 7 style="margin-bottom:-2px;">
                 </div>
-                <div class="form-group col-md-4">
-                    <label for="inputPassword4">CNPJ/CPF:</label>
-                    <input type="text" class="form-control" id="inputPassword4" placeholder="{{$empresa->cnpjcpf}}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="inputPassword4">CNAE:</label>
-                    <input type="text" class="form-control" id="inputPassword4" placeholder="{{$cnae[0]->descricao}}">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="inputEmail4">E-mail:</label>
-                    <input type="email" class="form-control" id="inputEmail4" placeholder="{{$empresa->email}}">
-                </div>
-                <div class="form-grtextoup col-md-4">
+
+                <div class="form-group col-md-7">
                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputEmail4">Telefone 1:</label>
-                            <input type="text" class="form-control" id="inputEmail4" placeholder="{{$telefone->telefone1}}">
+                        <div class="form-group col-md-12">
+                            <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">INFORMAÇÕES DO ESTABELECIMENTO</label>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="inputPassword4">Telefone 2:</label>
-                            <input type="text" class="form-control" id="inputPassword4"  placeholder="{{$telefone->telefone2}}">
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nome: </label>
+                            <span style="color:#707070">{{$empresa->nome}}</span>
                         </div>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CNPJ: </label>
+                            <span style="color:#707070">{{$empresa->cnpjcpf}}</span>
+                        </div>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Tipo: </label>
+                            <span style="color:#707070">{{$empresa->tipo}}</span>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label style="font-size:19px;margin-top:10px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">ENDEREÇO</label>
+                        </div>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="margin-bottom:-15px; font-weight:normal;font-family: 'Roboto', sans-serif;">Rua: </label>
+                            <span style="margin:0px;color:#707070">{{$endereco->rua}},</span>
+                            <span style="margin:0px;color:#707070"> nº{{$endereco->numero}},</span>
+                            <span style="margin:0px;color:#707070"> {{$endereco->bairro}},</span>
+                            <span style="margin:0px;color:#707070"> {{$endereco->cidade}}/{{$endereco->uf}}</span>
+                        </div>
+                        <div class="form col-md-12" style="margin-top:1px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CEP: </label>
+                            <span style="color:#707070">{{$endereco->cep}}</span>
+                        </div>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Complemento: </label>
+                            <span style="color:#707070">{{$endereco->complemento}}</span>
+                        </div>
+
+
+                        <div class="form-group col-md-12">
+                            <label style="font-size:19px;margin-top:10px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">CONTATO</label>
+                        </div>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">E-mail: </label>
+                            <span style="color:#707070">{{$empresa->email}}</span>
+                        </div>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone 1: </label>
+                            <span style="color:#707070">{{$telefone->telefone1}}</span>
+                        </div>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone 2: </label>
+                            <span style="color:#707070">{{$telefone->telefone2}}</span>
+                        </div>
+
+
+
                     </div>
                 </div>
-                <div class="form-group col-md-4">
-                    <label for="inputPassword4">Nº CNAE:</label>
-                        <input type="text" class="form-control" id="inputPassword4"  placeholder="{{$cnae[0]->codigo}}">
+                <div class="form col-md-5">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                                <label style="font-size:19px;margin-top:10px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">INFORMAÇÕES DO GERENTE</label>
+                            </div>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nome: </label>
+                            <span style="color:#707070">{{$empresa->user->name}}</span>
+                        </div>
+                        {{-- <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CPF: </label>
+                            <span style="color:#707070">000.000.000-00</span>
+                        </div> --}}
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">E-mail: </label>
+                            <span style="color:#707070">{{$empresa->user->email}}</span>
+                        </div>
+                        {{-- <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
+                            <span style="color:#707070">(00) 0000-0000</span>
+                        </div> --}}
+                    </div>
                 </div>
+                <div class="form-group col-md-12">
+                    <label style="font-size:19px;margin-top:0px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">CNAE</label>
+                </div>
+                @foreach($cnae as $item)
+                    <div class="form col-md-12" style="margin-top:-10px;">
+                        <img src="{{ asset('/imagens/logo_ponto.png') }}" alt="Logo" style="margin-top:-5px; margin-right:5px;"/>
+                        <label style="  ">Código </label> |
+                        <span style="color:#707070">Nome do cnae</span>
+                    </div>
+                @endforeach
             </div>
-        </fieldset>
-    </div>
-    <div class="barraMenu" style="margin-top:0.7rem;">
-        <div class="d-flex">
-            <div class="mr-auto p-2">
-                <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
-                    <div class="btn-group">
-                        <div class="subtituloBarraPrincipal">Endereço</div>
-                    </div>
-                </a>
+            <hr size = 7 style="margin-bottom:-15px;">
+            <div class="row" style="margin-top:2rem; margin-bottom:1rem">
+                <div class="col-auto mr-auto"></div>
+                <div class="col-auto">
+                        <button type="button" class="btn btn-danger" style="margin-right:5px;" data-toggle="modal" data-target="#exampleModal1">Reprovar cadastro</button>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal2">Aprovar cadastro</button>
+
+                </div>
             </div>
         </div>
     </div>
-    <div class="container" style="margin-top:1rem;margin-left:10px;">
-        <fieldset disabled id="idFieldsetEndereco">
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="inputEmail4">Rua:</label>
-                    <input type="text" class="form-control" id="inputEmail4" placeholder="{{$endereco->rua}}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="inputPassword4">Número:</label>
-                    <input type="text" class="form-control" id="inputPassword4" placeholder="{{$endereco->numero}}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="inputPassword4">Complemento:</label>
-                    <input type="text" class="form-control" id="inputPassword4" placeholder="{{$endereco->complemento}}">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-3">
-                    <label for="inputEmail4">Bairro:</label>
-                    <input type="text" class="form-control" id="inputEmail4" placeholder="{{$endereco->bairro}}">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="inputEmail4">Cidade:</label>
-                    <input type="email" class="form-control" id="inputEmail4" placeholder="{{$endereco->cidade}}">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="inputEmail4">UF:</label>
-                    <input type="email" class="form-control" id="inputEmail4" placeholder="{{$endereco->uf}}">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="inputPassword4">CEP:</label>
-                    <input type="text" class="form-control" id="inputPassword4" placeholder="{{$endereco->cep}}">
-                </div>
-                </div>
-            </div>
-            <hr size = 7>
-            <div id="idBotaoAtualizar" style="margin-bottom:10rem; display:none;">
-                    <div class="d-flex">
-                        <div class="mr-auto p-2">
-                        </div>
-                    <div class="p-2">
-                        <button type="submit" class="btn btn-success" style="width:340px;">Atualizar</button>
-                    </div>
-                </div>
-            </div>
-        </fieldset>
-    </div>
-    <div class="form-group row mb-0" style="margin-top:1rem;margin-left:40px;">
-        <form method="POST" action="{{ route('julgar.cadastro', ['empresa_id' => $empresa->id, 'user_id' => $user->id, 'decisao' => 'false']) }}">
-            @csrf
-            <div class="col-md-12" style="padding-left:0">
-                <button type="submit" class="btn btn-secondary botao-form" style="width:100%">
-                    Reprovar Cadastro
-                </button>
-            </div>
-            </form>
-            <form method="POST" action="{{ route('julgar.cadastro', ['empresa_id' => $empresa->id, 'user_id' => $user->id, 'decisao' => 'true']) }}">
-            @csrf
-            <div class="col-md-12" style="padding-right:0">
-                <button type="submit" class="btn btn-primary botao-form" style="width:100%">
-                    Aprovar Cadastro
-                </button>
-            </div>
-        </form>
-    </div>
+</div>
 
-<!-- Modal - campo deletar estabelecimento-->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-    <div class="modal-header">
-            <img src="{{ asset('/imagens/logo_atencao2.png') }}" alt="Logo" style="width:35px; margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabel" style="font-size:20px;">Excluir estabelecimento</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <div class="row">
-            <div class="col-12">Tem certeza de que deseja excluir este estabelecimento <label id="nomeDoEstabelecimento" style="font-weight:bold;"></label>?</div>
+<!-- Modal - reprovar cadastro-->
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:red;">
+                    <img src="{{ asset('/imagens/logo_atencao3.png') }}" alt="Logo" style=" margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabel" style="font-size:20px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Reprovar cadastro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12" style="font-family: 'Roboto', sans-serif;">Tem certeza de que deseja reprovar o cadastro do estabelecimento <label id="nomeDoEstabelecimento" style="font-weight:bold; font-family: 'Roboto', sans-serif;">{{$empresa->nome}}</label>?</div>
+                    {{-- <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px;"><img src="{{ asset('/imagens/logo_bloqueado.png') }}" alt="Logo" style="width:15px; margin-right:5px;"/> Essa ação não poderá ser desfeita</div> --}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"style="width:100px;">Não</button>
+                <form method="POST" action="{{ route('julgar.cadastro', ['empresa_id' => $empresa->id, 'user_id' => $user->id, 'decisao' => 'false']) }}">
+                    @csrf
+                    <div class="col-md-12" style="padding-left:0">
+                        <button type="submit" class="btn btn-success botao-form" style="width:100%">
+                                Sim, reprovar cadastro
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"style="width:100px;">Não</button>
-        <button type="button" class="btn btn-danger" style="width:100px;">Sim, excluir</button>
+</div>
+<!-- Modal - aprovar cadastro-->
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#3ea81f;">
+                        <img src="{{ asset('/imagens/logo_atencao3.png') }}" alt="Logo" style=" margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Aprovar cadastro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12" style="font-family: 'Roboto', sans-serif;">Tem certeza de que deseja aprovar o cadastro do estabelecimento <label id="nomeDoEstabelecimento" style="font-weight:bold; font-family: 'Roboto', sans-serif;">{{$empresa->nome}}</label>?</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"style="width:100px;">Não</button>
+                    <form method="POST" action="{{ route('julgar.cadastro', ['empresa_id' => $empresa->id, 'user_id' => $user->id, 'decisao' => 'true']) }}">
+                        @csrf
+                        <div class="col-md-12" style="padding-right:0">
+                            <button type="submit" class="btn btn-success botao-form" style="width:100%">
+                                Sim, aprovar cadastro
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    </div>
-</div>
-</div>
-<script>
-    function editarEstabelecimento(){
-        // console.log("OPA");
-        if(document.getElementById("idFieldset").disabled == true){
-            //Estabelecimento
-            document.getElementById("idFieldset").disabled = false;
-            //Endereco
-            document.getElementById("idFieldsetEndereco").disabled = false;
-            //botao atualizar
-            document.getElementById("idBotaoAtualizar").style.display = "block";
-        }else{
-            //Estabelecimento
-            document.getElementById("idFieldset").disabled = true;
-            //Endereco
-            document.getElementById("idFieldsetEndereco").disabled = true;
-            //botao atualizar
-            document.getElementById("idBotaoAtualizar").style.display = "none";
-        }
-    }
-    function deletarEstabelecimento($nome){
-        console.log($nome);
-        document.getElementById("nomeDoEstabelecimento").innerHTML=$nome;
-    }
-</script>
-
-</div>
 @endsection
 
 
