@@ -92,7 +92,7 @@
                         <div class="d-flex">
                             <div class="mr-auto p-2">
                                 <div class="btn-group">
-                                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px; font-family:'Roboto'; font-weight:bold; color:#707070">Secretária de Saúde de Garanhuns - PE</div>
+                                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px; font-family:'Roboto'; font-weight:bold; color:#707070">Secretaria de Saúde de Garanhuns - PE</div>
                                 </div>
                             </div>
                             <div class="p-2">
@@ -110,7 +110,7 @@
                         <div class="d-flex">
                             <div class="mr-auto p-2">
                                 <div class="btn-group">
-                                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px; font-family:'Roboto'; font-weight:bold; color:#707070">Secretária Municipal de Garanhuns - PE</div>
+                                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px; font-family:'Roboto'; font-weight:bold; color:#707070">Secretaria Municipal de Garanhuns - PE</div>
                                 </div>
                             </div>
                             <div class="p-2">
