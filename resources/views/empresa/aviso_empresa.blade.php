@@ -25,7 +25,7 @@
                                 <label style="font-size:16px;font-family: 'Quicksand', sans-serif;">Seus dados encontram-se em avaliação, espere a sua aprovação para que possa ter acesso a outras funcionalidades do sistema. </label>
                             </div>
                             <div class="form col-md-12" style="margin-top:40px;">
-                                <a class="btn btn-success botao-form" style="weight:500px; color:white;">Clique aqui</a>
+                                <a class="btn btn-success botao-form"  href="{{route("/")}}" style="weight:500px; color:white;">Clique aqui</a>
                                 <label style="margin-left:10px; font-family: 'Roboto', sans-serif;"> para voltar à página inicial</label>
                             </div>
                         </div>
@@ -33,11 +33,11 @@
                 </div>
             </div>
         </div>
-        <div style="margin-top:0.5rem; margin-bottom:4rem;padding:0px;">
+        <div style="margin-top:0.5rem; margin-bottom:5rem;padding:0px;">
             <div class="container" style="margin-top:2rem;">
                 <div class="row" style="padding-top:15px;">
                     <div class="col-6">
-                        <a href="http://ww3.uag.ufrpe.br/" style="font-family: 'Roboto', sans-serif; text-decoration:none; color:black;">VISA-GARANHUNS foi desenvolvido pela Universidade Federal do Agreste de Pernambuco - UFAPE</a>
+                        <a href="http://ww3.uag.ufrpe.br/" target="_blank" style="font-family: 'Roboto', sans-serif; text-decoration:none; color:black;">VISA-GARANHUNS foi desenvolvido pela Universidade Federal do Agreste de Pernambuco - UFAPE</a>
                     </div>
                     <div class="col-6" style="margin-top:-10px; text-align:right">
                         <img src="{{ asset('/imagens/logo_visa_menu.png') }}" alt="Logo" style="width:200px; margin-bottom:0px;"/>
