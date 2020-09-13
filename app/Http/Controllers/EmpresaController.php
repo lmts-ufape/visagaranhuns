@@ -479,7 +479,8 @@ class EmpresaController extends Controller
             array_push($area, Area::find($indice));
         }
         
-        $checklist = Checklistemp::where('empresa_id', $empresa->id)->get();
+        $checklist = Checklistemp::where('empresa_id', $empresa->id)->orderBy('id','ASC')->get();
+        // dd($checklist);
         
         
         // LISTAR OS TIPOS DE DOCS NA PROXIMA PAGINA!
