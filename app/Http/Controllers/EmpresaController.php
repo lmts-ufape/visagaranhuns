@@ -152,17 +152,17 @@ class EmpresaController extends Controller
         $resultAreas = array_unique($areas);
         $areasOrdenado = [];
 
-        for ($i=0; $i < count($resultAreas); $i++) { 
-            array_push($areasOrdenado, $resultAreas[$i]);
+        foreach ($resultAreas as $indice) {
+            array_push($areasOrdenado, $indice);
         }
-        dd($areas);
-        for ($i=0; $i < count($resultAreas); $i++) { 
-            $areatipodocemp = AreaTipodocemp::where('area_id', $resultAreas[$i])->get();
+    
+        for ($i=0; $i < count($areasOrdenado); $i++) { 
+            $areatipodocemp = AreaTipodocemp::where('area_id', $areasOrdenado[$i])->get();
 
             foreach ($areatipodocemp as $indice) {
                 $cnaeEmpresa = Checklistemp::create([
                     'anexado' => 'false',
-                    'areas_id' => $resultAreas[$i],
+                    'areas_id' => $areasOrdenado[$i],
                     'nomeDoc' => $indice->tipodocemp->nome,
                     'empresa_id' => $empresa->id,
                 ]);
@@ -377,7 +377,8 @@ class EmpresaController extends Controller
     public function anexarArquivos(Request $request)
     {
 
-        $empresa = Empresa::find($request->empresa)->first();
+        $checklist = Checklistemp::find($request->checklistId);
+        $empresa = Empresa::find($request->empresaId);
 
         $validatedData = $request->validate([
 
@@ -386,16 +387,9 @@ class EmpresaController extends Controller
 
         ]);
 
-        /*
-        Obs:
-         - Rg sem data de validade
-         - Rg de sócio sem data de validade
-         - Cpf sem data de validade
-         - Cpf de sócio sem data de validade
-        */
 
         $fileDocemp = $request->arquivo;
-        $pathDocemp = 'empresas/' . $empresa->id . '/' . $tipo . '/';
+        $pathDocemp = 'empresas/' . $empresa->id . '/' . $checklist->areas_id . '/';
         $nomeDocemp = $request->arquivo->getClientOriginalName();
 
         Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
@@ -404,8 +398,11 @@ class EmpresaController extends Controller
             'nome'  => $pathDocemp . $nomeDocemp,
             'data_emissao' => $request->data,
             'empresa_id'  => $empresa->id,
-            'tipodocemp_id' => $request->tipo,
+            // 'tipodocemp_id' => $request->tipo,
         ]);
+
+        $checklist->anexado = "true";
+        $checklist->save();
 
         return view('empresa.home_empresa');
 
@@ -467,6 +464,7 @@ class EmpresaController extends Controller
         $cnaempresa = CnaeEmpresa::where("empresa_id", $idEmpresa)->pluck('cnae_id');
         $cnaes = [];
         $areas = [];
+        $area = [];
 
         foreach ($cnaempresa as $indice) {
             array_push($cnaes, Cnae::find($indice));
@@ -475,13 +473,20 @@ class EmpresaController extends Controller
             array_push($areas, $indice->areas_id);
         }
 
-        $checklist = Checklist::where('empresa_id', $empresa->id);
-        dd($checklist);
+        $resultAreas = array_unique($areas);
+        
+        foreach ($resultAreas as $indice) {
+            array_push($area, Area::find($indice));
+        }
+        
+        $checklist = Checklistemp::where('empresa_id', $empresa->id)->get();
+        
+        
         // LISTAR OS TIPOS DE DOCS NA PROXIMA PAGINA!
         // $docsEmpresa = Docempresa::where('tipodocemp_id', )->get();
 
 
-        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome, 'areas' => $areas, 'id' => $empresa->id]);
+        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome, 'areas' => $area, 'empresaId' => $empresa->id, 'checklist' => $checklist]);
     }
     public function ajaxCnaes(Request $request){
         $this->listar($request->id_area);
@@ -510,5 +515,17 @@ class EmpresaController extends Controller
                 'table_data' => $output,
             );
             echo json_encode($data);
+    }
+
+    public function foundChecklist(Request $request){
+        $empresa = Empresa::find($request->empresaId);
+        $checklist = Checklistemp::find($request->checklistId);
+
+        $data = array(
+            'success'   => true,
+            'checklist' => $checklist->id,
+            'empresa'   => $empresa->id,
+        );
+        return $data;
     }
 }

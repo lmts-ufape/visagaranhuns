@@ -51,260 +51,104 @@
 
         </div>
     </div>
+
+    @foreach ($areas as $item)
+
     <div class="barraMenu" style="margin-top:0.7rem;"">
         <div class="d-flex">
             <div class="mr-auto p-2">
                 <div class="btn-group">
-                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Documentos - Serviço de ensino</div>
+                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Documentos - {{$item->nome}}</div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container" style="margin-bottom:5.5rem">
 
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Requerimento Preenchido<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
+    @foreach ($checklist as $indice)
+        @if ($indice->areas_id == $item->id)
+        <div class="container" style="margin-bottom:1rem">
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
+            <div class="cardDocumentos">
+                <div class="d-flex justify-content-center">
+                    <div class="mr-auto p-2">
+                        <div class="form-group">
+                            <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">{{$indice->nomeDoc}}<span style="color:red">*</span></div>
+                            <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
                         </div>
                     </div>
+                    @if($indice->anexado == "false")
+                        <div class="p-2">
+                            <div class="form-row">
+                                <div style="margin-top:1px;margin-right:15px;font-size:15px;">
+                                    <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    <span class="btn-sm btn-warning">Pendente</span>
+                                </div>
+                                <div style="margin-top:1px;margin-right:15px;font-size:15px;" class="dropdown show">
+                                    <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" onclick="foundChecklist({{$indice->id}},{{$empresaId}})" data-toggle="modal" data-target="#exampleModalCenter">
+                                        Anexar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                    <div class="p-2">
+                        <div class="form-row">
+                            <div style="margin-top:1px;margin-right:15px;font-size:15px;">
+                                <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                <span class="btn-sm btn-success">Anexado</span>
+                            </div>
+                            <div style="margin-top:1px;margin-right:15px;font-size:15px;" class="dropdown show">
+                                <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Ação
+                                </a>
+    
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="#">Baixar</a>
+                                    <a class="dropdown-item" href="#">Editar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
                 </div>
             </div>
         </div>
 
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">CNPJ<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Anexar Arquivo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
+                <div class="modal-body">
+                    <form id="arquivo" method="POST" action="{{route('anexar.arquivos')}}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <input type="file" class="form-control-file" name="arquivo" id="exampleFormControlFile1" required>
+                            <label for="inicioSubmissao" class="col-form-label">{{ __('Início da Submissão') }}</label>
+                            <input id="inicioSubmissao" type="date" class="form-control @error('inicioSubmissao') is-invalid @enderror" name="data" required>
+                            <input id="foundChecklist" type="hidden" name="checklistId" value="">
+                            <input id="foundEmpresa" type="hidden" name="empresaId" value="">
+                            
                         </div>
-                    </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" form="arquivo" class="btn btn-primary">Anexar</button>
                 </div>
             </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">RG e CPF<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
+        @endif
+    @endforeach
 
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Contrato Social ou Registro de firma individual ou Certificado de MEI<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Atestado de regularidade do corpo de bombeiro<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Licença Anterior<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">IPTU Quitado<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Certificado de detetizadora + Licença Sanitária<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Licença Ambiental<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Taxa de vigilância sanitária<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-
+    @endforeach
 
 </div>
 @endsection

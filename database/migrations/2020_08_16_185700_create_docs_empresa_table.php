@@ -21,8 +21,8 @@ class CreateDocsEmpresaTable extends Migration
             $table->bigInteger("empresa_id");
             $table->foreign("empresa_id")->references("id")->on("empresas");
 
-            $table->bigInteger("tipodocemp_id");
-            $table->foreign("tipodocemp_id")->references("id")->on("tipodocemp");
+            // $table->bigInteger("tipodocemp_id");
+            // $table->foreign("tipodocemp_id")->references("id")->on("tipodocemp");
             $table->timestamps();
         });
     }

@@ -13,7 +13,8 @@ class Docempresa extends Model
      * @var array
      */
     protected $fillable = [
-        'nome', 'data_emissao', 'empresa_id', 'tipodocemp_id',
+        'nome', 'data_emissao', 'empresa_id',
+        // 'tipodocemp_id',
     ];
 
     public function empresa() {
@@ -21,7 +22,7 @@ class Docempresa extends Model
     }
 
     // Tipo de documento da empresa
-    public function tipodocemp() {
-        return $this->belongsTo("\App\Tipodocempresa");
-    }
+    // public function tipodocemp() {
+    //     return $this->belongsTo("\App\Tipodocempresa");
+    // }
 }
