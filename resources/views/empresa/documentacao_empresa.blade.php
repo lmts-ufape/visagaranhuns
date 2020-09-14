@@ -23,286 +23,119 @@
                 </div>
             </div>
         </div>
-    <div class="container" style="margin-top:1rem;">
 
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                <div class="barraMenu" style="padding:1rem;">
-                    <div style="font-size:20px; font-family:Arial, Helvetica, sans-serif"><img src="{{ asset('/imagens/logo_predio.png') }}" alt="Logo" style="width:22px; height:26px; margin-top:-5px; margin-right:5px;"/>{{$nome}}</div>
-                    <div><span style="font-weight:bold">CNPJ: </span> XXXXXXXXXXXXXXX</div>
-                    <div><span style="font-weight:bold">Tipo: </span> XXXXXXXXXXXXXXX</div>
-                    <div><span style="font-weight:bold">Última alteração: </span>dd/mm/aaaa</div>
-                </div>
-            </div>
-            <div class="form-group col-md-4">
-                <div class="barraMenu" style="padding:1rem;">
-                    <div style="font-size:20px; font-family:Arial, Helvetica, sans-serif; color:green"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="width:20px; height:20px; margin-top:-5px; margin-right:5px;"/>Aprovado</div>
-                    <div><span style="font-weight:bold">Nome do inspetor: </span> XXXXXXXXXXXXXXX</div>
-                    <div><span style="font-weight:bold">Código do inspetor: </span> XXXXXXXXXXXXXXX</div>
-                    <div><span style="font-weight:bold">Data da aprovação: </span>dd/mm/aaaa</div>
-                </div>
-            </div>
-            <div class="form-group col-md-4">
-                <div class="barraMenu" style="padding:1rem;">
-                    <div style="font-size:20px; font-family:Arial, Helvetica, sans-serif"><img src="{{ asset('/imagens/logo_atencao2.png') }}" alt="Logo" style="width:22px; height:20px; margin-top:-5px; margin-right:5px;"/>Aviso!</div>
-                    <div><span style="font-weight:normal">Toda modificação de documentos deverá passar pela aprovação da Vigilância Sanitária de Garanhuns!</span></div>
-                </div>
-            </div>
+    <div class="barraMenu"style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
+            <div class="container" style="margin-top:1rem;">
+                    <div class="form-row">
+                        <div class="form-group col-md-12" >
+                            <div>
+                                <label style="color:black; font-size:35px;  margin-bottom:-10px; font-weight:400; font-family: 'Libre Baskerville', serif;;
+                                ;">{{$nome}}</label>
+                            </div>
+                            <div>
+                                <div style="font-size:13px;margin-top:2px; margin-bottom:-10px;color:gray;">Início > Estabelecimentos > {{$nome}} > Documentos </div>
+                            </div>
+                            <hr size = 7 style="margin-bottom:-2px;">
+                        </div>
 
-        </div>
+                        <div class="form-group col-md-7">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">DOCUMENTOS NECESSÁRIOS</label>
+                                </div>
+                                <div class="form col-md-12">
+                                    <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:-5px">Contrato Social ou Registro de Firma Indivídual ou Certificado de MEI <span style="color:#707070"> - Pendente</span></label>
+                                    <div style="margin-bottom:10px;">
+                                        <a href="" style="margin-right:10px;">Abrir arquivo</a>
+                                        <a href="">Baixar arquivo</a>
+                                    </div>
+                                </div>
+                                <div class="form col-md-12" >
+                                    <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:-5px">Atestado de regularidade do corpo de bombeiro <span style="color:#707070"> - Pendente</span></label>
+                                    <div style="margin-bottom:10px;">
+                                        <a href="" style="margin-right:10px;">Abrir arquivo</a>
+                                        <a href="">Baixar arquivo</a>
+                                    </div>
+                                </div>
+                                <div class="form col-md-12">
+                                    <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:-5px">Licença anterior <span style="color:#707070"> - Pendente</span></label>
+                                    <div style="margin-bottom:10px;">
+                                        <a href="" style="margin-right:10px;">Abrir arquivo</a>
+                                        <a href="">Baixar arquivo</a>
+                                    </div>
+                                </div>
+                                <div class="form col-md-12">
+                                    <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:-5px">Certificado de dedetização <span style="color:#707070"> - Pendente</span></label>
+                                    <div style="margin-bottom:10px;">
+                                        <a href="" style="margin-right:10px;">Abrir arquivo</a>
+                                        <a href="">Baixar arquivo</a>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">OUTROS DOCUMENTOS</label>
+                                </div>
+                                <div class="form col-md-12">
+                                    <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:-5px">Exemplo A <span style="color:#707070"> - Pendente</span></label>
+                                    <div style="margin-bottom:10px;">
+                                        <a href="" style="margin-right:10px;">Abrir arquivo</a>
+                                        <a href="">Baixar arquivo</a>
+                                    </div>
+                                </div>
+                                <div class="form col-md-12">
+                                    <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:-5px">Exemplo B <span style="color:#707070"> - Pendente</span></label>
+                                    <div style="margin-bottom:10px;">
+                                        <a href="" style="margin-right:10px;">Abrir arquivo</a>
+                                        <a href="">Baixar arquivo</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form col-md-5" style="margin-top:10px;">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                        <label style="font-size:19px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">ANEXAR DOCUMENTO</label>
+                                    </div>
+                                <div class="form col-md-12" style="margin-top:-10px;margin-bottom:10px;">
+                                    <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Tipo de documento</label>
+                                    <select class="form-control" id="exampleFormControlSelect1">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                                <div class="form col-md-12" >
+                                        <div class="row">
+                                            <div class="col">
+                                                <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Emissão</label>
+                                                <input type="date" class="form-control" placeholder="First name">
+                                            </div>
+                                            <div class="col">
+                                                <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Validade</label>
+                                                <input type="date" class="form-control" placeholder="Last name">
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="form col-md-12" style="margin-top:30px;">
+                                    <button type="button" class="btn btn-success" style="width:100%;">Enviar</button>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    {{-- <hr size = 7 style="margin-bottom:-15px;"> --}}
+                    <div class="row" style="margin-top:2rem; margin-bottom:1rem">
+                        <div class="col-auto mr-auto"></div>
+                        <div class="col-auto">
+
+                        </div>
+                    </div>
+                </div>
     </div>
-    <div class="barraMenu" style="margin-top:0.7rem;"">
-        <div class="d-flex">
-            <div class="mr-auto p-2">
-                <div class="btn-group">
-                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Documentos - Serviço de ensino</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container" style="margin-bottom:5.5rem">
 
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Requerimento Preenchido<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">CNPJ<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">RG e CPF<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Contrato Social ou Registro de firma individual ou Certificado de MEI<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Atestado de regularidade do corpo de bombeiro<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Licença Anterior<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">IPTU Quitado<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Certificado de detetizadora + Licença Sanitária<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Licença Ambiental<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Taxa de vigilância sanitária<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
 
 
 
