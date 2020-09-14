@@ -7,6 +7,12 @@
 .styleBarraPrincipalMOBILE{
     display:none;
 }
+.tituloBarraPrincipal{
+    font-size:20px; font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;margin-bottom:-5px; font-family:Roboto
+}
+.subtituloBarraPrincipal{
+    font-size:18px; font-weight:normal; color:#707070; margin-left:0px; margin-left:10px;margin-bottom:-5px; font-family:Roboto
+}
 .cardCadastro{
     background-color:white;
     border: 1.5px solid #f5f5f5;

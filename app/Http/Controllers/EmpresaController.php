@@ -87,7 +87,6 @@ class EmpresaController extends Controller
             'cidade'   => 'required|string',
             'uf'       => 'required|string',
             'cep'      => 'required|string',
-            'complemento' => 'required|string',
         ]);
 
         $user = User::create([
@@ -250,15 +249,16 @@ class EmpresaController extends Controller
         $empresa = Empresa::find($id);
         $endereco = Endereco::where('empresa_id', $empresa->id)->first();
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
-        $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $id)->get();
+        $cnae = CnaeEmpresa::where('empresa_id', $id)->get();
+        $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->get();
 
-        $cnae = array();
-        foreach($cnaeEmpresa as $indice){
-            $cnaes = Cnae::find($indice->cnae_id);
-            array_push($cnae, $cnaes);
-        }
+        // $cnae = array();
+        // foreach($cnaeEmpresa as $indice){
+        //     $cnaes = Cnae::find($indice->cnae_id);
+        //     array_push($cnae, $cnaes);
+        // }
 
-        return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae]);
+        return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae, 'rt' => $rtempresa]);
     }
 
     /**
@@ -441,7 +441,7 @@ class EmpresaController extends Controller
         $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->pluck('resptec_id');
 
         $resptecnicos = [];
-        for ($i=0; $i < count($rtempresa); $i++) { 
+        for ($i=0; $i < count($rtempresa); $i++) {
             array_push($resptecnicos, RespTecnico::find($rtempresa[$i]));
         }
 
@@ -451,8 +451,8 @@ class EmpresaController extends Controller
             array_push($cnae, $cnaes);
         }
         return view('empresa/show_empresa',['empresa' => $empresa,
-         'endereco' => $endereco, 
-         'telefone' =>$telefone, 
+         'endereco' => $endereco,
+         'telefone' =>$telefone,
          'cnae' => $cnae,
          'respTecnico' => $resptecnicos,
          'empresaId'     => $empresa->id,
@@ -515,7 +515,17 @@ class EmpresaController extends Controller
             if($resultado->count() > 0){
                 foreach($resultado as $item){
                     $output .= '
-                    <div onclick="add('.$item->id.')" class="cardMeuCnae" id="'.$item->id.'" style="margin:10px; padding:10px; border: 1.5px solid #f2f2f2; border-radius: 8px; width:95%; cursor: pointer; ">'.$item->descricao.'</div>
+                    <div class="d-flex justify-content-center cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
+                        <div class="mr-auto p-2>OPA</div>
+                            <div class="mr-auto p-2" id="'.$item->id.'">'.$item->descricao.'</div>
+                            <div style="width:140px; height:25px; text-align:right;">
+                                <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
+                                    <div class="btn btn-success btn-sm"  onclick="add('.$item->id.')" >Adicionar</div>
+                                </div>
+                            </div>
+
+                    </div>
+
                     ';
                 }
             }elseif($idArea == ""){
