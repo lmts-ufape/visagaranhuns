@@ -15,6 +15,7 @@ use App\RespTecnico;
 use App\RtEmpresa;
 use Illuminate\Support\Facades\Storage;
 use Auth;
+use DateTime;
 use App\AreaTipodocemp;
 use App\Checklistemp;
 use Illuminate\Support\Facades\Crypt;
@@ -396,9 +397,9 @@ class EmpresaController extends Controller
 
         $docEmpresa = Docempresa::create([
             'nome'  => $pathDocemp . $nomeDocemp,
-            'data_emissao' => $request->data,
+            'data_validade' => $request->data,
             'empresa_id'  => $empresa->id,
-            // 'tipodocemp_id' => $request->tipo,
+            'tipodocemp_id' => $request->tipo,
         ]);
 
         $checklist->anexado = "true";
@@ -481,6 +482,26 @@ class EmpresaController extends Controller
         }
         
         $checklist = Checklistemp::where('empresa_id', $empresa->id)->orderBy('id','ASC')->get();
+
+        // $hoje = date('d/m/Y');
+        // $formatoHoje = 'd/m/Y';
+        // $Hoje = DateTime::createFromFormat($formatoHoje, $hoje);
+
+        // foreach ($checklist as $check) {
+            
+        // }
+
+        // foreach ($docsempresa as $indice) {
+        //     $formato = 'd/m/Y';
+        //     $validade = DateTime::createFromFormat($formato, $indice->data_validade);
+        //     $intervalo = $validade->diff($Hoje);
+        //     if ($hoje > $indice->data_validade) {
+        //         // Volta a ser pendente
+        //     }
+        //     elseif (condition) {
+        //         # code...
+        //     }
+        // }
 
         return view('empresa/documentacao_empresa',['nome'=>$empresa->nome, 'areas' => $area, 'empresaId' => $empresa->id, 'checklist' => $checklist, 'docsempresa' => $docsempresa]);
     }
