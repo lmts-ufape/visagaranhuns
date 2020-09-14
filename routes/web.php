@@ -136,6 +136,9 @@ Route::middleware(['IsEmpresa'])->group(function () {
     // Encontrar item da checklist
     Route::get('/foundChecklist','EmpresaController@foundChecklist')->name('found.checklist');
 
+    // Download de arquivos anexados
+    Route::get('/download/arquivo',       'EmpresaController@downloadArquivo')->name('download.arquivo');
+
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
     * Editar/Anexar dados da empresa

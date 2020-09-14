@@ -461,6 +461,7 @@ class EmpresaController extends Controller
 
         $idEmpresa = Crypt::decrypt($request->value);
         $empresa = Empresa::where('id', $idEmpresa)->first();
+        $docsempresa = Docempresa::where('empresa_id', $empresa->id)->get();
         $cnaempresa = CnaeEmpresa::where("empresa_id", $idEmpresa)->pluck('cnae_id');
         $cnaes = [];
         $areas = [];
@@ -480,14 +481,8 @@ class EmpresaController extends Controller
         }
         
         $checklist = Checklistemp::where('empresa_id', $empresa->id)->orderBy('id','ASC')->get();
-        // dd($checklist);
-        
-        
-        // LISTAR OS TIPOS DE DOCS NA PROXIMA PAGINA!
-        // $docsEmpresa = Docempresa::where('tipodocemp_id', )->get();
 
-
-        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome, 'areas' => $area, 'empresaId' => $empresa->id, 'checklist' => $checklist]);
+        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome, 'areas' => $area, 'empresaId' => $empresa->id, 'checklist' => $checklist, 'docsempresa' => $docsempresa]);
     }
     public function ajaxCnaes(Request $request){
         $this->listar($request->id_area);
@@ -528,5 +523,9 @@ class EmpresaController extends Controller
             'empresa'   => $empresa->id,
         );
         return $data;
+    }
+
+    public function downloadArquivo(Request $request){
+        return response()->download(storage_path('app/' . $request->file));
     }
 }

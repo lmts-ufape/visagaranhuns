@@ -101,9 +101,13 @@
                                 <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Ação
                                 </a>
-    
+     
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="#">Baixar</a>
+                                    @foreach ($docsempresa as $docempresa)
+                                        @if ($docempresa->empresa_id == $indice->empresa_id)
+                                            <a href="{{route('download.arquivo', ['file' => $docempresa->nome, "empresaId" => $empresaId, "areaId" => $item->id])}}" class="dropdown-item" href="#">Baixar</a>
+                                        @endif
+                                    @endforeach
                                     <a class="dropdown-item" href="#">Editar</a>
                                 </div>
                             </div>
