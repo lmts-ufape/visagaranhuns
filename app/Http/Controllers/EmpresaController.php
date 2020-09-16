@@ -156,69 +156,6 @@ class EmpresaController extends Controller
         foreach ($resultAreas as $indice) {
             array_push($areasOrdenado, $indice);
         }
-
-        // $cnaeEmpresa = Checklistemp::create([
-        //     'anexado' => 'false',
-        //     'nomeDoc' => "Requerimento Preenchido",
-        //     'tipodocemp_id' => "1",
-        //     'empresa_id' => $empresa->id,
-        // ]);
-
-        // $cnaeEmpresa = Checklistemp::create([
-        //     'anexado' => 'false',
-        //     'nomeDoc' => "cnpj",
-        //     'tipodocemp_id' => "2",
-        //     'empresa_id' => $empresa->id,
-        // ]);
-
-        // $cnaeEmpresa = Checklistemp::create([
-        //     'anexado' => 'false',
-        //     'nomeDoc' => "Contrato Social ou Registro de Firma Individual ou Certificado Mei",
-        //     'tipodocemp_id' => "3",
-        //     'empresa_id' => $empresa->id,
-        // ]);
-
-        // $cnaeEmpresa = Checklistemp::create([
-        //     'anexado' => 'false',
-        //     'nomeDoc' => "rg",
-        //     'tipodocemp_id' => "4",
-        //     'empresa_id' => $empresa->id,
-        // ]);
-
-        // $cnaeEmpresa = Checklistemp::create([
-        //     'anexado' => 'false',
-        //     'nomeDoc' => "cpf",
-        //     'tipodocemp_id' => "5",
-        //     'empresa_id' => $empresa->id,
-        // ]);
-
-        // $cnaeEmpresa = Checklistemp::create([
-        //     'anexado' => 'false',
-        //     'nomeDoc' => "Atestado de Regularidade do Corpo de Bombeiros",
-        //     'tipodocemp_id' => "6",
-        //     'empresa_id' => $empresa->id,
-        // ]);
-
-        // $cnaeEmpresa = Checklistemp::create([
-        //     'anexado' => 'false',
-        //     'nomeDoc' => "Licença Anterior",
-        //     'tipodocemp_id' => "7",
-        //     'empresa_id' => $empresa->id,
-        // ]);
-
-        // $cnaeEmpresa = Checklistemp::create([
-        //     'anexado' => 'false',
-        //     'nomeDoc' => "Certificado de Detetizadora",
-        //     'tipodocemp_id' => "9",
-        //     'empresa_id' => $empresa->id,
-        // ]);
-
-        // $cnaeEmpresa = Checklistemp::create([
-        //     'anexado' => 'false',
-        //     'nomeDoc' => "Licença Ambiental",
-        //     'tipodocemp_id' => "12",
-        //     'empresa_id' => $empresa->id,
-        // ]);
     
         for ($i=0; $i < count($areasOrdenado); $i++) { 
             $areatipodocemp = AreaTipodocemp::where('area_id', $areasOrdenado[$i])->get();
@@ -296,8 +233,9 @@ class EmpresaController extends Controller
             'empresa_id' => $empresa->id,
         ]);
 
-        // Área para cadastro de cnaes
+        // Área para cadastro de cnaesQ
         $cnae = $request['cnae'];
+
 
         for($i = 0; $i < count($cnae); $i++) {
             $cnaes = Cnae::find($cnae[$i]);
@@ -305,6 +243,47 @@ class EmpresaController extends Controller
                 'empresa_id' => $empresa->id,
                 'cnae_id' => $cnaes->id,
             ]);
+        }
+
+        // Cnaes por empresa
+        $cnaempresa = CnaeEmpresa::where("empresa_id", $empresa->id)->pluck('cnae_id');
+        $cnaes = [];
+        $areas = [];
+
+        foreach ($cnaempresa as $indice) {
+            array_push($cnaes, Cnae::find($indice));
+        }
+        foreach ($cnaes as $indice) {
+            array_push($areas, $indice->areas_id);
+        }
+        
+        $resultAreas = array_unique($areas);
+        $areasOrdenado = [];
+
+        foreach ($resultAreas as $indice) {
+            array_push($areasOrdenado, $indice);
+        }
+    
+        for ($i=0; $i < count($areasOrdenado); $i++) { 
+            $areatipodocemp = AreaTipodocemp::where('area_id', $areasOrdenado[$i])->get();
+
+            foreach ($areatipodocemp as $indice) {
+
+                // ABAIXO SAI, CASO SEJA DUPLICADO
+                $checklist = Checklistemp::where('nomeDoc', $indice->tipodocemp->nome)
+                ->where('empresa_id', $empresa->id)
+                ->first();
+
+                if ($checklist == null) {
+                    $cnaeEmpresa = Checklistemp::create([
+                        'anexado' => 'false',
+                        // 'areas_id' => $areasOrdenado[$i], VOLTA CASO FIQUE DUPLICADO
+                        'nomeDoc' => $indice->tipodocemp->nome,
+                        'tipodocemp_id' => $indice->tipodocemp->id,
+                        'empresa_id' => $empresa->id,
+                    ]);
+                }
+            }
         }
 
         return redirect()->route('confirma.cadastro');
