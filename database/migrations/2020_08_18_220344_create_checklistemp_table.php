@@ -21,6 +21,9 @@ class CreateChecklistempTable extends Migration
             $table->bigInteger("areas_id")->nullable();
             $table->foreign("areas_id")->references("id")->on("areas");
 
+            $table->bigInteger("tipodocemp_id")->nullable();
+            $table->foreign("tipodocemp_id")->references("id")->on("tipodocemp");
+
             $table->bigInteger("empresa_id")->nullable();
             $table->foreign("empresa_id")->references("id")->on("empresas");
             $table->timestamps();

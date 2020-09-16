@@ -13,6 +13,7 @@ use App\Cnae;
 use App\CnaeEmpresa;
 use App\RespTecnico;
 use App\RtEmpresa;
+use App\Tipodocempresa;
 use Illuminate\Support\Facades\Storage;
 use Auth;
 use DateTime;
@@ -155,17 +156,89 @@ class EmpresaController extends Controller
         foreach ($resultAreas as $indice) {
             array_push($areasOrdenado, $indice);
         }
+
+        // $cnaeEmpresa = Checklistemp::create([
+        //     'anexado' => 'false',
+        //     'nomeDoc' => "Requerimento Preenchido",
+        //     'tipodocemp_id' => "1",
+        //     'empresa_id' => $empresa->id,
+        // ]);
+
+        // $cnaeEmpresa = Checklistemp::create([
+        //     'anexado' => 'false',
+        //     'nomeDoc' => "cnpj",
+        //     'tipodocemp_id' => "2",
+        //     'empresa_id' => $empresa->id,
+        // ]);
+
+        // $cnaeEmpresa = Checklistemp::create([
+        //     'anexado' => 'false',
+        //     'nomeDoc' => "Contrato Social ou Registro de Firma Individual ou Certificado Mei",
+        //     'tipodocemp_id' => "3",
+        //     'empresa_id' => $empresa->id,
+        // ]);
+
+        // $cnaeEmpresa = Checklistemp::create([
+        //     'anexado' => 'false',
+        //     'nomeDoc' => "rg",
+        //     'tipodocemp_id' => "4",
+        //     'empresa_id' => $empresa->id,
+        // ]);
+
+        // $cnaeEmpresa = Checklistemp::create([
+        //     'anexado' => 'false',
+        //     'nomeDoc' => "cpf",
+        //     'tipodocemp_id' => "5",
+        //     'empresa_id' => $empresa->id,
+        // ]);
+
+        // $cnaeEmpresa = Checklistemp::create([
+        //     'anexado' => 'false',
+        //     'nomeDoc' => "Atestado de Regularidade do Corpo de Bombeiros",
+        //     'tipodocemp_id' => "6",
+        //     'empresa_id' => $empresa->id,
+        // ]);
+
+        // $cnaeEmpresa = Checklistemp::create([
+        //     'anexado' => 'false',
+        //     'nomeDoc' => "Licença Anterior",
+        //     'tipodocemp_id' => "7",
+        //     'empresa_id' => $empresa->id,
+        // ]);
+
+        // $cnaeEmpresa = Checklistemp::create([
+        //     'anexado' => 'false',
+        //     'nomeDoc' => "Certificado de Detetizadora",
+        //     'tipodocemp_id' => "9",
+        //     'empresa_id' => $empresa->id,
+        // ]);
+
+        // $cnaeEmpresa = Checklistemp::create([
+        //     'anexado' => 'false',
+        //     'nomeDoc' => "Licença Ambiental",
+        //     'tipodocemp_id' => "12",
+        //     'empresa_id' => $empresa->id,
+        // ]);
     
         for ($i=0; $i < count($areasOrdenado); $i++) { 
             $areatipodocemp = AreaTipodocemp::where('area_id', $areasOrdenado[$i])->get();
 
             foreach ($areatipodocemp as $indice) {
-                $cnaeEmpresa = Checklistemp::create([
-                    'anexado' => 'false',
-                    'areas_id' => $areasOrdenado[$i],
-                    'nomeDoc' => $indice->tipodocemp->nome,
-                    'empresa_id' => $empresa->id,
-                ]);
+
+                // ABAIXO SAI, CASO SEJA DUPLICADO
+                $checklist = Checklistemp::where('nomeDoc', $indice->tipodocemp->nome)
+                ->where('empresa_id', $empresa->id)
+                ->first();
+
+                if ($checklist == null) {
+                    $cnaeEmpresa = Checklistemp::create([
+                        'anexado' => 'false',
+                        // 'areas_id' => $areasOrdenado[$i], VOLTA CASO FIQUE DUPLICADO
+                        'nomeDoc' => $indice->tipodocemp->nome,
+                        'tipodocemp_id' => $indice->tipodocemp->id,
+                        'empresa_id' => $empresa->id,
+                    ]);
+                }
             }
         }
 
@@ -377,8 +450,10 @@ class EmpresaController extends Controller
 
     public function anexarArquivos(Request $request)
     {
+        // dd($request);
 
-        $checklist = Checklistemp::find($request->checklistId);
+        $checklist = Checklistemp::where('tipodocemp_id', $request->tipodocempresa)->first();
+        // dd($checklist);
         $empresa = Empresa::find($request->empresaId);
 
         $validatedData = $request->validate([
@@ -390,7 +465,9 @@ class EmpresaController extends Controller
 
 
         $fileDocemp = $request->arquivo;
-        $pathDocemp = 'empresas/' . $empresa->id . '/' . $checklist->areas_id . '/';
+        
+        $pathDocemp = 'empresas/' . $empresa->id . '/';
+        // $pathDocemp = 'empresas/' . $empresa->id . '/' . $checklist->areas_id . '/';
         $nomeDocemp = $request->arquivo->getClientOriginalName();
 
         Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
@@ -399,7 +476,7 @@ class EmpresaController extends Controller
             'nome'  => $pathDocemp . $nomeDocemp,
             'data_validade' => $request->data,
             'empresa_id'  => $empresa->id,
-            'tipodocemp_id' => $request->tipo,
+            'tipodocemp_id' => $request->tipodocempresa,
         ]);
 
         $checklist->anexado = "true";
@@ -464,6 +541,7 @@ class EmpresaController extends Controller
         $empresa = Empresa::where('id', $idEmpresa)->first();
         $docsempresa = Docempresa::where('empresa_id', $empresa->id)->get();
         $cnaempresa = CnaeEmpresa::where("empresa_id", $idEmpresa)->pluck('cnae_id');
+        $tipos = Tipodocempresa::all();
         $cnaes = [];
         $areas = [];
         $area = [];
@@ -503,7 +581,13 @@ class EmpresaController extends Controller
         //     }
         // }
 
-        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome, 'areas' => $area, 'empresaId' => $empresa->id, 'checklist' => $checklist, 'docsempresa' => $docsempresa]);
+        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome, 
+        'areas' => $area, 
+        'empresaId' => $empresa->id, 
+        'checklist' => $checklist, 
+        'docsempresa' => $docsempresa, 
+        'tipos' => $tipos
+        ]);
     }
     public function ajaxCnaes(Request $request){
         $this->listar($request->id_area);
