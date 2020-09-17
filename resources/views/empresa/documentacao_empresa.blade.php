@@ -133,6 +133,17 @@
                         </div>
 
                         <div class="form-group col-md-7">
+                            @if ($message = Session::get('success'))
+                            <div class="alert alert-success alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{$message}}</strong>
+                            </div>
+                            @elseif ($message = Session::get('error'))
+                            <div class="alert alert-warning alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{$message}}</strong>
+                            </div>
+                            @endif
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">DOCUMENTOS REQUERIDOS</label>

@@ -461,7 +461,9 @@ class EmpresaController extends Controller
         $checklist->anexado = "true";
         $checklist->save();
 
-        return view('empresa.home_empresa');
+        // return view('empresa.home_empresa');
+        session()->flash('success', 'O arquivo foi anexado com sucesso!');
+        return back();
 
     }
 
