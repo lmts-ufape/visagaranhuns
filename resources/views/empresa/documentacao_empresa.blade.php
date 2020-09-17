@@ -27,7 +27,7 @@
 
 
 
-        
+
 
     {{-- <div class="barraMenu" style="margin-top:0.7rem;"">
         <div class="d-flex">
@@ -76,7 +76,7 @@
                                 <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Ação
                                 </a>
-     
+
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                     @foreach ($docsempresa as $docempresa)
                                         @if ($docempresa->empresa_id == $indice->empresa_id)
@@ -105,7 +105,7 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                    
+
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -162,16 +162,21 @@
                                     {{-- @if ($indice->areas_id == $item->id) --}}
                                         @if($indice->anexado == "false")
                                         <div class="form col-md-12">
-                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:-5px">{{$indice->nomeDoc}} - <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:5px;"/><span style="color:#707070">Pendente</span></label>
+                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/> {{$indice->nomeDoc}} -
+
+                                                <span style="color:#e1ad01">Pendente</span>
+                                            </label>
                                         </div>
                                         @else
                                             @foreach ($docsempresa as $docempresa)
                                                 @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id)
                                                     <div class="form col-md-12">
-                                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:-5px">{{$indice->nomeDoc}}<span style="color:#707070"> - <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/></span>Anexado</label>
-                                                        <div style="margin-bottom:10px;">
+                                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
+                                                            <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}"> Baixar arquivo</a>
+                                                        </label>
+                                                        {{-- <div style="margin-bottom:10px;">
                                                             <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}">Baixar arquivo</a>
-                                                        </div>
+                                                        </div> --}}
                                                     </div>
                                                 @endif
                                             @endforeach
@@ -184,13 +189,15 @@
                         </div>
                         <div class="form col-md-5" style="margin-top:10px;">
                             <div class="form-row">
+                                <form id="arquivo" method="POST" action="{{route('anexar.arquivos')}}" enctype="multipart/form-data">
+                                    @csrf
                                 <div class="form-group col-md-12">
                                     <label style="font-size:19px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">ANEXAR DOCUMENTO</label>
                                 </div>
-                                <form id="arquivo" method="POST" action="{{route('anexar.arquivos')}}" enctype="multipart/form-data">
-                                    @csrf
+
+
                                     <input id="empresa" type="hidden" name="empresaId" value="{{$empresaId}}">
-                                    <div class="form col-md-12" style="margin-top:-10px;margin-bottom:10px;">
+                                    <div class="form col-md-12" style="margin-top:1px;margin-bottom:10px;">
                                         <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Tipo de documento</label>
                                         <select class="form-control" id="exampleFormControlSelect1" name="tipodocempresa">
                                             <option>Tipos de documentos</option>
@@ -213,13 +220,14 @@
                                     </div>
                                     <div class="form col-md-12" style="margin-top: 30px">
                                         <input type="file" class="form-control-file" id="arquivo" name="arquivo">
+                                        <label for="" style="color:red;margin-top:4px;">Arquivo no formato PDF e tamanho máximo de 5mb</label>
                                     </div>
-                                    <div class="form col-md-12" style="margin-top: 30px">
+                                    <div class="form col-md-12" style="margin-top: 20px">
                                         <button type="submit" class="btn btn-success" style="width:100%;">Enviar</button>
                                     </div>
                                 </form>
                             </div>
-
+                        </div>
 
                         </div>
 
