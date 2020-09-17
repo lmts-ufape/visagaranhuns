@@ -429,7 +429,14 @@ class EmpresaController extends Controller
 
     public function anexarArquivos(Request $request)
     {
-        // dd($request);
+
+        if($request->tipodocempresa == "Tipos de documentos"){
+            session()->flash('error', 'Selecione um documento!');
+            return back();
+        }elseif($request->arquivo == null){
+            session()->flash('error', 'Selecione um aquivo e tente novamente!');
+            return back();
+        }
 
         $checklist = Checklistemp::where('tipodocemp_id', $request->tipodocempresa)->first();
         // dd($checklist);

@@ -133,16 +133,22 @@
                         </div>
 
                         <div class="form-group col-md-7">
+                            @if($errors->has('arquivo'))
+                                <div class="alert alert-warning alert-block fade show">
+                                    <button type="button" class="close" data-dismiss="alert">×</button>
+                                    <strong>Atenção ao formato do arquivo (PDF) e tamanho máximo de 5mb</strong>
+                                </div>
+                            @endif
                             @if ($message = Session::get('success'))
-                            <div class="alert alert-success alert-block fade show">
-                                <button type="button" class="close" data-dismiss="alert">×</button>
-                                <strong>{{$message}}</strong>
-                            </div>
+                                <div class="alert alert-success alert-block fade show">
+                                    <button type="button" class="close" data-dismiss="alert">×</button>
+                                    <strong>{{$message}}</strong>
+                                </div>
                             @elseif ($message = Session::get('error'))
-                            <div class="alert alert-warning alert-block fade show">
-                                <button type="button" class="close" data-dismiss="alert">×</button>
-                                <strong>{{$message}}</strong>
-                            </div>
+                                <div class="alert alert-warning alert-block fade show">
+                                    <button type="button" class="close" data-dismiss="alert">×</button>
+                                    <strong>{{$message}}</strong>
+                                </div>
                             @endif
                             <div class="form-row">
                                 <div class="form-group col-md-12">
@@ -241,10 +247,6 @@
                     </form>
                 </div>
     </div>
-
-
-
-
 </div>
 @endsection
 
