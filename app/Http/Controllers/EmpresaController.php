@@ -13,8 +13,12 @@ use App\Cnae;
 use App\CnaeEmpresa;
 use App\RespTecnico;
 use App\RtEmpresa;
+use App\Tipodocempresa;
 use Illuminate\Support\Facades\Storage;
 use Auth;
+use DateTime;
+use App\AreaTipodocemp;
+use App\Checklistemp;
 use Illuminate\Support\Facades\Crypt;
 
 class EmpresaController extends Controller
@@ -66,7 +70,8 @@ class EmpresaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+
         $validator = $request->validate([
             'name'     => 'required|string',
             'email'    => 'required|email',
@@ -83,7 +88,6 @@ class EmpresaController extends Controller
             'cidade'   => 'required|string',
             'uf'       => 'required|string',
             'cep'      => 'required|string',
-            'complemento' => 'required|string',
         ]);
 
         $user = User::create([
@@ -145,6 +149,35 @@ class EmpresaController extends Controller
         foreach ($cnaes as $indice) {
             array_push($areas, $indice->areas_id);
         }
+        
+        $resultAreas = array_unique($areas);
+        $areasOrdenado = [];
+
+        foreach ($resultAreas as $indice) {
+            array_push($areasOrdenado, $indice);
+        }
+    
+        for ($i=0; $i < count($areasOrdenado); $i++) { 
+            $areatipodocemp = AreaTipodocemp::where('area_id', $areasOrdenado[$i])->get();
+
+            foreach ($areatipodocemp as $indice) {
+
+                // ABAIXO SAI, CASO SEJA DUPLICADO
+                $checklist = Checklistemp::where('nomeDoc', $indice->tipodocemp->nome)
+                ->where('empresa_id', $empresa->id)
+                ->first();
+
+                if ($checklist == null) {
+                    $cnaeEmpresa = Checklistemp::create([
+                        'anexado' => 'false',
+                        // 'areas_id' => $areasOrdenado[$i], VOLTA CASO FIQUE DUPLICADO
+                        'nomeDoc' => $indice->tipodocemp->nome,
+                        'tipodocemp_id' => $indice->tipodocemp->id,
+                        'empresa_id' => $empresa->id,
+                    ]);
+                }
+            }
+        }
 
 
         return redirect()->route('confirma.cadastro');
@@ -200,8 +233,9 @@ class EmpresaController extends Controller
             'empresa_id' => $empresa->id,
         ]);
 
-        // Área para cadastro de cnaes
+        // Área para cadastro de cnaesQ
         $cnae = $request['cnae'];
+
 
         for($i = 0; $i < count($cnae); $i++) {
             $cnaes = Cnae::find($cnae[$i]);
@@ -209,6 +243,47 @@ class EmpresaController extends Controller
                 'empresa_id' => $empresa->id,
                 'cnae_id' => $cnaes->id,
             ]);
+        }
+
+        // Cnaes por empresa
+        $cnaempresa = CnaeEmpresa::where("empresa_id", $empresa->id)->pluck('cnae_id');
+        $cnaes = [];
+        $areas = [];
+
+        foreach ($cnaempresa as $indice) {
+            array_push($cnaes, Cnae::find($indice));
+        }
+        foreach ($cnaes as $indice) {
+            array_push($areas, $indice->areas_id);
+        }
+        
+        $resultAreas = array_unique($areas);
+        $areasOrdenado = [];
+
+        foreach ($resultAreas as $indice) {
+            array_push($areasOrdenado, $indice);
+        }
+    
+        for ($i=0; $i < count($areasOrdenado); $i++) { 
+            $areatipodocemp = AreaTipodocemp::where('area_id', $areasOrdenado[$i])->get();
+
+            foreach ($areatipodocemp as $indice) {
+
+                // ABAIXO SAI, CASO SEJA DUPLICADO
+                $checklist = Checklistemp::where('nomeDoc', $indice->tipodocemp->nome)
+                ->where('empresa_id', $empresa->id)
+                ->first();
+
+                if ($checklist == null) {
+                    $cnaeEmpresa = Checklistemp::create([
+                        'anexado' => 'false',
+                        // 'areas_id' => $areasOrdenado[$i], VOLTA CASO FIQUE DUPLICADO
+                        'nomeDoc' => $indice->tipodocemp->nome,
+                        'tipodocemp_id' => $indice->tipodocemp->id,
+                        'empresa_id' => $empresa->id,
+                    ]);
+                }
+            }
         }
 
         return redirect()->route('confirma.cadastro');
@@ -226,15 +301,16 @@ class EmpresaController extends Controller
         $empresa = Empresa::find($id);
         $endereco = Endereco::where('empresa_id', $empresa->id)->first();
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
-        $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $id)->get();
+        $cnae = CnaeEmpresa::where('empresa_id', $id)->get();
+        $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->get();
 
-        $cnae = array();
-        foreach($cnaeEmpresa as $indice){
-            $cnaes = Cnae::find($indice->cnae_id);
-            array_push($cnae, $cnaes);
-        }
+        // $cnae = array();
+        // foreach($cnaeEmpresa as $indice){
+        //     $cnaes = Cnae::find($indice->cnae_id);
+        //     array_push($cnae, $cnaes);
+        // }
 
-        return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae]);
+        return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae, 'rt' => $rtempresa]);
     }
 
     /**
@@ -353,8 +429,11 @@ class EmpresaController extends Controller
 
     public function anexarArquivos(Request $request)
     {
+        // dd($request);
 
-        $empresa = Empresa::find($request->empresa)->first();
+        $checklist = Checklistemp::where('tipodocemp_id', $request->tipodocempresa)->first();
+        // dd($checklist);
+        $empresa = Empresa::find($request->empresaId);
 
         $validatedData = $request->validate([
 
@@ -363,28 +442,28 @@ class EmpresaController extends Controller
 
         ]);
 
-        /*
-        Obs:
-         - Rg sem data de validade
-         - Rg de sócio sem data de validade
-         - Cpf sem data de validade
-         - Cpf de sócio sem data de validade
-        */
 
         $fileDocemp = $request->arquivo;
-        $pathDocemp = 'empresas/' . $empresa->id . '/' . $tipo . '/';
+        
+        $pathDocemp = 'empresas/' . $empresa->id . '/';
+        // $pathDocemp = 'empresas/' . $empresa->id . '/' . $checklist->areas_id . '/';
         $nomeDocemp = $request->arquivo->getClientOriginalName();
 
         Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
 
         $docEmpresa = Docempresa::create([
             'nome'  => $pathDocemp . $nomeDocemp,
-            'data_emissao' => $request->data,
+            'data_validade' => $request->data,
             'empresa_id'  => $empresa->id,
-            'tipodocemp_id' => $request->tipo,
+            'tipodocemp_id' => $request->tipodocempresa,
         ]);
 
-        return view('empresa.home_empresa');
+        $checklist->anexado = "true";
+        $checklist->save();
+
+        // return view('empresa.home_empresa');
+        session()->flash('success', 'O arquivo foi anexado com sucesso!');
+        return back();
 
     }
 
@@ -420,7 +499,7 @@ class EmpresaController extends Controller
         $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->pluck('resptec_id');
 
         $resptecnicos = [];
-        for ($i=0; $i < count($rtempresa); $i++) { 
+        for ($i=0; $i < count($rtempresa); $i++) {
             array_push($resptecnicos, RespTecnico::find($rtempresa[$i]));
         }
 
@@ -430,8 +509,8 @@ class EmpresaController extends Controller
             array_push($cnae, $cnaes);
         }
         return view('empresa/show_empresa',['empresa' => $empresa,
-         'endereco' => $endereco, 
-         'telefone' =>$telefone, 
+         'endereco' => $endereco,
+         'telefone' =>$telefone,
          'cnae' => $cnae,
          'respTecnico' => $resptecnicos,
          'empresaId'     => $empresa->id,
@@ -441,9 +520,12 @@ class EmpresaController extends Controller
 
         $idEmpresa = Crypt::decrypt($request->value);
         $empresa = Empresa::where('id', $idEmpresa)->first();
+        $docsempresa = Docempresa::where('empresa_id', $empresa->id)->get();
         $cnaempresa = CnaeEmpresa::where("empresa_id", $idEmpresa)->pluck('cnae_id');
+        $tipos = Tipodocempresa::all();
         $cnaes = [];
         $areas = [];
+        $area = [];
 
         foreach ($cnaempresa as $indice) {
             array_push($cnaes, Cnae::find($indice));
@@ -452,11 +534,41 @@ class EmpresaController extends Controller
             array_push($areas, $indice->areas_id);
         }
 
-        // LISTAR OS TIPOS DE DOCS NA PROXIMA PAGINA!
-        // $docsEmpresa = Docempresa::where('tipodocemp_id', )->get();
+        $resultAreas = array_unique($areas);
+        
+        foreach ($resultAreas as $indice) {
+            array_push($area, Area::find($indice));
+        }
+        
+        $checklist = Checklistemp::where('empresa_id', $empresa->id)->orderBy('id','ASC')->get();
 
+        // $hoje = date('d/m/Y');
+        // $formatoHoje = 'd/m/Y';
+        // $Hoje = DateTime::createFromFormat($formatoHoje, $hoje);
 
-        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome, 'areas' => $areas, 'id' => $empresa->id, 'status' => $empresa->status_cadastro]);
+        // foreach ($checklist as $check) {
+            
+        // }
+
+        // foreach ($docsempresa as $indice) {
+        //     $formato = 'd/m/Y';
+        //     $validade = DateTime::createFromFormat($formato, $indice->data_validade);
+        //     $intervalo = $validade->diff($Hoje);
+        //     if ($hoje > $indice->data_validade) {
+        //         // Volta a ser pendente
+        //     }
+        //     elseif (condition) {
+        //         # code...
+        //     }
+        // }
+
+        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome, 
+        'areas' => $area, 
+        'empresaId' => $empresa->id, 
+        'checklist' => $checklist, 
+        'docsempresa' => $docsempresa, 
+        'tipos' => $tipos
+        ]);
     }
     public function ajaxCnaes(Request $request){
         $this->listar($request->id_area);
@@ -468,7 +580,17 @@ class EmpresaController extends Controller
             if($resultado->count() > 0){
                 foreach($resultado as $item){
                     $output .= '
-                    <div onclick="add('.$item->id.')" class="cardMeuCnae" id="'.$item->id.'" style="margin:10px; padding:10px; border: 1.5px solid #f2f2f2; border-radius: 8px; width:95%; cursor: pointer; ">'.$item->descricao.'</div>
+                    <div class="d-flex justify-content-center cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
+                        <div class="mr-auto p-2>OPA</div>
+                            <div class="mr-auto p-2" id="'.$item->id.'">'.$item->descricao.'</div>
+                            <div style="width:140px; height:25px; text-align:right;">
+                                <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
+                                    <div class="btn btn-success btn-sm"  onclick="add('.$item->id.')" >Adicionar</div>
+                                </div>
+                            </div>
+
+                    </div>
+
                     ';
                 }
             }elseif($idArea == ""){
@@ -485,5 +607,21 @@ class EmpresaController extends Controller
                 'table_data' => $output,
             );
             echo json_encode($data);
+    }
+
+    public function foundChecklist(Request $request){
+        $empresa = Empresa::find($request->empresaId);
+        $checklist = Checklistemp::find($request->checklistId);
+
+        $data = array(
+            'success'   => true,
+            'checklist' => $checklist->id,
+            'empresa'   => $empresa->id,
+        );
+        return $data;
+    }
+
+    public function downloadArquivo(Request $request){
+        return response()->download(storage_path('app/' . $request->file));
     }
 }

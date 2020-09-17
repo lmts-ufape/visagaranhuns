@@ -145,3 +145,11 @@ box-shadow: 0px 0px 11px -4px rgba(0,0,0,0.75);
     font-family:'Hammersmith One';
     font-size:17px;
 }
+.cardRT{
+    width:100%;
+    padding:5px;
+    padding-top:10px;
+    border: 0.5px solid #f5f5f5;
+    border-radius: 10px;
+    border-color:#e3e3e3;
+}

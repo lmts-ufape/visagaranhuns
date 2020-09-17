@@ -9,6 +9,8 @@ use App\Empresa;
 use Auth;
 use Illuminate\Support\Str;
 use App\RtEmpresa;
+use App\CnaeEmpresa;
+use App\Cnae;
 
 class RespTecnicoController extends Controller
 {
@@ -30,9 +32,16 @@ class RespTecnicoController extends Controller
     public function create(Request $request)
     {
         $user = User::find(Auth::user()->id);
+        $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $request->empresaId)->get();
+
+        $cnae = array();
+        foreach($cnaeEmpresa as $indice){
+            $cnaes = Cnae::find($indice->cnae_id);
+            array_push($cnae, $cnaes);
+        }
 
         // Tela de conclusão de cadastro de Responsavel Técnico
-        return view('responsavel_tec.cadastrar_responsavel_tec')->with(["user" => $user, "empresaId" => $request->empresaId]);
+        return view('responsavel_tec.cadastrar_responsavel_tec')->with(["user" => $user, "empresaId" => $request->empresaId, 'cnaes' => $cnae]);
     }
 
     /**
@@ -93,6 +102,7 @@ class RespTecnicoController extends Controller
                 'cpf'            => $request->cpf,
                 'telefone'       => $request->telefone,
                 'user_id'        => $user->id,
+                'cnae_id'        => $request->cnae
                 // 'empresa_id'     => $request->empresaId,
             ]);
     

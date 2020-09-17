@@ -15,6 +15,7 @@
     <script type="text/javascript" src="{{URL::asset('js/cadastrar_empresa_comum.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/requerimento_coordenador.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/naologado.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/checklist.js')}}" defer></script>
 
     <!-- load jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -27,6 +28,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Hammersmith+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;300;400;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Noto+Sans+SC:wght@100;300;400;700;900&family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

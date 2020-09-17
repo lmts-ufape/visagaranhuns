@@ -15,7 +15,8 @@ class CreateChecklistempTable extends Migration
     {
         Schema::create('checklistemp', function (Blueprint $table) {
             $table->id();
-            $table->boolean('anexado');
+            $table->string('anexado');
+            $table->string('nomeDoc');
 
             $table->bigInteger("areas_id")->nullable();
             $table->foreign("areas_id")->references("id")->on("areas");

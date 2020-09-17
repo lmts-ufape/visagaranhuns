@@ -42,9 +42,9 @@
                                         Filtro
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('aprovado')" style="text-decoration:none;cursor:pointer">Aprovado</a>
+                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('aprovado')" style="text-decoration:none;cursor:pointer">Cadastro Aprovado</a>
                                         <a class="dropdown-item" onclick="selecionarFiltroRequerimento('denuncia')" style="text-decoration:none;cursor:pointer">Denúncia</a>
-                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('pendente')" style="text-decoration:none;cursor:pointer">Pendente</a>
+                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('pendente')" style="text-decoration:none;cursor:pointer">Cadastro Pendente</a>
                                         <a class="dropdown-item" onclick="selecionarFiltroRequerimento('primeira_licenca')" style="text-decoration:none;cursor:pointer">Primeira Licença</a>
                                         <a class="dropdown-item" onclick="selecionarFiltroRequerimento('renovacao_de_licenca')" style="text-decoration:none;cursor:pointer">Renovação de Licença</a>
                                         <a class="dropdown-item" onclick="selecionarFiltroRequerimento('all')" style="text-decoration:none;cursor:pointer">Mostrar Tudo</a>

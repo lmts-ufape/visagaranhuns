@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AreaTipodocemp extends Model
 {
-    protected $table = 'area_tipodocemps';
+    protected $table = 'areatipodocemps';
     /**
      * The attributes that are mass assignable.
      *

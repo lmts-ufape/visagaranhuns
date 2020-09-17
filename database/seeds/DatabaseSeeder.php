@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CnaeSeeder::class);
         $this->call(CoordenadorSeeder::class);
         $this->call(TipoDocEmpSeeder::class);
+        $this->call(AreaTipodocempSeeder::class);
 
     }
 }

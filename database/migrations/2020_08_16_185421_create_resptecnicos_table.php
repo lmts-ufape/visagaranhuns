@@ -23,6 +23,9 @@ class CreateResptecnicosTable extends Migration
             $table->bigInteger("user_id")->nullable();
             $table->foreign("user_id")->references("id")->on("users");
 
+            $table->bigInteger("cnae_id")->nullable();
+            $table->foreign("cnae_id")->references("id")->on("users");
+
             // $table->bigInteger("empresa_id")->nullable();
             // $table->foreign("empresa_id")->references("id")->on("empresas");
             $table->timestamps();

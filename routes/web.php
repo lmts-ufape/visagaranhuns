@@ -117,7 +117,7 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get('/home/empresa',                         'EmpresaController@home')->name('home.empresa');
     Route::get("/pagina/editar",                        "EmpresaController@edit")->name("editar.empresa");
     Route::post("/editar/empresa",                      "EmpresaController@editarEmpresa")->name("editar.empresa");
-    Route::post("/empresa/arquivos",                    "EmpresaController@anexarArquivos")->name("arquivos.empresa");
+    Route::post("/empresa/arquivos",                    "EmpresaController@anexarArquivos")->name("anexar.arquivos");
     Route::get("/listar/arquivos",                      "EmpresaController@listarArquivos")->name("listar.arquivos");
     Route::get("/empresa/pagina/responsavelTecnico",    "RespTecController@create")->name("pagina.respTec");
     Route::post("/empresa/cadastro/responsavelTecnico", "RespTecController@store")->name("cadastrar.respTec");
@@ -132,6 +132,12 @@ Route::middleware(['IsEmpresa'])->group(function () {
     // Cadastro de Responsável Técnico
     Route::get('/cadastro/respTecnico','RespTecnicoController@create')->name('cadastrar.rt.pagina');
     Route::post('/cadastro/respTecnico','RespTecnicoController@store')->name('cadastrar.rt');
+
+    // Encontrar item da checklist
+    Route::get('/foundChecklist','EmpresaController@foundChecklist')->name('found.checklist');
+
+    // Download de arquivos anexados
+    Route::get('/download/arquivo',       'EmpresaController@downloadArquivo')->name('download.arquivo');
 
 /*
     * Cadastrar/Editar/Remove Responsável Técnico

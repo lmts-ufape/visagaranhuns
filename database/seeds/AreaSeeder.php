@@ -10,7 +10,7 @@ class AreaSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
+    {   
         \App\Area::create([ 'nome' => 'Serviços de Ensino']);
         \App\Area::create([ 'nome' => 'Serviços de Saúde/Interesse a saúde/outros']);
         \App\Area::create([ 'nome' => 'Distribuidora de serviços de saúde']);

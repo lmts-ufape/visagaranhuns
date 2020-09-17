@@ -78,7 +78,7 @@
                 <div class="d-flex">
                     <div class="mr-auto p-2">
                         <div class="btn-group">
-                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Email para login de acesso ao sistema</div>
+                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Cnae de atuação</div>
                         </div>
                     </div>
                 </div>
@@ -87,8 +87,12 @@
                 <div class="container" style="margin-top:1rem;margin-left:10px;">
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <label for="inputEmail4">E-mail:<span style="color:red">*</span></label>
-                            <input type="email" class="form-control" name="email">
+                            <select class="form-control" name="cnae">
+                                <option value="">CNAES</option>
+                                @foreach ($cnaes as $item)
+                                    <option value="{{$item->id}}">{{$item->codigo}} - {{$item->descricao}}</option>
+                                @endforeach
+                            </select>
                         </div>
                         {{-- <div class="form-group col-md-4">
                             <label for="inputPassword4">Senha:<span style="color:red">*</span></label>
@@ -101,6 +105,36 @@
                     </div>
                 </div>
             </div>
+
+        <hr size = 7>
+
+        <div class="barraMenu" style="margin-top:0.7rem;">
+            <div class="d-flex">
+                <div class="mr-auto p-2">
+                    <div class="btn-group">
+                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Email para login de acesso ao sistema</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container" style="margin-top:1rem;margin-left:1px;">
+            <div class="container" style="margin-top:1rem;margin-left:10px;">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="inputEmail4">E-mail:<span style="color:red">*</span></label>
+                        <input type="email" class="form-control" name="email">
+                    </div>
+                    {{-- <div class="form-group col-md-4">
+                        <label for="inputPassword4">Senha:<span style="color:red">*</span></label>
+                        <input id="password" type="password" class="form-control" name="password" required autocomplete="new-password">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputPassword4">Confirmar senha:<span style="color:red">*</span></label>
+                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                    </div> --}}
+                </div>
+            </div>
+        </div>
 
         <hr size = 7>
         <div style="margin-bottom:10rem;">

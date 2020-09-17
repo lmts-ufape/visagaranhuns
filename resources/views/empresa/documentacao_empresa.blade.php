@@ -23,286 +23,217 @@
                 </div>
             </div>
         </div>
-    <div class="container" style="margin-top:1rem;">
 
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                <div class="barraMenu" style="padding:1rem;">
-                    <div style="font-size:20px; font-family:Arial, Helvetica, sans-serif"><img src="{{ asset('/imagens/logo_predio.png') }}" alt="Logo" style="width:22px; height:26px; margin-top:-5px; margin-right:5px;"/>{{$nome}}</div>
-                    <div><span style="font-weight:bold">CNPJ: </span> XXXXXXXXXXXXXXX</div>
-                    <div><span style="font-weight:bold">Tipo: </span> XXXXXXXXXXXXXXX</div>
-                    <div><span style="font-weight:bold">Última alteração: </span>dd/mm/aaaa</div>
-                </div>
-            </div>
-            <div class="form-group col-md-4">
-                <div class="barraMenu" style="padding:1rem;">
-                    <div style="font-size:20px; font-family:Arial, Helvetica, sans-serif; color:green"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="width:20px; height:20px; margin-top:-5px; margin-right:5px;"/>Aprovado</div>
-                    <div><span style="font-weight:bold">Nome do inspetor: </span> XXXXXXXXXXXXXXX</div>
-                    <div><span style="font-weight:bold">Código do inspetor: </span> XXXXXXXXXXXXXXX</div>
-                    <div><span style="font-weight:bold">Data da aprovação: </span>dd/mm/aaaa</div>
-                </div>
-            </div>
-            <div class="form-group col-md-4">
-                <div class="barraMenu" style="padding:1rem;">
-                    <div style="font-size:20px; font-family:Arial, Helvetica, sans-serif"><img src="{{ asset('/imagens/logo_atencao2.png') }}" alt="Logo" style="width:22px; height:20px; margin-top:-5px; margin-right:5px;"/>Aviso!</div>
-                    <div><span style="font-weight:normal">Toda modificação de documentos deverá passar pela aprovação da Vigilância Sanitária de Garanhuns!</span></div>
-                </div>
-            </div>
 
-        </div>
-    </div>
-    <div class="barraMenu" style="margin-top:0.7rem;"">
+
+
+        
+
+    {{-- <div class="barraMenu" style="margin-top:0.7rem;"">
         <div class="d-flex">
             <div class="mr-auto p-2">
                 <div class="btn-group">
-                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Documentos - Serviço de ensino</div>
+                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Documentos - {{$item->nome}}</div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container" style="margin-bottom:5.5rem">
 
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Requerimento Preenchido<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
+    @foreach ($checklist as $indice)
+        @if ($indice->areas_id == $item->id)
+        <div class="container" style="margin-bottom:1rem">
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
+            <div class="cardDocumentos">
+                <div class="d-flex justify-content-center">
+                    <div class="mr-auto p-2">
+                        <div class="form-group">
+                            <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">{{$indice->nomeDoc}}<span style="color:red">*</span></div>
+                            <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
                         </div>
                     </div>
+                    @if($indice->anexado == "false")
+                        <div class="p-2">
+                            <div class="form-row">
+                                <div style="margin-top:1px;margin-right:15px;font-size:15px;">
+                                    <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                    <span class="btn-sm btn-warning">Pendente</span>
+                                </div>
+                                <div style="margin-top:1px;margin-right:15px;font-size:15px;" class="dropdown show">
+                                    <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" onclick="foundChecklist({{$indice->id}},{{$empresaId}})" data-toggle="modal" data-target="#exampleModalCenter">
+                                        Anexar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                    <div class="p-2">
+                        <div class="form-row">
+                            <div style="margin-top:1px;margin-right:15px;font-size:15px;">
+                                <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
+                                <span class="btn-sm btn-success">Anexado</span>
+                            </div>
+                            <div style="margin-top:1px;margin-right:15px;font-size:15px;" class="dropdown show">
+                                <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Ação
+                                </a>
+     
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    @foreach ($docsempresa as $docempresa)
+                                        @if ($docempresa->empresa_id == $indice->empresa_id)
+                                            <a href="{{route('download.arquivo', ['file' => $docempresa->nome, "empresaId" => $empresaId, "areaId" => $item->id])}}" class="dropdown-item" href="#">Baixar</a>
+                                        @endif
+                                    @endforeach
+                                    <a class="dropdown-item" href="#">Editar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
                 </div>
             </div>
         </div>
 
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">CNPJ<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Anexar Arquivo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
+                <div class="modal-body">
+                    
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" form="arquivo" class="btn btn-primary">Anexar</button>
                 </div>
             </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">RG e CPF<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
+        @endif
+    @endforeach --}}
 
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Contrato Social ou Registro de firma individual ou Certificado de MEI<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
+    <div class="barraMenu"style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
+            <div class="container" style="margin-top:1rem;">
+                    <div class="form-row">
+                        <div class="form-group col-md-12" >
+                            <div>
+                                <label style="color:black; font-size:35px;  margin-bottom:-10px; font-weight:400; font-family: 'Libre Baskerville', serif;;
+                                ;">{{$nome}}</label>
+                            </div>
+                            <div>
+                                <div style="font-size:13px;margin-top:2px; margin-bottom:-10px;color:gray;">Início > Estabelecimentos > {{$nome}} > Documentos </div>
+                            </div>
+                            <hr size = 7 style="margin-bottom:-2px;">
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Atestado de regularidade do corpo de bombeiro<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
+                        <div class="form-group col-md-7">
+                            @if ($message = Session::get('success'))
+                            <div class="alert alert-success alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{$message}}</strong>
+                            </div>
+                            @elseif ($message = Session::get('error'))
+                            <div class="alert alert-warning alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{$message}}</strong>
+                            </div>
+                            @endif
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">DOCUMENTOS REQUERIDOS</label>
+                                </div>
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
+                                {{-- <div class="form-group col-md-12">
+                                    <label style="font-size:19px;margin-top:2px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">Obrigatórios:</label>
+                                </div> --}}
+
+                                {{-- @foreach ($areas as $item)
+                                <div class="form-group col-md-12">
+                                    <label style="font-size:19px;margin-top:2px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">{{$item->nome}}</label>
+                                </div> --}}
+
+                                @foreach ($checklist as $indice)
+                                    {{-- @if ($indice->areas_id == $item->id) --}}
+                                        @if($indice->anexado == "false")
+                                        <div class="form col-md-12">
+                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:-5px">{{$indice->nomeDoc}} - <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:5px;"/><span style="color:#707070">Pendente</span></label>
+                                        </div>
+                                        @else
+                                            @foreach ($docsempresa as $docempresa)
+                                                @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id)
+                                                    <div class="form col-md-12">
+                                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:-5px">{{$indice->nomeDoc}}<span style="color:#707070"> - <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/></span>Anexado</label>
+                                                        <div style="margin-bottom:10px;">
+                                                            <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}">Baixar arquivo</a>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    {{-- @endif --}}
+                                {{-- @endforeach --}}
+                                @endforeach
+
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                        <div class="form col-md-5" style="margin-top:10px;">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label style="font-size:19px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">ANEXAR DOCUMENTO</label>
+                                </div>
+                                <form id="arquivo" method="POST" action="{{route('anexar.arquivos')}}" enctype="multipart/form-data">
+                                    @csrf
+                                    <input id="empresa" type="hidden" name="empresaId" value="{{$empresaId}}">
+                                    <div class="form col-md-12" style="margin-top:-10px;margin-bottom:10px;">
+                                        <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Tipo de documento</label>
+                                        <select class="form-control" id="exampleFormControlSelect1" name="tipodocempresa">
+                                            <option>Tipos de documentos</option>
+                                            @foreach ($tipos as $tipo)
+                                            <option value="{{$tipo->id}}">{{$tipo->nome}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form col-md-12" >
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Emissão</label>
+                                                    <input type="date" class="form-control" placeholder="First name">
+                                                </div>
+                                                <div class="col">
+                                                    <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Validade</label>
+                                                    <input type="date" class="form-control" placeholder="" name="data">
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="form col-md-12" style="margin-top: 30px">
+                                        <input type="file" class="form-control-file" id="arquivo" name="arquivo">
+                                    </div>
+                                    <div class="form col-md-12" style="margin-top: 30px">
+                                        <button type="submit" class="btn btn-success" style="width:100%;">Enviar</button>
+                                    </div>
+                                </form>
+                            </div>
 
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Licença Anterior<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">IPTU Quitado<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
                     </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
+                    {{-- <hr size = 7 style="margin-bottom:-15px;"> --}}
+                    <div class="row" style="margin-top:2rem; margin-bottom:1rem">
+                        <div class="col-auto mr-auto"></div>
+                        <div class="col-auto">
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
                         </div>
-                    </div>
+                    </form>
                 </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Certificado de detetizadora + Licença Sanitária<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Licença Ambiental<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="cardDocumentos">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2">
-                    <div class="form-group">
-                        <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Taxa de vigilância sanitária<span style="color:red">*</span></div>
-                        <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ação
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Abrir</a>
-                            <a class="dropdown-item" href="#">Adicionar</a>
-                            <a class="dropdown-item" href="#">Deletar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
+
 
 
 
