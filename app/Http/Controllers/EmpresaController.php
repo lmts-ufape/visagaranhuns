@@ -70,7 +70,7 @@ class EmpresaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
 
         $validator = $request->validate([
             'name'     => 'required|string',
@@ -149,15 +149,15 @@ class EmpresaController extends Controller
         foreach ($cnaes as $indice) {
             array_push($areas, $indice->areas_id);
         }
-        
+
         $resultAreas = array_unique($areas);
         $areasOrdenado = [];
 
         foreach ($resultAreas as $indice) {
             array_push($areasOrdenado, $indice);
         }
-    
-        for ($i=0; $i < count($areasOrdenado); $i++) { 
+
+        for ($i=0; $i < count($areasOrdenado); $i++) {
             $areatipodocemp = AreaTipodocemp::where('area_id', $areasOrdenado[$i])->get();
 
             foreach ($areatipodocemp as $indice) {
@@ -256,15 +256,15 @@ class EmpresaController extends Controller
         foreach ($cnaes as $indice) {
             array_push($areas, $indice->areas_id);
         }
-        
+
         $resultAreas = array_unique($areas);
         $areasOrdenado = [];
 
         foreach ($resultAreas as $indice) {
             array_push($areasOrdenado, $indice);
         }
-    
-        for ($i=0; $i < count($areasOrdenado); $i++) { 
+
+        for ($i=0; $i < count($areasOrdenado); $i++) {
             $areatipodocemp = AreaTipodocemp::where('area_id', $areasOrdenado[$i])->get();
 
             foreach ($areatipodocemp as $indice) {
@@ -437,14 +437,14 @@ class EmpresaController extends Controller
 
         $validatedData = $request->validate([
 
-            'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:2000000'],
+            'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000000'],
             'data'    => ['nullable', 'date'],
 
         ]);
 
 
         $fileDocemp = $request->arquivo;
-        
+
         $pathDocemp = 'empresas/' . $empresa->id . '/';
         // $pathDocemp = 'empresas/' . $empresa->id . '/' . $checklist->areas_id . '/';
         $nomeDocemp = $request->arquivo->getClientOriginalName();
@@ -535,11 +535,11 @@ class EmpresaController extends Controller
         }
 
         $resultAreas = array_unique($areas);
-        
+
         foreach ($resultAreas as $indice) {
             array_push($area, Area::find($indice));
         }
-        
+
         $checklist = Checklistemp::where('empresa_id', $empresa->id)->orderBy('id','ASC')->get();
 
         // $hoje = date('d/m/Y');
@@ -547,7 +547,7 @@ class EmpresaController extends Controller
         // $Hoje = DateTime::createFromFormat($formatoHoje, $hoje);
 
         // foreach ($checklist as $check) {
-            
+
         // }
 
         // foreach ($docsempresa as $indice) {
@@ -562,11 +562,11 @@ class EmpresaController extends Controller
         //     }
         // }
 
-        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome, 
-        'areas' => $area, 
-        'empresaId' => $empresa->id, 
-        'checklist' => $checklist, 
-        'docsempresa' => $docsempresa, 
+        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome,
+        'areas' => $area,
+        'empresaId' => $empresa->id,
+        'checklist' => $checklist,
+        'docsempresa' => $docsempresa,
         'tipos' => $tipos
         ]);
     }
