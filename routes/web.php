@@ -65,6 +65,8 @@ Route::middleware(['OnlyAdmin'])->group(function () {
 });
 
 Route::get("/empresa/lista/cnae",  "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes.comum");
+Route::get("/emcostrucao",  function () {return view('em_construcao');})->name("emconstrucao");
+
 
 // Grupo de rotas para coordenador
 Route::middleware(['IsCoordenador'])->group(function () {
