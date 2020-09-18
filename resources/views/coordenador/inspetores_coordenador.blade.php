@@ -24,12 +24,15 @@
                 </a>
             </div>
             <div class="mr-auto p-2 styleBarraPrincipalPC">
-                <div class="btn-group">
-                    <div style="font-size:20px; font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;margin-bottom:-5px">Inspetores</div>
+                <div class="form-group">
+                    <div class="tituloBarraPrincipal">Inspetores</div>
+                    <div>
+                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Membros > Inspetores</div>
+                    </div>
                 </div>
             </div>
             <div class="p-2">
-                <div class="dropdown">
+                <div class="dropdown" style="margin-top:10px">
                     <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Ações
                     </button>
@@ -41,7 +44,7 @@
         </div>
     </div>
 
-    <div class="container" style="margin-top:2rem;margin-left:10px;">
+    <div class="container" style="margin-top:2rem;margin-left:10px; margin-bottom:17%;">
         <div class="form-row">
             <div class="form-group col-md-12">
 
@@ -104,7 +107,7 @@
                             <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp">
                             <input type="hidden" name="tipo" value="inspetor">
                         </div>
-    
+
                     </div>
                 </div>
                 <div class="modal-footer">
