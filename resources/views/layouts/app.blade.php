@@ -66,19 +66,19 @@
                         <!-- Authentication Links -->
                         @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Inicio') }}</a>
+                            <a class="nav-link" href="{{ route('/') }}">{{ __('Inicio') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('A vigilância') }}</a>
+                            <a class="nav-link" href="{{ route('emconstrucao') }}">{{ __('A vigilância') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Orientações') }}</a>
+                            <a class="nav-link" href="{{ route('emconstrucao') }}">{{ __('Orientações') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Contato') }}</a>
+                            <a class="nav-link" href="{{ route('emconstrucao') }}">{{ __('Contato') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}" style="margin-right:30px;">{{ __('Legislação') }}</a>
+                            <a class="nav-link" href="{{ route('emconstrucao') }}" style="margin-right:30px;">{{ __('Legislação') }}</a>
                         </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}" style="font-weight:bold; color:black;"><span>Entrar</span></a>
@@ -143,7 +143,7 @@
                                     </li>
                                 @if(Auth::user()->status_cadastro == "aprovado")
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('login') }}">{{ __('Licenças') }}</a>
+                                        <a class="nav-link" href="{{ route('emconstrucao') }}">{{ __('Licenças') }}</a>
                                     </li>
                                     {{-- <li class="nav-item">
                                         <a class="nav-link" href="{{ route('listar.responsavelTec') }}">{{ __('Responsável Técnico') }}</a>
@@ -152,7 +152,7 @@
                                         <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'documentacao']) }}">{{ __('Documentacao') }}</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('login') }}" style="margin-right:30px;">{{ __('Notificação') }}</a>
+                                        <a class="nav-link" href="{{ route('emconstrucao') }}" style="margin-right:30px;">{{ __('Notificação') }}</a>
                                     </li>
                                 @endif
                                 <li class="nav-item dropdown">
