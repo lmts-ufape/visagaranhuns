@@ -2,299 +2,221 @@
 
 @section('content')
 <div class="container">
-        <div class="barraMenu">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2 styleBarraPrincipalMOBILE">
-                    <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
-                        <div class="btn-group">
-                            <div style="margin-top:1px;margin-left:5px;"><img src="{{ asset('/imagens/logo_voltar.png') }}" alt="Logo" style="width:13px;"/></div>
-                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Voltar</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="mr-auto p-2 styleBarraPrincipalPC">
+    <div class="barraMenu">
+        <div class="d-flex justify-content-center">
+            <div class="mr-auto p-2 styleBarraPrincipalMOBILE">
+                <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
                     <div class="btn-group">
-                        <div style="font-size:20px; font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;margin-bottom:-5px">Informações</div>
+                        <div style="margin-top:1px;margin-left:5px;"><img src="{{ asset('/imagens/logo_voltar.png') }}" alt="Logo" style="width:13px;"/></div>
+                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Voltar</div>
                     </div>
-                </div>
-                <div class="p-2">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ações
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" style="cursor:pointer" onclick="editarEstabelecimento()">Editar estabelecimento</a>
-                                <a class="dropdown-item" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal" onclick="deletarEstabelecimento('{{$empresa->user->name}}')">Deletar estabelecimento</a>
-                        </div>
+                </a>
+            </div>
+            <div class="mr-auto p-2 styleBarraPrincipalPC">
+                <div class="form-group">
+                    <div class="tituloBarraPrincipal">Perfil do estabelecimento</div>
+                    <div>
+                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Estabelecimentos > Meus estabelecimentos > {{$empresa->nome}} </div>
                     </div>
                 </div>
             </div>
-        </div>
-    <form action="">
-        <div class="container" style="margin-top:1rem;margin-left:10px;">
-            <fieldset disabled id="idFieldset">
-                <div class="form-row">
-                    <div class="form-group col-md-4">
-                        <label for="inputEmail4">Nome/Razão Social:</label>
-                        <input type="text" class="form-control" id="inputEmail4" placeholder="{{$empresa->nome}}">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="inputPassword4">CNPJ/CPF:</label>
-                        <input type="text" class="form-control" id="inputPassword4" placeholder="{{$empresa->cnpjcpf}}">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="inputPassword4">CNAE:</label>
-                        <input type="text" class="form-control" id="inputPassword4" placeholder="{{$cnae[0]->descricao}}">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-4">
-                        <label for="inputEmail4">E-mail:</label>
-                        <input type="email" class="form-control" id="inputEmail4" placeholder="{{$empresa->email}}">
-                    </div>
-                    <div class="form-grtextoup col-md-4">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="inputEmail4">Telefone 1:</label>
-                                <input type="text" class="form-control" id="inputEmail4" placeholder="{{$telefone->telefone1}}">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="inputPassword4">Telefone 2:</label>
-                                <input type="text" class="form-control" id="inputPassword4"  placeholder="{{$telefone->telefone2}}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="inputPassword4">Nº CNAE:</label>
-                            <input type="text" class="form-control" id="inputPassword4"  placeholder="{{$cnae[0]->codigo}}">
-                    </div>
-                </div>
-            </fieldset>
-        </div>
-        <div class="barraMenu" style="margin-top:0.7rem;">
-            <div class="d-flex">
-                <div class="mr-auto p-2">
-                    <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
-                        <div class="btn-group">
-                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Endereço</div>
-                        </div>
-                    </a>
+            <div class="p-2">
+                <div class="dropdown" style="width:50px">
+                    {{-- <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Ações
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item btn btn-primary" data-toggle="modal" data-target="#exampleModal">Convidar agente</a>
+                    </div> --}}
                 </div>
             </div>
         </div>
-        <div class="container" style="margin-top:1rem;margin-left:10px;">
-                <fieldset disabled id="idFieldsetEndereco">
+    </div>
+
+    <div class="barraMenu" style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
+        <div class="container" style="margin-top:1rem;">
+            <div class="form-row">
+                <div class="form-group col-md-12" >
+                    <div class="d-flex justify-content-center">
+                        <div class="mr-auto p-2 ">
+                            <div class="btn-group">
+                                <div style="color:black; font-size:35px;  margin-bottom:-10px; font-weight:400; font-family: 'Libre Baskerville', serif;">{{$empresa->nome}}</div>
+                            </div>
+                        </div>
+                        <div class="p-2" style="margin-top:16px;">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Ações
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    {{-- <a class="dropdown-item" style="cursor:pointer" href="{{ route('cadastrar.rt.pagina', ['empresaId' => $empresaId]) }}" onclick="editarEstabelecimento()" disabled>Cadastrar Resp. Técnico</a> --}}
+                                    {{-- <a class="dropdown-item" style="cursor:pointer">Cadastrar Resp. Técnico</a> --}}
+                                    {{-- <a class="dropdown-item" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal" onclick="deletarEstabelecimento('{{$empresa->user->name}}')">Deletar Resp. Técnico</a> --}}
+                                    {{-- <a class="dropdown-item" style="cursor:pointer">Deletar Resp. Técnico</a> --}}
+                                    <a class="dropdown-item" style="cursor:pointer" href="{{ route('emconstrucao') }}" onclick="editarEstabelecimento()" disabled>Cadastrar Resp. Técnico</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr size = 7 style="margin-bottom:-2px;">
+                </div>
+
+                <div class="form-group col-md-7">
                     <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="inputEmail4">Rua:</label>
-                            <input type="text" class="form-control" id="inputEmail4" placeholder="{{$endereco->rua}}">
+                        <div class="form-group col-md-12">
+                            <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">INFORMAÇÕES DO ESTABELECIMENTO</label>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputPassword4">Número:</label>
-                            <input type="text" class="form-control" id="inputPassword4" placeholder="{{$endereco->numero}}">
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nome: </label>
+                            <span style="color:#707070">{{$empresa->nome}}</span>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputPassword4">Complemento:</label>
-                            <input type="text" class="form-control" id="inputPassword4" placeholder="{{$endereco->complemento}}">
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CNPJ: </label>
+                            <span style="color:#707070">{{$empresa->cnpjcpf}}</span>
+                        </div>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Tipo: </label>
+                            <span style="color:#707070">{{$empresa->tipo}}</span>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label style="margin-top:10px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">Endereço</label>
+                        </div>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="margin-bottom:-15px; font-weight:normal;font-family: 'Roboto', sans-serif;">Rua: </label>
+                            <span style="margin:0px;color:#707070">{{$endereco->rua}},</span>
+                            <span style="margin:0px;color:#707070"> nº{{$endereco->numero}},</span>
+                            <span style="margin:0px;color:#707070"> {{$endereco->bairro}},</span>
+                            <span style="margin:0px;color:#707070"> {{$endereco->cidade}}/{{$endereco->uf}}</span>
+                        </div>
+                        <div class="form col-md-12" style="margin-top:1px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CEP: </label>
+                            <span style="color:#707070">{{$endereco->cep}}</span>
+                        </div>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Complemento: </label>
+                            <span style="color:#707070">{{$endereco->complemento}}</span>
+                        </div>
+
+
+                        <div class="form-group col-md-12">
+                            <label style="margin-top:10px;margin-bottom:-5px;font-family: 'Roboto', sans-serif;">Contato</label>
+                        </div>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">E-mail: </label>
+                            <span style="color:#707070">{{$empresa->email}}</span>
+                        </div>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone 1: </label>
+                            <span style="color:#707070">{{$telefone->telefone1}}</span>
+                        </div>
+                        <div class="form col-md-12" style="margin-top:-10px;margin-bottom:-30px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone 2: </label>
+                            <span style="color:#707070">{{$telefone->telefone2}}</span>
                         </div>
                     </div>
+                </div>
+                <div class="form col-md-5" style="margin-top:10px;">
                     <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="inputEmail4">Bairro:</label>
-                            <input type="text" class="form-control" id="inputEmail4" placeholder="{{$endereco->bairro}}">
-                        </div>
-                        <div class="form-group col-md-4">
-                                <label for="inputEmail4">Cidade/UF:</label>
-                        <input type="email" class="form-control" id="inputEmail4" placeholder="{{$endereco->cidade}}/{{$endereco->uf}}">
+                        <div class="form-group col-md-12">
+                                <label style="font-size:19px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">INFORMAÇÕES DO REPRESENTANTE LEGAL</label>
                             </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputPassword4">CEP:</label>
-                            <input type="text" class="form-control" id="inputPassword4" placeholder="{{$endereco->cep}}">
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nome: </label>
+                            <span style="color:#707070">{{$empresa->user->name}}</span>
                         </div>
+                        {{-- <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CPF: </label>
+                            <span style="color:#707070">000.000.000-00</span>
+                        </div> --}}
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">E-mail: </label>
+                            <span style="color:#707070">{{$empresa->user->email}}</span>
                         </div>
+                        {{-- <div class="form col-md-12" style="margin-top:-10px;">
+                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
+                            <span style="color:#707070">(00) 0000-0000</span>
+                        </div> --}}
                     </div>
-                    <div class="barraMenu">
-                        <div class="d-flex">
-                            <div class="mr-auto p-2">
-                                <div class="btn-group">
-                                    <div style="margin-top:1.4px;margin-left:10px;font-size:15px;">Documentos do estabelecimento</div>
+
+                    <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label style="font-size:19px;margin-top:10px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">INFORMAÇÕES DO RESPONSÁVEL TÉCNICO</label>
+                            </div>
+
+                            {{-- <div class="form-row col-md-12" style="margin-top:10px; text-align:right; margin-left:10px">
+                                <div class="col">
+                                    <img src="{{ asset('/imagens/logo_esquerda_azul.png') }}" alt="Logo" style="width:15px; margin-top:-5px; margin-right:10px;"/>
+                                    <label style="font-family: 'Roboto', sans-serif;">1/2</label>
+                                    <img src="{{ asset('/imagens/logo_direita_azul.png') }}" alt="Logo" style="width:15px; margin-top:-5px; margin-left:10px;"/>
                                 </div>
-                            </div>
-                            <div class="p-2">
-                                <a href="{{ route('pagina.mostrar.documentacao',["value" => Crypt::encrypt($empresa->id)]) }}" style="margin-right:15px">Abrir</a>
-                            </div>
-                        </div>
+                            </div> --}}
+                            @if(count($respTecnico)>0)
+                            <div class="cardRT">
+                                    <div>EM CONSTRUÇÃO</div>
+                                    {{-- <div class="form col-md-12" style="margin-top:5px;">
+                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nome: </label>
+                                    <span style="color:#707070">{{$respTecnico}}</span>
+                                    </div>
+                                    <div class="form col-md-12" style="margin-top:-10px;">
+                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CPF: </label>
+                                        <span style="color:#707070">000.000.000-00</span>
+                                    </div>
+                                    <div class="form col-md-12" style="margin-top:-10px;">
+                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Formação: </label>
+                                        <span style="color:#707070">XXXXXXXXXXXXXXXXXXXXXX</span>
+                                    </div>
+                                    <div class="form col-md-12" style="margin-top:-10px;">
+                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Especialização: </label>
+                                        <span style="color:#707070">XXXXXXXXXXXXXXXXXXX</span>
+                                    </div>
+                                    <div class="form col-md-12" style="margin-top:-10px;">
+                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
+                                        <span style="color:#707070">(00) 0000-0000</span>
+                                    </div>
+                                    <div class="form col-md-12" style="margin-top:-10px;">
+                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">E-mail: </label>
+                                        <span style="color:#707070">rt@email.com</span>
+                                    </div> --}}
+                                    {{-- <div class="form col-md-12" style="margin-top:-10px;">
+                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
+                                        <span style="color:#707070">(00) 0000-0000</span>
+                                    </div> --}}
+                                </div>
+                                @else
+                                    <div class="form col-md-12" style="margin-top:-10px; margin-top:10px;">
+                                        <div style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nenhum responsável técnico cadastrado</div>
+                                        {{-- <a href="{{ route('cadastrar.rt.pagina', ['empresaId' => $empresaId]) }}">Clique aqui para convidar um Responsável Técnico</a> --}}
+                                    </div>
+                                @endif
                     </div>
-                    <div class="barraMenu" style="margin-top:1rem;">
-                            <div class="d-flex">
-                                <div class="mr-auto p-2">
-                                    <div class="btn-group">
-                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Documentos - CNAE</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="container" style="margin-bottom:5rem">
-    
-                            <div class="cardDocumentos">
-                                <div class="d-flex justify-content-center">
-                                    <div class="mr-auto p-2">
-                                        <div class="form-group">
-                                            <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Exemplo1<span style="color:red">*</span></div>
-                                            <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                                        </div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="dropdown show">
-                                            <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Ação
-                                            </a>
-    
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                <a class="dropdown-item" href="#">Abrir</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-    
-                            <div class="cardDocumentos">
-                                    <div class="d-flex justify-content-center">
-                                        <div class="mr-auto p-2">
-                                            <div class="form-group">
-                                                <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">Exemplo2<span style="color:red">*</span></div>
-                                                <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                                            </div>
-                                        </div>
-                                        <div class="p-2">
-                                            <div class="dropdown show">
-                                                <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Ação
-                                                </a>
-    
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                    <a class="dropdown-item" href="#">Abrir</a>
-                                                    <a class="dropdown-item" href="#">Adicionar</a>
-                                                    <a class="dropdown-item" href="#">Deletar</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
+                </div>
+
+
+                <div class="form-group col-md-12" style="margin-top:15px;">
+                    <label style="font-size:19px; margin-top:0px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">CNAE</label>
+                </div>
+                @foreach($cnae as $item)
+                    <div class="form col-md-12" style="margin-top:-10px;margin-left:0px">
+                        <img src="{{ asset('/imagens/logo_ponto.png') }}" alt="Logo" style="margin-top:-5px; margin-right:5px;"/>
+                        <label style="  ">{{$item->cnae->codigo}} </label> |
+                        <span style="color:#707070">{{$item->cnae->descricao}}</span>
                     </div>
-                    {{-- RT Inicio --}}
-                    <div class="barraMenu">
-                        <div class="d-flex">
-                            <div class="mr-auto p-2">
-                                <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
-                                    <div class="btn-group">
-                                        <div style="margin-top:1px;margin-left:5px;"></div>
-                                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Responsável Técnico</div>
-                                    </div>
-                                </a>
-                            </div>
-                           <div class="p-2">
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Ações
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        {{-- <a class="dropdown-item" style="cursor:pointer" href="{{ route('cadastrar.rt.pagina', ['empresaId' => $empresaId]) }}" onclick="editarEstabelecimento()" disabled>Cadastrar Resp. Técnico</a> --}}
-                                        <a class="dropdown-item" style="cursor:pointer">Cadastrar Resp. Técnico</a>
-                                        {{-- <a class="dropdown-item" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal" onclick="deletarEstabelecimento('{{$empresa->user->name}}')">Deletar Resp. Técnico</a> --}}
-                                        <a class="dropdown-item" style="cursor:pointer">Deletar Resp. Técnico</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container" style="margin-top:1rem;margin-left:10px;">
-                        @if ($respTecnico == null)
-                            <div class="col-12" style="text-align:center;color:gray;font-weight:bold;margin-top:2rem; margin-bottom:3rem;font-size:20px;font-family:Arial, Helvetica, sans-serif;">Nenhum Responsável Técnico Cadastrado!</div>
-                        @else
-                        <fieldset disabled id="idFieldset">
-                            @foreach ($respTecnico as $item)
-                                <div class="form-row">
-                                    <div class="form-group col-md-3">
-                                        <label for="inputEmail4">Nome:</label>
-                                        <input type="text" class="form-control" id="inputEmail4" placeholder="{{$item->user->name}}">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="inputPassword4">CPF:</label>
-                                        <input type="text" class="form-control" id="inputPassword4" placeholder="{{$item->cpf}}">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="inputPassword4">Formação:</label>
-                                        <input type="text" class="form-control" id="inputPassword4" placeholder="{{$item->formacao}}">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="inputPassword4">Especialização:</label>
-                                        <input type="text" class="form-control" id="inputPassword4" placeholder="{{$item->especializacao}}">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-3">
-                                        <label for="inputEmail4">Telefone:</label>
-                                        <input type="text" class="form-control" id="inputEmail4" placeholder="{{$item->user->name}}">
-                                    </div>
-                                </div>
-                            @endforeach
-                        </fieldset>
-                        @endif
-                    </div>
-                    {{-- RT Fim --}}
+                @endforeach
             </div>
+            {{-- <hr size = 7 style="margin-bottom:-15px;"> --}}
+            <div class="row" style="margin-top:2rem; margin-bottom:1rem">
+                <div class="col-auto mr-auto"></div>
+                <div class="col-auto">
 
-
-<!-- Modal - campo deletar estabelecimento-->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-    <div class="modal-header">
-            <img src="{{ asset('/imagens/logo_atencao2.png') }}" alt="Logo" style="width:35px; margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabel" style="font-size:20px;">Excluir estabelecimento</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <div class="row">
-            <div class="col-12">Tem certeza de que deseja excluir este estabelecimento <label id="nomeDoEstabelecimento" style="font-weight:bold;"></label>?</div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"style="width:100px;">Não</button>
-        <button type="button" class="btn btn-danger" style="width:100px;">Sim, excluir</button>
-    </div>
-    </div>
 </div>
-</div>
-<script>
-    function editarEstabelecimento(){
-        // console.log("OPA");
-        if(document.getElementById("idFieldset").disabled == true){
-            //Estabelecimento
-            document.getElementById("idFieldset").disabled = false;
-            //Endereco
-            document.getElementById("idFieldsetEndereco").disabled = false;
-            //botao atualizar
-            document.getElementById("idBotaoAtualizar").style.display = "block";
-        }else{
-            //Estabelecimento
-            document.getElementById("idFieldset").disabled = true;
-            //Endereco
-            document.getElementById("idFieldsetEndereco").disabled = true;
-            //botao atualizar
-            document.getElementById("idBotaoAtualizar").style.display = "none";
-        }
-    }
-    function deletarEstabelecimento($nome){
-        console.log($nome);
-        document.getElementById("nomeDoEstabelecimento").innerHTML=$nome;
-    }
-</script>
 
-</div>
+
 @endsection
 
 

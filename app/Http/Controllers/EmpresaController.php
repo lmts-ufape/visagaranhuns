@@ -503,23 +503,23 @@ class EmpresaController extends Controller
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
         $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $id)->get();
         // $respTecnicos = RespTecnico::where("empresa_id", $empresa->id)->first();
-        $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->pluck('resptec_id');
+        $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->get();
 
-        $resptecnicos = [];
-        for ($i=0; $i < count($rtempresa); $i++) {
-            array_push($resptecnicos, RespTecnico::find($rtempresa[$i]));
-        }
+        // $resptecnicos = [];
+        // for ($i=0; $i < count($rtempresa); $i++) {
+        //     array_push($resptecnicos, RespTecnico::find($rtempresa[$i]));
+        // }
 
-        $cnae = array();
-        foreach($cnaeEmpresa as $indice){
-            $cnaes = Cnae::find($indice->cnae_id);
-            array_push($cnae, $cnaes);
-        }
+        // $cnae = array();
+        // foreach($cnaeEmpresa as $indice){
+        //     $cnaes = Cnae::find($indice->cnae_id);
+        //     array_push($cnae, $cnaes);
+        // }
         return view('empresa/show_empresa',['empresa' => $empresa,
          'endereco' => $endereco,
          'telefone' =>$telefone,
-         'cnae' => $cnae,
-         'respTecnico' => $resptecnicos,
+         'cnae' => $cnaeEmpresa,
+         'respTecnico' => $rtempresa,
          'empresaId'     => $empresa->id,
          ]);
     }
