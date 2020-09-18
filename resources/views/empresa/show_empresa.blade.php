@@ -44,17 +44,19 @@
                             </div>
                         </div>
                         <div class="p-2" style="margin-top:16px;">
-                            {{-- <div class="dropdown">
+                            <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Ações
                                 </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> --}}
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     {{-- <a class="dropdown-item" style="cursor:pointer" href="{{ route('cadastrar.rt.pagina', ['empresaId' => $empresaId]) }}" onclick="editarEstabelecimento()" disabled>Cadastrar Resp. Técnico</a> --}}
                                     {{-- <a class="dropdown-item" style="cursor:pointer">Cadastrar Resp. Técnico</a> --}}
                                     {{-- <a class="dropdown-item" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal" onclick="deletarEstabelecimento('{{$empresa->user->name}}')">Deletar Resp. Técnico</a> --}}
                                     {{-- <a class="dropdown-item" style="cursor:pointer">Deletar Resp. Técnico</a> --}}
-                                {{-- </div> --}}
-                            {{-- </div> --}}
+                                    <a class="dropdown-item" style="cursor:pointer" href="{{ route('emconstrucao') }}" onclick="editarEstabelecimento()" disabled>Cadastrar Resp. Técnico</a>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <hr size = 7 style="margin-bottom:-2px;">
