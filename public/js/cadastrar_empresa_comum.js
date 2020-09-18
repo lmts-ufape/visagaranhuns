@@ -1,4 +1,4 @@
-window.selecionarArea = function(){
+window.selecionarArea1 = function(){
     //area
     var historySelectList = $('select#idSelecionarArea');
     var $id_area = $('option:selected', historySelectList).val();
