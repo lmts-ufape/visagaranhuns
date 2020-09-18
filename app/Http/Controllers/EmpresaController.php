@@ -86,6 +86,7 @@ class EmpresaController extends Controller
             'numero' => 'required|string',
             'bairro'   => 'required|string',
             'cidade'   => 'required|string',
+            'complemento' => 'nullable|string',
             'uf'       => 'required|string',
             'cep'      => 'required|string',
         ]);
@@ -201,7 +202,7 @@ class EmpresaController extends Controller
             'cidade'   => 'required|string',
             'uf'       => 'required|string',
             'cep'      => 'required|string',
-            'complemento' => 'required|string',
+            'complemento' => 'nullable|string',
         ]);
 
         $empresa = Empresa::create([
