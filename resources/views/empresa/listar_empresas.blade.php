@@ -88,7 +88,11 @@
                                 </a>
                             @elseif($tipo == "documentacao")
                                 <a href="{{ route('pagina.mostrar.documentacao',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;">
-                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    @if ($item->status_cadastro == "aprovado")
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    @else
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px; width:35px;"></div>
+                                    @endif
                                 </a>
                             @endif
                         </div>
