@@ -689,4 +689,16 @@ class CoordenadorController extends Controller
         );
         echo json_encode($data);
     }
+
+    public function localizar(Request $request){
+
+        $output .= '<div>Opa</div>';
+
+        $data = array(
+            'success'   => true,
+            'table_data' => $output,
+        );
+
+        echo json_encode($data);
+    }
 }

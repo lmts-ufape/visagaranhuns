@@ -37348,3 +37348,26 @@ module.exports = __webpack_require__(/*! /home/paulo/visagaranhuns/resources/sas
 /***/ })
 
 /******/ });
+
+
+
+
+// funcao utilizada para localizar uma informacao
+
+window.localizar = function($valor){
+    // console.log($valor);
+    $.ajax({
+        url:"/coordenador/localizar",
+        type:"get",
+        dataType:'json',
+        data: {"localizar": $valor },
+        success: function(response){
+            console.log("opa");
+            // $('tbody').html(response.table_data);
+            // document.getElementById('idTabela');
+            // $('#idTabela').animate({scrollTop: $('#idTabela')[0].scrollHeight},1000);
+        }
+    });
+};
+
+
