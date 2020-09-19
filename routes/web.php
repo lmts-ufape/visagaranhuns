@@ -21,7 +21,7 @@ Route::get('/', function () {
             return view('coordenador.home_coordenador');
         }
         elseif (Auth::user()->tipo == "empresa") {
-            return view('empresa.home_empresa');
+            return redirect()->route('home.empresa');
         }
         elseif (Auth::user()->tipo == "inspetor") {
             return view('inspetor.home_inspetor');

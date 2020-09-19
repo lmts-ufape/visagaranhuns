@@ -2,20 +2,38 @@
 
 @section('content')
 <div class="container">
-    <div class="barraMenu">
-        <div class="d-flex">
-            <div class="mr-auto p-2">
-                <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
-                    <div class="btn-group">
-                        <div style="margin-top:1px;margin-left:5px;"><img src="{{ asset('/imagens/logo_voltar.png') }}" alt="Logo" style="width:13px;"/></div>
-                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Voltar</div>
+        <div class="barraMenu">
+            <div class="d-flex justify-content-center">
+                <div class="mr-auto p-2 styleBarraPrincipalMOBILE">
+                    <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
+                        <div class="btn-group">
+                            <div style="margin-top:1px;margin-left:5px;"><img src="{{ asset('/imagens/logo_voltar.png') }}" alt="Logo" style="width:13px;"/></div>
+                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Voltar</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="mr-auto p-2 styleBarraPrincipalPC">
+                    <div class="form-group">
+                        <div class="tituloBarraPrincipal">Cadastrar um novo estabelecimento</div>
+                        <div>
+                            <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Estabelecimentos > Cadastrar estabelecimento</div>
+                        </div>
                     </div>
-                </a>
+                </div>
+                <div class="p-2">
+                    {{-- <div class="dropdown" style="width:50px"> --}}
+                        {{-- <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Ações
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item btn btn-primary" data-toggle="modal" data-target="#exampleModal">Convidar agente</a>
+                        </div> --}}
+                    {{-- </div> --}}
+                </div>
             </div>
         </div>
-    </div>
     <div class="container">
-        <div style="font-size:20px; font-weight:bold; color:#707070; margin-top:14px; margin-left:20px;">Adicionar um novo estabelecimento</div>
+        {{-- <div style="font-size:20px; font-weight:bold; color:#707070; margin-top:14px; margin-left:20px;">Adicionar um novo estabelecimento</div> --}}
     </div>
 
     <form id="teste" method="POST" action="{{ route('adicionar.empresa') }}">
@@ -201,6 +219,23 @@
         </div>
     </form>
 </div>
+<script type="text/javascript">
+    window.selecionarArea = function(){
+    //area
+    var historySelectList = $('select#idSelecionarArea');
+    var $id_area = $('option:selected', historySelectList).val();
+    $.ajax({
+        url:'/estabelecimento/lista/cnae',
+        type:"get",
+        dataType:'json',
+        data: {"id_area": $id_area},
+        success: function(response){
+            $('tbody').html(response.table_data);
+            // document.getElementById('idArea');
+        }
+    });
+    }
+</script>
 @endsection
 
 

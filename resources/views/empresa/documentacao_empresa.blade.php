@@ -3,26 +3,35 @@
 @section('content')
 <div class="container">
         <div class="barraMenu">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2 styleBarraPrincipalMOBILE">
-                    <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
-                        <div class="btn-group">
-                            <div style="margin-top:1px;margin-left:5px;"><img src="{{ asset('/imagens/logo_voltar.png') }}" alt="Logo" style="width:13px;"/></div>
-                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Voltar</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="mr-auto p-2 styleBarraPrincipalPC">
-                    <div class="btn-group">
-                        <div style="font-size:20px; font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;margin-bottom:-5px">Documentos</div>
+                <div class="d-flex justify-content-center">
+                    <div class="mr-auto p-2 styleBarraPrincipalMOBILE">
+                        <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
+                            <div class="btn-group">
+                                <div style="margin-top:1px;margin-left:5px;"><img src="{{ asset('/imagens/logo_voltar.png') }}" alt="Logo" style="width:13px;"/></div>
+                                <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Voltar</div>
+                            </div>
+                        </a>
                     </div>
-                </div>
-                <div class="p-2">
-                    <div style="width:70px">
+                    <div class="mr-auto p-2 styleBarraPrincipalPC">
+                        <div class="form-group">
+                            <div class="tituloBarraPrincipal">Documentação</div>
+                            <div>
+                                <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Documentação > {{$nome}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-2">
+                        {{-- <div class="dropdown" style="width:50px"> --}}
+                            {{-- <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Ações
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item btn btn-primary" data-toggle="modal" data-target="#exampleModal">Convidar agente</a>
+                            </div> --}}
+                        {{-- </div> --}}
                     </div>
                 </div>
             </div>
-        </div>
 
 
 
