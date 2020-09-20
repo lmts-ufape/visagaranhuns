@@ -112,7 +112,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
     * Consulta de denúncias
 */
     // Rota para localizar
-    Route::get("/coordenador/localizar", "CoordenadorController@localizar")->name("localizar.geral");
+    Route::get("/coordenador/localizar", "CoordenadorController@localizar");
 });
 
 // Grupo de rotas para empresa

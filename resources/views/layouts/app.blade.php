@@ -113,11 +113,7 @@
                                     <a class="nav-link" href="{{ route('listagem.area') }}">{{ __('Estabelecimentos') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    {{-- <a class="nav-link" href="{{ route('login') }}"> --}}
-                                            <button type="button" class="btn" data-toggle="modal" data-target="#exampleModalLocalizar"><img src="{{asset('imagens/logo_lupa_1.png')}}" style="width:25px; margin-top:-4px; margin-left:10px; margin-right:30px;"></button>
-                                        <!-- Button trigger modal -->
-
-                                    {{-- </a> --}}
+                                    <button type="button" class="btn" data-toggle="modal" data-target="#exampleModalLocalizar"><img src="{{asset('imagens/logo_lupa_1.png')}}" style="width:25px; margin-top:-4px; margin-left:10px; margin-right:30px;"></button>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -358,26 +354,15 @@
                   style="width:100%; border-color:white;outline:none !important; outline-width: 0 !important; box-shadow: none; -moz-box-shadow: none; -webkit-box-shadow: none;"></div>
                 </div>
 
-            <div id="teste" class="modal-content" style="display:none; margin-bottom:10rem; border-color:white;">
-                <div >
-                    <div class="col-12">Estabelecimentos</div>
-
-                    <div class="col-12">Áreas</div>
-
-                    <div class="col-12">CNAE(Nome ou código)</div>
-
-                    <div class="col-12">Agentes</div>
-
-                    <div class="col-12">Inspetores</div>
-
+            <div id="idLocalizar" class="modal-content" style="display:none; border-color:white;">
+                <div style="overflow: auto;height:200px;">
+                    <table_ajax>
+                    </table_ajax>
                 </div>
             </div>
-
           </div>
         </div>
       </div>
-
-
 
 </body>
 </html>

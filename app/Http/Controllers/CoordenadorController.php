@@ -13,6 +13,7 @@ use App\Telefone;
 use App\CnaeEmpresa;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Crypt;
 
 class CoordenadorController extends Controller
 {
@@ -692,13 +693,26 @@ class CoordenadorController extends Controller
 
     public function localizar(Request $request){
 
-        $output .= '<div>Opa</div>';
+        $resultado = Empresa::where('nome','ilike','%'.$request->localizar.'%')->get();
 
+        $output = '';
+            if($resultado->count() > 0){
+                    $output .= '<div class="container" style="font-weight:bold;">Estabelecimento</div>';
+                foreach($resultado as $item){
+                    $output .= '<div id="idEstabelecimentoLocalizar'.$item->id.'"  class="container" onmouseenter="mostrarSelecaoLocalizar('.$item->id.')"><a href='.route('mostrar.empresas','value='.Crypt::encrypt($item->id)).' style="font-weight:bold; color:black;text-decoration:none; font-family: Quicksand;"><div>'.$item->nome.'</div></a></div>';
+                }
+            }else{
+                $output .= '<div class="container">Nenhum resultado encontrado para <span style="font-weight:bold">'.$request->localizar.'</span></div>';
+            }
         $data = array(
             'success'   => true,
             'table_data' => $output,
         );
 
+
         echo json_encode($data);
     }
 }
+
+
+// href="{{ route('mostrar.empresas',["value" => Crypt::encrypt($item->id)]) }}"
