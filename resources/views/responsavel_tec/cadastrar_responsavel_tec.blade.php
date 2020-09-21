@@ -78,30 +78,46 @@
                 <div class="d-flex">
                     <div class="mr-auto p-2">
                         <div class="btn-group">
-                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Cnae de atuação</div>
+                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Área de atuação</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="container" style="margin-top:1rem;margin-left:1px;">
                 <div class="container" style="margin-top:1rem;margin-left:10px;">
+                    @if ($message = Session::get('error'))
+                            <div class="alert alert-warning alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{$message}}</strong>
+                            </div>
+                    @endif
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <select class="form-control" name="cnae">
-                                <option value="">CNAES</option>
-                                @foreach ($cnaes as $item)
-                                    <option value="{{$item->id}}">{{$item->codigo}} - {{$item->descricao}}</option>
+                            <select class="form-control" name="area">
+                                <option value="">AREAS</option>
+                                @foreach ($areas as $item)
+                                    <option value="{{$item->id}}">{{$item->nome}}</option>
                                 @endforeach
                             </select>
                         </div>
-                        {{-- <div class="form-group col-md-4">
-                            <label for="inputPassword4">Senha:<span style="color:red">*</span></label>
-                            <input id="password" type="password" class="form-control" name="password" required autocomplete="new-password">
+                        <div class="form-group col-md-4">
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="inputPassword4">Confirmar senha:<span style="color:red">*</span></label>
-                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                        </div> --}}
+                            <h5>Responsáveis técnicos já cadastrados:</h5>
+                            @if (count($respTecnicos) == 0)
+                                <h6>Ainda não há responsáveis técnicos cadastrados</h6>
+                            @else
+                                <ul class="list-group">
+                                    @foreach ($areas as $area)
+                                        @foreach ($respTecnicos as $rt)
+                                            @if ($area->id == $rt->area_id)
+                                                <li class="list-group-item">{{$rt->user->name}}: {{$area->nome}}</li>
+                                            @endif
+                                        @endforeach
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

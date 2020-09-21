@@ -503,8 +503,8 @@ class EmpresaController extends Controller
         $endereco = Endereco::where('empresa_id', $empresa->id)->first();
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
         $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $id)->get();
-        // $respTecnicos = RespTecnico::where("empresa_id", $empresa->id)->first();
-        $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->get();
+        $respTecnicos = RespTecnico::where("empresa_id", $empresa->id)->get();
+        // $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->get();
 
         // $resptecnicos = [];
         // for ($i=0; $i < count($rtempresa); $i++) {
@@ -520,7 +520,7 @@ class EmpresaController extends Controller
          'endereco' => $endereco,
          'telefone' =>$telefone,
          'cnae' => $cnaeEmpresa,
-         'respTecnico' => $rtempresa,
+         'respTecnico' => $respTecnicos,
          'empresaId'     => $empresa->id,
          ]);
     }

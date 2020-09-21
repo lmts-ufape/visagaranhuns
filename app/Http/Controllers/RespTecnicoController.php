@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\RespTecnico;
 use App\User;
+use App\Area;
 use App\Empresa;
 use Auth;
 use Illuminate\Support\Str;
@@ -33,15 +34,32 @@ class RespTecnicoController extends Controller
     {
         $user = User::find(Auth::user()->id);
         $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $request->empresaId)->get();
+        $respTecnicos = RespTecnico::where('empresa_id', $request->empresaId)->get();
 
         $cnae = array();
+        $areas = array();
+
         foreach($cnaeEmpresa as $indice){
             $cnaes = Cnae::find($indice->cnae_id);
             array_push($cnae, $cnaes);
         }
 
+        foreach($cnae as $indice){
+            $area = Area::find($indice->areas_id);
+            array_push($areas, $area);
+        }
+        
+        $resultAreasTemp = array_unique($areas);
+
+        $areasOrdenado = [];
+
+        foreach ($resultAreasTemp as $indice) {
+            array_push($areasOrdenado, $indice);
+        }
+
+
         // Tela de conclusão de cadastro de Responsavel Técnico
-        return view('responsavel_tec.cadastrar_responsavel_tec')->with(["user" => $user, "empresaId" => $request->empresaId, 'cnaes' => $cnae]);
+        return view('responsavel_tec.cadastrar_responsavel_tec')->with(["user" => $user, "empresaId" => $request->empresaId, 'areas' => $areasOrdenado, 'respTecnicos' => $respTecnicos]);
     }
 
     /**
@@ -58,18 +76,19 @@ class RespTecnicoController extends Controller
         
         if ($user != null) {
 
-            $found = true;
-            $resptecnico = RespTecnico::where('user_id', $user->id)->first();
-            $passwordTemporario = Str::random(8);
+            // $found = true;
+            // $resptecnico = RespTecnico::where('user_id', $user->id)->first();
+            // $passwordTemporario = Str::random(8);
 
-            \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTEmail($request->email, $passwordTemporario, $empresa->nome));
+            // \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTEmail($request->email, $passwordTemporario, $empresa->nome));
 
-            $rtempresa = RtEmpresa::create([
-                'resptec_id' => $resptecnico->id,
-                'empresa_id' => $request->empresaId,
-            ]);
+            // $rtempresa = RtEmpresa::create([
+            //     'resptec_id' => $resptecnico->id,
+            //     'empresa_id' => $request->empresaId,
+            // ]);
 
-            return redirect()->route('/');
+            session()->flash('error', 'Já existe um responsável técnico cadastrado no sistema com esse email!');
+            return back();
         }
 
         else {
@@ -102,14 +121,15 @@ class RespTecnicoController extends Controller
                 'cpf'            => $request->cpf,
                 'telefone'       => $request->telefone,
                 'user_id'        => $user->id,
-                'cnae_id'        => $request->cnae
-                // 'empresa_id'     => $request->empresaId,
+                'area_id'        => $request->area,
+                'empresa_id'     => $request->empresaId,
             ]);
+
     
-            $rtempresa = RtEmpresa::create([
-                'resptec_id' => $respTec->id,
-                'empresa_id' => $request->empresaId,
-            ]);
+            // $rtempresa = RtEmpresa::create([
+            //     'resptec_id' => $respTec->id,
+            //     'empresa_id' => $request->empresaId,
+            // ]);
     
             return redirect()->route('/');
         }

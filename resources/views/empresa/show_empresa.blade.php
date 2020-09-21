@@ -53,7 +53,7 @@
                                     {{-- <a class="dropdown-item" style="cursor:pointer">Cadastrar Resp. Técnico</a> --}}
                                     {{-- <a class="dropdown-item" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal" onclick="deletarEstabelecimento('{{$empresa->user->name}}')">Deletar Resp. Técnico</a> --}}
                                     {{-- <a class="dropdown-item" style="cursor:pointer">Deletar Resp. Técnico</a> --}}
-                                    <a class="dropdown-item" style="cursor:pointer" href="{{ route('emconstrucao') }}" onclick="editarEstabelecimento()" disabled>Cadastrar Resp. Técnico</a>
+                                    <a class="dropdown-item" style="cursor:pointer" href="{{ route('cadastrar.rt.pagina', ['empresaId' => $empresaId]) }}">Cadastrar Resp. Técnico</a>
 
                                 </div>
                             </div>
