@@ -111,6 +111,8 @@ Route::middleware(['IsCoordenador'])->group(function () {
     * Cadastrar/Editar/Deletar notificações de empresas
     * Consulta de denúncias
 */
+    // Rota para localizar
+    Route::get("/coordenador/localizar", "CoordenadorController@localizar");
 });
 
 // Grupo de rotas para empresa

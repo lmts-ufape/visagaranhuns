@@ -37348,3 +37348,42 @@ module.exports = __webpack_require__(/*! /home/paulo/visagaranhuns/resources/sas
 /***/ })
 
 /******/ });
+
+
+
+
+// funcao utilizada para localizar uma informacao
+
+function localizar($valor){
+    if($valor.length >2){
+        document.getElementById("idLocalizar").style.display = "block";
+        $.ajax({
+            url:"/coordenador/localizar",
+            type:"get",
+            dataType:'json',
+            data: {"localizar": $valor},
+            success: function(response){
+                $('table_ajax').html(response.table_data);
+                // document.getElementById('idTabela');
+                // $('#idTabela').animate({scrollTop: $('#idTabela')[0].scrollHeight},1000);
+            }
+        });
+    }else if($valor.length == 1){
+        $('table_ajax').html("");
+    }
+};
+
+var tempIdSelecaoLocalizar = -1;
+function mostrarSelecaoLocalizar(id){
+    if(tempIdSelecaoLocalizar == -1){
+        document.getElementById("idEstabelecimentoLocalizar"+id).style.backgroundColor = "#90c1e4";
+        this.tempIdSelecaoLocalizar=document.getElementById("idEstabelecimentoLocalizar"+id);
+    }else if(tempIdSelecaoLocalizar != -1){
+        this.tempIdSelecaoLocalizar.style.backgroundColor = "white";
+        document.getElementById("idEstabelecimentoLocalizar"+id).style.backgroundColor = "#90c1e4";
+        this.tempIdSelecaoLocalizar=document.getElementById("idEstabelecimentoLocalizar"+id);
+    }
+
+}
+
+
