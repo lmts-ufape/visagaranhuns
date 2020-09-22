@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <div class="tituloBarraPrincipal">Perfil do estabelecimento</div>
                     <div>
-                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Estabelecimentos > Meus estabelecimentos > {{$empresa->nome}} </div>
+                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Estabelecimentos > {{$empresa->nome}} </div>
                     </div>
                 </div>
             </div>

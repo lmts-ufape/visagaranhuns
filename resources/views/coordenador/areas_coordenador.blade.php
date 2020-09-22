@@ -3,20 +3,25 @@
 @section('content')
 <div class="container">
     <div class="barraMenu">
-        <div class="d-flex">
-            <div class="mr-auto p-2">
-                <a href="{{route('home.coordenador')}}" style="text-decoration:none;cursor:pointer;color:black;">
+        <div class="d-flex justify-content-center">
+            <div class="mr-auto p-2 styleBarraPrincipalMOBILE">
+                <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
                     <div class="btn-group">
                         <div style="margin-top:1px;margin-left:5px;"><img src="{{ asset('/imagens/logo_voltar.png') }}" alt="Logo" style="width:13px;"/></div>
                         <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Voltar</div>
                     </div>
                 </a>
             </div>
-            {{-- <div class="p-2">
-                <img src="{{ asset('/imagens/logo_lupa_1.png') }}" alt="Logo" style="margin-right:13px;"/>
-            </div> --}}
+            <div class="mr-auto p-2 styleBarraPrincipalPC">
+                <div class="form-group">
+                    <div class="tituloBarraPrincipal">Áreas</div>
+                    <div>
+                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Áreas </div>
+                    </div>
+                </div>
+            </div>
             <div class="p-2">
-                <div class="dropdown">
+                <div class="dropdown" style="margin-top:10px;">
                     <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Ações
                     </button>
@@ -29,10 +34,9 @@
             </div>
         </div>
     </div>
-    <div class="container">
-        <div style="font-size:20px; font-weight:bold; color:#707070; margin-top:14px; margin-left:20px;">Áreas</div>
-    </div>
-    <div class="container">
+
+
+    <div class="container" style="margin-top:2rem; margin-bottom:2rem;">
         <div class="row justify-content-left" style="margin-left:0px;">
             {{-- @foreach ($areas as $item)
                 <a href="{{ route('listagem.cnae',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;cursor:pointer;color:black;">

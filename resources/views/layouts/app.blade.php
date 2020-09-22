@@ -97,7 +97,7 @@
                                     <a class="nav-link" href="{{ route('pagina.requerimento') }}">{{ __('Requerimento') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Programação') }}</a>
+                                    <a class="nav-link" href="{{ route('emconstrucao') }}">{{ __('Programação') }}</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -113,9 +113,7 @@
                                     <a class="nav-link" href="{{ route('listagem.area') }}">{{ __('Estabelecimentos') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">
-                                        <img src="{{asset('imagens/logo_lupa_1.png')}}" style="width:25px; margin-top:-4px; margin-left:10px; margin-right:30px;">
-                                    </a>
+                                    <button type="button" class="btn" data-toggle="modal" data-target="#exampleModalLocalizar"><img src="{{asset('imagens/logo_lupa_1.png')}}" style="width:25px; margin-top:-4px; margin-left:10px; margin-right:30px;"></button>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -126,7 +124,7 @@
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
+                                            {{ __('Sair do sistema') }}
                                         </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -344,5 +342,30 @@
             <!--x footer x-->
         </div>
     </div>
+
+
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModalLocalizar" tabindex="-1" role="dialog" aria-labelledby="exampleModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content" style="-webkit-box-shadow: 2px 2px 35px 2px rgba(0,0,0,0.75);
+          -moz-box-shadow: 2px 2px 35px 2px rgba(0,0,0,0.75);
+          box-shadow: 2px 2px 35px 2px rgba(0,0,0,0.75);">
+              <div class="row">
+                  <div class="col-1"><img src="{{asset('imagens/logo_lupa_1.png')}}" style="width:20px; margin-top:8px; margin-left:17px; margin-right:5px;"></div>
+                  <div class="col"><input type="text" class="form-control campoLocalizar" placeholder="Pesquisar" onkeyup="localizar(this.value);"
+                  style="width:100%; border-color:white;outline:none !important; outline-width: 0 !important; box-shadow: none; -moz-box-shadow: none; -webkit-box-shadow: none;"></div>
+                </div>
+
+            <div id="idLocalizar" class="modal-content" style="display:none; border-color:white;">
+                <div style="overflow: auto;height:200px;">
+                    <table_ajax>
+                    </table_ajax>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
 </body>
 </html>

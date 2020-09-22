@@ -21,7 +21,7 @@ Route::get('/', function () {
             return view('coordenador.home_coordenador');
         }
         elseif (Auth::user()->tipo == "empresa") {
-            return view('empresa.home_empresa');
+            return redirect()->route('home.empresa');
         }
         elseif (Auth::user()->tipo == "inspetor") {
             return view('inspetor.home_inspetor');
@@ -111,6 +111,8 @@ Route::middleware(['IsCoordenador'])->group(function () {
     * Cadastrar/Editar/Deletar notificações de empresas
     * Consulta de denúncias
 */
+    // Rota para localizar
+    Route::get("/coordenador/localizar", "CoordenadorController@localizar");
 });
 
 // Grupo de rotas para empresa

@@ -4,7 +4,7 @@
 <div class="container">
     <div class="barraMenu">
         <div class="d-flex">
-            <div class="mr-auto p-2">
+            <div class="mr-auto p-2 styleBarraPrincipalMOBILE">
                 <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
                     <div class="btn-group">
                         <div style="margin-top:1px;margin-left:5px;"><img src="{{ asset('/imagens/logo_voltar.png') }}" alt="Logo" style="width:13px;"/></div>
@@ -12,12 +12,26 @@
                     </div>
                 </a>
             </div>
-            {{-- <div class="p-2">
-                <img src="{{ asset('/imagens/logo_lupa_1.png') }}" alt="Logo" style="margin-right:13px;"/>
-            </div> --}}
+            <div class="mr-auto p-2 styleBarraPrincipalPC">
+                @if($tipo == "estabelecimentos")
+                    <div class="form-group">
+                        <div class="tituloBarraPrincipal">Estabelecimentos</div>
+                        <div>
+                            <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Estabelecimentos</div>
+                        </div>
+                    </div>
+                @else
+                    <div class="form-group">
+                        <div class="tituloBarraPrincipal">Documentação</div>
+                        <div>
+                            <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Documentação</div>
+                        </div>
+                    </div>
+                @endif
+            </div>
             @if($tipo == "estabelecimentos")
                 <div class="p-2">
-                    <div class="dropdown">
+                    <div class="dropdown" style="margin-top:10px;">
                         <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Ações
                         </button>
@@ -25,7 +39,7 @@
 
                         @else
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="{{ route('pagina.adicionar.empresa') }}">Adicionar empresa</a>
+                                <a class="dropdown-item" href="{{ route('pagina.adicionar.empresa') }}">Cadastrar estabelecimento</a>
                             </div>
                         @endif
                     </div>
@@ -34,11 +48,11 @@
         </div>
     </div>
     <div class="container">
-        @if($tipo == "estabelecimentos")
+        {{-- @if($tipo == "estabelecimentos")
             <div style="font-size:20px; font-weight:bold; color:#707070; margin-top:14px; margin-left:20px;">Estabelecimentos</div>
         @elseif($tipo == "documentacao")
             <div style="font-size:20px; font-weight:bold; color:#707070; margin-top:14px; margin-left:20px;">Documentação</div>
-        @endif
+        @endif --}}
     </div>
     <div class="container">
         <div class="row justify-content-left" style="margin-left:0px;padding-bottom:20rem;">

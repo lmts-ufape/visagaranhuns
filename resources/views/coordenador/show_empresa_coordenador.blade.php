@@ -13,18 +13,24 @@
                 </a>
             </div>
             <div class="mr-auto p-2 styleBarraPrincipalPC">
-                <div class="btn-group">
+                <div class="form-group">
                     <div class="tituloBarraPrincipal">Perfil do estabelecimento</div>
+                    <div>
+                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Áreas > CNAE > Estabelecimentos > {{$empresa->nome}}</div>
+                    </div>
                 </div>
             </div>
             <div class="p-2">
-                <div class="dropdown" style="width:50px">
+                <div class="dropdown" style="margin-top:10px; width:20%;">
                     {{-- <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Ações
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item btn btn-primary" data-toggle="modal" data-target="#exampleModal">Convidar agente</a>
-                    </div> --}}
+                        <a class="dropdown-item" href="#">Criar cnae</a>
+                        <a class="dropdown-item" href="#">Editar área</a> --}}
+                        {{-- <a class="dropdown-item" href="#">Editar área</a>
+                        <a class="dropdown-item" href="#">Deletar área</a> --}}
+                    {{-- </div> --}}
                 </div>
             </div>
         </div>
@@ -37,9 +43,6 @@
                     <div>
                         <label style="color:black; font-size:35px;  margin-bottom:-10px; font-weight:400; font-family: 'Libre Baskerville', serif;;
                         ;">{{$empresa->nome}}</label>
-                    </div>
-                    <div>
-                        <div style="font-size:13px;margin-top:2px; margin-bottom:-10px;color:gray;">Início > Estabelecimentos > Area > Cnae > Perfil do estabelecimento </div>
                     </div>
                     <hr size = 7 style="margin-bottom:-2px;">
                 </div>

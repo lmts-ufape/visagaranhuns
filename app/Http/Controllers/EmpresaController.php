@@ -49,7 +49,15 @@ class EmpresaController extends Controller
 
     public function home()
     {
-        return view('empresa.home_empresa');
+        // dd(Auth::user()->empresa);
+        $empresa = Auth::user()->empresa;
+        // $id = Crypt::decrypt($request->value);
+        // $empresa = Empresa::where("id","=", $idEmpresa)->get();
+        // $endereco = Endereco::where('empresa_id', $empresa->id)->first();
+        // $telefone = Telefone::where('empresa_id', $empresa->id)->first();
+        // $cnae = CnaeEmpresa::where('empresa_id', $id)->get();
+        // $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->get();
+        return view('empresa.home_empresa',["empresas" => $empresa]);
     }
 
     /**
