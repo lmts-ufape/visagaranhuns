@@ -225,7 +225,7 @@
         var historySelectList = $('select#idSelecionarArea');
         var $id_area = $('option:selected', historySelectList).val();
         $.ajax({
-            url:'/empresa/lista/cnae',
+            url:'{{ config('prefixo.PREFIXO') }}empresa/lista/cnae',
             type:"get",
             dataType:'json',
             data: {"id_area": $id_area},

@@ -453,11 +453,10 @@ class EmpresaController extends Controller
 
         $validatedData = $request->validate([
 
-            'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000000'],
-            'data'    => ['nullable', 'date'],
+            'arquivo' => ['required', 'file', 'mimes:pdf', 'max:5000'],
+            'data'    => ['required', 'date'],
 
         ]);
-
 
         $fileDocemp = $request->arquivo;
 
