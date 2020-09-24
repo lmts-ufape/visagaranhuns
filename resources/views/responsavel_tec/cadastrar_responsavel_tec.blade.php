@@ -70,6 +70,10 @@
                             <label for="inputEmail4">Telefone:<span style="color:red">*</span></label>
                             <input type="text" class="form-control" name="telefone" id="inputTelefone1" placeholder="" required>
                         </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail4">Carga horária:<span style="color:red">*</span></label>
+                            <input type="number" class="form-control" name="carga_horaria" id="carga_horaria" placeholder="" required>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -87,6 +91,12 @@
                 <div class="container" style="margin-top:1rem;margin-left:10px;">
                     @if ($message = Session::get('error'))
                             <div class="alert alert-warning alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{$message}}</strong>
+                            </div>
+                    @endif
+                    @if ($message = Session::get('success'))
+                            <div class="alert alert-succes alert-block fade show">
                                 <button type="button" class="close" data-dismiss="alert">×</button>
                                 <strong>{{$message}}</strong>
                             </div>

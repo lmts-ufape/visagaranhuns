@@ -34,7 +34,12 @@ class RespTecnicoController extends Controller
     {
         $user = User::find(Auth::user()->id);
         $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $request->empresaId)->get();
-        $respTecnicos = RespTecnico::where('empresa_id', $request->empresaId)->get();
+        $rtempresa = RtEmpresa::where('empresa_id', $request->empresaId)->get();
+
+        $resptecnicos = [];
+        for ($i=0; $i < count($rtempresa); $i++) {
+            array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
+        }
 
         $cnae = array();
         $areas = array();
@@ -59,7 +64,7 @@ class RespTecnicoController extends Controller
 
 
         // Tela de conclusão de cadastro de Responsavel Técnico
-        return view('responsavel_tec.cadastrar_responsavel_tec')->with(["user" => $user, "empresaId" => $request->empresaId, 'areas' => $areasOrdenado, 'respTecnicos' => $respTecnicos]);
+        return view('responsavel_tec.cadastrar_responsavel_tec')->with(["user" => $user, "empresaId" => $request->empresaId, 'areas' => $areasOrdenado, 'respTecnicos' => $resptecnicos]);
     }
 
     /**
@@ -72,27 +77,51 @@ class RespTecnicoController extends Controller
     {
 
         $empresa = Empresa::find($request->empresaId);
-        $user    = User::where("email", $request->email)->first(); 
+        $user    = User::where("email", $request->email)->first();
         
         if ($user != null) {
 
-            // $found = true;
-            // $resptecnico = RespTecnico::where('user_id', $user->id)->first();
-            // $passwordTemporario = Str::random(8);
+            $resptecnico = RespTecnico::where('user_id', $user->id)->first();
 
-            // \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTEmail($request->email, $passwordTemporario, $empresa->nome));
+            if ($resptecnico->area_id == $request->area) {
+                session()->flash('error', 'Já existe um responsável técnico cadastrado nessa área!');
+                return back();
+            }
+            else {
+                dd("Aqui!!!");
+                $validator = $request->validate([
+                    'carga_horaria'  => 'required|integer',
+                ]);
 
-            // $rtempresa = RtEmpresa::create([
-            //     'resptec_id' => $resptecnico->id,
-            //     'empresa_id' => $request->empresaId,
-            // ]);
+                $passwordTemporario = Str::random(8);
+                \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTEmail($request->email, $empresa->nome));
 
-            session()->flash('error', 'Já existe um responsável técnico cadastrado no sistema com esse email!');
-            return back();
+                $hoje = date('d/m/Y');
+
+                $rtempresa = RtEmpresa::create([
+                    'horas' => $request->carga_horaria,
+                    'data_inicio' => $hoje,
+                    'status' => "ativo",
+                    'resptec_id' => $resptecnico->id,
+                    'empresa_id' => $request->empresaId,
+                    'area_id' => $request->area,
+                ]);
+
+                session()->flash('success', 'Responsável técnico convidado com sucesso!');
+                return back();
+            }
         }
 
         else {
+
+            $rt = RespTecnico::where('area_id', $request->area)->first();
+            if ($rt != null) {
+                session()->flash('error', 'Já existe um responsável técnico cadastrado nessa área!');
+                return back();
+            }
+
             $found = false;
+            $hoje = date('d/m/Y');
 
             $validator = $request->validate([
                 'nome'     => 'required|string',
@@ -101,6 +130,7 @@ class RespTecnicoController extends Controller
                 'especializacao' => 'nullable|string',
                 'cpf'            => 'required|string',
                 'telefone'       => 'required|string',
+                'carga_horaria'  => 'required|integer',
             ]);
     
             $passwordTemporario = Str::random(8);
@@ -121,15 +151,19 @@ class RespTecnicoController extends Controller
                 'cpf'            => $request->cpf,
                 'telefone'       => $request->telefone,
                 'user_id'        => $user->id,
-                'area_id'        => $request->area,
-                'empresa_id'     => $request->empresaId,
+                // 'area_id'        => $request->area,
+                // 'empresa_id'     => $request->empresaId,
             ]);
 
     
-            // $rtempresa = RtEmpresa::create([
-            //     'resptec_id' => $respTec->id,
-            //     'empresa_id' => $request->empresaId,
-            // ]);
+            $rtempresa = RtEmpresa::create([
+                'horas' => $request->carga_horaria,
+                'data_inicio' => $hoje,
+                'status' => "ativo",
+                'resptec_id' => $respTec->id,
+                'empresa_id' => $request->empresaId,
+                'area_id' => $request->area,
+            ]);
     
             return redirect()->route('/');
         }

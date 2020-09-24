@@ -20,7 +20,7 @@ class Empresa extends Model
         return $this->belongsTo("\App\User");
     }
 
-    //Responsaveis tecnicos
+    // Responsaveis tecnicos
     public function resptecnicos() {
         return $this->hasMany("\App\RespTecnico");
     }

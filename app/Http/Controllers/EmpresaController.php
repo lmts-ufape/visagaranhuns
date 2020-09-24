@@ -311,7 +311,7 @@ class EmpresaController extends Controller
         $endereco = Endereco::where('empresa_id', $empresa->id)->first();
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
         $cnae = CnaeEmpresa::where('empresa_id', $id)->get();
-        $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->get();
+        $respTecnicos = RespTecnico::where("empresa_id", $empresa->id)->get();
 
         // $cnae = array();
         // foreach($cnaeEmpresa as $indice){
@@ -319,7 +319,7 @@ class EmpresaController extends Controller
         //     array_push($cnae, $cnaes);
         // }
 
-        return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae, 'rt' => $rtempresa]);
+        return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae, 'rt' => $respTecnicos]);
     }
 
     /**
@@ -511,27 +511,23 @@ class EmpresaController extends Controller
         $endereco = Endereco::where('empresa_id', $empresa->id)->first();
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
         $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $id)->get();
-        $respTecnicos = RespTecnico::where("empresa_id", $empresa->id)->get();
-        // $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->get();
+        // $respTecnicos = RespTecnico::where("empresa_id", $empresa->id)->get();
+        $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->get();
 
-        // $resptecnicos = [];
-        // for ($i=0; $i < count($rtempresa); $i++) {
-        //     array_push($resptecnicos, RespTecnico::find($rtempresa[$i]));
-        // }
+        $resptecnicos = [];
+        for ($i=0; $i < count($rtempresa); $i++) {
+            array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
+        }
 
-        // $cnae = array();
-        // foreach($cnaeEmpresa as $indice){
-        //     $cnaes = Cnae::find($indice->cnae_id);
-        //     array_push($cnae, $cnaes);
-        // }
         return view('empresa/show_empresa',['empresa' => $empresa,
          'endereco' => $endereco,
          'telefone' =>$telefone,
          'cnae' => $cnaeEmpresa,
-         'respTecnico' => $respTecnicos,
+         'respTecnico' => $resptecnicos,
          'empresaId'     => $empresa->id,
          ]);
     }
+
     public function showDocumentacao(Request $request){
 
         $idEmpresa = Crypt::decrypt($request->value);

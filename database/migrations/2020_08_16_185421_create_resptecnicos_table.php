@@ -23,11 +23,11 @@ class CreateResptecnicosTable extends Migration
             $table->bigInteger("user_id")->nullable();
             $table->foreign("user_id")->references("id")->on("users");
 
-            $table->bigInteger("area_id")->nullable();
-            $table->foreign("area_id")->references("id")->on("areas");
+            // $table->bigInteger("area_id")->nullable();
+            // $table->foreign("area_id")->references("id")->on("areas");
 
-            $table->bigInteger("empresa_id")->nullable();
-            $table->foreign("empresa_id")->references("id")->on("empresas");
+            // $table->bigInteger("empresa_id")->nullable();
+            // $table->foreign("empresa_id")->references("id")->on("empresas");
             $table->timestamps();
         });
     }

@@ -102,8 +102,8 @@ class CoordenadorSeeder extends Seeder
         ]);
         
         \App\CnaeEmpresa::create([ 'empresa_id' => '1', 'cnae_id' => '1' ]);
-        // \App\CnaeEmpresa::create([ 'empresa_id' => '1', 'cnae_id' => '2' ]);
-        // \App\CnaeEmpresa::create([ 'empresa_id' => '1', 'cnae_id' => '3' ]);
+        \App\CnaeEmpresa::create([ 'empresa_id' => '1', 'cnae_id' => '50' ]);
+        \App\CnaeEmpresa::create([ 'empresa_id' => '1', 'cnae_id' => '110' ]);
         // \App\CnaeEmpresa::create([ 'empresa_id' => '2', 'cnae_id' => '3' ]);
 
         
