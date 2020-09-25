@@ -172,19 +172,17 @@ class EmpresaController extends Controller
             foreach ($areatipodocemp as $indice) {
 
                 // ABAIXO SAI, CASO SEJA DUPLICADO
-                $checklist = Checklistemp::where('nomeDoc', $indice->tipodocemp->nome)
-                ->where('empresa_id', $empresa->id)
-                ->first();
+                // $checklist = Checklistemp::where('nomeDoc', $indice->tipodocemp->nome)
+                // ->where('empresa_id', $empresa->id)
+                // ->first();
 
-                if ($checklist == null) {
-                    $cnaeEmpresa = Checklistemp::create([
-                        'anexado' => 'false',
-                        // 'areas_id' => $areasOrdenado[$i], VOLTA CASO FIQUE DUPLICADO
-                        'nomeDoc' => $indice->tipodocemp->nome,
-                        'tipodocemp_id' => $indice->tipodocemp->id,
-                        'empresa_id' => $empresa->id,
-                    ]);
-                }
+                $cnaeEmpresa = Checklistemp::create([
+                    'anexado' => 'false',
+                    'areas_id' => $areasOrdenado[$i],
+                    'nomeDoc' => $indice->tipodocemp->nome,
+                    'tipodocemp_id' => $indice->tipodocemp->id,
+                    'empresa_id' => $empresa->id,
+                ]);
             }
         }
 
@@ -457,8 +455,24 @@ class EmpresaController extends Controller
             return back();
         }
 
-        $checklist = Checklistemp::where('tipodocemp_id', $request->tipodocempresa)->first();
-        // dd($checklist);
+        $checklist = Checklistemp::where('tipodocemp_id', $request->tipodocempresa)
+        ->where('empresa_id', $request->empresaId)->get();
+
+        if ($checklist == null) {
+            session()->flash('error', 'O tipo de documento específico não consta em sua checklist!');
+            return back();
+        }
+
+        foreach ($checklist as $indice) {
+            if ($indice->tipodocemp_id == $request->tipodocempresa && $indice->anexado == "true") {
+                session()->flash('error', 'Este tipo de arquivo já foi anexado!');
+                return back();
+            }
+
+            $indice->anexado = "true";
+            $indice->save();
+        }
+
         $empresa = Empresa::find($request->empresaId);
 
         $validatedData = $request->validate([
@@ -484,8 +498,6 @@ class EmpresaController extends Controller
             'tipodocemp_id' => $request->tipodocempresa,
         ]);
 
-        $checklist->anexado = "true";
-        $checklist->save();
 
         // return view('empresa.home_empresa');
         session()->flash('success', 'O arquivo foi anexado com sucesso!');
@@ -572,27 +584,25 @@ class EmpresaController extends Controller
             array_push($area, Area::find($indice));
         }
 
-        $checklist = Checklistemp::where('empresa_id', $empresa->id)->orderBy('id','ASC')->get();
-
-        // $hoje = date('d/m/Y');
-        // $formatoHoje = 'd/m/Y';
-        // $Hoje = DateTime::createFromFormat($formatoHoje, $hoje);
-
-        // foreach ($checklist as $check) {
-
-        // }
-
-        // foreach ($docsempresa as $indice) {
-        //     $formato = 'd/m/Y';
-        //     $validade = DateTime::createFromFormat($formato, $indice->data_validade);
-        //     $intervalo = $validade->diff($Hoje);
-        //     if ($hoje > $indice->data_validade) {
-        //         // Volta a ser pendente
-        //     }
-        //     elseif (condition) {
-        //         # code...
-        //     }
-        // }
+        $checklisttemp = Checklistemp::where('empresa_id', $empresa->id)->orderBy('id','ASC')->get();
+        $checklist = [];
+        
+        for ($i=0; $i < count($checklisttemp); $i++) {
+            if (count($checklist) == 0) {
+                array_push($checklist, $checklisttemp[$i]);
+            }
+            else {
+                $temp = false;
+                for ($j=0; $j < count($checklist); $j++) { 
+                    if($checklisttemp[$i]->tipodocemp_id == $checklist[$j]->tipodocemp_id) {
+                        $temp = true;
+                    }
+                }
+                if ($temp == false) {
+                    array_push($checklist, $checklisttemp[$i]);
+                }
+            }
+        }
 
         return view('empresa/documentacao_empresa',['nome'=>$empresa->nome,
         'areas' => $area,
