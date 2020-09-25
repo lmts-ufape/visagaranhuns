@@ -90,36 +90,36 @@ class RespTecnicoController extends Controller
         
         if ($user != null) {
 
-            $rtempresa = RtEmpresa::where('area_id', $request->area)->first();
-            // $resptecnico = RespTecnico::where('user_id', $user->id)->first();
+            for ($i=0; $i < count($request->area); $i++) { 
+                $rtempresa = RtEmpresa::where('area_id', $request->area[$i])
+                ->where('empresa_id', $request->empresaId)->first();
+                if ($rtempresa != null) {
+                    session()->flash('error', 'Já existe um responsável técnico cadastrado nessa área!');
+                    return back();
+                }
+            }            
 
-            if ($rtempresa != null) {
-                session()->flash('error', 'Já existe um responsável técnico cadastrado nessa área!');
-                return back();
-            }
-            else {
+            $validator = $request->validate([
+                'carga_horaria'  => 'required|integer',
+            ]);
 
-                $validator = $request->validate([
-                    'carga_horaria'  => 'required|integer',
-                ]);
+            $passwordTemporario = Str::random(8);
+            \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTEmail($request->email, $empresa->nome));
 
-                $passwordTemporario = Str::random(8);
-                \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTEmail($request->email, $empresa->nome));
+            $hoje = date('d/m/Y');
 
-                $hoje = date('d/m/Y');
+            $rtempresa = RtEmpresa::create([
+                'horas' => $request->carga_horaria,
+                'data_inicio' => $hoje,
+                'status' => "ativo",
+                'resptec_id' => $resptecnico->id,
+                'empresa_id' => $request->empresaId,
+                'area_id' => $request->area,
+            ]);
 
-                $rtempresa = RtEmpresa::create([
-                    'horas' => $request->carga_horaria,
-                    'data_inicio' => $hoje,
-                    'status' => "ativo",
-                    'resptec_id' => $resptecnico->id,
-                    'empresa_id' => $request->empresaId,
-                    'area_id' => $request->area,
-                ]);
+            session()->flash('success', 'Responsável técnico convidado com sucesso!');
+            return back();
 
-                session()->flash('success', 'Responsável técnico convidado com sucesso!');
-                return back();
-            }
         }
 
         else {
