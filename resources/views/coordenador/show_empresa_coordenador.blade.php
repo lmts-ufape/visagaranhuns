@@ -131,30 +131,34 @@
                             </div>
                             @if(count($rt)>0)
                                 <div class="cardRT">
-                                    <div class="form col-md-12" style="margin-top:5px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nome: </label>
-                                    <span style="color:#707070">{{$rt}}</span>
-                                    </div>
-                                    <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CPF: </label>
-                                        <span style="color:#707070">000.000.000-00</span>
-                                    </div>
-                                    <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Formação: </label>
-                                        <span style="color:#707070">XXXXXXXXXXXXXXXXXXXXXX</span>
-                                    </div>
-                                    <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Especialização: </label>
-                                        <span style="color:#707070">XXXXXXXXXXXXXXXXXXX</span>
-                                    </div>
-                                    <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
-                                        <span style="color:#707070">(00) 0000-0000</span>
-                                    </div>
-                                    <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">E-mail: </label>
-                                        <span style="color:#707070">rt@email.com</span>
-                                    </div>
+                                    @foreach ($rt as $rt)
+                                        
+                                        <div class="form col-md-12" style="margin-top:5px;">
+                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nome: </label>
+                                        <span style="color:#707070">{{$rt->user->name}}</span>
+                                        </div>
+                                        <div class="form col-md-12" style="margin-top:-10px;">
+                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CPF: </label>
+                                            <span style="color:#707070">{{$rt->cpf}}</span>
+                                        </div>
+                                        <div class="form col-md-12" style="margin-top:-10px;">
+                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Formação: </label>
+                                            <span style="color:#707070">{{$rt->formacao}}</span>
+                                        </div>
+                                        <div class="form col-md-12" style="margin-top:-10px;">
+                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Especialização: </label>
+                                            <span style="color:#707070">{{$rt->especializacao}}</span>
+                                        </div>
+                                        <div class="form col-md-12" style="margin-top:-10px;">
+                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
+                                            <span style="color:#707070">{{$rt->telefone}}</span>
+                                        </div>
+                                        <div class="form col-md-12" style="margin-top:-10px;">
+                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">E-mail: </label>
+                                            <span style="color:#707070">{{$rt->user->email}}</span>
+                                        </div>
+                                        
+                                    @endforeach
                                     {{-- <div class="form col-md-12" style="margin-top:-10px;">
                                         <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
                                         <span style="color:#707070">(00) 0000-0000</span>

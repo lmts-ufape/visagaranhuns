@@ -306,20 +306,30 @@ class EmpresaController extends Controller
      */
     public function show(Request $request)
     {
+
         $id = Crypt::decrypt($request->value);
         $empresa = Empresa::find($id);
         $endereco = Endereco::where('empresa_id', $empresa->id)->first();
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
-        $cnae = CnaeEmpresa::where('empresa_id', $id)->get();
-        $respTecnicos = RespTecnico::where("empresa_id", $empresa->id)->get();
+        $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $id)->get();
+        // $respTecnicos = RespTecnico::where("empresa_id", $empresa->id)->get();
+        $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->get();
 
-        // $cnae = array();
-        // foreach($cnaeEmpresa as $indice){
-        //     $cnaes = Cnae::find($indice->cnae_id);
-        //     array_push($cnae, $cnaes);
-        // }
+        $resptecnicos = [];
+        for ($i=0; $i < count($rtempresa); $i++) {
+            if (count($resptecnicos) == 0) {
+                array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
+            }
+            else {
+                for ($j=0; $j < count($resptecnicos); $j++) { 
+                    if($rtempresa[$i]->resptec_id != $resptecnicos[$j]->id) {
+                        array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
+                    }
+                }
+            }
+        }
 
-        return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae, 'rt' => $respTecnicos]);
+        return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnaeEmpresa, 'rt' => $resptecnicos]);
     }
 
     /**
