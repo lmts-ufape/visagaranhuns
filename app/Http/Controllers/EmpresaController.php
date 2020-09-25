@@ -516,8 +516,18 @@ class EmpresaController extends Controller
 
         $resptecnicos = [];
         for ($i=0; $i < count($rtempresa); $i++) {
-            array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
+            if (count($resptecnicos) == 0) {
+                array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
+            }
+            else {
+                for ($j=0; $j < count($resptecnicos); $j++) { 
+                    if($rtempresa[$i]->resptec_id != $resptecnicos[$j]->id) {
+                        array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
+                    }
+                }
+            }
         }
+        // dd($rtempresa);
 
         return view('empresa/show_empresa',['empresa' => $empresa,
          'endereco' => $endereco,

@@ -38,9 +38,18 @@ class RespTecnicoController extends Controller
 
         $resptecnicos = [];
         for ($i=0; $i < count($rtempresa); $i++) {
-            array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
+            if (count($resptecnicos) == 0) {
+                array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
+            }
+            else {
+                for ($j=0; $j < count($resptecnicos); $j++) { 
+                    if($rtempresa[$i]->resptec_id != $resptecnicos[$j]->id) {
+                        array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
+                    }
+                }
+            }
         }
-
+        
         $cnae = array();
         $areas = array();
 
@@ -64,7 +73,7 @@ class RespTecnicoController extends Controller
 
 
         // Tela de conclusão de cadastro de Responsavel Técnico
-        return view('responsavel_tec.cadastrar_responsavel_tec')->with(["user" => $user, "empresaId" => $request->empresaId, 'areas' => $areasOrdenado, 'respTecnicos' => $resptecnicos]);
+        return view('responsavel_tec.cadastrar_responsavel_tec')->with(["user" => $user, "empresaId" => $request->empresaId, 'areas' => $areasOrdenado, 'respTecnicos' => $resptecnicos, 'rtempresa' => $rtempresa]);
     }
 
     /**
@@ -75,20 +84,21 @@ class RespTecnicoController extends Controller
      */
     public function store(Request $request)
     {
-
+        
         $empresa = Empresa::find($request->empresaId);
         $user    = User::where("email", $request->email)->first();
         
         if ($user != null) {
 
-            $resptecnico = RespTecnico::where('user_id', $user->id)->first();
+            $rtempresa = RtEmpresa::where('area_id', $request->area)->first();
+            // $resptecnico = RespTecnico::where('user_id', $user->id)->first();
 
-            if ($resptecnico->area_id == $request->area) {
+            if ($rtempresa != null) {
                 session()->flash('error', 'Já existe um responsável técnico cadastrado nessa área!');
                 return back();
             }
             else {
-                dd("Aqui!!!");
+
                 $validator = $request->validate([
                     'carga_horaria'  => 'required|integer',
                 ]);
@@ -114,13 +124,15 @@ class RespTecnicoController extends Controller
 
         else {
 
-            $rt = RespTecnico::where('area_id', $request->area)->first();
-            if ($rt != null) {
-                session()->flash('error', 'Já existe um responsável técnico cadastrado nessa área!');
-                return back();
+            for ($i=0; $i < count($request->area); $i++) { 
+                $rtempresa = RtEmpresa::where('area_id', $request->area[$i])
+                ->where('empresa_id', $request->empresaId)->first();
+                if ($rtempresa != null) {
+                    session()->flash('error', 'Já existe um responsável técnico cadastrado nessa área!');
+                    return back();
+                }
             }
 
-            $found = false;
             $hoje = date('d/m/Y');
 
             $validator = $request->validate([
@@ -155,15 +167,16 @@ class RespTecnicoController extends Controller
                 // 'empresa_id'     => $request->empresaId,
             ]);
 
-    
-            $rtempresa = RtEmpresa::create([
-                'horas' => $request->carga_horaria,
-                'data_inicio' => $hoje,
-                'status' => "ativo",
-                'resptec_id' => $respTec->id,
-                'empresa_id' => $request->empresaId,
-                'area_id' => $request->area,
-            ]);
+            for ($i=0; $i < count($request->area); $i++) { 
+                $rtempresa = RtEmpresa::create([
+                    'horas' => $request->carga_horaria,
+                    'data_inicio' => $hoje,
+                    'status' => "ativo",
+                    'resptec_id' => $respTec->id,
+                    'empresa_id' => $request->empresaId,
+                    'area_id' => $request->area[$i],
+                ]);
+            }
     
             return redirect()->route('/');
         }

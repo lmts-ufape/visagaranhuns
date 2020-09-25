@@ -20,6 +20,10 @@ class RtEmpresa extends Model
         return $this->belongsTo("\App\RespTecnico");
     }
 
+    public function area() {
+        return $this->belongsTo("\App\Area");
+    }
+
     public function empresa() {
         return $this->belongsTo("\App\Empresa");
     }

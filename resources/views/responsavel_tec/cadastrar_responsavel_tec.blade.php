@@ -103,12 +103,13 @@
                     @endif
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <select class="form-control" name="area">
-                                <option value="">AREAS</option>
-                                @foreach ($areas as $item)
-                                    <option value="{{$item->id}}">{{$item->nome}}</option>
-                                @endforeach
-                            </select>
+                            @foreach ($areas as $item)
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="area" name="area[]" value="{{$item->id}}">
+                                    <label class="form-check-label" for="exampleCheck1">{{$item->nome}}</label>
+                                </div>
+                                {{-- <option value="{{$item->id}}">{{$item->nome}}</option> --}}
+                            @endforeach
                         </div>
                         <div class="form-group col-md-4">
                         </div>
@@ -118,10 +119,10 @@
                                 <h6>Ainda não há responsáveis técnicos cadastrados</h6>
                             @else
                                 <ul class="list-group">
-                                    @foreach ($areas as $area)
+                                    @foreach ($rtempresa as $rtemp)
                                         @foreach ($respTecnicos as $rt)
-                                            @if ($area->id == $rt->area_id)
-                                                <li class="list-group-item">{{$rt->user->name}}: {{$area->nome}}</li>
+                                            @if ($rtemp->resptec_id == $rt->id)
+                                                <li class="list-group-item">{{$rt->user->name}}: {{$rtemp->area->nome}}</li>
                                             @endif
                                         @endforeach
                                     @endforeach
