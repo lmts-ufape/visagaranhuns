@@ -53,7 +53,7 @@
                                     {{-- <a class="dropdown-item" style="cursor:pointer">Cadastrar Resp. Técnico</a> --}}
                                     {{-- <a class="dropdown-item" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal" onclick="deletarEstabelecimento('{{$empresa->user->name}}')">Deletar Resp. Técnico</a> --}}
                                     {{-- <a class="dropdown-item" style="cursor:pointer">Deletar Resp. Técnico</a> --}}
-                                    <a class="dropdown-item" style="cursor:pointer" href="{{ route('emconstrucao') }}" onclick="editarEstabelecimento()" disabled>Cadastrar Resp. Técnico</a>
+                                    <a class="dropdown-item" style="cursor:pointer" href="{{ route('cadastrar.rt.pagina', ['empresaId' => $empresaId]) }}">Cadastrar Resp. Técnico</a>
 
                                 </div>
                             </div>
@@ -154,31 +154,32 @@
                             </div> --}}
                             @if(count($respTecnico)>0)
                             <div class="cardRT">
-                                    <div>EM CONSTRUÇÃO</div>
-                                    {{-- <div class="form col-md-12" style="margin-top:5px;">
+                                @foreach ($respTecnico as $item)
+                                    <div class="form col-md-12" style="margin-top:5px;">
                                         <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nome: </label>
-                                    <span style="color:#707070">{{$respTecnico}}</span>
+                                    <span style="color:#707070">{{$item->user->name}}</span>
                                     </div>
                                     <div class="form col-md-12" style="margin-top:-10px;">
                                         <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CPF: </label>
-                                        <span style="color:#707070">000.000.000-00</span>
+                                        <span style="color:#707070">{{$item->cpf}}</span>
                                     </div>
                                     <div class="form col-md-12" style="margin-top:-10px;">
                                         <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Formação: </label>
-                                        <span style="color:#707070">XXXXXXXXXXXXXXXXXXXXXX</span>
+                                        <span style="color:#707070">{{$item->formacao}}</span>
                                     </div>
                                     <div class="form col-md-12" style="margin-top:-10px;">
                                         <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Especialização: </label>
-                                        <span style="color:#707070">XXXXXXXXXXXXXXXXXXX</span>
+                                        <span style="color:#707070">{{$item->especializacao}}</span>
                                     </div>
                                     <div class="form col-md-12" style="margin-top:-10px;">
                                         <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
-                                        <span style="color:#707070">(00) 0000-0000</span>
+                                        <span style="color:#707070">{{$item->telefone}}</span>
                                     </div>
                                     <div class="form col-md-12" style="margin-top:-10px;">
                                         <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">E-mail: </label>
-                                        <span style="color:#707070">rt@email.com</span>
-                                    </div> --}}
+                                        <span style="color:#707070">{{$item->user->email}}</span>
+                                    </div>
+                                @endforeach
                                     {{-- <div class="form col-md-12" style="margin-top:-10px;">
                                         <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
                                         <span style="color:#707070">(00) 0000-0000</span>

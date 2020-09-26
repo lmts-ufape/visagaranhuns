@@ -70,6 +70,10 @@
                             <label for="inputEmail4">Telefone:<span style="color:red">*</span></label>
                             <input type="text" class="form-control" name="telefone" id="inputTelefone1" placeholder="" required>
                         </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail4">Carga horária:<span style="color:red">*</span></label>
+                            <input type="number" class="form-control" name="carga_horaria" id="carga_horaria" placeholder="" required>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,30 +82,53 @@
                 <div class="d-flex">
                     <div class="mr-auto p-2">
                         <div class="btn-group">
-                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Cnae de atuação</div>
+                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Área de atuação</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="container" style="margin-top:1rem;margin-left:1px;">
                 <div class="container" style="margin-top:1rem;margin-left:10px;">
+                    @if ($message = Session::get('error'))
+                            <div class="alert alert-warning alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{$message}}</strong>
+                            </div>
+                    @endif
+                    @if ($message = Session::get('success'))
+                            <div class="alert alert-succes alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{$message}}</strong>
+                            </div>
+                    @endif
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <select class="form-control" name="cnae">
-                                <option value="">CNAES</option>
-                                @foreach ($cnaes as $item)
-                                    <option value="{{$item->id}}">{{$item->codigo}} - {{$item->descricao}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        {{-- <div class="form-group col-md-4">
-                            <label for="inputPassword4">Senha:<span style="color:red">*</span></label>
-                            <input id="password" type="password" class="form-control" name="password" required autocomplete="new-password">
+                            @foreach ($areas as $item)
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="area" name="area[]" value="{{$item->id}}">
+                                    <label class="form-check-label" for="exampleCheck1">{{$item->nome}}</label>
+                                </div>
+                                {{-- <option value="{{$item->id}}">{{$item->nome}}</option> --}}
+                            @endforeach
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="inputPassword4">Confirmar senha:<span style="color:red">*</span></label>
-                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                        </div> --}}
+                        </div>
+                        <div class="form-group col-md-4">
+                            <h5>Responsáveis técnicos já cadastrados:</h5>
+                            @if (count($respTecnicos) == 0)
+                                <h6>Ainda não há responsáveis técnicos cadastrados</h6>
+                            @else
+                                <ul class="list-group">
+                                    @foreach ($rtempresa as $rtemp)
+                                        @foreach ($respTecnicos as $rt)
+                                            @if ($rtemp->resptec_id == $rt->id)
+                                                <li class="list-group-item">{{$rt->user->name}}: {{$rtemp->area->nome}}</li>
+                                            @endif
+                                        @endforeach
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
