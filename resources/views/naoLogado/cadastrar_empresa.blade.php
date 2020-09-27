@@ -186,6 +186,7 @@
                             </div>
                         </div>
 
+
                         <div style="padding-top:1rem;padding-bottom:1.5rem;">
                                 {{-- <hr size = 7 style="padding-top:1rem;"> --}}
                                 <div class="d-flex">
