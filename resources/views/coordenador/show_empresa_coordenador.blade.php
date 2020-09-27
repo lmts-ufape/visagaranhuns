@@ -96,7 +96,7 @@
                             <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone 1: </label>
                             <span style="color:#707070">{{$telefone->telefone1}}</span>
                         </div>
-                        <div class="form col-md-12" style="margin-top:-10px;margin-bottom:-30px;">
+                        <div class="form col-md-12" style="margin-top:-10px;margin-bottom:1rem;">
                             <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone 2: </label>
                             <span style="color:#707070">{{$telefone->telefone2}}</span>
                         </div>
@@ -132,7 +132,7 @@
                             @if(count($rt)>0)
                                 <div class="cardRT">
                                     @foreach ($rt as $rt)
-                                        
+
                                         <div class="form col-md-12" style="margin-top:5px;">
                                             <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nome: </label>
                                         <span style="color:#707070">{{$rt->user->name}}</span>
@@ -157,12 +157,8 @@
                                             <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">E-mail: </label>
                                             <span style="color:#707070">{{$rt->user->email}}</span>
                                         </div>
-                                        
+
                                     @endforeach
-                                    {{-- <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
-                                        <span style="color:#707070">(00) 0000-0000</span>
-                                    </div> --}}
                                 @else
                                     <div class="form col-md-12" style="margin-top:-10px;">
                                         <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nenhum responsável técnico cadastrado</label>
@@ -176,29 +172,32 @@
                                     <img src="{{ asset('/imagens/logo_direita_azul.png') }}" alt="Logo" style="width:15px; margin-top:-5px; margin-left:10px;"/>
                                 </div>
                             </div> --}}
-
                         </div>
                 </div>
 
 
-                <div class="form-group col-md-12" style="margin-top:15px;margin-left:-15px">
-                    <label style="font-size:19px;margin-top:0px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">CNAE</label>
-                </div>
-                @foreach($cnae as $item)
-                    <div class="form col-md-12" style="margin-top:-10px;margin-left:-10px">
-                        <img src="{{ asset('/imagens/logo_ponto.png') }}" alt="Logo" style="margin-top:-5px; margin-right:5px;"/>
-                        <label style="  ">{{$item->cnae->codigo}} </label> |
-                        <span style="color:#707070">{{$item->cnae->descricao}}</span>
+                <div class="form-row">
+                    <div class="col-12" style="margin-bottom:10px;">
+                            <label style="font-size:19px;margin-top:0px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">CNAE</label>
                     </div>
-                @endforeach
+                    <div class="col-12">
+                        @foreach($cnae as $item)
+                            <div class="form col-md-12" style="margin-top:-10px;margin-left:-10px;">
+                                <img src="{{ asset('/imagens/logo_ponto.png') }}" alt="Logo" style="margin-top:-5px; margin-right:5px;"/>
+                                <label >{{$item->cnae->codigo}} </label> |
+                                <span style="color:#707070">{{$item->cnae->descricao}}</span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
-            {{-- <hr size = 7 style="margin-bottom:-15px;"> --}}
             <div class="row" style="margin-top:2rem; margin-bottom:1rem">
                 <div class="col-auto mr-auto"></div>
                 <div class="col-auto">
 
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </div>
