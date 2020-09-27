@@ -1,9 +1,7 @@
 <h1>Cadastro</h1>
 
-<p>Você foi cadastrado na empresa </p>
-<div>
-<h1>Você também foi cadastrado 
-</div>
+<p>Você também foi cadastrado como responsável técnico na empresa {{$empresaNome}}.</p>
+
 <p>Atenciosamente,<br>
 Visa G.
 </p>
