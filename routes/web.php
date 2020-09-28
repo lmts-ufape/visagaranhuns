@@ -119,8 +119,6 @@ Route::middleware(['IsCoordenador'])->group(function () {
 Route::middleware(['IsEmpresa'])->group(function () {
     //Empresa - Gerente
     Route::get('/home/empresa',                         'EmpresaController@home')->name('home.empresa');
-    Route::get("/pagina/editar",                        "EmpresaController@edit")->name("editar.empresa");
-    Route::post("/editar/empresa",                      "EmpresaController@editarEmpresa")->name("editar.empresa");
     Route::post("/empresa/arquivos",                    "EmpresaController@anexarArquivos")->name("anexar.arquivos");
     Route::get("/listar/arquivos",                      "EmpresaController@listarArquivos")->name("listar.arquivos");
     Route::get("/empresa/pagina/responsavelTecnico",    "RespTecController@create")->name("pagina.respTec");
@@ -132,6 +130,13 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get("/listar/empresas/",                     "EmpresaController@listarEmpresas")->name("listar.empresas");
     Route::get("/estabelecimento/lista/cnae",           "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes");
     Route::get("/listar/responsavelTecnico",            "EmpresaController@listarResponsavelTec")->name("listar.responsavelTec");
+
+    //Tela de editar
+    Route::get("/pagina/editar",                        "EmpresaController@edit")->name("pagina.editar.empresa");
+    Route::post("/editar/empresa",                      "EmpresaController@editarEmpresa")->name("editar.empresa");
+    Route::get("/listar/cnae/empresa",                  "EmpresaController@ajaxCnaesEmpresa");
+    Route::get("/listar/cnae/add/empresa",              "EmpresaController@ajaxAddCnae_editarEmpresa");
+
 
     // Cadastro de Responsável Técnico
     Route::get('/cadastro/respTecnico','RespTecnicoController@create')->name('cadastrar.rt.pagina');
