@@ -16,6 +16,7 @@
     <script type="text/javascript" src="{{URL::asset('js/requerimento_coordenador.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/naologado.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/checklist.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/findDoc.js')}}" defer></script>
 
     <!-- load jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

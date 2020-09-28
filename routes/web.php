@@ -122,6 +122,7 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get("/pagina/editar",                        "EmpresaController@edit")->name("editar.empresa");
     Route::post("/editar/empresa",                      "EmpresaController@editarEmpresa")->name("editar.empresa");
     Route::post("/empresa/arquivos",                    "EmpresaController@anexarArquivos")->name("anexar.arquivos");
+    Route::post("/empresa/editar/arquivos",             "EmpresaController@editarArquivos")->name("editar.arquivos");
     Route::get("/listar/arquivos",                      "EmpresaController@listarArquivos")->name("listar.arquivos");
     Route::get("/empresa/pagina/responsavelTecnico",    "RespTecController@create")->name("pagina.respTec");
     Route::post("/empresa/cadastro/responsavelTecnico", "RespTecController@store")->name("cadastrar.respTec");
@@ -142,6 +143,8 @@ Route::middleware(['IsEmpresa'])->group(function () {
 
     // Download de arquivos anexados
     Route::get('/download/arquivo',       'EmpresaController@downloadArquivo')->name('download.arquivo');
+
+    Route::get('/encontrar/doc',          'EmpresaController@findDoc')->name('find.doc');
 
 /*
     * Cadastrar/Editar/Remove Responsável Técnico

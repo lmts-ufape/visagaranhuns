@@ -189,9 +189,15 @@
                                                         <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
                                                             <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}"> Baixar arquivo</a>
                                                         </label>
-                                                        {{-- <div style="margin-bottom:10px;">
-                                                            <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}">Baixar arquivo</a>
-                                                        </div> --}}
+                                                        <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDoc({{$docempresa->id}})" style="cursor:pointer; color:#249BE3">- Editar arquivo</a>
+                                                        {{-- <form id="arquivo" method="POST" action="{{route('editar.arquivos', ['file' => $docempresa->nome])}}" enctype="multipart/form-data">
+                                                            @csrf
+                                                            <div class="form-group">
+                                                                <label for="exampleFormControlFile1">Example file input</label>
+                                                                <input type="file" class="form-control-file" id="exampleFormControlFile1" name="arquivo">
+                                                            </div>
+                                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                                        </form> --}}
                                                     </div>
                                                 @endif
                                             @endforeach
@@ -202,6 +208,35 @@
 
                             </div>
                         </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Arquivo</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="editDocForm" method="POST" action="{{route('editar.arquivos')}}" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="form-group">
+                                          <label for="exampleFormControlFile1">Editar arquivo</label>
+                                          <input id="editarDoc" type="hidden" name="file" value="">
+                                          <input type="file" class="form-control-file" id="exampleFormControlFile1" name="arquivo">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                <button type="submit" form="editDocForm" class="btn btn-primary">Salvar</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
                         <div class="form col-md-5" style="margin-top:10px;">
                             <div class="form-row">
                                 <form id="arquivo" method="POST" action="{{route('anexar.arquivos')}}" enctype="multipart/form-data">
@@ -234,6 +269,7 @@
                                             </div>
                                     </div>
                                     <div class="form col-md-12" style="margin-top: 30px">
+
                                         <input type="file" class="form-control-file" id="arquivo" name="arquivo">
                                         <label for="" style="color:red;margin-top:4px;">Arquivo no formato PDF e tamanho máximo de 5mb</label>
                                     </div>

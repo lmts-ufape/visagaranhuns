@@ -439,9 +439,49 @@ class EmpresaController extends Controller
         return view('/', ["arquivos" => $docempresa]);
     }
 
+    public function findDoc(Request $request)
+    {
+
+        $docempresa = Docempresa::find($request->id);
+
+        $data = array(
+            'nome'   => $docempresa->nome,
+        );
+
+        echo json_encode($data);
+    }
+
     public function baixarArquivos(Request $request)
     {
         return response()->download(storage_path('app/'.$request->arquivo));
+    }
+
+    public function editarArquivos(Request $request)
+    {
+
+        $validatedData = $request->validate([
+
+            'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000000'],
+
+        ]);
+
+        $docempresa = Docempresa::where("nome", $request->file)->first();
+
+        Storage::delete($docempresa->nome);
+
+        $fileDocemp = $request->arquivo;
+
+        $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/'; 
+
+        $nomeDocemp = $request->arquivo->getClientOriginalName();
+
+        $docempresa->nome = $pathDocemp . $nomeDocemp;
+        $docempresa->save();
+
+        Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+        session()->flash('success', 'Arquivo salvo com sucesso!');
+        return back();
     }
 
     public function anexarArquivos(Request $request)
@@ -485,8 +525,8 @@ class EmpresaController extends Controller
 
         $fileDocemp = $request->arquivo;
 
-        $pathDocemp = 'empresas/' . $empresa->id . '/';
-        // $pathDocemp = 'empresas/' . $empresa->id . '/' . $checklist->areas_id . '/';
+        $pathDocemp = 'empresas/' . $empresa->id . '/' . $request->tipodocempresa . '/';
+
         $nomeDocemp = $request->arquivo->getClientOriginalName();
 
         Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
