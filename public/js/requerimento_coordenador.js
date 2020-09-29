@@ -1,45 +1,45 @@
 //carregar lista de requerimentos
-window.onload= function() {
-    $.ajax({
-        url:'/requerimento',
-        type:"get",
-        dataType:'json',
-        data: {"filtro": "all" },
-        success: function(response){
-            $('tbody_').html(response.table_data);
-        }
-    });
-};
+// window.onload= function() {
+//     $.ajax({
+//         url:'/requerimento',
+//         type:"get",
+//         dataType:'json',
+//         data: {"filtro": "all" },
+//         success: function(response){
+//             $('tbody_').html(response.table_data);
+//         }
+//     });
+// };
 
-window.selecionarFiltro = function(){
-    //area
-    var historySelectList = $('select#idSelecionarFiltro');
-    var $opcao = $('option:selected', historySelectList).val();
-    // console.log($opcao);
-    $.ajax({
-        url:'/requerimento',
-        type:"get",
-        dataType:'json',
-        data: {"id_area": $opcao},
-        success: function(response){
-            $('tbody').html(response.table_data);
-            // document.getElementById('idArea');
-        }
-    });
-}
+// window.selecionarFiltro = function(){
+//     //area
+//     var historySelectList = $('select#idSelecionarFiltro');
+//     var $opcao = $('option:selected', historySelectList).val();
+//     // console.log($opcao);
+//     $.ajax({
+//         url:'/requerimento',
+//         type:"get",
+//         dataType:'json',
+//         data: {"id_area": $opcao},
+//         success: function(response){
+//             $('tbody').html(response.table_data);
+//             // document.getElementById('idArea');
+//         }
+//     });
+// }
 
-window.selecionarFiltroRequerimento = function($filtro){
-    // console.log($filtro);
-    $.ajax({
-        url:'/requerimento',
-        type:"get",
-        dataType:'json',
-        data: {"filtro": $filtro },
-        success: function(response){
-            $('tbody_').html(response.table_data);
-        }
-    });
-}
+// window.selecionarFiltroRequerimento = function($filtro){
+//     // console.log($filtro);
+//     $.ajax({
+//         url:'/requerimento',
+//         type:"get",
+//         dataType:'json',
+//         data: {"filtro": $filtro },
+//         success: function(response){
+//             $('tbody_').html(response.table_data);
+//         }
+//     });
+// }
 
 window.mostrar = function($id){
     if(document.getElementById("cardEstabelecimento"+$id).style.display == "none"){

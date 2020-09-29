@@ -119,8 +119,6 @@ Route::middleware(['IsCoordenador'])->group(function () {
 Route::middleware(['IsEmpresa'])->group(function () {
     //Empresa - Gerente
     Route::get('/home/empresa',                         'EmpresaController@home')->name('home.empresa');
-    Route::get("/pagina/editar",                        "EmpresaController@edit")->name("editar.empresa");
-    Route::post("/editar/empresa",                      "EmpresaController@editarEmpresa")->name("editar.empresa");
     Route::post("/empresa/arquivos",                    "EmpresaController@anexarArquivos")->name("anexar.arquivos");
     Route::post("/empresa/editar/arquivos",             "EmpresaController@editarArquivos")->name("editar.arquivos");
     Route::get("/listar/arquivos",                      "EmpresaController@listarArquivos")->name("listar.arquivos");
@@ -134,6 +132,13 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get("/estabelecimento/lista/cnae",           "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes");
     Route::get("/listar/responsavelTecnico",            "EmpresaController@listarResponsavelTec")->name("listar.responsavelTec");
 
+    //Tela de editar
+    Route::get("/pagina/editar",                        "EmpresaController@edit")->name("pagina.editar.empresa");
+    Route::post("/editar/empresa",                      "EmpresaController@editarEmpresa")->name("editar.empresa");
+    Route::get("/listar/cnae/empresa",                  "EmpresaController@ajaxCnaesEmpresa");
+    Route::get("/listar/cnae/add/empresa",              "EmpresaController@ajaxAddCnae_editarEmpresa");
+
+
     // Cadastro de Responsável Técnico
     Route::get('/cadastro/respTecnico','RespTecnicoController@create')->name('cadastrar.rt.pagina');
     Route::post('/cadastro/respTecnico','RespTecnicoController@store')->name('cadastrar.rt');
@@ -146,6 +151,8 @@ Route::middleware(['IsEmpresa'])->group(function () {
 
     Route::get('/encontrar/doc',          'EmpresaController@findDoc')->name('find.doc');
 
+    // Apagar registro em CnaeEmpr
+    Route::get('/apagar/cnae/empresa',    'EmpresaController@apagarCnaeEmpresa')->name('apagar.cnae.empresa');
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
     * Editar/Anexar dados da empresa
@@ -195,7 +202,7 @@ Route::middleware(['IsRespTecnico'])->group(function () {
 
     Route::get('/rt/documentos', 'RespTecnicoController@showDocumentacao')->name('rt.documentos');
 
-    Route::post("/rt/arquivos",  "RespTecnicoController@anexarArquivos")->name("anexar.arquivos");
+    Route::post("/rt/arquivos",  "RespTecnicoController@anexarArquivos")->name("anexar.arquivos.rt");
     // Route::get('/rt/documentos', function () {return view('responsavel_tec/documentos');})->name('rt.documentos');
     //Empresa - Responsável Técnico
 /*

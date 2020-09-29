@@ -319,7 +319,7 @@ class EmpresaController extends Controller
                 array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
             }
             else {
-                for ($j=0; $j < count($resptecnicos); $j++) { 
+                for ($j=0; $j < count($resptecnicos); $j++) {
                     if($rtempresa[$i]->resptec_id != $resptecnicos[$j]->id) {
                         array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
                     }
@@ -353,18 +353,20 @@ class EmpresaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editarEmpresa(Request $request, $id)
+    public function editarEmpresa(Request $request)
     {
-        $empresa = Empresa::find($id);
+
+        $empresa = Empresa::find($request->empresaId);
         $user = User::find(Auth::user()->id);
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
         $endereco = Endereco::where('empresa_id', $empresa->id)->first();
 
         $validator = $request->validate([
-            'name'     => 'nullable|string',
+            'nome'     => 'nullable|string',
             'cnpjcpf'  => 'nullable|string',
             'tipo'     => 'nullable|string',
-            'numeroTelefone'  => 'nullable|string',
+            'telefone1'  => 'nullable|string',
+            'telefone2'  => 'nullable|string',
             'rua'      => 'nullable|string',
             'numero'   => 'nullable|string',
             'bairro'   => 'nullable|string',
@@ -374,14 +376,15 @@ class EmpresaController extends Controller
             'complemento'  => 'nullable|string',
         ]);
 
-        $user->name = $request->name;
+        $user->name = $request->nome;
         $user->save();
 
         $empresa->cnpjcpf = $request->cnpjcpf;
         $empresa->tipo    = $request->tipo;
         $empresa->save();
 
-        $telefone->numero = $request->numeroTelefone;
+        $telefone->telefone1 = $request->telefone1;
+        $telefone->telefone2 = $request->telefone2;
         $telefone->save();
 
         $endereco->rua         = $request->rua;
@@ -394,35 +397,102 @@ class EmpresaController extends Controller
 
         $endereco->save();
 
+        $cnae = $request['cnae'];
+
+        $cnaeempresa = CnaeEmpresa::where('empresa_id', $empresa->id)->pluck('cnae_id');
+        $temp = [];
+        foreach ($cnaeempresa as $indice) {
+            array_push($temp, $indice);
+        }
+
+        for ($i=0; $i < count($cnae); $i++) { 
+            if(!in_array($cnae[$i], $temp)){
+                $cnaeEmpresa = CnaeEmpresa::create([
+                    'empresa_id' => $empresa->id,
+                    'cnae_id' => $cnae[$i],
+                ]);
+            }
+        }
+
         return redirect()->route('/');
 
     }
 
-    public function edit($id)
+    public function edit(Request $request)
     {
-        // Empresa que será editada
-        $empresa = Empresa::where("user_id", $id)->first();
-        // Cnaes que podem ser escolhidos para troca
-        $ensino       = Cnae::where("areas_id", "1")->get();
-        $saude        = Cnae::where("areas_id", "2")->get();
-        $distrSaude   = Cnae::where("areas_id", "3")->get();
-        $camPipa      = Cnae::where("areas_id", "4")->get();
-        $tratAgua     = Cnae::where("areas_id", "5")->get();
-        $mei          = Cnae::where("areas_id", "6")->get();
-        $diversos     = Cnae::where("areas_id", "7")->get();
-        $meiAlimentos = Cnae::where("areas_id", "8")->get();
+        $empresa = Empresa::find(decrypt($request->empresaId));
+        // $cnaeEmpresa = CnaeEmpresa::where('empresa_id','=',decrypt($request->empresaId))->get();
+        $areas = Area::orderBy('nome', 'ASC')->get();
 
-        // Definir a página para a edição de empresa
-        return view('empresa.editar', [
-            'empresa'    => $empresa,
-            'ensino'     => $ensino,
-            'saude'      => $saude,
-            'distrSaude' => $distrSaude,
-            'camPipa'    => $camPipa,
-            'tratAgua'   => $tratAgua,
-            'mei'        => $mei,
-            'diversos'   => $diversos,
-        ]);
+        // $resultados = CnaeEmpresa::where('empresa_id',$empresa->id)->get();
+        // $resultado = [];
+
+        // foreach ($resultados as $indice) {
+        //     array_push($resultado, Cnae::find($indice->cnae_id));
+        //     // dd($indice->cnae_id);
+        // }
+
+        // dd($resultado[1]);
+        // // return view('coordenador/cnaes_coordenador', ['cnaes' => $cnaes]);
+        // $arrayTemp = [];
+        // $output = '';
+        //     if($resultado->count() > 0){
+        //         foreach($resultado as $item){
+        //             $output .= '
+        //             <div class="d-flex justify-content-center form-gerado cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
+        //                 <div class="mr-auto p-2>OPA</div>
+        //                     <div class="mr-auto p-2" id="'.$item->id.'">'.$item->cnae->descricao.'</div>
+        //                     <input type="hidden" name="cnae[]" value="'.$item->id.'">
+        //                     <div style="width:140px; height:25px; text-align:right;">
+        //                         <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
+        //                             <div class="btn btn-danger btn-sm" onclick="deletar_EditarCnaeEmpresa('.$item->id.')" >X</div>
+        //                         </div>
+        //                     </div>
+        //             </div>
+        //             ';
+        //             array_push($arrayTemp, $item->id);
+        //         }
+        //     }elseif($idEmpresa == ""){
+        //         $output .= '
+        //                 <label></label>
+        //             ';
+        //     }else{
+        //         $output .= '
+        //                 <label>vazio</label>
+        //             ';
+        //     }
+        //     $data = array(
+        //         'success'   => true,
+        //         'table_data' => $output,
+        //         'arrayTemp' => $arrayTemp, //atualizar o array temp
+        //     );
+        //     echo json_encode($data);
+
+
+        return view('empresa/editar_empresa', ["empresa" => $empresa, "areas" => $areas]);
+        // // Empresa que será editada
+        // $empresa = Empresa::where("user_id", $id)->first();
+        // // Cnaes que podem ser escolhidos para troca
+        // $ensino       = Cnae::where("areas_id", "1")->get();
+        // $saude        = Cnae::where("areas_id", "2")->get();
+        // $distrSaude   = Cnae::where("areas_id", "3")->get();
+        // $camPipa      = Cnae::where("areas_id", "4")->get();
+        // $tratAgua     = Cnae::where("areas_id", "5")->get();
+        // $mei          = Cnae::where("areas_id", "6")->get();
+        // $diversos     = Cnae::where("areas_id", "7")->get();
+        // $meiAlimentos = Cnae::where("areas_id", "8")->get();
+
+        // // Definir a página para a edição de empresa
+        // return view('empresa.editar', [
+        //     'empresa'    => $empresa,
+        //     'ensino'     => $ensino,
+        //     'saude'      => $saude,
+        //     'distrSaude' => $distrSaude,
+        //     'camPipa'    => $camPipa,
+        //     'tratAgua'   => $tratAgua,
+        //     'mei'        => $mei,
+        //     'diversos'   => $diversos,
+        // ]);
     }
 
     /**
@@ -517,11 +587,10 @@ class EmpresaController extends Controller
 
         $validatedData = $request->validate([
 
-            'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000000'],
-            'data'    => ['nullable', 'date'],
+            'arquivo' => ['required', 'file', 'mimes:pdf', 'max:5000'],
+            'data'    => ['required', 'date'],
 
         ]);
-
 
         $fileDocemp = $request->arquivo;
 
@@ -582,7 +651,7 @@ class EmpresaController extends Controller
                 array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
             }
             else {
-                for ($j=0; $j < count($resptecnicos); $j++) { 
+                for ($j=0; $j < count($resptecnicos); $j++) {
                     if($rtempresa[$i]->resptec_id != $resptecnicos[$j]->id) {
                         array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
                     }
@@ -626,14 +695,14 @@ class EmpresaController extends Controller
 
         $checklisttemp = Checklistemp::where('empresa_id', $empresa->id)->orderBy('id','ASC')->get();
         $checklist = [];
-        
+
         for ($i=0; $i < count($checklisttemp); $i++) {
             if (count($checklist) == 0) {
                 array_push($checklist, $checklisttemp[$i]);
             }
             else {
                 $temp = false;
-                for ($j=0; $j < count($checklist); $j++) { 
+                for ($j=0; $j < count($checklist); $j++) {
                     if($checklisttemp[$i]->tipodocemp_id == $checklist[$j]->tipodocemp_id) {
                         $temp = true;
                     }
@@ -689,6 +758,111 @@ class EmpresaController extends Controller
                 'table_data' => $output,
             );
             echo json_encode($data);
+    }
+    /*
+    * Função para add cnae
+    * Tela: editar_empresa.blade
+    */
+    public function ajaxAddCnae_editarEmpresa(Request $request){
+        $this->listarCnae_editarEmpresa($request->id_area);
+    }
+    public function listarCnae_editarEmpresa($idArea){
+        $resultado = Cnae::where('areas_id','=',$idArea)->orderBy('descricao', 'ASC')->get();
+        // return view('coordenador/cnaes_coordenador', ['cnaes' => $cnaes]);
+        $output = '';
+            if($resultado->count() > 0){
+                foreach($resultado as $item){
+                    $output .= '
+                    <div class="d-flex justify-content-center cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
+                        <div class="mr-auto p-2>OPA</div>
+                            <div class="mr-auto p-2" id="'.$item->id.'">'.$item->descricao.'</div>
+                            <div style="width:140px; height:25px; text-align:right;">
+                                <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
+                                    <div class="btn btn-success btn-sm"  onclick="add_EditarCnaeEmpresa('.$item->id.')" >Adicionar</div>
+                                </div>
+                            </div>
+
+                    </div>
+
+                    ';
+                }
+            }elseif($idArea == ""){
+                $output .= '
+                        <label></label>
+                    ';
+            }else{
+                $output .= '
+                        <label>vazio</label>
+                    ';
+            }
+            $data = array(
+                'success'   => true,
+                'table_data' => $output,
+                // 'arrayTemp' => $arrayTemp, //atualizar o array temp
+            );
+            echo json_encode($data);
+    }
+     /*
+    * Função para mostrar na tela os cnaes da empresa
+    * Tela: editar_empresa.blade
+    */
+    public function ajaxCnaesEmpresa(Request $request){
+
+        $this->listarCnaes($request->id_empresa);
+
+    }
+    public function listarCnaes($idEmpresa){
+        $resultado = CnaeEmpresa::where('empresa_id', $idEmpresa)->get();
+
+        // TENTANDO MUDAR AQUI EMBAIXO
+        // $resultados = CnaeEmpresa::where('empresa_id', $idEmpresa)->get();
+        
+        // $resultado = [];
+
+        // foreach ($resultados as $indice) {
+        //     array_push($resultado, Cnae::find($indice->cnae_id));
+        // }
+
+        $arrayTemp = [];
+        $output = '';
+            if($resultado->count() > 0){
+                foreach($resultado as $item){
+                    $output .= '
+                    <div class="d-flex justify-content-center form-gerado cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
+                        <div class="mr-auto p-2>OPA</div>
+                            <div class="mr-auto p-2" id="'.$item->id.'">'.$item->cnae->descricao.'</div>
+                            <input type="hidden" name="cnae[]" value="'.$item->cnae->id.'">
+                            <div style="width:140px; height:25px; text-align:right;">
+                                <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
+                                    <div class="btn btn-danger btn-sm" onclick="deletar_EditarCnaeEmpresa('.$item->id.')" >X</div>
+                                </div>
+                            </div>
+                    </div>
+                    ';
+                    array_push($arrayTemp, $item->id);
+                }
+            }elseif($idEmpresa == ""){
+                $output .= '
+                        <label></label>
+                    ';
+            }else{
+                $output .= '
+                        <label>vazio</label>
+                    ';
+            }
+            $data = array(
+                'success'   => true,
+                'table_data' => $output,
+                'arrayTemp' => $arrayTemp, //atualizar o array temp
+            );
+            echo json_encode($data);
+    }
+
+    public function apagarCnaeEmpresa(Request $request)
+    {
+        $delete = CnaeEmpresa::destroy($request->idCnaeEmp);
+
+        return $delete;
     }
 
     public function foundChecklist(Request $request){

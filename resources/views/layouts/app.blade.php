@@ -369,4 +369,24 @@
       </div>
 
 </body>
+<script type="text/javascript">
+    function localizar($valor){
+        if($valor.length >2){
+            document.getElementById("idLocalizar").style.display = "block";
+            $.ajax({
+                url:'{{ config('prefixo.PREFIXO') }}coordenador/localizar',
+                type:"get",
+                dataType:'json',
+                data: {"localizar": $valor},
+                success: function(response){
+                    $('table_ajax').html(response.table_data);
+                    // document.getElementById('idTabela');
+                    // $('#idTabela').animate({scrollTop: $('#idTabela')[0].scrollHeight},1000);
+                }
+            });
+        }else if($valor.length == 1){
+            $('table_ajax').html("");
+        }
+    };
+</script>
 </html>

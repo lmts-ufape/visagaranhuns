@@ -114,7 +114,7 @@
                         </div>
                         <div class="form col-md-5" style="margin-top:10px;">
                             <div class="form-row">
-                                <form id="arquivo" method="POST" action="{{route('anexar.arquivos')}}" enctype="multipart/form-data">
+                                <form id="arquivo" method="POST" action="{{route('anexar.arquivos.rt')}}" enctype="multipart/form-data">
                                     @csrf
                                 <div class="form-group col-md-12">
                                     <label style="font-size:19px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">ANEXAR DOCUMENTO</label>
