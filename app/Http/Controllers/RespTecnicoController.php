@@ -6,12 +6,17 @@ use Illuminate\Http\Request;
 use App\RespTecnico;
 use App\User;
 use App\Area;
+use App\AreaTipodocresp;
+use App\Tipodocresp;
 use App\Empresa;
+use App\Docresptec;
 use Auth;
 use Illuminate\Support\Str;
 use App\RtEmpresa;
 use App\CnaeEmpresa;
 use App\Cnae;
+use App\Checklistresp;
+use Illuminate\Support\Facades\Storage;
 
 class RespTecnicoController extends Controller
 {
@@ -181,9 +186,92 @@ class RespTecnicoController extends Controller
                     'area_id' => $request->area[$i],
                 ]);
             }
+
+            $rtempresatemp = RtEmpresa::where('resptec_id', $respTec->id)->get();
+            $areastemp = [];
+
+            foreach ($rtempresatemp as $indice) {
+                array_push($areastemp, $indice->area_id);    
+            }
+
+            for ($i=0; $i < count($areastemp); $i++) {
+                $areatipodocresp = AreaTipodocresp::where('area_id', $areastemp[$i])->get();
+    
+                foreach ($areatipodocresp as $indice) {
+                    // dd("Antes");
+                    $checklistresp = Checklistresp::create([
+                        'anexado' => 'false',
+                        'areas_id' => $areastemp[$i],
+                        'nomeDoc' => $indice->tipodocresp->nome,
+                        'tipodocres_id' => $indice->tipodocresp->id,
+                        'resptecnicos_id' => $respTec->id,
+                    ]);
+                }
+            }
     
             return redirect()->route('/');
         }
+    }
+
+    public function showDocumentacao(Request $request)
+    {
+        $user = Auth::user()->id;
+        $rt = RespTecnico::where('user_id', $user)->first();
+
+        $checklistresp = Checklistresp::where('resptecnicos_id', $rt->id)->get();
+        $tipodocresp = Tipodocresp::all();
+
+        return view('responsavel_tec/documentos',[
+            'checklist' => $checklistresp,
+            'tipodocs'  => $tipodocresp,
+        ]);
+        
+    }
+
+    public function anexarArquivos(Request $request)
+    {
+        // dd($request->arquivo);
+        $checklist = Checklistresp::where('tipodocres_id', $request->tipodocres)->get();
+        $user = Auth::user()->id;
+        $rt = RespTecnico::where('user_id', $user)->first();
+
+        foreach ($checklist as $indice) {
+            if ($indice->tipodocres_id == $request->tipodocres && $indice->anexado == "true") {
+                session()->flash('error', 'Este tipo de arquivo já foi anexado!');
+                return back();
+            }
+
+            $indice->anexado = "true";
+            $indice->save();
+        }
+
+        $validatedData = $request->validate([
+
+            'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000000'],
+            'data'    => ['nullable', 'date'],
+
+        ]);
+
+        $fileDocemp = $request->arquivo;
+
+        $pathDocemp = 'rts/' . $rt->id . '/' . $request->tipodocres . '/';
+
+        $nomeDocemp = $request->arquivo->getClientOriginalName();
+
+        Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+        $docEmpresa = Docresptec::create([
+            'nome'  => $pathDocemp . $nomeDocemp,
+            'data_emissao' => $request->data,
+            'resptecnicos_id'  => $rt->id,
+            'tipodocresp_id' => $request->tipodocres,
+        ]);
+
+
+        // return view('empresa.home_empresa');
+        session()->flash('success', 'O arquivo foi anexado com sucesso!');
+        return back();
+
     }
 
     /**

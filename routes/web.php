@@ -192,7 +192,11 @@ Route::middleware(['IsRespTecnico'])->group(function () {
     Route::get('/editar/dados', 'RespTecnicoController@edit')->name('editar.dados');
     Route::get('/home/rt', function () {return view('responsavel_tec/home_rt');})->name('home.rt');
     Route::post('/atualizar/rt','RespTecnicoController@update')->name('update.rt');
-    Route::get('/rt/documentos', function () {return view('responsavel_tec/documentos');})->name('rt.documentos');
+
+    Route::get('/rt/documentos', 'RespTecnicoController@showDocumentacao')->name('rt.documentos');
+
+    Route::post("/rt/arquivos",  "RespTecnicoController@anexarArquivos")->name("anexar.arquivos");
+    // Route::get('/rt/documentos', function () {return view('responsavel_tec/documentos');})->name('rt.documentos');
     //Empresa - Responsável Técnico
 /*
     * Editar/Anexar dados da empresa

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Checklistresp extends Model
 {
-    protected $table = 'resptecnicos';
+    protected $table = 'checklistresp';
     /**
      * The attributes that are mass assignable.
      *
