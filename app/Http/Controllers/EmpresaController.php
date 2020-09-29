@@ -353,7 +353,7 @@ class EmpresaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editarEmpresa(Request $request, $id)
+    public function editarEmpresa(Request $request)
     {
         $empresa = Empresa::find($id);
         $user = User::find(Auth::user()->id);
@@ -403,6 +403,52 @@ class EmpresaController extends Controller
         $empresa = Empresa::find(decrypt($request->empresaId));
         // $cnaeEmpresa = CnaeEmpresa::where('empresa_id','=',decrypt($request->empresaId))->get();
         $areas = Area::orderBy('nome', 'ASC')->get();
+
+        // $resultados = CnaeEmpresa::where('empresa_id',$empresa->id)->get();
+        // $resultado = [];
+
+        // foreach ($resultados as $indice) {
+        //     array_push($resultado, Cnae::find($indice->cnae_id));
+        //     // dd($indice->cnae_id);
+        // }
+
+        // dd($resultado[1]);
+        // // return view('coordenador/cnaes_coordenador', ['cnaes' => $cnaes]);
+        // $arrayTemp = [];
+        // $output = '';
+        //     if($resultado->count() > 0){
+        //         foreach($resultado as $item){
+        //             $output .= '
+        //             <div class="d-flex justify-content-center form-gerado cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
+        //                 <div class="mr-auto p-2>OPA</div>
+        //                     <div class="mr-auto p-2" id="'.$item->id.'">'.$item->cnae->descricao.'</div>
+        //                     <input type="hidden" name="cnae[]" value="'.$item->id.'">
+        //                     <div style="width:140px; height:25px; text-align:right;">
+        //                         <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
+        //                             <div class="btn btn-danger btn-sm" onclick="deletar_EditarCnaeEmpresa('.$item->id.')" >X</div>
+        //                         </div>
+        //                     </div>
+        //             </div>
+        //             ';
+        //             array_push($arrayTemp, $item->id);
+        //         }
+        //     }elseif($idEmpresa == ""){
+        //         $output .= '
+        //                 <label></label>
+        //             ';
+        //     }else{
+        //         $output .= '
+        //                 <label>vazio</label>
+        //             ';
+        //     }
+        //     $data = array(
+        //         'success'   => true,
+        //         'table_data' => $output,
+        //         'arrayTemp' => $arrayTemp, //atualizar o array temp
+        //     );
+        //     echo json_encode($data);
+
+
         return view('empresa/editar_empresa', ["empresa" => $empresa, "areas" => $areas]);
         // // Empresa que será editada
         // $empresa = Empresa::where("user_id", $id)->first();
@@ -672,7 +718,7 @@ class EmpresaController extends Controller
                             <div class="mr-auto p-2" id="'.$item->id.'">'.$item->descricao.'</div>
                             <div style="width:140px; height:25px; text-align:right;">
                                 <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
-                                    <div class="btn btn-success btn-sm"  onclick="add_EditarCnaeEmpresa('.$item.')" >Adicionar</div>
+                                    <div class="btn btn-success btn-sm"  onclick="add_EditarCnaeEmpresa('.$item->id.')" >Adicionar</div>
                                 </div>
                             </div>
 
@@ -692,6 +738,7 @@ class EmpresaController extends Controller
             $data = array(
                 'success'   => true,
                 'table_data' => $output,
+                // 'arrayTemp' => $arrayTemp, //atualizar o array temp
             );
             echo json_encode($data);
     }
@@ -705,19 +752,29 @@ class EmpresaController extends Controller
 
     }
     public function listarCnaes($idEmpresa){
-        $resultado = CnaeEmpresa::where('empresa_id','=',$idEmpresa)->get();
-        // return view('coordenador/cnaes_coordenador', ['cnaes' => $cnaes]);
+        $resultado = CnaeEmpresa::where('empresa_id', $idEmpresa)->get();
+
+        // TENTANDO MUDAR AQUI EMBAIXO
+        // $resultados = CnaeEmpresa::where('empresa_id', $idEmpresa)->get();
+        
+        // $resultado = [];
+
+        // foreach ($resultados as $indice) {
+        //     array_push($resultado, Cnae::find($indice->cnae_id));
+        // }
+
         $arrayTemp = [];
         $output = '';
             if($resultado->count() > 0){
                 foreach($resultado as $item){
                     $output .= '
-                    <div class="d-flex justify-content-center cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
+                    <div class="d-flex justify-content-center form-gerado cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
                         <div class="mr-auto p-2>OPA</div>
                             <div class="mr-auto p-2" id="'.$item->id.'">'.$item->cnae->descricao.'</div>
+                            <input type="hidden" name="cnae[]" value="'.$item->id.'">
                             <div style="width:140px; height:25px; text-align:right;">
                                 <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
-                                    <div class="btn btn-danger btn-sm"  onclick="deletar_EditarCnaeEmpresa('.$item->id.')" >X</div>
+                                    <div class="btn btn-danger btn-sm" onclick="deletar_EditarCnaeEmpresa('.$item->id.')" >X</div>
                                 </div>
                             </div>
                     </div>
@@ -739,6 +796,13 @@ class EmpresaController extends Controller
                 'arrayTemp' => $arrayTemp, //atualizar o array temp
             );
             echo json_encode($data);
+    }
+
+    public function apagarCnaeEmpresa(Request $request)
+    {
+        $delete = CnaeEmpresa::destroy($request->idCnaeEmp);
+
+        return $delete;
     }
 
     public function foundChecklist(Request $request){

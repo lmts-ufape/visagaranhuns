@@ -33,8 +33,9 @@
         </div>
     </div>
 
-
-    <div class="barraMenu" style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
+    <form id="teste" method="POST" action="{{ route('editar.empresa') }}">
+        @csrf
+        <div class="barraMenu" style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
             <div class="container" style="margin-top:1rem;">
                 <div class="form-row">
                     <div class="form-group col-md-12">
@@ -175,14 +176,14 @@
                 </div>
             </div>
         </div>
-
+    </form>
 
 </div>
 
 <script type="text/javascript">
     var arrayTemp = [];
     window.onload= function() {
-
+        // console.log({{$empresa->id}});
         $.ajax({
             url:'{{ config('prefixo.PREFIXO') }}listar/cnae/empresa',
             type:"get",
@@ -191,6 +192,7 @@
             success: function(response){
                 $('#adicionar_EditarCnaeEmpresa').html(response.table_data);
                 arrayTemp = response.arrayTemp;
+                console.log(response.table_data);
             }
         });
 
@@ -212,25 +214,38 @@
     }
 
     window.add_EditarCnaeEmpresa = function($id) {
+        // console.log(arrayTemp);
         if(arrayTemp.findIndex(element => element == $id) == -1){ //consicao para add o cnae na lista (meus cnaes)
 
-            // innerText sempre pegará o primero texto da lista
-            // var elemento = document.getElementById($id).innerText;
-            // linha = montarLinhaInput($id,elemento);
-            // $('#adicionar_EditarCnaeEmpresa').append(linha);
-            // arrayTemp.push($id);
-            // console.log("opa");
+            var elemento = document.getElementById($id).innerText;
+            linha = montarLinhaInput($id,elemento);
+            $('#adicionar_EditarCnaeEmpresa').append(linha);
+            arrayTemp.push($id);
+            console.log("opa");
         }
     }
 
-    // window.deletar_EditarCnaeEmpresa = function(obj){
-    //     var index = arrayTemp.findIndex(element => element == obj.id); //encontrar o indice no arrayTemp
-    //     if ( index > -1) {
-    //         arrayTemp.splice(index, 1); //remover o elemento do array
-    //         obj.closest('.form-gerado').remove();
-    //         return false;
-    //     }
-    // }
+    window.deletar_EditarCnaeEmpresa = function($obj, $empresaId){
+        console.log("Alien");
+        var index = arrayTemp.findIndex(element => element == $obj); //encontrar o indice no arrayTemp
+        if ( index > -1) {
+            arrayTemp.splice(index, 1); //remover o elemento do array
+            $('#cardSelecionado'+$obj).closest('.form-gerado').remove();
+        }
+
+        // console.log("GW");
+        $.ajax({
+            url:'{{ config('prefixo.PREFIXO') }}apagar/cnae/empresa',
+            type:"get",
+            dataType:'json',
+            data: {"idCnaeEmp": $obj, "empresaId": $empresaId},
+            success: function(response){
+                // console.log("GW");
+                // $('tbody').html(response.table_data);
+            }
+        });
+        // console.log("GW");
+    }
 </script>
 @endsection
 

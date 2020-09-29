@@ -148,6 +148,8 @@ Route::middleware(['IsEmpresa'])->group(function () {
     // Download de arquivos anexados
     Route::get('/download/arquivo',       'EmpresaController@downloadArquivo')->name('download.arquivo');
 
+    // Apagar registro em CnaeEmpr
+    Route::get('/apagar/cnae/empresa',    'EmpresaController@apagarCnaeEmpresa')->name('apagar.cnae.empresa');
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
     * Editar/Anexar dados da empresa
