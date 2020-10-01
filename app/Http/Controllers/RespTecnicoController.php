@@ -217,12 +217,26 @@ class RespTecnicoController extends Controller
     {
         $user = Auth::user()->id;
         $rt = RespTecnico::where('user_id', $user)->first();
+        $temp = [];
+        $checkrespt = [];
 
-        $checklistresp = Checklistresp::where('resptecnicos_id', $rt->id)->get();
+        $checklistresp = Checklistresp::where('resptecnicos_id', $rt->id)->orderBy('id','ASC')->pluck('tipodocres_id');
+        for ($i=0; $i < count($checklistresp); $i++) { 
+            array_push($temp, $checklistresp[$i]);
+        }
+        
+        $array = array_unique($temp);
+
+        foreach ($array as $indice) {
+            array_push($checkrespt, Checklistresp::where('tipodocres_id', $indice)
+            ->where('resptecnicos_id', $rt->id)->first());
+        }
+        // dd($checkrespt);
+
         $tipodocresp = Tipodocresp::all();
 
         return view('responsavel_tec/documentos',[
-            'checklist' => $checklistresp,
+            'checklist' => $checkrespt,
             'tipodocs'  => $tipodocresp,
         ]);
         
@@ -230,10 +244,11 @@ class RespTecnicoController extends Controller
 
     public function anexarArquivos(Request $request)
     {
-        // dd($request->arquivo);
-        $checklist = Checklistresp::where('tipodocres_id', $request->tipodocres)->get();
+        
         $user = Auth::user()->id;
         $rt = RespTecnico::where('user_id', $user)->first();
+        $checklist = Checklistresp::where('tipodocres_id', $request->tipodocres)
+        ->where('resptecnicos_id', $rt->id)->get();
 
         foreach ($checklist as $indice) {
             if ($indice->tipodocres_id == $request->tipodocres && $indice->anexado == "true") {
