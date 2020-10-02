@@ -174,7 +174,6 @@
                                 </div> --}}
 
                                 @foreach ($checklist as $indice)
-                                    {{-- @if ($indice->areas_id == $item->id) --}}
                                         @if($indice->anexado == "false")
                                         <div class="form col-md-12">
                                             <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/> {{$indice->nomeDoc}} -
@@ -190,14 +189,6 @@
                                                             <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}"> Baixar arquivo</a>
                                                         </label>
                                                         <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDoc({{$docempresa->id}})" style="cursor:pointer; color:#249BE3">- Editar arquivo</a>
-                                                        {{-- <form id="arquivo" method="POST" action="{{route('editar.arquivos', ['file' => $docempresa->nome])}}" enctype="multipart/form-data">
-                                                            @csrf
-                                                            <div class="form-group">
-                                                                <label for="exampleFormControlFile1">Example file input</label>
-                                                                <input type="file" class="form-control-file" id="exampleFormControlFile1" name="arquivo">
-                                                            </div>
-                                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                                        </form> --}}
                                                     </div>
                                                 @endif
                                             @endforeach

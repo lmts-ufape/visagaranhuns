@@ -203,6 +203,12 @@ Route::middleware(['IsRespTecnico'])->group(function () {
     Route::get('/rt/documentos', 'RespTecnicoController@showDocumentacao')->name('rt.documentos');
 
     Route::post("/rt/arquivos",  "RespTecnicoController@anexarArquivos")->name("anexar.arquivos.rt");
+
+    Route::get('/download/arquivo/rt', 'RespTecnicoController@baixarArquivos')->name('download.arquivo.rt');
+
+    Route::get('/encontrar/doc/rt',          'RespTecnicoController@findDocRt')->name('find.doc.rt');
+
+    Route::post("/empresa/editar/arquivos",  "RespTecnicoController@editarArquivos")->name("editar.arquivos.rt");
     // Route::get('/rt/documentos', function () {return view('responsavel_tec/documentos');})->name('rt.documentos');
     //Empresa - Responsável Técnico
 /*

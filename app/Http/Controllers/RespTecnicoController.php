@@ -209,10 +209,56 @@ class RespTecnicoController extends Controller
         }
     }
 
+    public function baixarArquivos(Request $request)
+    {
+        return response()->download(storage_path('app/'.$request->file));
+    }
+
+    public function findDocRt(Request $request)
+    {
+
+        $docrt = Docresptec::find($request->id);
+
+        $data = array(
+            'nome'   => $docrt->nome,
+        );
+
+        echo json_encode($data);
+    }
+
+    public function editarArquivos(Request $request)
+    {
+
+        $validatedData = $request->validate([
+
+            'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000000'],
+
+        ]);
+
+        $docrt = Docresptec::where("nome", $request->file)->first();
+        
+        Storage::delete($docrt->nome);
+
+        $fileDocemp = $request->arquivo;
+
+        $pathDocemp = 'empresas/' . $docrt->empresa_id . '/' . $docrt->tipodocemp_id . '/'; 
+
+        $nomeDocemp = $request->arquivo->getClientOriginalName();
+
+        $docrt->nome = $pathDocemp . $nomeDocemp;
+        $docrt->save();
+
+        Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+        session()->flash('success', 'Arquivo salvo com sucesso!');
+        return back();
+    }
+
     public function showDocumentacao(Request $request)
     {
         $user = Auth::user()->id;
         $rt = RespTecnico::where('user_id', $user)->first();
+        $docsrt = Docresptec::where('resptecnicos_id', $rt->id)->get();
         $temp = [];
         $checkrespt = [];
 
@@ -234,6 +280,7 @@ class RespTecnicoController extends Controller
         return view('responsavel_tec/documentos',[
             'checklist' => $checkrespt,
             'tipodocs'  => $tipodocresp,
+            'docsrt'    => $docsrt,
         ]);
         
     }

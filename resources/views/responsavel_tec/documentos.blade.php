@@ -90,21 +90,19 @@
                                             </label>
                                         </div>
                                         @else
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
+                                        {{-- <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
                                             <a href="#"> Baixar arquivo</a>
-                                        </label>
-                                            {{-- @foreach ($docsempresa as $docempresa)
-                                                @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id)
+                                        </label> --}}
+                                            @foreach ($docsrt as $docrt)
+                                                @if ($docrt->resptecnicos_id == $indice->resptecnicos_id && $docrt->tipodocresp_id == $indice->tipodocres_id)
                                                     <div class="form col-md-12">
                                                         <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
-                                                            <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}"> Baixar arquivo</a>
+                                                            <a href="{{route('download.arquivo.rt', ['file' => $docrt->nome])}}"> Baixar arquivo</a>
                                                         </label>
-                                                        <div style="margin-bottom:10px;">
-                                                            <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}">Baixar arquivo</a>
-                                                        </div>
+                                                        <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDocRt({{$docrt->id}})" style="cursor:pointer; color:#249BE3">- Editar arquivo</a>
                                                     </div>
                                                 @endif
-                                            @endforeach --}}
+                                            @endforeach
                                         @endif
                                     {{-- @endif --}}
                                 {{-- @endforeach --}}
@@ -112,6 +110,35 @@
 
                             </div>
                         </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Arquivo</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="editDocForm" method="POST" action="{{route('editar.arquivos.rt')}}" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="form-group">
+                                          <label for="exampleFormControlFile1">Editar arquivo</label>
+                                          <input id="editarDocRt" type="hidden" name="file" value="">
+                                          <input type="file" class="form-control-file" id="exampleFormControlFile1" name="arquivo">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                <button type="submit" form="editDocForm" class="btn btn-primary">Salvar</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
                         <div class="form col-md-5" style="margin-top:10px;">
                             <div class="form-row">
                                 <form id="arquivo" method="POST" action="{{route('anexar.arquivos.rt')}}" enctype="multipart/form-data">
