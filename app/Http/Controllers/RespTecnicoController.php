@@ -42,18 +42,12 @@ class RespTecnicoController extends Controller
         $rtempresa = RtEmpresa::where('empresa_id', $request->empresaId)->get();
 
         $resptecnicos = [];
-        for ($i=0; $i < count($rtempresa); $i++) {
-            if (count($resptecnicos) == 0) {
-                array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
-            }
-            else {
-                for ($j=0; $j < count($resptecnicos); $j++) { 
-                    if($rtempresa[$i]->resptec_id != $resptecnicos[$j]->id) {
-                        array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
-                    }
-                }
-            }
+
+        foreach ($rtempresa as $indice) {
+            array_push($resptecnicos, RespTecnico::find($indice->resptec_id));
         }
+
+        $temp = array_unique($resptecnicos);
         
         $cnae = array();
         $areas = array();
@@ -76,9 +70,11 @@ class RespTecnicoController extends Controller
             array_push($areasOrdenado, $indice);
         }
 
-
-        // Tela de conclusão de cadastro de Responsavel Técnico
-        return view('responsavel_tec.cadastrar_responsavel_tec')->with(["user" => $user, "empresaId" => $request->empresaId, 'areas' => $areasOrdenado, 'respTecnicos' => $resptecnicos, 'rtempresa' => $rtempresa]);
+        return view('responsavel_tec.cadastrar_responsavel_tec')->with(["user" => $user, 
+        "empresaId" => $request->empresaId, 
+        'areas' => $areasOrdenado, 
+        'respTecnicos' => $temp, 
+        'rtempresa' => $rtempresa]);
     }
 
     /**
@@ -244,6 +240,10 @@ class RespTecnicoController extends Controller
 
     public function anexarArquivos(Request $request)
     {
+        if($request->tipodocres == "Tipos de documentos"){
+            session()->flash('error', 'Selecione um documento!');
+            return back();
+        }
         
         $user = Auth::user()->id;
         $rt = RespTecnico::where('user_id', $user)->first();
@@ -262,8 +262,10 @@ class RespTecnicoController extends Controller
 
         $validatedData = $request->validate([
 
-            'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000000'],
-            'data'    => ['nullable', 'date'],
+            'arquivo'         => ['required', 'file', 'mimes:pdf', 'max:5000000'],
+            'tipodocres'      => ['required'],
+            'data_emissao'    => ['required', 'date'],
+            'data_validade'   => ['nullable', 'date'],
 
         ]);
 
@@ -277,7 +279,8 @@ class RespTecnicoController extends Controller
 
         $docEmpresa = Docresptec::create([
             'nome'  => $pathDocemp . $nomeDocemp,
-            'data_emissao' => $request->data,
+            'data_emissao'  => $request->data_emissao,
+            'data_validade' => $request->data_validade,
             'resptecnicos_id'  => $rt->id,
             'tipodocresp_id' => $request->tipodocres,
         ]);

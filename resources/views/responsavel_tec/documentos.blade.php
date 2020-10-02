@@ -124,10 +124,10 @@
                                     {{-- <input id="empresa" type="hidden" name="empresaId" value="{{$empresaId}}"> --}}
                                     <div class="form col-md-12" style="margin-top:1px;margin-bottom:10px;">
                                         <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Tipo de documento</label>
-                                        <select class="form-control" id="exampleFormControlSelect1" name="tipodocres">
+                                        <select class="form-control" id="exampleFormControlSelect1" name="tipodocres" required>
                                             <option>Tipos de documentos</option>
-                                            @foreach ($tipodocs as $tipo)
-                                            <option value="{{$tipo->id}}">{{$tipo->nome}}</option>
+                                            @foreach ($checklist as $tipo)
+                                            <option value="{{$tipo->tipodocres_id}}">{{$tipo->nomeDoc}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -135,16 +135,16 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Emissão</label>
-                                                    <input type="date" class="form-control" placeholder="First name">
+                                                    <input type="date" class="form-control" placeholder="First name" name="data_emissao" required>
                                                 </div>
                                                 <div class="col">
                                                     <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Validade</label>
-                                                    <input type="date" class="form-control" placeholder="" name="data">
+                                                    <input type="date" class="form-control" placeholder="" name="data_validade">
                                                 </div>
                                             </div>
                                     </div>
                                     <div class="form col-md-12" style="margin-top: 30px">
-                                        <input type="file" class="form-control-file" id="arquivo" name="arquivo">
+                                        <input type="file" class="form-control-file" id="arquivo" name="arquivo" required>
                                         <label for="" style="color:red;margin-top:4px;">Arquivo no formato PDF e tamanho máximo de 5mb</label>
                                     </div>
                                     <div class="form col-md-12" style="margin-top: 20px">

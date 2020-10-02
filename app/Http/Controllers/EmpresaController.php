@@ -80,6 +80,13 @@ class EmpresaController extends Controller
     public function store(Request $request)
     {
 
+        $userFind = User::where('email', $request->email)->first();
+
+        if($userFind != null){
+            session()->flash('error', 'Já existe um usuário no sistema com este email!');
+            return back();
+        }
+
         $validator = $request->validate([
             'name'     => 'required|string',
             'email'    => 'required|email',
@@ -587,8 +594,10 @@ class EmpresaController extends Controller
 
         $validatedData = $request->validate([
 
-            'arquivo' => ['required', 'file', 'mimes:pdf', 'max:5000'],
-            'data'    => ['required', 'date'],
+            'arquivo'         => ['required', 'file', 'mimes:pdf', 'max:5000000'],
+            'tipodocempresa'  => ['required'],
+            'data_emissao'    => ['required', 'date'],
+            'data_validade'   => ['nullable', 'date'],
 
         ]);
 
@@ -602,7 +611,8 @@ class EmpresaController extends Controller
 
         $docEmpresa = Docempresa::create([
             'nome'  => $pathDocemp . $nomeDocemp,
-            'data_validade' => $request->data,
+            'data_emissao'  => $request->data_emissao,
+            'data_validade' => $request->data_validade,
             'empresa_id'  => $empresa->id,
             'tipodocemp_id' => $request->tipodocempresa,
         ]);
@@ -646,25 +656,18 @@ class EmpresaController extends Controller
         $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->get();
 
         $resptecnicos = [];
-        for ($i=0; $i < count($rtempresa); $i++) {
-            if (count($resptecnicos) == 0) {
-                array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
-            }
-            else {
-                for ($j=0; $j < count($resptecnicos); $j++) {
-                    if($rtempresa[$i]->resptec_id != $resptecnicos[$j]->id) {
-                        array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
-                    }
-                }
-            }
+
+        foreach ($rtempresa as $indice) {
+            array_push($resptecnicos, RespTecnico::find($indice->resptec_id));
         }
-        // dd($rtempresa);
+
+        $temp = array_unique($resptecnicos);
 
         return view('empresa/show_empresa',['empresa' => $empresa,
          'endereco' => $endereco,
          'telefone' =>$telefone,
          'cnae' => $cnaeEmpresa,
-         'respTecnico' => $resptecnicos,
+         'respTecnico' => $temp,
          'empresaId'     => $empresa->id,
          ]);
     }
