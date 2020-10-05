@@ -200,19 +200,27 @@ Route::middleware(['IsRespTecnico'])->group(function () {
     Route::get('/home/rt', function () {return view('responsavel_tec/home_rt');})->name('home.rt');
     Route::post('/atualizar/rt','RespTecnicoController@update')->name('update.rt');
 
-    Route::get('/rt/documentos', 'RespTecnicoController@showDocumentacao')->name('rt.documentos');
+    Route::get('/rt/documentos',                    'RespTecnicoController@showDocumentacao')->name('rt.documentos');
 
-    Route::post("/rt/arquivos",  "RespTecnicoController@anexarArquivos")->name("anexar.arquivos.rt");
+    Route::post("/rt/arquivos",                     "RespTecnicoController@anexarArquivos")->name("anexar.arquivos.rt");
 
-    Route::get('/download/arquivo/rt', 'RespTecnicoController@baixarArquivos')->name('download.arquivo.rt');
+    Route::get('/download/arquivo/rt',              'RespTecnicoController@baixarArquivos')->name('download.arquivo.rt');
 
-    Route::get('/encontrar/doc/rt',          'RespTecnicoController@findDocRt')->name('find.doc.rt');
+    Route::get('/encontrar/doc/rt',                 'RespTecnicoController@findDocRt')->name('find.doc.rt');
 
-    Route::post("/empresa/editar/arquivos",  "RespTecnicoController@editarArquivos")->name("editar.arquivos.rt");
-    // Route::get('/rt/documentos', function () {return view('responsavel_tec/documentos');})->name('rt.documentos');
+    Route::post("/rt/editar/arquivos",              "RespTecnicoController@editarArquivos")->name("editar.arquivos.rt");
+
+    Route::get('/empresas',                         'RespTecnicoController@listarEmpresas')->name('listar.empresa.rt');
+
+    Route::get('/empresa',                          'RespTecnicoController@showEmpresa')->name('empresa');
+
+    Route::get('/empresa/documentacao',             'RespTecnicoController@documentacaoEmpresa')->name('rt.documentacao.empresa');
+
+    // Download de arquivos anexados
+    Route::get('/download/arquivo/empresa/rt',      'EmpresaController@downloadArquivo')->name('download.arquivo.empresa');
+    
     //Empresa - Responsável Técnico
 /*
-    * Editar/Anexar dados da empresa
     * Consultar histórico de inspeções
     * Consultar notificações
 */

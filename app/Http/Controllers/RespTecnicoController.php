@@ -6,17 +6,22 @@ use Illuminate\Http\Request;
 use App\RespTecnico;
 use App\User;
 use App\Area;
+use App\Endereco;
+use App\Telefone;
 use App\AreaTipodocresp;
 use App\Tipodocresp;
 use App\Empresa;
 use App\Docresptec;
+use App\Docempresa;
 use Auth;
 use Illuminate\Support\Str;
 use App\RtEmpresa;
 use App\CnaeEmpresa;
 use App\Cnae;
 use App\Checklistresp;
+use App\Checklistemp;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Crypt;
 
 class RespTecnicoController extends Controller
 {
@@ -28,6 +33,59 @@ class RespTecnicoController extends Controller
     public function index()
     {
         //
+    }
+
+    public function listarEmpresas()
+    {
+        $user = User::find(Auth::user()->id);
+        $rt = RespTecnico::where('user_id', $user->id)->first();
+        $temp = [];
+        $empresas = [];
+        
+        $empresa = RtEmpresa::where('resptec_id', $rt->id)->pluck('empresa_id');
+        
+        foreach ($empresa as $indice) {
+            array_push($temp, RtEmpresa::where('empresa_id', $indice)->first());    
+        }
+        $empresas = array_unique($temp);
+        
+        return view('responsavel_tec/listar_empresas',['empresas' => $empresas, 'tipo' => 'estabelecimentos']);
+    }
+
+    public function showEmpresa(Request $request)
+    {
+        $id = Crypt::decrypt($request->empresa);
+        $empresa = Empresa::find($id);
+        $endereco = Endereco::where('empresa_id', $empresa->id)->first();
+        $telefone = Telefone::where('empresa_id', $empresa->id)->first();
+        $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $id)->get();
+
+        return view('responsavel_tec/empresa',[
+            'empresa'  => $empresa,
+            'endereco' => $endereco,
+            'telefone' => $telefone,
+            'cnae'     => $cnaeEmpresa,
+            'empresaId'=> $empresa->id,
+         ]); 
+    }
+
+    public function documentacaoEmpresa(Request $request)
+    {   
+        $idEmpresa = Crypt::decrypt($request->empresa);
+        $empresa = Empresa::where('id', $idEmpresa)->first();
+        $docsempresa = Docempresa::where('empresa_id', $empresa->id)->get();
+        $rt = RespTecnico::where('user_id', Auth::user()->id)->first();
+        $rtempresa = RtEmpresa::where('resptec_id', $rt->id)->get();
+        $checklist = Checklistemp::where('empresa_id', $empresa->id)->orderBy('id','ASC')->get();
+
+        // dd($rtempresa);
+
+        return view('responsavel_tec/empresa_docs',['nome'=>$empresa->nome,
+        'empresaId' => $empresa->id,
+        'checklist' => $checklist,
+        'docsempresa' => $docsempresa,
+        'rtempresa'   => $rtempresa,
+        ]);
     }
 
     /**
