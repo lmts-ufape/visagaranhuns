@@ -113,6 +113,20 @@ Route::middleware(['IsCoordenador'])->group(function () {
 */
     // Rota para localizar
     Route::get("/coordenador/localizar", "CoordenadorController@localizar");
+
+    // Rota para gerenciar conteudo
+    Route::get("/coordenador/gerenciarconteudo","ServicoController@index")->name("servico.index");
+    Route::get("/coordenador/gerenciarconteudo/criar/servico","ServicoController@ajaxCriarServico");
+    Route::get("/coordenador/gerenciarconteudo/deletar/servico","ServicoController@ajaxDeletarServico");
+    Route::get("/coordenador/gerenciarconteudo/editar/servico","ServicoController@ajaxEditarServico");
+    Route::get("/coordenador/gerenciarconteudo/editar/subir/servico","ServicoController@ajaxEditarSubirServico");
+    Route::get("/coordenador/gerenciarconteudo/editar/descer/servico","ServicoController@ajaxEditarDescerServico");
+    // Rota para gerenciar a secao
+    Route::get("/coordenador/gerenciarconteudo/secao","ServicoController@indexSecao")->name("secao.index");
+    Route::get("/coordenador/gerenciarconteudo/criar/secao","ServicoController@ajaxCriarSecao");
+    Route::get("/coordenador/gerenciarconteudo/editar/secao","ServicoController@ajaxEditarSecao");
+    Route::get("/coordenador/gerenciarconteudo/editar/subir/secao","ServicoController@ajaxEditarSubirSecao");
+    Route::get("/coordenador/gerenciarconteudo/deletar/secao","ServicoController@ajaxDeletarSecao");
 });
 
 // Grupo de rotas para empresa

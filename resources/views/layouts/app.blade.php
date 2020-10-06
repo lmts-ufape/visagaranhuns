@@ -16,6 +16,7 @@
     <script type="text/javascript" src="{{URL::asset('js/requerimento_coordenador.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/naologado.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/checklist.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/config_pagina_inicial.js')}}" defer></script>
 
     <!-- load jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -41,6 +42,16 @@
     <link href="{{ asset('css/geral.css') }}" rel="stylesheet">
     <link href="{{ asset('css/agentes.css') }}" rel="stylesheet">
     <link href="{{ asset('css/documentos_empresa.css') }}" rel="stylesheet">
+
+    <!-- editor de texto -->
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector:'textarea',
+            plugins: 'link image lists',
+            menubar: false,
+        });
+    </script>
 
 </head>
 <body>
@@ -121,6 +132,9 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('servico.index') }}">
+                                            {{ __('Gerenciar conteúdo') }}
+                                        </a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">
