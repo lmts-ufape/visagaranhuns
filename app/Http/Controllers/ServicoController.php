@@ -178,4 +178,16 @@ class ServicoController extends Controller
         );
         echo json_encode($data);
     }
+    public function homeInformacoes(Request $request){
+        $resultado = Secao::where('servico_id','=',Crypt::decrypt($request->value))->orderBy('posicao', 'ASC')->get();
+        $titulo = Servico::where('id','=',Crypt::decrypt($request->value))->first();
+        return view('naoLogado/informacoes_naoLogado',["secoes"=>$resultado, "titulo"=>$titulo->titulo]);
+
+    }
+    public function homeOutrasInformacoes(){
+        $resultado = Servico::orderBy('posicao', 'ASC')->get();
+        return view('naoLogado/outros_servicos_naoLogado',["servicos"=>$resultado]);
+
+    }
+
 }

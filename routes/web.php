@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Servico;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,7 +35,8 @@ Route::get('/', function () {
         }
     }
     else {
-        return view('naoLogado.home_naologado');
+        $resultado = Servico::orderBy('posicao', 'ASC')->take(4)->get();
+        return view('naoLogado.home_naologado',['servicos'=>$resultado]);
     }
 })->name("/");
 
@@ -66,6 +68,8 @@ Route::middleware(['OnlyAdmin'])->group(function () {
 
 Route::get("/empresa/lista/cnae",  "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes.comum");
 Route::get("/emcostrucao",  function () {return view('em_construcao');})->name("emconstrucao");
+Route::get("/servicos",  "ServicoController@homeInformacoes")->name("home.informacao");
+Route::get("/servicos/outros",  "ServicoController@homeOutrasInformacoes")->name("home.outras.informacoes");
 
 
 // Grupo de rotas para coordenador

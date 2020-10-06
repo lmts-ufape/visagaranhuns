@@ -100,7 +100,7 @@ window.criarSecao = function($id){
         success: function(response){
             $('tbody').html(response.table_data);
             if(response.success == true){
-                alert("Seção "+$titulo+" criado com sucesso!");
+                if(!alert("Seção "+$titulo+" criado com sucesso!")){window.location.reload();}
             }else{
                 alert("Oops! A seção "+$titulo+" não foi criado. Tente novamente!");
             }
