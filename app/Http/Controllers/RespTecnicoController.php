@@ -77,6 +77,9 @@ class RespTecnicoController extends Controller
         $rt = RespTecnico::where("user_id", Auth::user()->id)->first();
         $areas = RtEmpresa::where("resptec_id",$rt->id)->pluck('area_id');
         $cnaesEmpresa = CnaeEmpresa::where("empresa_id", $id)->get();
+        $requerimentos = Requerimento::where('empresas_id', $empresa->id)
+        ->where('resptecnicos_id', $rt->id)->get();
+
         $temp0 = [];
         foreach ($cnaesEmpresa as $indice0) {
             array_push($temp0, $indice0->cnae_id);
@@ -97,6 +100,7 @@ class RespTecnicoController extends Controller
             'resptecnico'  => $rt->id,
             'empresa'      => $id,
             'status'       => $empresa->status_cadastro,
+            'requerimentos' => $requerimentos,
         ]);
     }
 

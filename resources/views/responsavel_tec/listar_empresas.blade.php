@@ -32,9 +32,6 @@
             @if($tipo == "estabelecimentos")
                 <div class="p-2">
                     <div class="dropdown" style="margin-top:10px;">
-                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ações
-                        </button>
                         @if (Auth::user()->status_cadastro == "pendente")
 
                         @else
