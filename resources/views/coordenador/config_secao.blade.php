@@ -120,7 +120,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"style="width:100px;">Não</button>
-                <button type="submit" class="btn btn-success botao-form" data-dismiss="modal" onclick="criarSecao({{$id}})">Criar serviço</button>
+                <button type="submit" class="btn btn-success botao-form" data-dismiss="modal" onclick="criarSecao({{$id}})">Criar seção</button>
             </div>
         </div>
     </div>
