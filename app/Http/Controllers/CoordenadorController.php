@@ -365,495 +365,142 @@ class CoordenadorController extends Controller
         $this->listarRequerimentos($request->filtro);
     }
     public function listarRequerimentos($filtro){
-        $resultado = Empresa::get();
-
+        $requerimentos = Requerimento::orderBy('created_at', 'ASC')->get();
+        $empresas = Empresa::orderBy('created_at', 'ASC')->get();
         $output = '';
-        if($resultado->count() > 0){
-            $rota = "pagina.detalhes";
-            foreach($resultado as $item){
-                $id = $item->id;
-                if($filtro == "all"){
-                    if($item->status_cadastro == "pendente"){
-                        $output .= '
-                            <div class="container cardListagem">
-                                <div class="d-flex">
-                                    <div class="mr-auto p-2">
-                                        <div class="btn-group" style="margin-bottom:-15px;">
-                                            <div class="form-group" style="font-size:15px;">
-                                                <div class="textoCampo">'.$item->nome.'</div>
-                                                <span>Cadastro pendente</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="form-group" style="font-size:15px;">
-                                            <div>'.$item->created_at->format('d/m/Y').'</div>
-                                        </div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="dropdown">
-                                            <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton" onclick="mostrar('.$item->id.')">
-                                                +
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="cardEstabelecimento'.$item->id.'" style="display:none;">
-                                    <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
-                                    <div class="d-flex">
-                                        <div class="mr-auto p-2">
-                                            <div class="btn-group" style="margin-bottom:-15px;">
-                                                <div class="form-group" style="font-size:15px;">
-                                                    <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
-                                                    <div>CNPJ/CPF: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
-
-                                                    <button style="margin-top:5px;" type="button" onclick="empresaId('.$item->id.')" class="btn btn-info">Avaliar</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="idTabela">
-                                    <table>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
+        // avaliar cadastro da empresa
+        foreach($empresas as $item){
+            if($item->status_cadastro == "pendente" && ($filtro == "pendente" || $filtro == "all")){
+                $output .='
+                    <div class="container cardListagem" id="primeiralicenca">
+                    <div class="d-flex">
+                        <div class="mr-auto p-2">
+                            <div class="btn-group" style="margin-bottom:-15px;">
+                                <div class="form-group" style="font-size:15px;">
+                                    <div class="textoCampo">'.$item->nome.'</div>
+                                    <span>Cadastro pendente</span>
                                 </div>
                             </div>
-                        ';
-                        }elseif($item->status_cadastro == "renovacao"){
-                            $requerimento = Requerimento::where('empresas_id', $item->id)->get();
-                            foreach ($requerimento as $indice) {
-                                $output .= '
-                                <div class="container cardListagem">
-                                    <div class="d-flex">
-                                        <div class="mr-auto p-2">
-                                            <div class="btn-group" style="margin-bottom:-15px;">
-                                                <div class="form-group" style="font-size:15px;">
-                                                    <div class="textoCampo">'.$item->nome.'</div>
-                                                    <span>Renovação de Licença</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="p-2">
-                                            <div class="form-group" style="font-size:15px;">
-                                                <div>'.$item->created_at->format('d/m/Y').'</div>
-                                            </div>
-                                        </div>
-                                        <div class="p-2">
-                                            <div class="dropdown">
-                                                <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton" onclick="mostrar('.$item->id.')">
-                                                    +
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="cardEstabelecimento'.$item->id.'" style="display:none;">
-                                        <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
-                                        <div class="d-flex">
-                                            <div class="mr-auto p-2">
-                                                <div class="btn-group" style="margin-bottom:-15px;">
-                                                    <div class="form-group" style="font-size:15px;">
-                                                        <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
-                                                        <div>CNPJ/CPF: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
-                                                        <div>Responsável Técnico:<span class="textoCampo">Fulano de Tal</span></div>
-                                                        <div>Última Inspeção: <span class="textoCampo">Ainda não foi realizada</span></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
-                                        <div class="d-flex">
-                                            <div class="mr-auto p-2">
-                                                <div class="btn-group" style="margin-bottom:-15px;">
-                                                    <div class="form-group" style="font-size:15px;">
-                                                        <div>Tipo: <span class="textoCampo">'.$indice->tipo.'</span></div>
-                                                        <div>Cnae: <span class="textoCampo">'.$indice->cnae->descricao.'</span></div>
-                                                        <div>Data de requerimento:<span class="textoCampo"> '.$indice->data.'</span></div>
-                                                        <div>Responsável Tecnico: <span class="textoCampo">Resp. Técnico</span></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="idTabela">
-                                        <table>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            ';
-                            }
-
-                            }elseif($item->status_cadastro == "primeira_licenca"){
-                                $requerimento = Requerimento::where('empresas_id', $item->id)->get();
-                                foreach ($requerimento as $indice) {
-                                    $output .= '
-                                    <div class="container cardListagem">
-                                        <div class="d-flex">
-                                            <div class="mr-auto p-2">
-                                                <div class="btn-group" style="margin-bottom:-15px;">
-                                                    <div class="form-group" style="font-size:15px;">
-                                                        <div class="textoCampo">'.$item->nome.'</div>
-                                                        <span>Primeira Licença</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="p-2">
-                                                <div class="form-group" style="font-size:15px;">
-                                                    <div>'.$item->created_at->format('d/m/Y').'</div>
-                                                </div>
-                                            </div>
-                                            <div class="p-2">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton'.$item->id.'" onclick="mostrar('.$item->id.')">
-                                                        +
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="cardEstabelecimento'.$item->id.'" style="display:none;">
-                                            <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
-                                            <div class="d-flex">
-                                                <div class="mr-auto p-2">
-                                                    <div class="btn-group" style="margin-bottom:-15px;">
-                                                        <div class="form-group" style="font-size:15px;">
-                                                            <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
-                                                            <div>CNPJ/CPF: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
-                                                            <div>Responsável Técnico:<span class="textoCampo">Fulano de Tal</span></div>
-                                                            <div>Última Inspeção: <span class="textoCampo">Ainda não foi realizada</span></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-    
-                                            <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
-                                            <div class="d-flex">
-                                                <div class="mr-auto p-2">
-                                                    <div class="btn-group" style="margin-bottom:-15px;">
-                                                        <div class="form-group" style="font-size:15px;">
-                                                            <div>Tipo: <span class="textoCampo">'.$indice->tipo.'</span></div>
-                                                            <div>Cnae: <span class="textoCampo">'.$indice->cnae->descricao.'</span></div>
-                                                            <div>Data de requerimento:<span class="textoCampo"> '.$indice->data.'</span></div>
-                                                            <div>Responsável Tecnico: <span class="textoCampo">Resp. Técnico</span></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="idTabela">
-                                            <table>
-                                                <tbody>
-    
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                ';
-                                }
-                                
-                                }elseif($item->status_cadastro == "aprovado"){
-                                $output .= '
-                                    <div class="container cardListagem">
-                                        <div class="d-flex">
-                                            <div class="mr-auto p-2">
-                                                <div class="btn-group" style="margin-bottom:-15px;">
-                                                    <div class="form-group" style="font-size:15px;">
-                                                        <div class="textoCampo">'.$item->nome.'</div>
-                                                        <span>Aprovado</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="p-2">
-                                                <div class="form-group" style="font-size:15px;">
-                                                    <div>'.$item->created_at->format('d/m/Y').'</div>
-                                                </div>
-                                            </div>
-                                            <div class="p-2">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton" onclick="mostrar('.$item->id.')">
-                                                        +
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="cardEstabelecimento'.$item->id.'" style="display:none;">
-                                            <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
-                                            <div class="d-flex">
-                                                <div class="mr-auto p-2">
-                                                    <div class="btn-group" style="margin-bottom:-15px;">
-                                                        <div class="form-group" style="font-size:15px;">
-                                                            <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
-                                                            <div>CNPJ/CPF: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
-                                                            <div>Responsável Técnico:<span class="textoCampo">Fulano de Tal</span></div>
-                                                            <div>Última Inspeção: <span class="textoCampo">Ainda não foi realizada</span></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="idTabela">
-                                            <table>
-                                                <tbody>
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                ';
-                                }
-                    }elseif($filtro == "pendente" && $item->status_cadastro == "pendente"){
-                        $output .= '
-                            <div class="container cardListagem">
-                                <div class="d-flex">
-                                    <div class="mr-auto p-2">
-                                        <div class="btn-group" style="margin-bottom:-15px;">
-                                            <div class="form-group" style="font-size:15px;">
-                                                <div class="textoCampo">'.$item->nome.'</div>
-                                                <span>Cadastro pendente</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="form-group" style="font-size:15px;">
-                                            <div>'.$item->created_at->format('d/m/Y').'</div>
-                                        </div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="dropdown">
-                                            <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton" onclick="mostrar('.$item->id.')">
-                                                +
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="cardEstabelecimento'.$item->id.'" style="display:none;">
-                                    <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
-                                    <div class="d-flex">
-                                        <div class="mr-auto p-2">
-                                            <div class="btn-group" style="margin-bottom:-15px;">
-                                                <div class="form-group" style="font-size:15px;">
-                                                    <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
-                                                    <div>CNPJ/CPF: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
-                                                    <div>Responsável Técnico:<span class="textoCampo">Fulano de Tal</span></div>
-                                                    <div>Última Inspeção: <span class="textoCampo">Ainda não foi realizada</span></div>
-                                                    <button type="button" onclick="empresaId('.$item->id.')" class="btn btn-info">Avaliar</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="idTabela">
-                                    <table>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
+                        </div>
+                        <div class="p-2">
+                            <div class="form-group" style="font-size:15px;">
+                                <div>'.$item->created_at->format('d/m/Y').'</div>
+                            </div>
+                        </div>
+                        <div class="p-2">
+                            <div class="dropdown">
+                                <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton'.$item->id.'" onclick="abrir_fechar_card_requerimento(\''."$item->created_at".'\'+\''."$filtro".'\'+'.$item->id.')">
+                                +
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="'.$item->created_at.''.$filtro.''.$item->id.'" style="display:none;">
+                        <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
+                        <div class="d-flex">
+                            <div class="mr-auto p-2">
+                                <div class="form-group" style="font-size:15px;">
+                                    <div>CNPJ: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
+                                    <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
+                                    <div>Proprietário: <span class="textoCampo">'.$item->user->name.'</span></div>
+                                    <div style="margin-top:10px; margin-bottom:-10px;"><button type="button" onclick="empresaId('.$item->id.')" class="btn btn-success">Avaliar</button></div>
                                 </div>
                             </div>
-                        ';
+                        </div>
+                    </div>
+                </div>
+                ';
 
-                    }elseif($filtro == "aprovado" && $item->status_cadastro == "aprovado"){
-                        $output .= '
-                            <div class="container cardListagem">
-                                <div class="d-flex">
-                                    <div class="mr-auto p-2">
-                                        <div class="btn-group" style="margin-bottom:-15px;">
-                                            <div class="form-group" style="font-size:15px;">
-                                                <div class="textoCampo">'.$item->nome.'</div>
-                                                <span>Aprovado</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="form-group" style="font-size:15px;">
-                                            <div>'.$item->created_at->format('d/m/Y').'</div>
-                                        </div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="dropdown">
-                                            <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton" onclick="mostrar('.$item->id.')">
-                                                +
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="cardEstabelecimento'.$item->id.'" style="display:none;">
-                                    <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
-                                    <div class="d-flex">
-                                        <div class="mr-auto p-2">
-                                            <div class="btn-group" style="margin-bottom:-15px;">
-                                                <div class="form-group" style="font-size:15px;">
-                                                    <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
-                                                    <div>CNPJ/CPF: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
-                                                    <div>Responsável Técnico:<span class="textoCampo">Fulano de Tal</span></div>
-                                                    <div>Última Inspeção: <span class="textoCampo">Ainda não foi realizada</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="idTabela">
-                                    <table>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        ';
-                    }elseif($filtro == "renovacao_de_licenca" && $item->status_cadastro == "renovacao"){
-                        $requerimento = Requerimento::where('empresas_id', $item->id)->get();
-                        foreach ($requerimento as $indice) {
-                            $output .= '
-                            <div class="container cardListagem">
-                                <div class="d-flex">
-                                    <div class="mr-auto p-2">
-                                        <div class="btn-group" style="margin-bottom:-15px;">
-                                            <div class="form-group" style="font-size:15px;">
-                                                <div class="textoCampo">'.$item->nome.'</div>
-                                                <span>Renovação de Licença</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="form-group" style="font-size:15px;">
-                                            <div>'.$item->created_at->format('d/m/Y').'</div>
-                                        </div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="dropdown">
-                                            <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton" onclick="mostrar('.$item->id.')">
-                                                +
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="cardEstabelecimento'.$item->id.'" style="display:none;">
-                                    <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
-                                    <div class="d-flex">
-                                        <div class="mr-auto p-2">
-                                            <div class="btn-group" style="margin-bottom:-15px;">
-                                                <div class="form-group" style="font-size:15px;">
-                                                    <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
-                                                    <div>CNPJ/CPF: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
-                                                    <div>Responsável Técnico:<span class="textoCampo">Fulano de Tal</span></div>
-                                                    <div>Última Inspeção: <span class="textoCampo">Ainda não foi realizada</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
-                                    <div class="d-flex">
-                                        <div class="mr-auto p-2">
-                                            <div class="btn-group" style="margin-bottom:-15px;">
-                                                <div class="form-group" style="font-size:15px;">
-                                                    <div>Tipo: <span class="textoCampo">'.$indice->tipo.'</span></div>
-                                                    <div>Cnae: <span class="textoCampo">'.$indice->cnae->descricao.'</span></div>
-                                                    <div>Data de requerimento:<span class="textoCampo"> '.$indice->data.'</span></div>
-                                                    <div>Responsável Tecnico: <span class="textoCampo">Resp. Técnico</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="idTabela">
-                                    <table>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        ';
-                        }
-
-                    }
-                    elseif($filtro == "primeira_licenca" && $item->status_cadastro == "primeira_licenca"){
-                        $requerimento = Requerimento::where('empresas_id', $item->id)->get();
-                        foreach ($requerimento as $indice) {
-                            $output .= '
-                            <div class="container cardListagem">
-                                <div class="d-flex">
-                                    <div class="mr-auto p-2">
-                                        <div class="btn-group" style="margin-bottom:-15px;">
-                                            <div class="form-group" style="font-size:15px;">
-                                                <div class="textoCampo">'.$item->nome.'</div>
-                                                <span>Primeira Licença</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="form-group" style="font-size:15px;">
-                                            <div>'.$item->created_at->format('d/m/Y').'</div>
-                                        </div>
-                                    </div>
-                                    <div class="p-2">
-                                        <div class="dropdown">
-                                            <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton" onclick="mostrar('.$item->id.')">
-                                                +
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="cardEstabelecimento'.$item->id.'" style="display:none;">
-                                    <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
-                                    <div class="d-flex">
-                                        <div class="mr-auto p-2">
-                                            <div class="btn-group" style="margin-bottom:-15px;">
-                                                <div class="form-group" style="font-size:15px;">
-                                                    <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
-                                                    <div>CNPJ/CPF: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
-                                                    <div>Responsável Técnico:<span class="textoCampo">Fulano de Tal</span></div>
-                                                    <div>Última Inspeção: <span class="textoCampo">Ainda não foi realizada</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
-                                    <div class="d-flex">
-                                        <div class="mr-auto p-2">
-                                            <div class="btn-group" style="margin-bottom:-15px;">
-                                                <div class="form-group" style="font-size:15px;">
-                                                    <div>Tipo: <span class="textoCampo">'.$indice->tipo.'</span></div>
-                                                    <div>Cnae: <span class="textoCampo">'.$indice->cnae->descricao.'</span></div>
-                                                    <div>Data de requerimento:<span class="textoCampo"> '.$indice->data.'</span></div>
-                                                    <div>Responsável Tecnico: <span class="textoCampo">Resp. Técnico</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="idTabela">
-                                    <table>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        ';
-                        }
-                    }
             }
-        }else{
-            $output .= '
-                    <tr>
-                        <td>'.'Nenhum Requerimento!'.'</td>
-                    </tr>
-                    ';
-                $data = array(
-                    'success'   => false,
-                    'table_data' => $output,
-                );
-                echo json_encode($data);
         }
+        // 1º licenca, renovação
+        foreach($requerimentos as $item){
+                if($item->tipo == "primeira_licenca" && ($filtro == "primeira_licenca" || $filtro == "all")){
+                    $output .='
+                        <div class="container cardListagem" id="primeiralicenca">
+                            <div class="d-flex">
+                                <div class="mr-auto p-2">
+                                    <div class="btn-group" style="margin-bottom:-15px;">
+                                        <div class="form-group" style="font-size:15px;">
+                                            <div class="textoCampo">'.$item->empresa->nome.'</div>
+                                            <span>Primeira Licença</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-2">
+                                    <div class="form-group" style="font-size:15px;">
+                                        <div>'.$item->created_at->format('d/m/Y').'</div>
+                                    </div>
+                                </div>
+                                <div class="p-2">
+                                    <div class="dropdown">
+                                    <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton'.$item->id.'" onclick="abrir_fechar_card_requerimento(\''."$item->created_at".'\'+\''."$filtro".'\'+'.$item->id.')">
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="'.$item->created_at.''.$filtro.''.$item->id.'" style="display:none;">
+                                <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
+                                <div class="d-flex">
+                                    <div class="mr-auto p-2">
+                                        <div class="btn-group" style="margin-bottom:-15px;">
+                                            <div class="form-group" style="font-size:15px;">
+                                                <div>CNAE: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
+                                                <div>Responsável Técnico:<span class="textoCampo"> '.$item->resptecnico->user->name.'</span></div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ';
+
+                }elseif($item->tipo == "renovacao_de_licenca"  && ($filtro == "renovacao_de_licenca" || $filtro == "all")){
+                    $output .='
+                    <div class="container cardListagem">
+                        <div class="d-flex">
+                            <div class="mr-auto p-2">
+                                <div class="btn-group" style="margin-bottom:-15px;">
+                                    <div class="form-group" style="font-size:15px;">
+                                        <div class="textoCampo">'.$item->empresa->nome.'</div>
+                                        <span>Renovacao de Licenca</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-2">
+                                <div class="form-group" style="font-size:15px;">
+                                    <div>'.$item->created_at->format('d/m/Y').'</div>
+                                </div>
+                            </div>
+                            <div class="p-2">
+                                <div class="dropdown">
+                                    <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton'.$item->id.'" onclick="abrir_fechar_card_requerimento(\''."$item->created_at".'\'+\''."$filtro".'\'+'.$item->id.')">
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="'.$item->created_at.''.$filtro.''.$item->id.'" style="display:none;">
+                            <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
+                            <div class="d-flex">
+                                <div class="mr-auto p-2">
+                                    <div class="btn-group" style="margin-bottom:-15px;">
+                                        <div class="form-group" style="font-size:15px;">
+                                            <div>CNAE: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
+                                            <div>Responsável Técnico:<span class="textoCampo"> '.$item->resptecnico->user->name.'</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ';
+                }
+        }
+
+
 
 
         $data = array(
