@@ -11,6 +11,7 @@ use App\Empresa;
 use App\Endereco;
 use App\Telefone;
 use App\CnaeEmpresa;
+use App\Requerimento;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
@@ -365,6 +366,7 @@ class CoordenadorController extends Controller
     }
     public function listarRequerimentos($filtro){
         $resultado = Empresa::get();
+
         $output = '';
         if($resultado->count() > 0){
             $rota = "pagina.detalhes";
@@ -420,8 +422,10 @@ class CoordenadorController extends Controller
                                 </div>
                             </div>
                         ';
-                        }elseif($item->status_cadastro == "renovacao_de_licenca"){
-                            $output .= '
+                        }elseif($item->status_cadastro == "renovacao"){
+                            $requerimento = Requerimento::where('empresas_id', $item->id)->get();
+                            foreach ($requerimento as $indice) {
+                                $output .= '
                                 <div class="container cardListagem">
                                     <div class="d-flex">
                                         <div class="mr-auto p-2">
@@ -459,6 +463,20 @@ class CoordenadorController extends Controller
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
+                                        <div class="d-flex">
+                                            <div class="mr-auto p-2">
+                                                <div class="btn-group" style="margin-bottom:-15px;">
+                                                    <div class="form-group" style="font-size:15px;">
+                                                        <div>Tipo: <span class="textoCampo">'.$indice->tipo.'</span></div>
+                                                        <div>Cnae: <span class="textoCampo">'.$indice->cnae->descricao.'</span></div>
+                                                        <div>Data de requerimento:<span class="textoCampo"> '.$indice->data.'</span></div>
+                                                        <div>Responsável Tecnico: <span class="textoCampo">Resp. Técnico</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div id="idTabela">
                                         <table>
@@ -469,7 +487,76 @@ class CoordenadorController extends Controller
                                     </div>
                                 </div>
                             ';
-                            }elseif($item->status_cadastro == "aprovado"){
+                            }
+
+                            }elseif($item->status_cadastro == "primeira_licenca"){
+                                $requerimento = Requerimento::where('empresas_id', $item->id)->get();
+                                foreach ($requerimento as $indice) {
+                                    $output .= '
+                                    <div class="container cardListagem">
+                                        <div class="d-flex">
+                                            <div class="mr-auto p-2">
+                                                <div class="btn-group" style="margin-bottom:-15px;">
+                                                    <div class="form-group" style="font-size:15px;">
+                                                        <div class="textoCampo">'.$item->nome.'</div>
+                                                        <span>Primeira Licença</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="p-2">
+                                                <div class="form-group" style="font-size:15px;">
+                                                    <div>'.$item->created_at->format('d/m/Y').'</div>
+                                                </div>
+                                            </div>
+                                            <div class="p-2">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton'.$item->id.'" onclick="mostrar('.$item->id.')">
+                                                        +
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="cardEstabelecimento'.$item->id.'" style="display:none;">
+                                            <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
+                                            <div class="d-flex">
+                                                <div class="mr-auto p-2">
+                                                    <div class="btn-group" style="margin-bottom:-15px;">
+                                                        <div class="form-group" style="font-size:15px;">
+                                                            <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
+                                                            <div>CNPJ/CPF: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
+                                                            <div>Responsável Técnico:<span class="textoCampo">Fulano de Tal</span></div>
+                                                            <div>Última Inspeção: <span class="textoCampo">Ainda não foi realizada</span></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+    
+                                            <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
+                                            <div class="d-flex">
+                                                <div class="mr-auto p-2">
+                                                    <div class="btn-group" style="margin-bottom:-15px;">
+                                                        <div class="form-group" style="font-size:15px;">
+                                                            <div>Tipo: <span class="textoCampo">'.$indice->tipo.'</span></div>
+                                                            <div>Cnae: <span class="textoCampo">'.$indice->cnae->descricao.'</span></div>
+                                                            <div>Data de requerimento:<span class="textoCampo"> '.$indice->data.'</span></div>
+                                                            <div>Responsável Tecnico: <span class="textoCampo">Resp. Técnico</span></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="idTabela">
+                                            <table>
+                                                <tbody>
+    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                ';
+                                }
+                                
+                                }elseif($item->status_cadastro == "aprovado"){
                                 $output .= '
                                     <div class="container cardListagem">
                                         <div class="d-flex">
@@ -619,8 +706,10 @@ class CoordenadorController extends Controller
                                 </div>
                             </div>
                         ';
-                    }elseif($filtro == "renovacao_de_licenca" && $item->status_cadastro == "renovacao_de_licenca"){
-                        $output .= '
+                    }elseif($filtro == "renovacao_de_licenca" && $item->status_cadastro == "renovacao"){
+                        $requerimento = Requerimento::where('empresas_id', $item->id)->get();
+                        foreach ($requerimento as $indice) {
+                            $output .= '
                             <div class="container cardListagem">
                                 <div class="d-flex">
                                     <div class="mr-auto p-2">
@@ -658,6 +747,20 @@ class CoordenadorController extends Controller
                                             </div>
                                         </div>
                                     </div>
+
+                                    <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
+                                    <div class="d-flex">
+                                        <div class="mr-auto p-2">
+                                            <div class="btn-group" style="margin-bottom:-15px;">
+                                                <div class="form-group" style="font-size:15px;">
+                                                    <div>Tipo: <span class="textoCampo">'.$indice->tipo.'</span></div>
+                                                    <div>Cnae: <span class="textoCampo">'.$indice->cnae->descricao.'</span></div>
+                                                    <div>Data de requerimento:<span class="textoCampo"> '.$indice->data.'</span></div>
+                                                    <div>Responsável Tecnico: <span class="textoCampo">Resp. Técnico</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div id="idTabela">
                                     <table>
@@ -668,6 +771,75 @@ class CoordenadorController extends Controller
                                 </div>
                             </div>
                         ';
+                        }
+
+                    }
+                    elseif($filtro == "primeira_licenca" && $item->status_cadastro == "primeira_licenca"){
+                        $requerimento = Requerimento::where('empresas_id', $item->id)->get();
+                        foreach ($requerimento as $indice) {
+                            $output .= '
+                            <div class="container cardListagem">
+                                <div class="d-flex">
+                                    <div class="mr-auto p-2">
+                                        <div class="btn-group" style="margin-bottom:-15px;">
+                                            <div class="form-group" style="font-size:15px;">
+                                                <div class="textoCampo">'.$item->nome.'</div>
+                                                <span>Primeira Licença</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="form-group" style="font-size:15px;">
+                                            <div>'.$item->created_at->format('d/m/Y').'</div>
+                                        </div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="dropdown">
+                                            <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton" onclick="mostrar('.$item->id.')">
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="cardEstabelecimento'.$item->id.'" style="display:none;">
+                                    <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
+                                    <div class="d-flex">
+                                        <div class="mr-auto p-2">
+                                            <div class="btn-group" style="margin-bottom:-15px;">
+                                                <div class="form-group" style="font-size:15px;">
+                                                    <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
+                                                    <div>CNPJ/CPF: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
+                                                    <div>Responsável Técnico:<span class="textoCampo">Fulano de Tal</span></div>
+                                                    <div>Última Inspeção: <span class="textoCampo">Ainda não foi realizada</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
+                                    <div class="d-flex">
+                                        <div class="mr-auto p-2">
+                                            <div class="btn-group" style="margin-bottom:-15px;">
+                                                <div class="form-group" style="font-size:15px;">
+                                                    <div>Tipo: <span class="textoCampo">'.$indice->tipo.'</span></div>
+                                                    <div>Cnae: <span class="textoCampo">'.$indice->cnae->descricao.'</span></div>
+                                                    <div>Data de requerimento:<span class="textoCampo"> '.$indice->data.'</span></div>
+                                                    <div>Responsável Tecnico: <span class="textoCampo">Resp. Técnico</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="idTabela">
+                                    <table>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        ';
+                        }
                     }
             }
         }else{

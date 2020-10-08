@@ -216,9 +216,11 @@ Route::middleware(['IsRespTecnico'])->group(function () {
 
     Route::get('/empresa/documentacao',             'RespTecnicoController@documentacaoEmpresa')->name('rt.documentacao.empresa');
 
-    // Download de arquivos anexados
     Route::get('/download/arquivo/empresa/rt',      'EmpresaController@downloadArquivo')->name('download.arquivo.empresa');
+
+    Route::get('/rt/requerimento',                     'RespTecnicoController@criarRequerimento')->name('criar.requerimento');
     
+    Route::post('/cadastro/requerimento',  'RespTecnicoController@cadastrarRequerimento')->name('cadastrar.requerimento');
     //Empresa - Responsável Técnico
 /*
     * Consultar histórico de inspeções

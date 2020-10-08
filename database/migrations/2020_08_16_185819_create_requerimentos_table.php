@@ -15,6 +15,19 @@ class CreateRequerimentosTable extends Migration
     {
         Schema::create('requerimentos', function (Blueprint $table) {
             $table->id();
+            $table->string('tipo');
+
+            $table->bigInteger("cnae_id")->nullable();
+            $table->foreign("cnae_id")->references("id")->on("cnaes");
+
+            $table->date('data');
+
+            $table->bigInteger("resptecnicos_id")->nullable();
+            $table->foreign("resptecnicos_id")->references("id")->on("resptecnicos");
+
+            $table->bigInteger("empresas_id")->nullable();
+            $table->foreign("empresas_id")->references("id")->on("empresas");
+
             $table->timestamps();
         });
     }

@@ -54,7 +54,7 @@
                                     {{-- <a class="dropdown-item" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal" onclick="deletarEstabelecimento('{{$empresa->user->name}}')">Deletar Resp. Técnico</a> --}}
                                     {{-- <a class="dropdown-item" style="cursor:pointer">Deletar Resp. Técnico</a> --}}
                                     <a class="dropdown-item" style="cursor:pointer" href="{{ route('rt.documentacao.empresa', ['empresa' => Crypt::encrypt($empresaId)]) }}">Documentos</a>
-                                    <a class="dropdown-item" style="cursor:pointer" data-toggle="modal" data-target="#exampleModalCenter">Requerimento</a>
+                                    <a class="dropdown-item" style="cursor:pointer" href="{{ route('criar.requerimento', ['empresa' => Crypt::encrypt($empresaId)]) }}">Requerimento</a>
 
                                 </div>
                             </div>
@@ -164,7 +164,7 @@
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    {{-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -178,7 +178,6 @@
                     <div class="form-group">
                       <label for="exampleFormControlSelect1">Tipo</label>
                       <select class="form-control" id="exampleFormControlSelect1">
-                        <option>Tipos</option>
                         <option>Primeira Licença</option>
                         <option>Renovar de Licença</option>
                       </select>
@@ -197,6 +196,6 @@
             </div>
         </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 @endsection

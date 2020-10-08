@@ -193,13 +193,14 @@
     }
 
     window.selecionarFiltroRequerimento = function($filtro){
-        // console.log($filtro);
+        console.log($filtro);
         $.ajax({
             url:'{{ config('prefixo.PREFIXO') }}requerimento',
             type:"get",
             dataType:'json',
             data: {"filtro": $filtro },
             success: function(response){
+                console.log(response.table_data);
                 $('tbody_').html(response.table_data);
             }
         });

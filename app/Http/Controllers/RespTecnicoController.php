@@ -13,6 +13,7 @@ use App\Tipodocresp;
 use App\Empresa;
 use App\Docresptec;
 use App\Docempresa;
+use App\Requerimento;
 use Auth;
 use Illuminate\Support\Str;
 use App\RtEmpresa;
@@ -67,6 +68,64 @@ class RespTecnicoController extends Controller
             'cnae'     => $cnaeEmpresa,
             'empresaId'=> $empresa->id,
          ]); 
+    }
+
+    public function criarRequerimento(Request $request)
+    {
+        $id = Crypt::decrypt($request->empresa);
+        $empresa = Empresa::find($id);
+        $rt = RespTecnico::where("user_id", Auth::user()->id)->first();
+        $areas = RtEmpresa::where("resptec_id",$rt->id)->pluck('area_id');
+        $cnaesEmpresa = CnaeEmpresa::where("empresa_id", $id)->get();
+        $temp0 = [];
+        foreach ($cnaesEmpresa as $indice0) {
+            array_push($temp0, $indice0->cnae_id);
+        }
+        $temp = [];
+
+        foreach ($areas as $indice) {
+            $cnaes = Cnae::where('areas_id', $indice)->get();
+            foreach ($cnaes as $indice2) {
+                if (in_array($indice2->id, $temp0)) {
+                    array_push($temp, $indice2);
+                }
+            }
+        }
+
+        return view('responsavel_tec/requerimento',[
+            'cnaes'        => $temp,
+            'resptecnico'  => $rt->id,
+            'empresa'      => $id,
+            'status'       => $empresa->status_cadastro,
+        ]);
+    }
+
+    public function cadastrarRequerimento(Request $request)
+    {
+
+        $validator = $request->validate([
+            'tipo'     => 'required',
+            'cnae'    => 'required',
+        ]);
+
+        $empresa = Empresa::find($request->empresa);
+
+        $data = date('Y-m-d');
+
+        $requerimento = Requerimento::create([
+            'tipo'            => $request->tipo,
+            'cnae_id'         => $request->cnae,
+            'data'            => $data,
+            'resptecnicos_id' => $request->resptecnico,
+            'empresas_id'     => $request->empresa,
+        ]);
+
+        $empresa->status_cadastro = $request->tipo;
+        $empresa->save();
+
+        session()->flash('success', 'O seu requerimento foi enviado para análise!');
+        return back();
+
     }
 
     public function documentacaoEmpresa(Request $request)

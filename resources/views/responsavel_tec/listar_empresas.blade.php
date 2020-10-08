@@ -80,12 +80,13 @@
                                     <span class="btn-sm btn-success">Aprovado</span>
                                 </div>
                             </div>
+
+                            <div class="p-2">
+                                <a href="{{ route('empresa',["empresa" => Crypt::encrypt($item->empresa_id)]) }}" style="text-decoration:none;">
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                </a>
+                            </div>
                         @endif
-                        <div class="p-2">
-                            <a href="{{ route('empresa',["empresa" => Crypt::encrypt($item->empresa_id)]) }}" style="text-decoration:none;">
-                                <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
-                            </a>
-                        </div>
                     </div>
                 @endforeach
             @else
