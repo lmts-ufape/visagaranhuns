@@ -44,12 +44,12 @@
                             </div>
                            <div class="p-2">
                                 <div class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="filtroButtonRequerimento" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Filtro
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('aprovado')" style="text-decoration:none;cursor:pointer">Cadastro Aprovado</a>
-                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('denuncia')" style="text-decoration:none;cursor:pointer">Denúncia</a>
+                                        {{-- <a class="dropdown-item" onclick="selecionarFiltroRequerimento('aprovado')" style="text-decoration:none;cursor:pointer">Cadastro Aprovado</a> --}}
+                                        {{-- <a class="dropdown-item" onclick="selecionarFiltroRequerimento('denuncia')" style="text-decoration:none;cursor:pointer">Denúncia</a> --}}
                                         <a class="dropdown-item" onclick="selecionarFiltroRequerimento('pendente')" style="text-decoration:none;cursor:pointer">Cadastro Pendente</a>
                                         <a class="dropdown-item" onclick="selecionarFiltroRequerimento('primeira_licenca')" style="text-decoration:none;cursor:pointer">Primeira Licença</a>
                                         <a class="dropdown-item" onclick="selecionarFiltroRequerimento('renovacao_de_licenca')" style="text-decoration:none;cursor:pointer">Renovação de Licença</a>
@@ -193,7 +193,16 @@
     }
 
     window.selecionarFiltroRequerimento = function($filtro){
-        console.log($filtro);
+        if($filtro == 'pendente'){
+            document.getElementById('filtroButtonRequerimento').innerHTML = "Cadastro Pendente";
+        }else if($filtro == 'primeira_licenca'){
+            document.getElementById('filtroButtonRequerimento').innerHTML = "Primeira licença";
+        }else if($filtro == 'renovacao_de_licenca'){
+            document.getElementById('filtroButtonRequerimento').innerHTML = "Renovação de licença";
+        }else if($filtro == 'all'){
+            document.getElementById('filtroButtonRequerimento').innerHTML = "Mostrar tudo";
+        }
+
         $.ajax({
             url:'{{ config('prefixo.PREFIXO') }}requerimento',
             type:"get",

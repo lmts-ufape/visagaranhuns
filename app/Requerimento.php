@@ -20,14 +20,14 @@ class Requerimento extends Model
     public function cnae() {
         return $this->belongsTo("\App\Cnae");
     }
-    
+
     // Responsável Técnico que requisitou o requerimento
     public function resptecnico() {
-        return $this->belongsTo("\App\RespTecnico");
+        return $this->belongsTo("\App\RespTecnico",'resptecnicos_id');
     }
 
     // Requerimento de uma empresa
     public function empresa() {
-        return $this->belongsTo("\App\Empresa");
+        return $this->belongsTo("\App\Empresa",'empresas_id');
     }
 }
