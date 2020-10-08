@@ -161,6 +161,13 @@
     @csrf
     <input id="inputSubmeterId" type="hidden" name="empresa" value="">
 </form>
+
+<form id="licenca" method="POST" action="{{route('licenca')}}">
+    @csrf
+    <input id="licencaAvaliacao" type="hidden" name="empresa" value="">
+    <input id="areaCnae"        type="hidden" name="area"    value="">
+</form>
+
 </div>
 <script type="text/javascript">
     window.onload= function() {

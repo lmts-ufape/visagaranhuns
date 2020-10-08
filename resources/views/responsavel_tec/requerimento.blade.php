@@ -35,12 +35,12 @@
                     <input type="hidden" name="empresa" value="{{$empresa}}">
                     <div class="form-group">
                         <label for="exampleFormControlSelect1">Tipo de requerimento</label>
-                        @if ($status == "aprovado2")
+                        @if ($status == "aprovado2" || $status == "renovacao")
                         <select class="form-control" id="exampleFormControlSelect1" name="tipo">
                             <option value="primeira_licenca" disabled>Primeira Licença</option>
                             <option value="renovacao">Renovação</option>
                         </select>
-                        @elseif ($status == "aprovado")
+                        @elseif ($status == "aprovado" || $status == "primeira_licenca")
                         <select class="form-control" id="exampleFormControlSelect1" name="tipo">
                             <option value="primeira_licenca">Primeira Licença</option>
                             <option value="renovacao" disabled>Renovação</option>

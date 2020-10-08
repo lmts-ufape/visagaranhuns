@@ -55,3 +55,11 @@ window.empresaId = function($empresaId) {
     document.getElementById("inputSubmeterId").value = $empresaId;
     document.getElementById("submeterId").submit();
 }
+
+window.licencaAvaliacao = function($empresaId, $area) {
+    console.log($empresaId);
+    console.log($area);
+    document.getElementById("licencaAvaliacao").value = $empresaId;
+    document.getElementById("areaCnae").value = $area;
+    document.getElementById("licenca").submit();
+}

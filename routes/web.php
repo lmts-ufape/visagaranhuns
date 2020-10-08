@@ -104,6 +104,10 @@ Route::middleware(['IsCoordenador'])->group(function () {
     // Rotas para convidar Inspetores e agente
     Route::post("/convidar/inspetor", "CoordenadorController@convidarEmail")->name("convidar.inspetor");
     Route::post("/convidar/agente", "CoordenadorController@convidarEmail")->name("convidar.agente");
+
+    Route::post("/licenca", "CoordenadorController@licenca")->name("licenca");
+
+    Route::post("/julgar/requerimento", "CoordenadorController@julgarRequerimento")->name("julgar.requerimento");
     //Supervisor
 /*
     * Cadastrar/Editar/Deletar relatórios (Editar também relatórios criados pos outras pessoas)

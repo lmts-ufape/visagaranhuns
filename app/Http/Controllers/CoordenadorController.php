@@ -8,6 +8,8 @@ use App\User;
 use App\Agente;
 use App\Inspetor;
 use App\Empresa;
+use App\Docempresa;
+use App\Checklistemp;
 use App\Endereco;
 use App\Telefone;
 use App\CnaeEmpresa;
@@ -69,6 +71,29 @@ class CoordenadorController extends Controller
             "telefone" => $telefone,
             "cnae" => $cnaeEmpresa,
         ]);
+    }
+
+    public function licenca(Request $request)
+    {
+        $empresa = Empresa::find($request->empresa);
+
+        $docsempresa = Docempresa::where('empresa_id', $empresa->id)->get();
+        $checklist = Checklistemp::where('empresa_id', $empresa->id)
+        ->where('areas_id', $request->area)
+        ->orderBy('id','ASC')
+        ->get();
+        // dd($checklist);
+
+        return view("coordenador/avaliar_requerimento")->with([
+            "docsempresa" => $docsempresa,
+            "checklist"   => $checklist,
+            "empresa"     => $empresa,
+        ]);
+    }
+
+    public function julgarRequerimento(Request $request)
+    {
+
     }
 
     public function julgar(Request $request)
@@ -448,7 +473,7 @@ class CoordenadorController extends Controller
                                             <div class="form-group" style="font-size:15px;">
                                                 <div>CNAE: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
                                                 <div>Responsável Técnico:<span class="textoCampo"> '.$item->resptecnico->user->name.'</span></div>
-
+                                                <div style="margin-top:10px; margin-bottom:-10px;"><button type="button" onclick="licencaAvaliacao('.$item->empresa->id.','.$item->cnae->areas_id.')" class="btn btn-success">Avaliar</button></div>
                                             </div>
                                         </div>
                                     </div>
@@ -490,6 +515,7 @@ class CoordenadorController extends Controller
                                         <div class="form-group" style="font-size:15px;">
                                             <div>CNAE: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
                                             <div>Responsável Técnico:<span class="textoCampo"> '.$item->resptecnico->user->name.'</span></div>
+                                            <div style="margin-top:10px; margin-bottom:-10px;"><button type="button" onclick="licencaAvaliacao('.$item->id.')" class="btn btn-success">Avaliar</button></div>
                                         </div>
                                     </div>
                                 </div>
