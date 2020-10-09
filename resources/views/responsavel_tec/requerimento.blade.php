@@ -22,10 +22,47 @@
             </div>
         </div>
     </div>
-    
-    <div class="container">
 
+    <div class="barraMenu" style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
+        <div class="container" style="margin-top:1rem;">
+            <div class="form-row">
+
+                <div class="form-group col-md-12">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">LISTA DE CNAE</label>
+                        </div>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <table class="table table-hover">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Código</th>
+                                    <th scope="col">Cnae</th>
+                                    <th scope="col">Tipo</th>
+                                    <th scope="col">Status</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($cnaes as $item)
+                                        <tr>
+                                            <th>{{$item->codigo}}</th>
+                                            <td>{{$item->descricao}}</td>
+                                            <td>Tipo</td>
+                                            <td>Status</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                              </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    {{-- <div class="container">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal2">Aprovar cadastro</button>
+    </div> --}}
     <div class="container">
         <div class="row justify-content-left" style="margin-left:0px;padding-bottom:20rem;">
             <div class="mr-auto p-2 styleBarraPrincipalPC">
@@ -60,13 +97,35 @@
             </div>
         </div>
     </div>
-    <!-- Paginacao -->
-    {{-- <div class="col-md-12" style="margin-bottom:2rem;">
-        <div class="row justify-content-center">
-            <span>{{$empresas->links()}}</span>
+</div>
+<!-- Modal - tipo de requerimento-->
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#3ea81f;">
+                    <img src="{{ asset('/imagens/logo_atencao3.png') }}" alt="Logo" style=" margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Aprovar cadastro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12" style="font-family: 'Roboto', sans-serif;">Tem certeza de que deseja aprovar o cadastro do estabelecimento <label id="nomeDoEstabelecimento" style="font-weight:bold; font-family: 'Roboto', sans-serif;">sadsa</label>?</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"style="width:100px;">Não</button>
+                <form method="POST">
+                    @csrf
+                    <div class="col-md-12" style="padding-right:0">
+                        <button type="submit" class="btn btn-success botao-form" style="width:100%">
+                            Sim, aprovar cadastro
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div> --}}
-    <!--x Paginacao x-->
+    </div>
 </div>
 @endsection
 
