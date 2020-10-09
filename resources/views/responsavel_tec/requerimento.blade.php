@@ -43,12 +43,12 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($cnaes as $item)
+                                    @foreach ($cnaeRequerimento as $item)
                                         <tr>
                                             <th>{{$item->codigo}}</th>
                                             <td>{{$item->descricao}}</td>
-                                            <td>Tipo</td>
-                                            <td>Status</td>
+                                            <td>{{$item->tipo}}</td>
+                                            <td>{{$item->status}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

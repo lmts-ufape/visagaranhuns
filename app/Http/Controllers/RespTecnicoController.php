@@ -95,12 +95,30 @@ class RespTecnicoController extends Controller
             }
         }
 
+        $cnaeRequerimento = [];
+
+        foreach ($temp as $indice) {
+            foreach ($requerimentos as $indice2) {
+                if ($indice->id == $indice2->cnae_id) {
+                    $obj = (object) array(
+                        'cnaeId'    => $indice->id,
+                        'codigo'    => $indice->codigo, 
+                        'descricao' => $indice->descricao,
+                        'tipo'      => $indice2->tipo,
+                        'status'    => $indice2->status,
+                    );
+                    array_push($cnaeRequerimento, $obj);
+                }
+            }
+        }
+
         return view('responsavel_tec/requerimento',[
-            'cnaes'        => $temp,
-            'resptecnico'  => $rt->id,
-            'empresa'      => $id,
-            'status'       => $empresa->status_cadastro,
-            'requerimentos' => $requerimentos,
+            'cnaes'             => $temp,
+            'resptecnico'       => $rt->id,
+            'empresa'           => $id,
+            'status'            => $empresa->status_cadastro,
+            'requerimentos'     => $requerimentos,
+            'cnaeRequerimento'  => $cnaeRequerimento,
         ]);
     }
 
