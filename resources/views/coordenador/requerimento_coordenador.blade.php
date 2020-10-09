@@ -32,7 +32,18 @@
                 </div>
             </div>
         </div>
-
+        @if(!empty($aprovado))
+        <div class="alert alert-warning alert-block fade show">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{$aprovado}}</strong>
+        </div>
+        @endif
+        @if(!empty($reprovado))
+        <div class="alert alert-warning alert-block fade show">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{$reprovado}}</strong>
+        </div>
+        @endif
     <div class="container" style="margin-top:2rem;margin-left:10px;">
         <div class="form-row">
             <div class="form-group col-md-8">
@@ -164,8 +175,9 @@
 
 <form id="licenca" method="POST" action="{{route('licenca')}}">
     @csrf
-    <input id="licencaAvaliacao" type="hidden" name="empresa" value="">
-    <input id="areaCnae"        type="hidden" name="area"    value="">
+    <input id="licencaAvaliacao" type="hidden" name="empresa"         value="">
+    <input id="areaCnae"         type="hidden" name="area"            value="">
+    <input id="requerimento"     type="hidden" name="requerimento"    value="">
 </form>
 
 </div>

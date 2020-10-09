@@ -125,23 +125,31 @@
                                         <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-12" style="font-family: 'Roboto', sans-serif;">Tem certeza de que deseja reprovar o requerimento do estabelecimento <label id="nomeDoEstabelecimento" style="font-weight:bold; font-family: 'Roboto', sans-serif;">{{$empresa->nome}}</label>?</div>
-                                            {{-- <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px;"><img src="{{ asset('/imagens/logo_bloqueado.png') }}" alt="Logo" style="width:15px; margin-right:5px;"/> Essa ação não poderá ser desfeita</div> --}}
+                                    <form method="POST" action="{{ route('julgar.requerimento') }}">
+                                        @csrf
+
+                                        <input  type="hidden" name="empresa"       value="{{$empresa->id}}">
+                                        <input  type="hidden" name="decisao"       value="false">
+                                        <input  type="hidden" name="requerimento"  value="{{$requerimento}}">
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-12" style="font-family: 'Roboto', sans-serif;">Tem certeza de que deseja reprovar o requerimento do estabelecimento <label id="nomeDoEstabelecimento" style="font-weight:bold; font-family: 'Roboto', sans-serif;">{{$empresa->nome}}</label>?</div>
+                                                <div class="col-12" style="font-family: 'Roboto', sans-serif;">
+                                                    <label for="exampleFormControlTextarea1">Problemas:</label>
+                                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="avisos"></textarea>
+                                                </div>
+                                                {{-- <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px;"><img src="{{ asset('/imagens/logo_bloqueado.png') }}" alt="Logo" style="width:15px; margin-right:5px;"/> Essa ação não poderá ser desfeita</div> --}}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"style="width:100px;">Não</button>
-                                        <form method="POST" action="{{ route('julgar.requerimento', ['empresa_id' => $empresa->id, 'decisao' => 'false']) }}">
-                                            @csrf
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Não</button>
                                             <div class="col-md-12" style="padding-left:0">
                                                 <button type="submit" class="btn btn-success botao-form" style="width:100%">
                                                         Sim, reprovar cadastro
                                                 </button>
                                             </div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -162,8 +170,13 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"style="width:100px;">Não</button>
-                                            <form method="POST" action="{{ route('julgar.requerimento', ['empresa_id' => $empresa->id, 'decisao' => 'true']) }}">
+                                            <form method="POST" action="{{ route('julgar.requerimento') }}">
                                                 @csrf
+
+                                                <input  type="hidden" name="empresa"       value="{{$empresa->id}}">
+                                                <input  type="hidden" name="decisao"       value="true">
+                                                <input  type="hidden" name="requerimento"  value="{{$requerimento}}">
+
                                                 <div class="col-md-12" style="padding-right:0">
                                                     <button type="submit" class="btn btn-success botao-form" style="width:100%">
                                                         Sim, aprovar cadastro
@@ -184,7 +197,6 @@
                         <div class="col-auto">
 
                         </div>
-                    </form>
                 </div>
     </div>
 </div>

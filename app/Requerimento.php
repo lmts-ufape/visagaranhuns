@@ -13,7 +13,7 @@ class Requerimento extends Model
      * @var array
      */
     protected $fillable = [
-        'tipo', 'cnae_id', 'data', 'resptecnicos_id', 'empresas_id',
+        'tipo', 'status', 'aviso', 'cnae_id', 'data', 'resptecnicos_id', 'empresas_id',
     ];
 
     // Cnae especifico para o requerimento

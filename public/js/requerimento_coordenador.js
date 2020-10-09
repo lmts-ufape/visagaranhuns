@@ -56,10 +56,11 @@ window.empresaId = function($empresaId) {
     document.getElementById("submeterId").submit();
 }
 
-window.licencaAvaliacao = function($empresaId, $area) {
+window.licencaAvaliacao = function($empresaId, $area, $requerimento) {
     console.log($empresaId);
     console.log($area);
     document.getElementById("licencaAvaliacao").value = $empresaId;
     document.getElementById("areaCnae").value = $area;
+    document.getElementById("requerimento").value = $requerimento;
     document.getElementById("licenca").submit();
 }

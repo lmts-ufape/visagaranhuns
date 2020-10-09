@@ -118,6 +118,8 @@ class RespTecnicoController extends Controller
 
         $requerimento = Requerimento::create([
             'tipo'            => $request->tipo,
+            'status'          => "pendente",
+            'aviso'           => "",
             'cnae_id'         => $request->cnae,
             'data'            => $data,
             'resptecnicos_id' => $request->resptecnico,

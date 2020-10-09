@@ -82,18 +82,42 @@ class CoordenadorController extends Controller
         ->where('areas_id', $request->area)
         ->orderBy('id','ASC')
         ->get();
-        // dd($checklist);
+
 
         return view("coordenador/avaliar_requerimento")->with([
-            "docsempresa" => $docsempresa,
-            "checklist"   => $checklist,
-            "empresa"     => $empresa,
+            "docsempresa"  => $docsempresa,
+            "checklist"    => $checklist,
+            "empresa"      => $empresa,
+            "requerimento" => $request->requerimento,
         ]);
     }
 
     public function julgarRequerimento(Request $request)
     {
 
+        if ($request->decisao == "true") {
+            
+            $requerimento = Requerimento::find($request->requerimento);
+            $requerimento->status = "aprovado";
+            $requerimento->save();
+
+            $inspetores = Inspetor::get();
+            $agentes = Agente::get();
+            return view('coordenador/requerimento_coordenador',["inspetores" => $inspetores,"agentes" => $agentes])->with('aprovado', 'O requerimento foi aprovado!');
+
+        } else {
+
+            $requerimento = Requerimento::find($request->requerimento);
+            $requerimento->status = "reprovado";
+            $requerimento->aviso = $request->avisos;
+            $requerimento->save();
+
+            $inspetores = Inspetor::get();
+            $agentes = Agente::get();
+            return view('coordenador/requerimento_coordenador',["inspetores" => $inspetores,"agentes" => $agentes])->with('reprovado', 'O requerimento foi reprovado!');
+
+        }
+        
     }
 
     public function julgar(Request $request)
@@ -440,7 +464,7 @@ class CoordenadorController extends Controller
         }
         // 1º licenca, renovação
         foreach($requerimentos as $item){
-                if($item->tipo == "primeira_licenca" && ($filtro == "primeira_licenca" || $filtro == "all")){
+                if($item->tipo == "primeira_licenca" && ($filtro == "primeira_licenca" || $filtro == "all") && ($item->status == "pendente")){
                     $output .='
                         <div class="container cardListagem" id="primeiralicenca">
                             <div class="d-flex">
@@ -473,7 +497,8 @@ class CoordenadorController extends Controller
                                             <div class="form-group" style="font-size:15px;">
                                                 <div>CNAE: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
                                                 <div>Responsável Técnico:<span class="textoCampo"> '.$item->resptecnico->user->name.'</span></div>
-                                                <div style="margin-top:10px; margin-bottom:-10px;"><button type="button" onclick="licencaAvaliacao('.$item->empresa->id.','.$item->cnae->areas_id.')" class="btn btn-success">Avaliar</button></div>
+                                                <div>Status:<span class="textoCampo"> '.$item->status.'</span></div>
+                                                <div style="margin-top:10px; margin-bottom:-10px;"><button type="button" onclick="licencaAvaliacao('.$item->empresa->id.','.$item->cnae->areas_id.','.$item->id.')" class="btn btn-success">Avaliar</button></div>
                                             </div>
                                         </div>
                                     </div>
@@ -482,7 +507,50 @@ class CoordenadorController extends Controller
                         </div>
                     ';
 
-                }elseif($item->tipo == "renovacao_de_licenca"  && ($filtro == "renovacao_de_licenca" || $filtro == "all")){
+                }elseif($item->tipo == "primeira_licenca" && ($filtro == "primeira_licenca" || $filtro == "all") && ($item->status == "aprovado")){
+                    $output .='
+                        <div class="container cardListagem" id="primeiralicenca">
+                            <div class="d-flex">
+                                <div class="mr-auto p-2">
+                                    <div class="btn-group" style="margin-bottom:-15px;">
+                                        <div class="form-group" style="font-size:15px;">
+                                            <div class="textoCampo">'.$item->empresa->nome.'</div>
+                                            <span>Primeira Licença</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-2">
+                                    <div class="form-group" style="font-size:15px;">
+                                        <div>'.$item->created_at->format('d/m/Y').'</div>
+                                    </div>
+                                </div>
+                                <div class="p-2">
+                                    <div class="dropdown">
+                                    <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton'.$item->id.'" onclick="abrir_fechar_card_requerimento(\''."$item->created_at".'\'+\''."$filtro".'\'+'.$item->id.')">
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="'.$item->created_at.''.$filtro.''.$item->id.'" style="display:none;">
+                                <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
+                                <div class="d-flex">
+                                    <div class="mr-auto p-2">
+                                        <div class="btn-group" style="margin-bottom:-15px;">
+                                            <div class="form-group" style="font-size:15px;">
+                                                <div>CNAE: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
+                                                <div>Responsável Técnico:<span class="textoCampo"> '.$item->resptecnico->user->name.'</span></div>
+                                                <div>Status:<span class="textoCampo"> '.$item->status.'</span></div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ';
+
+                }elseif($item->tipo == "renovacao_de_licenca"  && ($filtro == "renovacao_de_licenca" || $filtro == "all") && ($item->status == "pendente")){
                     $output .='
                     <div class="container cardListagem">
                         <div class="d-flex">
@@ -516,6 +584,47 @@ class CoordenadorController extends Controller
                                             <div>CNAE: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
                                             <div>Responsável Técnico:<span class="textoCampo"> '.$item->resptecnico->user->name.'</span></div>
                                             <div style="margin-top:10px; margin-bottom:-10px;"><button type="button" onclick="licencaAvaliacao('.$item->id.')" class="btn btn-success">Avaliar</button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ';
+                }elseif($item->tipo == "renovacao_de_licenca"  && ($filtro == "renovacao_de_licenca" || $filtro == "all") && ($item->status == "aprovado")){
+                    $output .='
+                    <div class="container cardListagem">
+                        <div class="d-flex">
+                            <div class="mr-auto p-2">
+                                <div class="btn-group" style="margin-bottom:-15px;">
+                                    <div class="form-group" style="font-size:15px;">
+                                        <div class="textoCampo">'.$item->empresa->nome.'</div>
+                                        <span>Renovacao de Licenca</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-2">
+                                <div class="form-group" style="font-size:15px;">
+                                    <div>'.$item->created_at->format('d/m/Y').'</div>
+                                </div>
+                            </div>
+                            <div class="p-2">
+                                <div class="dropdown">
+                                    <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton'.$item->id.'" onclick="abrir_fechar_card_requerimento(\''."$item->created_at".'\'+\''."$filtro".'\'+'.$item->id.')">
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="'.$item->created_at.''.$filtro.''.$item->id.'" style="display:none;">
+                            <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
+                            <div class="d-flex">
+                                <div class="mr-auto p-2">
+                                    <div class="btn-group" style="margin-bottom:-15px;">
+                                        <div class="form-group" style="font-size:15px;">
+                                            <div>CNAE: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
+                                            <div>Responsável Técnico:<span class="textoCampo"> '.$item->resptecnico->user->name.'</span></div>
+
                                         </div>
                                     </div>
                                 </div>

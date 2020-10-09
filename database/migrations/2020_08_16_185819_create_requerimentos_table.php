@@ -17,6 +17,9 @@ class CreateRequerimentosTable extends Migration
             $table->id();
             $table->string('tipo');
 
+            $table->string('status');
+            $table->longText('aviso');
+
             $table->bigInteger("cnae_id")->nullable();
             $table->foreign("cnae_id")->references("id")->on("cnaes");
 
