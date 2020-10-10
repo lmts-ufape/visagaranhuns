@@ -23,6 +23,7 @@ use App\Checklistresp;
 use App\Checklistemp;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
+use DB;
 
 class RespTecnicoController extends Controller
 {
@@ -42,14 +43,14 @@ class RespTecnicoController extends Controller
         $rt = RespTecnico::where('user_id', $user->id)->first();
         $temp = [];
         $empresas = [];
-        
+
         $empresa = RtEmpresa::where('resptec_id', $rt->id)->pluck('empresa_id');
-        
+
         foreach ($empresa as $indice) {
-            array_push($temp, RtEmpresa::where('empresa_id', $indice)->first());    
+            array_push($temp, RtEmpresa::where('empresa_id', $indice)->first());
         }
         $empresas = array_unique($temp);
-        
+
         return view('responsavel_tec/listar_empresas',['empresas' => $empresas, 'tipo' => 'estabelecimentos']);
     }
 
@@ -67,7 +68,7 @@ class RespTecnicoController extends Controller
             'telefone' => $telefone,
             'cnae'     => $cnaeEmpresa,
             'empresaId'=> $empresa->id,
-         ]); 
+         ]);
     }
 
     public function criarRequerimento(Request $request)
@@ -79,6 +80,15 @@ class RespTecnicoController extends Controller
         $cnaesEmpresa = CnaeEmpresa::where("empresa_id", $id)->get();
         $requerimentos = Requerimento::where('empresas_id', $empresa->id)
         ->where('resptecnicos_id', $rt->id)->get();
+
+        $resultado = Empresa::find($id);
+
+        $res = DB::table('cnaes_empresas')->where('empresa_id','=',2)->leftJoin('requerimentos','cnaes_empresas.id','=','requerimentos.cnae_id')->join('cnaes','cnaes_empresas.cnae_id','=','cnaes.id')->select('cnaes_empresas.id','requerimentos.tipo','requerimentos.status','requerimentos.aviso','cnaes.codigo','cnaes.descricao')->get();
+
+        $arrayResultado = [];
+        foreach($res as $item){
+            array_push($arrayResultado, $item);
+        }
 
         $temp0 = [];
         foreach ($cnaesEmpresa as $indice0) {
@@ -102,7 +112,7 @@ class RespTecnicoController extends Controller
                 if ($indice->id == $indice2->cnae_id) {
                     $obj = (object) array(
                         'cnaeId'    => $indice->id,
-                        'codigo'    => $indice->codigo, 
+                        'codigo'    => $indice->codigo,
                         'descricao' => $indice->descricao,
                         'tipo'      => $indice2->tipo,
                         'status'    => $indice2->status,
@@ -115,10 +125,11 @@ class RespTecnicoController extends Controller
         return view('responsavel_tec/requerimento',[
             'cnaes'             => $temp,
             'resptecnico'       => $rt->id,
-            'empresa'           => $id,
+            'empresas'           => $resultado,
             'status'            => $empresa->status_cadastro,
             'requerimentos'     => $requerimentos,
             'cnaeRequerimento'  => $cnaeRequerimento,
+            'resultados'         => $arrayResultado,
         ]);
     }
 
@@ -153,7 +164,7 @@ class RespTecnicoController extends Controller
     }
 
     public function documentacaoEmpresa(Request $request)
-    {   
+    {
         $idEmpresa = Crypt::decrypt($request->empresa);
         $empresa = Empresa::where('id', $idEmpresa)->first();
         $docsempresa = Docempresa::where('empresa_id', $empresa->id)->get();
@@ -189,7 +200,7 @@ class RespTecnicoController extends Controller
         }
 
         $temp = array_unique($resptecnicos);
-        
+
         $cnae = array();
         $areas = array();
 
@@ -202,7 +213,7 @@ class RespTecnicoController extends Controller
             $area = Area::find($indice->areas_id);
             array_push($areas, $area);
         }
-        
+
         $resultAreasTemp = array_unique($areas);
 
         $areasOrdenado = [];
@@ -211,10 +222,10 @@ class RespTecnicoController extends Controller
             array_push($areasOrdenado, $indice);
         }
 
-        return view('responsavel_tec.cadastrar_responsavel_tec')->with(["user" => $user, 
-        "empresaId" => $request->empresaId, 
-        'areas' => $areasOrdenado, 
-        'respTecnicos' => $temp, 
+        return view('responsavel_tec.cadastrar_responsavel_tec')->with(["user" => $user,
+        "empresaId" => $request->empresaId,
+        'areas' => $areasOrdenado,
+        'respTecnicos' => $temp,
         'rtempresa' => $rtempresa]);
     }
 
@@ -226,13 +237,13 @@ class RespTecnicoController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $empresa = Empresa::find($request->empresaId);
         $user    = User::where("email", $request->email)->first();
-        
+
         if ($user != null) {
 
-            for ($i=0; $i < count($request->area); $i++) { 
+            for ($i=0; $i < count($request->area); $i++) {
                 $rtempresa = RtEmpresa::where('area_id', $request->area[$i])
                 ->where('empresa_id', $request->empresaId)->first();
                 if ($rtempresa != null) {
@@ -240,7 +251,7 @@ class RespTecnicoController extends Controller
                     return back();
                 }
             }
-            
+
             $resptecnico = RespTecnico::where('user_id', $user->id)->first();
 
             $validator = $request->validate([
@@ -252,7 +263,7 @@ class RespTecnicoController extends Controller
 
             $hoje = date('d/m/Y');
 
-            for ($i=0; $i < count($request->area); $i++) { 
+            for ($i=0; $i < count($request->area); $i++) {
                 $rtempresa = RtEmpresa::create([
                     'horas' => $request->carga_horaria,
                     'data_inicio' => $hoje,
@@ -270,7 +281,7 @@ class RespTecnicoController extends Controller
 
         else {
 
-            for ($i=0; $i < count($request->area); $i++) { 
+            for ($i=0; $i < count($request->area); $i++) {
                 $rtempresa = RtEmpresa::where('area_id', $request->area[$i])
                 ->where('empresa_id', $request->empresaId)->first();
                 if ($rtempresa != null) {
@@ -290,9 +301,9 @@ class RespTecnicoController extends Controller
                 'telefone'       => 'required|string',
                 'carga_horaria'  => 'required|integer',
             ]);
-    
+
             $passwordTemporario = Str::random(8);
-    
+
             $user = User::create([
                 'name'            => $request->nome,
                 'email'           => $request->email,
@@ -300,9 +311,9 @@ class RespTecnicoController extends Controller
                 'tipo'            => "rt",
                 'status_cadastro' => "aprovado",
             ]);
-    
+
             \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTEmail($request->email, $passwordTemporario, $empresa->nome));
-    
+
             $respTec = RespTecnico::create([
                 'formacao'       => $request->formacao,
                 'especializacao' => $request->especializacao,
@@ -313,7 +324,7 @@ class RespTecnicoController extends Controller
                 // 'empresa_id'     => $request->empresaId,
             ]);
 
-            for ($i=0; $i < count($request->area); $i++) { 
+            for ($i=0; $i < count($request->area); $i++) {
                 $rtempresa = RtEmpresa::create([
                     'horas' => $request->carga_horaria,
                     'data_inicio' => $hoje,
@@ -328,12 +339,12 @@ class RespTecnicoController extends Controller
             $areastemp = [];
 
             foreach ($rtempresatemp as $indice) {
-                array_push($areastemp, $indice->area_id);    
+                array_push($areastemp, $indice->area_id);
             }
 
             for ($i=0; $i < count($areastemp); $i++) {
                 $areatipodocresp = AreaTipodocresp::where('area_id', $areastemp[$i])->get();
-    
+
                 foreach ($areatipodocresp as $indice) {
                     // dd("Antes");
                     $checklistresp = Checklistresp::create([
@@ -345,7 +356,7 @@ class RespTecnicoController extends Controller
                     ]);
                 }
             }
-    
+
             return redirect()->route('/');
         }
     }
@@ -377,12 +388,12 @@ class RespTecnicoController extends Controller
         ]);
 
         $docrt = Docresptec::where("nome", $request->file)->first();
-        
+
         Storage::delete($docrt->nome);
 
         $fileDocemp = $request->arquivo;
 
-        $pathDocemp = 'empresas/' . $docrt->empresa_id . '/' . $docrt->tipodocemp_id . '/'; 
+        $pathDocemp = 'empresas/' . $docrt->empresa_id . '/' . $docrt->tipodocemp_id . '/';
 
         $nomeDocemp = $request->arquivo->getClientOriginalName();
 
@@ -404,10 +415,10 @@ class RespTecnicoController extends Controller
         $checkrespt = [];
 
         $checklistresp = Checklistresp::where('resptecnicos_id', $rt->id)->orderBy('id','ASC')->pluck('tipodocres_id');
-        for ($i=0; $i < count($checklistresp); $i++) { 
+        for ($i=0; $i < count($checklistresp); $i++) {
             array_push($temp, $checklistresp[$i]);
         }
-        
+
         $array = array_unique($temp);
 
         foreach ($array as $indice) {
@@ -423,7 +434,7 @@ class RespTecnicoController extends Controller
             'tipodocs'  => $tipodocresp,
             'docsrt'    => $docsrt,
         ]);
-        
+
     }
 
     public function anexarArquivos(Request $request)
@@ -432,7 +443,7 @@ class RespTecnicoController extends Controller
             session()->flash('error', 'Selecione um documento!');
             return back();
         }
-        
+
         $user = Auth::user()->id;
         $rt = RespTecnico::where('user_id', $user)->first();
         $checklist = Checklistresp::where('tipodocres_id', $request->tipodocres)
@@ -502,7 +513,7 @@ class RespTecnicoController extends Controller
         $user = User::find($request->user);
         $respTecnico = RespTecnico::where('user_id', $user->id)->first();
 
-        return view('responsavel_tec/editar_dados_responsavel_tec', 
+        return view('responsavel_tec/editar_dados_responsavel_tec',
         ['user' => $user,
          'respTecnico' => $respTecnico]);
     }

@@ -18,6 +18,7 @@
     <script type="text/javascript" src="{{URL::asset('js/checklist.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/findDoc.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/findDocRt.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/requerimento_rt.js')}}" defer></script>
 
     <!-- load jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
