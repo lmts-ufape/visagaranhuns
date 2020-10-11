@@ -23,7 +23,7 @@ class CnaeEmpresa extends Model
     public function empresa() {
         return $this->belongsTo("\App\Empresa");
     }
-    public function requerimento() {
-        return $this->belongsTo("\App\Requerimento",'cnae_id');
-    }
+    // public function requerimento() {
+    //     return $this->belongsTo("\App\Requerimento",'cnae_id');
+    // }
 }

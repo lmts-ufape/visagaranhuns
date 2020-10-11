@@ -37,7 +37,7 @@ class RespTecnicoController extends Controller
         //
     }
 
-    public function listarEmpresas()
+    public function listarEmpresas(Request $request)
     {
         $user = User::find(Auth::user()->id);
         $rt = RespTecnico::where('user_id', $user->id)->first();
@@ -51,7 +51,7 @@ class RespTecnicoController extends Controller
         }
         $empresas = array_unique($temp);
 
-        return view('responsavel_tec/listar_empresas',['empresas' => $empresas, 'tipo' => 'estabelecimentos']);
+        return view('responsavel_tec/listar_empresas',['empresas' => $empresas, 'tipo' => 'estabelecimentos', 'flag' =>$request->flag]);
     }
 
     public function showEmpresa(Request $request)
@@ -123,6 +123,7 @@ class RespTecnicoController extends Controller
         }
 
         return view('responsavel_tec/requerimento',[
+            'nome'              => $empresa->nome,
             'cnaes'             => $temp,
             'resptecnico'       => $rt->id,
             'empresas'           => $resultado,
@@ -179,6 +180,7 @@ class RespTecnicoController extends Controller
         'checklist' => $checklist,
         'docsempresa' => $docsempresa,
         'rtempresa'   => $rtempresa,
+        'nome'         => $empresa->nome,
         ]);
     }
 
