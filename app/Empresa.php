@@ -62,5 +62,8 @@ class Empresa extends Model
     public function cnae() {
         return $this->hasMany("\App\Cnae");
     }
+    public function cnaeEmpresa() {
+        return $this->hasMany("\App\CnaeEmpresa");
+    }
 
 }

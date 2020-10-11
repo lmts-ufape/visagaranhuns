@@ -284,6 +284,21 @@
                 </div>
     </div>
 </div>
+<script type="text/javascript">
+    window.findDoc = function($id){
+        console.log($id);
+        $.ajax({
+            url:'{{ config('prefixo.PREFIXO') }}encontrar/doc',
+            type:"get",
+            dataType:'json',
+            data: {"id": $id},
+            success: function(response){
+                $('#editarDoc').val(response.nome);
+            }
+        });
+    }
+</script>
+
 @endsection
 
 

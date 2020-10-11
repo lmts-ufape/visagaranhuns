@@ -14,9 +14,9 @@
                     </div>
                     <div class="mr-auto p-2 styleBarraPrincipalPC">
                         <div class="form-group">
-                            <div class="tituloBarraPrincipal">Documentação</div>
+                            <div class="tituloBarraPrincipal">Meus documentos</div>
                             <div>
-                                <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Documentação > NOME</div>
+                                <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Meus documentos</div>
                             </div>
                         </div>
                     </div>
@@ -37,16 +37,6 @@
     <div class="barraMenu"style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
             <div class="container" style="margin-top:1rem;">
                     <div class="form-row">
-                        <div class="form-group col-md-12" >
-                            <div>
-                                <label style="color:black; font-size:35px;  margin-bottom:-10px; font-weight:400; font-family: 'Libre Baskerville', serif;;
-                                ;">NOME</label>
-                            </div>
-                            <div>
-                                <div style="font-size:13px;margin-top:2px; margin-bottom:-10px;color:gray;">Início > Estabelecimentos > NOME > Documentos </div>
-                            </div>
-                            <hr size = 7 style="margin-bottom:-2px;">
-                        </div>
 
                         <div class="form-group col-md-7">
                             @if($errors->has('arquivo'))
@@ -194,6 +184,20 @@
                 </div>
     </div>
 </div>
+<script type="text/javascript">
+    window.findDocRt = function($id){
+        console.log($id);
+        $.ajax({
+            url:'{{ config('prefixo.PREFIXO') }}encontrar/doc/rt',
+            type:"get",
+            dataType:'json',
+            data: {"id": $id},
+            success: function(response){
+                $('#editarDocRt').val(response.nome);
+            }
+        });
+    }
+</script>
 @endsection
 
 
