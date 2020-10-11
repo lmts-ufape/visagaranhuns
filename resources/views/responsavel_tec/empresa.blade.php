@@ -53,8 +53,8 @@
                                     {{-- <a class="dropdown-item" style="cursor:pointer">Cadastrar Resp. Técnico</a> --}}
                                     {{-- <a class="dropdown-item" style="cursor:pointer" data-toggle="modal" data-target="#exampleModal" onclick="deletarEstabelecimento('{{$empresa->user->name}}')">Deletar Resp. Técnico</a> --}}
                                     {{-- <a class="dropdown-item" style="cursor:pointer">Deletar Resp. Técnico</a> --}}
-                                    <a class="dropdown-item" style="cursor:pointer" href="{{ route('pagina.editar.empresa', ['empresaId' => Crypt::encrypt($empresaId)]) }}">Editar estabelecimento</a>
-                                    <a class="dropdown-item" style="cursor:pointer" href="{{ route('cadastrar.rt.pagina', ['empresaId' => $empresaId]) }}">Cadastrar Resp. Técnico</a>
+                                    <a class="dropdown-item" style="cursor:pointer" href="{{ route('rt.documentacao.empresa', ['empresa' => Crypt::encrypt($empresaId)]) }}">Documentos</a>
+                                    <a class="dropdown-item" style="cursor:pointer" href="{{ route('criar.requerimento', ['empresa' => Crypt::encrypt($empresaId)]) }}">Requerimento</a>
 
                                 </div>
                             </div>
@@ -140,59 +140,6 @@
                             <span style="color:#707070">(00) 0000-0000</span>
                         </div> --}}
                     </div>
-
-                    <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label style="font-size:19px;margin-top:10px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">INFORMAÇÕES DO RESPONSÁVEL TÉCNICO</label>
-                            </div>
-
-                            {{-- <div class="form-row col-md-12" style="margin-top:10px; text-align:right; margin-left:10px">
-                                <div class="col">
-                                    <img src="{{ asset('/imagens/logo_esquerda_azul.png') }}" alt="Logo" style="width:15px; margin-top:-5px; margin-right:10px;"/>
-                                    <label style="font-family: 'Roboto', sans-serif;">1/2</label>
-                                    <img src="{{ asset('/imagens/logo_direita_azul.png') }}" alt="Logo" style="width:15px; margin-top:-5px; margin-left:10px;"/>
-                                </div>
-                            </div> --}}
-                            @if(count($respTecnico)>0)
-                            <div class="cardRT">
-                                @foreach ($respTecnico as $item)
-                                    <div class="form col-md-12" style="margin-top:5px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nome: </label>
-                                    <span style="color:#707070">{{$item->user->name}}</span>
-                                    </div>
-                                    <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CPF: </label>
-                                        <span style="color:#707070">{{$item->cpf}}</span>
-                                    </div>
-                                    <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Formação: </label>
-                                        <span style="color:#707070">{{$item->formacao}}</span>
-                                    </div>
-                                    <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Especialização: </label>
-                                        <span style="color:#707070">{{$item->especializacao}}</span>
-                                    </div>
-                                    <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
-                                        <span style="color:#707070">{{$item->telefone}}</span>
-                                    </div>
-                                    <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">E-mail: </label>
-                                        <span style="color:#707070">{{$item->user->email}}</span>
-                                    </div>
-                                @endforeach
-                                    {{-- <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
-                                        <span style="color:#707070">(00) 0000-0000</span>
-                                    </div> --}}
-                                </div>
-                                @else
-                                    <div class="form col-md-12" style="margin-top:-10px; margin-top:10px;">
-                                        <div style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nenhum responsável técnico cadastrado</div>
-                                        {{-- <a href="{{ route('cadastrar.rt.pagina', ['empresaId' => $empresaId]) }}">Clique aqui para convidar um Responsável Técnico</a> --}}
-                                    </div>
-                                @endif
-                    </div>
                 </div>
 
 
@@ -216,9 +163,39 @@
             </div>
         </div>
     </div>
+    <!-- Modal -->
+    {{-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Requerimento</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form id="formRequerimento">
+                    <div class="form-group">
+                      <label for="exampleFormControlSelect1">Tipo</label>
+                      <select class="form-control" id="exampleFormControlSelect1">
+                        <option>Primeira Licença</option>
+                        <option>Renovar de Licença</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Cnae</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                          <option>Cnaes</option>
+                        </select>
+                      </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            <button type="submit" form="formRequerimento" class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+        </div>
+    </div> --}}
 </div>
-
-
 @endsection
-
-

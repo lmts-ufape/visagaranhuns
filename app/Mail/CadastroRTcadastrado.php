@@ -7,12 +7,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class CadastroRTEmail extends Mailable
+class CadastroRTcadastrado extends Mailable
 {
     use Queueable, SerializesModels;
-    // public $nomeUsuario;
+
     public $email;
-    public $passwordTemporario;
     public $empresaNome;
 
     /**
@@ -20,11 +19,9 @@ class CadastroRTEmail extends Mailable
      *
      * @return void
      */
-    public function __construct(String $email, $passwordTemporario, $empresaNome)
+    public function __construct(String $email, $empresaNome)
     {
-      // $this->nomeUsuario    = $nomeUsuario;
       $this->email                 = $email;
-      $this->passwordTemporario    = $passwordTemporario;
       $this->empresaNome           = $empresaNome;
     }
 
@@ -35,12 +32,11 @@ class CadastroRTEmail extends Mailable
      */
     public function build()
     {
-      $subject = 'Visa G - Dados de login';
+      $subject = 'Visa G - Cadastro';
       return $this->to($this->email)
                   ->subject($subject)
-                  ->view('email.conviteRespTecnico', [
+                  ->view('email.respTecCadastrado', [
                       'email' => $this->email,
-                      'senha' => $this->passwordTemporario,
                       'empresaNome' => $this->empresaNome,
       ]);
     }

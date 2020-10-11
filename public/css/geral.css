@@ -13,6 +13,12 @@
 .subtituloBarraPrincipal{
     font-size:18px; font-weight:normal; color:#707070; margin-left:0px; margin-left:10px;margin-bottom:-5px; font-family:Roboto
 }
+.styleTituloDoInputCadastro{
+    font-size:16px;font-family: 'Quicksand', sans-serif;
+}
+.styleInputCadastro{
+    width:100%; border:none; border-bottom:1px solid #ccc; outline: none; padding-bottom: 5px;
+}
 .cardCadastro{
     background-color:white;
     border: 1.5px solid #f5f5f5;

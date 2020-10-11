@@ -20,7 +20,7 @@ class Empresa extends Model
         return $this->belongsTo("\App\User");
     }
 
-    //Responsaveis tecnicos
+    // Responsaveis tecnicos
     public function resptecnicos() {
         return $this->hasMany("\App\RespTecnico");
     }
@@ -61,6 +61,9 @@ class Empresa extends Model
     //A pensar
     public function cnae() {
         return $this->hasMany("\App\Cnae");
+    }
+    public function cnaeEmpresa() {
+        return $this->hasMany("\App\CnaeEmpresa");
     }
 
 }

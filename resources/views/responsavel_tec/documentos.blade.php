@@ -14,9 +14,9 @@
                     </div>
                     <div class="mr-auto p-2 styleBarraPrincipalPC">
                         <div class="form-group">
-                            <div class="tituloBarraPrincipal">Documentação</div>
+                            <div class="tituloBarraPrincipal">Meus documentos</div>
                             <div>
-                                <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Documentação > {{$nome}}</div>
+                                <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Meus documentos</div>
                             </div>
                         </div>
                     </div>
@@ -34,120 +34,17 @@
             </div>
 
 
-
-
-
-
-    {{-- <div class="barraMenu" style="margin-top:0.7rem;"">
-        <div class="d-flex">
-            <div class="mr-auto p-2">
-                <div class="btn-group">
-                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Documentos - {{$item->nome}}</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @foreach ($checklist as $indice)
-        @if ($indice->areas_id == $item->id)
-        <div class="container" style="margin-bottom:1rem">
-
-            <div class="cardDocumentos">
-                <div class="d-flex justify-content-center">
-                    <div class="mr-auto p-2">
-                        <div class="form-group">
-                            <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">{{$indice->nomeDoc}}<span style="color:red">*</span></div>
-                            <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                        </div>
-                    </div>
-                    @if($indice->anexado == "false")
-                        <div class="p-2">
-                            <div class="form-row">
-                                <div style="margin-top:1px;margin-right:15px;font-size:15px;">
-                                    <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
-                                    <span class="btn-sm btn-warning">Pendente</span>
-                                </div>
-                                <div style="margin-top:1px;margin-right:15px;font-size:15px;" class="dropdown show">
-                                    <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" onclick="foundChecklist({{$indice->id}},{{$empresaId}})" data-toggle="modal" data-target="#exampleModalCenter">
-                                        Anexar
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    @else
-                    <div class="p-2">
-                        <div class="form-row">
-                            <div style="margin-top:1px;margin-right:15px;font-size:15px;">
-                                <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
-                                <span class="btn-sm btn-success">Anexado</span>
-                            </div>
-                            <div style="margin-top:1px;margin-right:15px;font-size:15px;" class="dropdown show">
-                                <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Ação
-                                </a>
-
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    @foreach ($docsempresa as $docempresa)
-                                        @if ($docempresa->empresa_id == $indice->empresa_id)
-                                            <a href="{{route('download.arquivo', ['file' => $docempresa->nome, "empresaId" => $empresaId, "areaId" => $item->id])}}" class="dropdown-item" href="#">Baixar</a>
-                                        @endif
-                                    @endforeach
-                                    <a class="dropdown-item" href="#">Editar</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Anexar Arquivo</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" form="arquivo" class="btn btn-primary">Anexar</button>
-                </div>
-            </div>
-            </div>
-        </div>
-        @endif
-    @endforeach --}}
-
-
     <div class="barraMenu"style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
             <div class="container" style="margin-top:1rem;">
                     <div class="form-row">
-                        <div class="form-group col-md-12" >
-                            <div>
-                                <label style="color:black; font-size:35px;  margin-bottom:-10px; font-weight:400; font-family: 'Libre Baskerville', serif;;
-                                ;">{{$nome}}</label>
-                            </div>
-                            <div>
-                                <div style="font-size:13px;margin-top:2px; margin-bottom:-10px;color:gray;">Início > Estabelecimentos > {{$nome}} > Documentos </div>
-                            </div>
-                            <hr size = 7 style="margin-bottom:-2px;">
-                        </div>
 
                         <div class="form-group col-md-7">
-                            {{-- @if($errors->has('arquivo'))
+                            @if($errors->has('arquivo'))
                                 <div class="alert alert-warning alert-block fade show">
                                     <button type="button" class="close" data-dismiss="alert">×</button>
                                     <strong>Atenção ao formato do arquivo (PDF) e tamanho máximo de 5mb</strong>
                                 </div>
-                            @endif --}}
+                            @endif
                             @if ($message = Session::get('success'))
                                 <div class="alert alert-success alert-block fade show">
                                     <button type="button" class="close" data-dismiss="alert">×</button>
@@ -174,6 +71,7 @@
                                 </div> --}}
 
                                 @foreach ($checklist as $indice)
+                                    {{-- @if ($indice->areas_id == $item->id) --}}
                                         @if($indice->anexado == "false")
                                         <div class="form col-md-12">
                                             <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/> {{$indice->nomeDoc}} -
@@ -182,13 +80,16 @@
                                             </label>
                                         </div>
                                         @else
-                                            @foreach ($docsempresa as $docempresa)
-                                                @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id)
+                                        {{-- <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
+                                            <a href="#"> Baixar arquivo</a>
+                                        </label> --}}
+                                            @foreach ($docsrt as $docrt)
+                                                @if ($docrt->resptecnicos_id == $indice->resptecnicos_id && $docrt->tipodocresp_id == $indice->tipodocres_id)
                                                     <div class="form col-md-12">
                                                         <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
-                                                            <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}"> Baixar arquivo</a>
+                                                            <a href="{{route('download.arquivo.rt', ['file' => $docrt->nome])}}"> Baixar arquivo</a>
                                                         </label>
-                                                        <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDoc({{$docempresa->id}})" style="cursor:pointer; color:#249BE3">- Editar arquivo</a>
+                                                        <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDocRt({{$docrt->id}})" style="cursor:pointer; color:#249BE3">- Editar arquivo</a>
                                                     </div>
                                                 @endif
                                             @endforeach
@@ -211,11 +112,11 @@
                                 </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="editDocForm" method="POST" action="{{ route('editar.arquivos') }}" enctype="multipart/form-data">
+                                    <form id="editDocForm" method="POST" action="{{route('editar.arquivos.rt')}}" enctype="multipart/form-data">
                                         @csrf
                                         <div class="form-group">
                                           <label for="exampleFormControlFile1">Editar arquivo</label>
-                                          <input id="editarDoc" type="hidden" name="file" value="">
+                                          <input id="editarDocRt" type="hidden" name="file" value="">
                                           <input type="file" class="form-control-file" id="exampleFormControlFile1" name="arquivo">
                                         </div>
                                     </form>
@@ -230,20 +131,20 @@
 
                         <div class="form col-md-5" style="margin-top:10px;">
                             <div class="form-row">
-                                <form id="arquivo" method="POST" action="{{route('anexar.arquivos')}}" enctype="multipart/form-data">
+                                <form id="arquivo" method="POST" action="{{route('anexar.arquivos.rt')}}" enctype="multipart/form-data">
                                     @csrf
                                 <div class="form-group col-md-12">
                                     <label style="font-size:19px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">ANEXAR DOCUMENTO</label>
                                 </div>
 
 
-                                    <input id="empresa" type="hidden" name="empresaId" value="{{$empresaId}}">
+                                    {{-- <input id="empresa" type="hidden" name="empresaId" value="{{$empresaId}}"> --}}
                                     <div class="form col-md-12" style="margin-top:1px;margin-bottom:10px;">
                                         <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Tipo de documento</label>
-                                        <select class="form-control" id="exampleFormControlSelect1" name="tipodocempresa" required>
+                                        <select class="form-control" id="exampleFormControlSelect1" name="tipodocres" required>
                                             <option>Tipos de documentos</option>
                                             @foreach ($checklist as $tipo)
-                                            <option value="{{$tipo->tipodocemp_id}}">{{$tipo->nomeDoc}}</option>
+                                            <option value="{{$tipo->tipodocres_id}}">{{$tipo->nomeDoc}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -251,7 +152,7 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Emissão</label>
-                                                    <input type="date" class="form-control" placeholder="" name="data_emissao" required>
+                                                    <input type="date" class="form-control" placeholder="First name" name="data_emissao" required>
                                                 </div>
                                                 <div class="col">
                                                     <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Validade</label>
@@ -260,7 +161,6 @@
                                             </div>
                                     </div>
                                     <div class="form col-md-12" style="margin-top: 30px">
-
                                         <input type="file" class="form-control-file" id="arquivo" name="arquivo" required>
                                         <label for="" style="color:red;margin-top:4px;">Arquivo no formato PDF e tamanho máximo de 5mb</label>
                                     </div>
@@ -285,20 +185,19 @@
     </div>
 </div>
 <script type="text/javascript">
-    window.findDoc = function($id){
+    window.findDocRt = function($id){
         console.log($id);
         $.ajax({
-            url:'{{ config('prefixo.PREFIXO') }}encontrar/doc',
+            url:'{{ config('prefixo.PREFIXO') }}encontrar/doc/rt',
             type:"get",
             dataType:'json',
             data: {"id": $id},
             success: function(response){
-                $('#editarDoc').val(response.nome);
+                $('#editarDocRt').val(response.nome);
             }
         });
     }
 </script>
-
 @endsection
 
 

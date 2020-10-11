@@ -104,6 +104,10 @@ Route::middleware(['IsCoordenador'])->group(function () {
     // Rotas para convidar Inspetores e agente
     Route::post("/convidar/inspetor", "CoordenadorController@convidarEmail")->name("convidar.inspetor");
     Route::post("/convidar/agente", "CoordenadorController@convidarEmail")->name("convidar.agente");
+
+    Route::post("/licenca", "CoordenadorController@licenca")->name("licenca");
+
+    Route::post("/julgar/requerimento", "CoordenadorController@julgarRequerimento")->name("julgar.requerimento");
     //Supervisor
 /*
     * Cadastrar/Editar/Deletar relatórios (Editar também relatórios criados pos outras pessoas)
@@ -119,9 +123,8 @@ Route::middleware(['IsCoordenador'])->group(function () {
 Route::middleware(['IsEmpresa'])->group(function () {
     //Empresa - Gerente
     Route::get('/home/empresa',                         'EmpresaController@home')->name('home.empresa');
-    Route::get("/pagina/editar",                        "EmpresaController@edit")->name("editar.empresa");
-    Route::post("/editar/empresa",                      "EmpresaController@editarEmpresa")->name("editar.empresa");
     Route::post("/empresa/arquivos",                    "EmpresaController@anexarArquivos")->name("anexar.arquivos");
+    Route::post("/empresa/editar/arquivos",             "EmpresaController@editarArquivos")->name("editar.arquivos");
     Route::get("/listar/arquivos",                      "EmpresaController@listarArquivos")->name("listar.arquivos");
     Route::get("/empresa/pagina/responsavelTecnico",    "RespTecController@create")->name("pagina.respTec");
     Route::post("/empresa/cadastro/responsavelTecnico", "RespTecController@store")->name("cadastrar.respTec");
@@ -133,6 +136,13 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get("/estabelecimento/lista/cnae",           "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes");
     Route::get("/listar/responsavelTecnico",            "EmpresaController@listarResponsavelTec")->name("listar.responsavelTec");
 
+    //Tela de editar
+    Route::get("/pagina/editar",                        "EmpresaController@edit")->name("pagina.editar.empresa");
+    Route::post("/editar/empresa",                      "EmpresaController@editarEmpresa")->name("editar.empresa");
+    Route::get("/listar/cnae/empresa",                  "EmpresaController@ajaxCnaesEmpresa");
+    Route::get("/listar/cnae/add/empresa",              "EmpresaController@ajaxAddCnae_editarEmpresa");
+
+
     // Cadastro de Responsável Técnico
     Route::get('/cadastro/respTecnico','RespTecnicoController@create')->name('cadastrar.rt.pagina');
     Route::post('/cadastro/respTecnico','RespTecnicoController@store')->name('cadastrar.rt');
@@ -143,6 +153,10 @@ Route::middleware(['IsEmpresa'])->group(function () {
     // Download de arquivos anexados
     Route::get('/download/arquivo',       'EmpresaController@downloadArquivo')->name('download.arquivo');
 
+    Route::get('/encontrar/doc',          'EmpresaController@findDoc')->name('find.doc');
+
+    // Apagar registro em CnaeEmpr
+    Route::get('/apagar/cnae/empresa',    'EmpresaController@apagarCnaeEmpresa')->name('apagar.cnae.empresa');
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
     * Editar/Anexar dados da empresa
@@ -189,9 +203,37 @@ Route::middleware(['IsRespTecnico'])->group(function () {
     Route::get('/editar/dados', 'RespTecnicoController@edit')->name('editar.dados');
     Route::get('/home/rt', function () {return view('responsavel_tec/home_rt');})->name('home.rt');
     Route::post('/atualizar/rt','RespTecnicoController@update')->name('update.rt');
+
+    Route::get('/rt/documentos',                    'RespTecnicoController@showDocumentacao')->name('rt.documentos');
+
+    Route::post("/rt/arquivos",                     "RespTecnicoController@anexarArquivos")->name("anexar.arquivos.rt");
+
+    Route::get('/download/arquivo/rt',              'RespTecnicoController@baixarArquivos')->name('download.arquivo.rt');
+
+    Route::get('/encontrar/doc/rt',                 'RespTecnicoController@findDocRt')->name('find.doc.rt');
+
+    Route::post("/rt/editar/arquivos",              "RespTecnicoController@editarArquivos")->name("editar.arquivos.rt");
+
+    Route::get('/empresas',                         'RespTecnicoController@listarEmpresas')->name('listar.empresa.rt');
+
+    Route::get('/empresa',                          'RespTecnicoController@showEmpresa')->name('empresa');
+
+    Route::get('/empresa/documentacao',             'RespTecnicoController@documentacaoEmpresa')->name('rt.documentacao.empresa');
+
+    Route::get('/download/arquivo/empresa/rt',      'RespTecnicoController@downloadArquivo')->name('download.arquivo.empresa');
+
+    Route::get('/rt/requerimento',                  'RespTecnicoController@criarRequerimento')->name('criar.requerimento');
+    
+    Route::post('/cadastro/requerimento',           'RespTecnicoController@cadastrarRequerimento')->name('cadastrar.requerimento');
+
+
+    Route::post("/empresa/arquivos/rt",             "RespTecnicoController@anexarArquivosEmpresa")->name("anexar.arquivos.empresa.rt");
+
+    Route::get('/encontrar/doc/empresa/rt',         'RespTecnicoController@findDoc')->name('find.doc.empresa.rt');
+
+    Route::post("/empresa/editar/arquivos/rt",      "RespTecnicoController@editarArquivosEmpRt")->name("editar.arquivos.empresa.rt");
     //Empresa - Responsável Técnico
 /*
-    * Editar/Anexar dados da empresa
     * Consultar histórico de inspeções
     * Consultar notificações
 */

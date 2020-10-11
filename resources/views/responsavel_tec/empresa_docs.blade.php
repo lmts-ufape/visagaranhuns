@@ -164,39 +164,36 @@
                                     <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">DOCUMENTOS REQUERIDOS</label>
                                 </div>
 
-                                {{-- <div class="form-group col-md-12">
-                                    <label style="font-size:19px;margin-top:2px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">Obrigatórios:</label>
-                                </div> --}}
-
-                                {{-- @foreach ($areas as $item)
-                                <div class="form-group col-md-12">
-                                    <label style="font-size:19px;margin-top:2px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">{{$item->nome}}</label>
-                                </div> --}}
-
-                                @foreach ($checklist as $indice)
-                                        @if($indice->anexado == "false")
-                                        <div class="form col-md-12">
-                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/> {{$indice->nomeDoc}} -
-
-                                                <span style="color:#e1ad01">Pendente</span>
-                                            </label>
+                                @foreach ($rtempresa as $item)
+                                    @if ($item->empresa_id == $empresaId)
+                                        <div class="form-group col-md-12">
+                                            <label style="font-size:14px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">{{$item->area->nome}}</label>
                                         </div>
-                                        @else
-                                            @foreach ($docsempresa as $docempresa)
-                                                @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id)
-                                                    <div class="form col-md-12">
-                                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
-                                                            <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}"> Baixar arquivo</a>
-                                                        </label>
-                                                        <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDoc({{$docempresa->id}})" style="cursor:pointer; color:#249BE3">- Editar arquivo</a>
-                                                    </div>
-                                                @endif
-                                            @endforeach
-                                        @endif
-                                    {{-- @endif --}}
-                                {{-- @endforeach --}}
-                                @endforeach
+                                        @foreach ($checklist as $indice)
+                                            @if ($indice->areas_id == $item->area_id)
+                                                @if($indice->anexado == "false")
+                                                <div class="form col-md-12">
+                                                    <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/> {{$indice->nomeDoc}} -
 
+                                                        <span style="color:#e1ad01">Pendente</span>
+                                                    </label>
+                                                </div>
+                                                @else
+                                                    @foreach ($docsempresa as $docempresa)
+                                                        @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id && $indice->areas_id == $item->area_id)
+                                                            <div class="form col-md-12">
+                                                                <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
+                                                                    <a href="{{route('download.arquivo.empresa', ['file' => $docempresa->nome])}}"> Baixar arquivo</a>
+                                                                </label>
+                                                                <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDocEmpRt({{$docempresa->id}})" style="cursor:pointer; color:#249BE3">- Editar arquivo</a>
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            @endif
+                                        @endforeach          
+                                    @endif
+                                @endforeach
                             </div>
                         </div>
 
@@ -211,12 +208,12 @@
                                 </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="editDocForm" method="POST" action="{{ route('editar.arquivos') }}" enctype="multipart/form-data">
+                                    <form id="editDocForm" method="POST" action="{{ route('editar.arquivos.empresa.rt') }}" enctype="multipart/form-data">
                                         @csrf
                                         <div class="form-group">
-                                          <label for="exampleFormControlFile1">Editar arquivo</label>
-                                          <input id="editarDoc" type="hidden" name="file" value="">
-                                          <input type="file" class="form-control-file" id="exampleFormControlFile1" name="arquivo">
+                                            <label for="exampleFormControlFile1">Editar arquivo</label>
+                                            <input id="editarDoc" type="hidden" name="file" value="">
+                                            <input type="file" class="form-control-file" id="exampleFormControlFile1" name="arquivo">
                                         </div>
                                     </form>
                                 </div>
@@ -230,7 +227,7 @@
 
                         <div class="form col-md-5" style="margin-top:10px;">
                             <div class="form-row">
-                                <form id="arquivo" method="POST" action="{{route('anexar.arquivos')}}" enctype="multipart/form-data">
+                                <form id="arquivo" method="POST" action="{{route('anexar.arquivos.empresa.rt')}}" enctype="multipart/form-data">
                                     @csrf
                                 <div class="form-group col-md-12">
                                     <label style="font-size:19px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">ANEXAR DOCUMENTO</label>
@@ -241,9 +238,18 @@
                                     <div class="form col-md-12" style="margin-top:1px;margin-bottom:10px;">
                                         <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Tipo de documento</label>
                                         <select class="form-control" id="exampleFormControlSelect1" name="tipodocempresa" required>
-                                            <option>Tipos de documentos</option>
-                                            @foreach ($checklist as $tipo)
+                                            <option disabled>Tipos de documentos</option>
+                                            @foreach ($tipos as $tipo)
                                             <option value="{{$tipo->tipodocemp_id}}">{{$tipo->nomeDoc}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form col-md-12" style="margin-top:1px;margin-bottom:10px;">
+                                        <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Areas</label>
+                                        <select class="form-control" id="exampleFormControlSelect1" name="area" required>
+                                            <option disabled>Areas</option>
+                                            @foreach ($rtempresa as $area)
+                                            <option value="{{$area->area_id}}">{{$area->area->nome}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -272,7 +278,6 @@
                         </div>
 
                         </div>
-
                     </div>
                     {{-- <hr size = 7 style="margin-bottom:-15px;"> --}}
                     <div class="row" style="margin-top:2rem; margin-bottom:1rem">
@@ -285,10 +290,9 @@
     </div>
 </div>
 <script type="text/javascript">
-    window.findDoc = function($id){
-        console.log($id);
+    window.findDocEmpRt = function($id){
         $.ajax({
-            url:'{{ config('prefixo.PREFIXO') }}encontrar/doc',
+            url:'{{ config('prefixo.PREFIXO') }}encontrar/doc/empresa/rt',
             type:"get",
             dataType:'json',
             data: {"id": $id},
@@ -298,7 +302,6 @@
         });
     }
 </script>
-
 @endsection
 
 

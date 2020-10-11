@@ -13,8 +13,8 @@ class RespTecnico extends Model
      * @var array
      */
     protected $fillable = [
-        // 'formacao', 'especializacao', 'cpf', 'telefone', 'user_id', 'empresa_id'
-        'formacao', 'especializacao', 'cpf', 'telefone', 'user_id', 'cnae_id'
+        // 'formacao', 'especializacao', 'cpf', 'telefone', 'user_id', 'area_id', 'empresa_id'
+        'formacao', 'especializacao', 'cpf', 'telefone', 'user_id'
     ];
 
     public function empresa() {
@@ -23,6 +23,10 @@ class RespTecnico extends Model
 
     public function user() {
         return $this->belongsTo("\App\User");
+    }
+
+    public function area() {
+        return $this->hasOne("\App\Area");
     }
 
 }

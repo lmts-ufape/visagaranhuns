@@ -18,7 +18,7 @@ class Checklistemp extends Model
 
     // Areas
     public function area() {
-        return $this->belongsToMany("\App\Area");
+        return $this->belongsTo("\App\Area");
     }
     // Tipos de documentos de empresa
     public function tipodocemp() {

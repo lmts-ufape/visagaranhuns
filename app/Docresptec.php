@@ -13,7 +13,7 @@ class Docresptec extends Model
      * @var array
      */
     protected $fillable = [
-        'nome', 'data_emissao', 'resptecnicos_id', 'tipodocresp_id',
+        'nome', 'data_emissao', 'data_validade', 'resptecnicos_id', 'tipodocresp_id',
     ];
 
     public function resptecnico() {

@@ -32,7 +32,18 @@
                 </div>
             </div>
         </div>
-
+        @if(!empty($aprovado))
+        <div class="alert alert-warning alert-block fade show">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{$aprovado}}</strong>
+        </div>
+        @endif
+        @if(!empty($reprovado))
+        <div class="alert alert-warning alert-block fade show">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{$reprovado}}</strong>
+        </div>
+        @endif
     <div class="container" style="margin-top:2rem;margin-left:10px;">
         <div class="form-row">
             <div class="form-group col-md-8">
@@ -44,12 +55,12 @@
                             </div>
                            <div class="p-2">
                                 <div class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="filtroButtonRequerimento" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Filtro
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('aprovado')" style="text-decoration:none;cursor:pointer">Cadastro Aprovado</a>
-                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('denuncia')" style="text-decoration:none;cursor:pointer">Denúncia</a>
+                                        {{-- <a class="dropdown-item" onclick="selecionarFiltroRequerimento('aprovado')" style="text-decoration:none;cursor:pointer">Cadastro Aprovado</a> --}}
+                                        {{-- <a class="dropdown-item" onclick="selecionarFiltroRequerimento('denuncia')" style="text-decoration:none;cursor:pointer">Denúncia</a> --}}
                                         <a class="dropdown-item" onclick="selecionarFiltroRequerimento('pendente')" style="text-decoration:none;cursor:pointer">Cadastro Pendente</a>
                                         <a class="dropdown-item" onclick="selecionarFiltroRequerimento('primeira_licenca')" style="text-decoration:none;cursor:pointer">Primeira Licença</a>
                                         <a class="dropdown-item" onclick="selecionarFiltroRequerimento('renovacao_de_licenca')" style="text-decoration:none;cursor:pointer">Renovação de Licença</a>
@@ -161,6 +172,14 @@
     @csrf
     <input id="inputSubmeterId" type="hidden" name="empresa" value="">
 </form>
+
+<form id="licenca" method="POST" action="{{route('licenca')}}">
+    @csrf
+    <input id="licencaAvaliacao" type="hidden" name="empresa"         value="">
+    <input id="areaCnae"         type="hidden" name="area"            value="">
+    <input id="requerimento"     type="hidden" name="requerimento"    value="">
+</form>
+
 </div>
 <script type="text/javascript">
     window.onload= function() {
@@ -193,13 +212,23 @@
     }
 
     window.selecionarFiltroRequerimento = function($filtro){
-        // console.log($filtro);
+        if($filtro == 'pendente'){
+            document.getElementById('filtroButtonRequerimento').innerHTML = "Cadastro Pendente";
+        }else if($filtro == 'primeira_licenca'){
+            document.getElementById('filtroButtonRequerimento').innerHTML = "Primeira licença";
+        }else if($filtro == 'renovacao_de_licenca'){
+            document.getElementById('filtroButtonRequerimento').innerHTML = "Renovação de licença";
+        }else if($filtro == 'all'){
+            document.getElementById('filtroButtonRequerimento').innerHTML = "Mostrar tudo";
+        }
+
         $.ajax({
             url:'{{ config('prefixo.PREFIXO') }}requerimento',
             type:"get",
             dataType:'json',
             data: {"filtro": $filtro },
             success: function(response){
+                console.log(response.table_data);
                 $('tbody_').html(response.table_data);
             }
         });

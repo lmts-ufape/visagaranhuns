@@ -41,11 +41,12 @@
 //     });
 // }
 
-window.mostrar = function($id){
-    if(document.getElementById("cardEstabelecimento"+$id).style.display == "none"){
-        document.getElementById("cardEstabelecimento"+$id).style.display = "block";
+window.abrir_fechar_card_requerimento = function($valor){
+    console.log($valor);
+    if(document.getElementById($valor).style.display == "none"){
+        document.getElementById($valor).style.display = "block";
     }else{
-        document.getElementById("cardEstabelecimento"+$id).style.display = "none";
+        document.getElementById($valor).style.display = "none";
     }
 }
 
@@ -53,4 +54,13 @@ window.empresaId = function($empresaId) {
     console.log($empresaId);
     document.getElementById("inputSubmeterId").value = $empresaId;
     document.getElementById("submeterId").submit();
+}
+
+window.licencaAvaliacao = function($empresaId, $area, $requerimento) {
+    console.log($empresaId);
+    console.log($area);
+    document.getElementById("licencaAvaliacao").value = $empresaId;
+    document.getElementById("areaCnae").value = $area;
+    document.getElementById("requerimento").value = $requerimento;
+    document.getElementById("licenca").submit();
 }

@@ -17,6 +17,7 @@ class CreateDocsResponsavelTable extends Migration
             $table->id();
             $table->string('nome');
             $table->date('data_emissao');
+            $table->date('data_validade')->nullable();
 
             $table->bigInteger("resptecnicos_id")->nullable();
             $table->foreign("resptecnicos_id")->references("id")->on("resptecnicos");

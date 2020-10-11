@@ -80,6 +80,13 @@ class EmpresaController extends Controller
     public function store(Request $request)
     {
 
+        $userFind = User::where('email', $request->email)->first();
+
+        if($userFind != null){
+            session()->flash('error', 'Já existe um usuário no sistema com este email!');
+            return back();
+        }
+
         $validator = $request->validate([
             'name'     => 'required|string',
             'email'    => 'required|email',
@@ -172,19 +179,17 @@ class EmpresaController extends Controller
             foreach ($areatipodocemp as $indice) {
 
                 // ABAIXO SAI, CASO SEJA DUPLICADO
-                $checklist = Checklistemp::where('nomeDoc', $indice->tipodocemp->nome)
-                ->where('empresa_id', $empresa->id)
-                ->first();
+                // $checklist = Checklistemp::where('nomeDoc', $indice->tipodocemp->nome)
+                // ->where('empresa_id', $empresa->id)
+                // ->first();
 
-                if ($checklist == null) {
-                    $cnaeEmpresa = Checklistemp::create([
-                        'anexado' => 'false',
-                        // 'areas_id' => $areasOrdenado[$i], VOLTA CASO FIQUE DUPLICADO
-                        'nomeDoc' => $indice->tipodocemp->nome,
-                        'tipodocemp_id' => $indice->tipodocemp->id,
-                        'empresa_id' => $empresa->id,
-                    ]);
-                }
+                $cnaeEmpresa = Checklistemp::create([
+                    'anexado' => 'false',
+                    'areas_id' => $areasOrdenado[$i],
+                    'nomeDoc' => $indice->tipodocemp->nome,
+                    'tipodocemp_id' => $indice->tipodocemp->id,
+                    'empresa_id' => $empresa->id,
+                ]);
             }
         }
 
@@ -306,20 +311,30 @@ class EmpresaController extends Controller
      */
     public function show(Request $request)
     {
+
         $id = Crypt::decrypt($request->value);
         $empresa = Empresa::find($id);
         $endereco = Endereco::where('empresa_id', $empresa->id)->first();
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
-        $cnae = CnaeEmpresa::where('empresa_id', $id)->get();
+        $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $id)->get();
+        // $respTecnicos = RespTecnico::where("empresa_id", $empresa->id)->get();
         $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->get();
 
-        // $cnae = array();
-        // foreach($cnaeEmpresa as $indice){
-        //     $cnaes = Cnae::find($indice->cnae_id);
-        //     array_push($cnae, $cnaes);
-        // }
+        $resptecnicos = [];
+        for ($i=0; $i < count($rtempresa); $i++) {
+            if (count($resptecnicos) == 0) {
+                array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
+            }
+            else {
+                for ($j=0; $j < count($resptecnicos); $j++) {
+                    if($rtempresa[$i]->resptec_id != $resptecnicos[$j]->id) {
+                        array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
+                    }
+                }
+            }
+        }
 
-        return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnae, 'rt' => $rtempresa]);
+        return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnaeEmpresa, 'rt' => $resptecnicos]);
     }
 
     /**
@@ -345,18 +360,20 @@ class EmpresaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editarEmpresa(Request $request, $id)
+    public function editarEmpresa(Request $request)
     {
-        $empresa = Empresa::find($id);
+
+        $empresa = Empresa::find($request->empresaId);
         $user = User::find(Auth::user()->id);
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
         $endereco = Endereco::where('empresa_id', $empresa->id)->first();
 
         $validator = $request->validate([
-            'name'     => 'nullable|string',
+            'nome'     => 'nullable|string',
             'cnpjcpf'  => 'nullable|string',
             'tipo'     => 'nullable|string',
-            'numeroTelefone'  => 'nullable|string',
+            'telefone1'  => 'nullable|string',
+            'telefone2'  => 'nullable|string',
             'rua'      => 'nullable|string',
             'numero'   => 'nullable|string',
             'bairro'   => 'nullable|string',
@@ -366,14 +383,15 @@ class EmpresaController extends Controller
             'complemento'  => 'nullable|string',
         ]);
 
-        $user->name = $request->name;
+        $user->name = $request->nome;
         $user->save();
 
         $empresa->cnpjcpf = $request->cnpjcpf;
         $empresa->tipo    = $request->tipo;
         $empresa->save();
 
-        $telefone->numero = $request->numeroTelefone;
+        $telefone->telefone1 = $request->telefone1;
+        $telefone->telefone2 = $request->telefone2;
         $telefone->save();
 
         $endereco->rua         = $request->rua;
@@ -386,35 +404,102 @@ class EmpresaController extends Controller
 
         $endereco->save();
 
+        $cnae = $request['cnae'];
+
+        $cnaeempresa = CnaeEmpresa::where('empresa_id', $empresa->id)->pluck('cnae_id');
+        $temp = [];
+        foreach ($cnaeempresa as $indice) {
+            array_push($temp, $indice);
+        }
+
+        for ($i=0; $i < count($cnae); $i++) { 
+            if(!in_array($cnae[$i], $temp)){
+                $cnaeEmpresa = CnaeEmpresa::create([
+                    'empresa_id' => $empresa->id,
+                    'cnae_id' => $cnae[$i],
+                ]);
+            }
+        }
+
         return redirect()->route('/');
 
     }
 
-    public function edit($id)
+    public function edit(Request $request)
     {
-        // Empresa que será editada
-        $empresa = Empresa::where("user_id", $id)->first();
-        // Cnaes que podem ser escolhidos para troca
-        $ensino       = Cnae::where("areas_id", "1")->get();
-        $saude        = Cnae::where("areas_id", "2")->get();
-        $distrSaude   = Cnae::where("areas_id", "3")->get();
-        $camPipa      = Cnae::where("areas_id", "4")->get();
-        $tratAgua     = Cnae::where("areas_id", "5")->get();
-        $mei          = Cnae::where("areas_id", "6")->get();
-        $diversos     = Cnae::where("areas_id", "7")->get();
-        $meiAlimentos = Cnae::where("areas_id", "8")->get();
+        $empresa = Empresa::find(decrypt($request->empresaId));
+        // $cnaeEmpresa = CnaeEmpresa::where('empresa_id','=',decrypt($request->empresaId))->get();
+        $areas = Area::orderBy('nome', 'ASC')->get();
 
-        // Definir a página para a edição de empresa
-        return view('empresa.editar', [
-            'empresa'    => $empresa,
-            'ensino'     => $ensino,
-            'saude'      => $saude,
-            'distrSaude' => $distrSaude,
-            'camPipa'    => $camPipa,
-            'tratAgua'   => $tratAgua,
-            'mei'        => $mei,
-            'diversos'   => $diversos,
-        ]);
+        // $resultados = CnaeEmpresa::where('empresa_id',$empresa->id)->get();
+        // $resultado = [];
+
+        // foreach ($resultados as $indice) {
+        //     array_push($resultado, Cnae::find($indice->cnae_id));
+        //     // dd($indice->cnae_id);
+        // }
+
+        // dd($resultado[1]);
+        // // return view('coordenador/cnaes_coordenador', ['cnaes' => $cnaes]);
+        // $arrayTemp = [];
+        // $output = '';
+        //     if($resultado->count() > 0){
+        //         foreach($resultado as $item){
+        //             $output .= '
+        //             <div class="d-flex justify-content-center form-gerado cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
+        //                 <div class="mr-auto p-2>OPA</div>
+        //                     <div class="mr-auto p-2" id="'.$item->id.'">'.$item->cnae->descricao.'</div>
+        //                     <input type="hidden" name="cnae[]" value="'.$item->id.'">
+        //                     <div style="width:140px; height:25px; text-align:right;">
+        //                         <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
+        //                             <div class="btn btn-danger btn-sm" onclick="deletar_EditarCnaeEmpresa('.$item->id.')" >X</div>
+        //                         </div>
+        //                     </div>
+        //             </div>
+        //             ';
+        //             array_push($arrayTemp, $item->id);
+        //         }
+        //     }elseif($idEmpresa == ""){
+        //         $output .= '
+        //                 <label></label>
+        //             ';
+        //     }else{
+        //         $output .= '
+        //                 <label>vazio</label>
+        //             ';
+        //     }
+        //     $data = array(
+        //         'success'   => true,
+        //         'table_data' => $output,
+        //         'arrayTemp' => $arrayTemp, //atualizar o array temp
+        //     );
+        //     echo json_encode($data);
+
+
+        return view('empresa/editar_empresa', ["empresa" => $empresa, "areas" => $areas]);
+        // // Empresa que será editada
+        // $empresa = Empresa::where("user_id", $id)->first();
+        // // Cnaes que podem ser escolhidos para troca
+        // $ensino       = Cnae::where("areas_id", "1")->get();
+        // $saude        = Cnae::where("areas_id", "2")->get();
+        // $distrSaude   = Cnae::where("areas_id", "3")->get();
+        // $camPipa      = Cnae::where("areas_id", "4")->get();
+        // $tratAgua     = Cnae::where("areas_id", "5")->get();
+        // $mei          = Cnae::where("areas_id", "6")->get();
+        // $diversos     = Cnae::where("areas_id", "7")->get();
+        // $meiAlimentos = Cnae::where("areas_id", "8")->get();
+
+        // // Definir a página para a edição de empresa
+        // return view('empresa.editar', [
+        //     'empresa'    => $empresa,
+        //     'ensino'     => $ensino,
+        //     'saude'      => $saude,
+        //     'distrSaude' => $distrSaude,
+        //     'camPipa'    => $camPipa,
+        //     'tratAgua'   => $tratAgua,
+        //     'mei'        => $mei,
+        //     'diversos'   => $diversos,
+        // ]);
     }
 
     /**
@@ -431,9 +516,49 @@ class EmpresaController extends Controller
         return view('/', ["arquivos" => $docempresa]);
     }
 
+    public function findDoc(Request $request)
+    {
+
+        $docempresa = Docempresa::find($request->id);
+
+        $data = array(
+            'nome'   => $docempresa->nome,
+        );
+
+        echo json_encode($data);
+    }
+
     public function baixarArquivos(Request $request)
     {
         return response()->download(storage_path('app/'.$request->arquivo));
+    }
+
+    public function editarArquivos(Request $request)
+    {
+
+        $validatedData = $request->validate([
+
+            'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000000'],
+
+        ]);
+
+        $docempresa = Docempresa::where("nome", $request->file)->first();
+
+        Storage::delete($docempresa->nome);
+
+        $fileDocemp = $request->arquivo;
+
+        $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/'; 
+
+        $nomeDocemp = $request->arquivo->getClientOriginalName();
+
+        $docempresa->nome = $pathDocemp . $nomeDocemp;
+        $docempresa->save();
+
+        Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+        session()->flash('success', 'Arquivo salvo com sucesso!');
+        return back();
     }
 
     public function anexarArquivos(Request $request)
@@ -447,34 +572,51 @@ class EmpresaController extends Controller
             return back();
         }
 
-        $checklist = Checklistemp::where('tipodocemp_id', $request->tipodocempresa)->first();
-        // dd($checklist);
+        $checklist = Checklistemp::where('tipodocemp_id', $request->tipodocempresa)
+        ->where('empresa_id', $request->empresaId)->get();
+
+        if ($checklist == null) {
+            session()->flash('error', 'O tipo de documento específico não consta em sua checklist!');
+            return back();
+        }
+
+        foreach ($checklist as $indice) {
+            if ($indice->tipodocemp_id == $request->tipodocempresa && $indice->anexado == "true") {
+                session()->flash('error', 'Este tipo de arquivo já foi anexado!');
+                return back();
+            }
+
+            $indice->anexado = "true";
+            $indice->save();
+        }
+
         $empresa = Empresa::find($request->empresaId);
 
         $validatedData = $request->validate([
 
-            'arquivo' => ['required', 'file', 'mimes:pdf', 'max:5000'],
-            'data'    => ['required', 'date'],
+            'arquivo'         => ['required', 'file', 'mimes:pdf', 'max:5000000'],
+            'tipodocempresa'  => ['required'],
+            'data_emissao'    => ['required', 'date'],
+            'data_validade'   => ['nullable', 'date'],
 
         ]);
 
         $fileDocemp = $request->arquivo;
 
-        $pathDocemp = 'empresas/' . $empresa->id . '/';
-        // $pathDocemp = 'empresas/' . $empresa->id . '/' . $checklist->areas_id . '/';
+        $pathDocemp = 'empresas/' . $empresa->id . '/' . $request->tipodocempresa . '/';
+
         $nomeDocemp = $request->arquivo->getClientOriginalName();
 
         Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
 
         $docEmpresa = Docempresa::create([
             'nome'  => $pathDocemp . $nomeDocemp,
-            'data_validade' => $request->data,
+            'data_emissao'  => $request->data_emissao,
+            'data_validade' => $request->data_validade,
             'empresa_id'  => $empresa->id,
             'tipodocemp_id' => $request->tipodocempresa,
         ]);
 
-        $checklist->anexado = "true";
-        $checklist->save();
 
         // return view('empresa.home_empresa');
         session()->flash('success', 'O arquivo foi anexado com sucesso!');
@@ -510,27 +652,26 @@ class EmpresaController extends Controller
         $endereco = Endereco::where('empresa_id', $empresa->id)->first();
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
         $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $id)->get();
-        // $respTecnicos = RespTecnico::where("empresa_id", $empresa->id)->first();
+        // $respTecnicos = RespTecnico::where("empresa_id", $empresa->id)->get();
         $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->get();
 
-        // $resptecnicos = [];
-        // for ($i=0; $i < count($rtempresa); $i++) {
-        //     array_push($resptecnicos, RespTecnico::find($rtempresa[$i]));
-        // }
+        $resptecnicos = [];
 
-        // $cnae = array();
-        // foreach($cnaeEmpresa as $indice){
-        //     $cnaes = Cnae::find($indice->cnae_id);
-        //     array_push($cnae, $cnaes);
-        // }
+        foreach ($rtempresa as $indice) {
+            array_push($resptecnicos, RespTecnico::find($indice->resptec_id));
+        }
+
+        $temp = array_unique($resptecnicos);
+
         return view('empresa/show_empresa',['empresa' => $empresa,
          'endereco' => $endereco,
          'telefone' =>$telefone,
          'cnae' => $cnaeEmpresa,
-         'respTecnico' => $rtempresa,
+         'respTecnico' => $temp,
          'empresaId'     => $empresa->id,
          ]);
     }
+
     public function showDocumentacao(Request $request){
 
         $idEmpresa = Crypt::decrypt($request->value);
@@ -555,27 +696,25 @@ class EmpresaController extends Controller
             array_push($area, Area::find($indice));
         }
 
-        $checklist = Checklistemp::where('empresa_id', $empresa->id)->orderBy('id','ASC')->get();
+        $checklisttemp = Checklistemp::where('empresa_id', $empresa->id)->orderBy('id','ASC')->get();
+        $checklist = [];
 
-        // $hoje = date('d/m/Y');
-        // $formatoHoje = 'd/m/Y';
-        // $Hoje = DateTime::createFromFormat($formatoHoje, $hoje);
-
-        // foreach ($checklist as $check) {
-
-        // }
-
-        // foreach ($docsempresa as $indice) {
-        //     $formato = 'd/m/Y';
-        //     $validade = DateTime::createFromFormat($formato, $indice->data_validade);
-        //     $intervalo = $validade->diff($Hoje);
-        //     if ($hoje > $indice->data_validade) {
-        //         // Volta a ser pendente
-        //     }
-        //     elseif (condition) {
-        //         # code...
-        //     }
-        // }
+        for ($i=0; $i < count($checklisttemp); $i++) {
+            if (count($checklist) == 0) {
+                array_push($checklist, $checklisttemp[$i]);
+            }
+            else {
+                $temp = false;
+                for ($j=0; $j < count($checklist); $j++) {
+                    if($checklisttemp[$i]->tipodocemp_id == $checklist[$j]->tipodocemp_id) {
+                        $temp = true;
+                    }
+                }
+                if ($temp == false) {
+                    array_push($checklist, $checklisttemp[$i]);
+                }
+            }
+        }
 
         return view('empresa/documentacao_empresa',['nome'=>$empresa->nome,
         'areas' => $area,
@@ -622,6 +761,111 @@ class EmpresaController extends Controller
                 'table_data' => $output,
             );
             echo json_encode($data);
+    }
+    /*
+    * Função para add cnae
+    * Tela: editar_empresa.blade
+    */
+    public function ajaxAddCnae_editarEmpresa(Request $request){
+        $this->listarCnae_editarEmpresa($request->id_area);
+    }
+    public function listarCnae_editarEmpresa($idArea){
+        $resultado = Cnae::where('areas_id','=',$idArea)->orderBy('descricao', 'ASC')->get();
+        // return view('coordenador/cnaes_coordenador', ['cnaes' => $cnaes]);
+        $output = '';
+            if($resultado->count() > 0){
+                foreach($resultado as $item){
+                    $output .= '
+                    <div class="d-flex justify-content-center cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
+                        <div class="mr-auto p-2>OPA</div>
+                            <div class="mr-auto p-2" id="'.$item->id.'">'.$item->descricao.'</div>
+                            <div style="width:140px; height:25px; text-align:right;">
+                                <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
+                                    <div class="btn btn-success btn-sm"  onclick="add_EditarCnaeEmpresa('.$item->id.')" >Adicionar</div>
+                                </div>
+                            </div>
+
+                    </div>
+
+                    ';
+                }
+            }elseif($idArea == ""){
+                $output .= '
+                        <label></label>
+                    ';
+            }else{
+                $output .= '
+                        <label>vazio</label>
+                    ';
+            }
+            $data = array(
+                'success'   => true,
+                'table_data' => $output,
+                // 'arrayTemp' => $arrayTemp, //atualizar o array temp
+            );
+            echo json_encode($data);
+    }
+     /*
+    * Função para mostrar na tela os cnaes da empresa
+    * Tela: editar_empresa.blade
+    */
+    public function ajaxCnaesEmpresa(Request $request){
+
+        $this->listarCnaes($request->id_empresa);
+
+    }
+    public function listarCnaes($idEmpresa){
+        $resultado = CnaeEmpresa::where('empresa_id', $idEmpresa)->get();
+
+        // TENTANDO MUDAR AQUI EMBAIXO
+        // $resultados = CnaeEmpresa::where('empresa_id', $idEmpresa)->get();
+        
+        // $resultado = [];
+
+        // foreach ($resultados as $indice) {
+        //     array_push($resultado, Cnae::find($indice->cnae_id));
+        // }
+
+        $arrayTemp = [];
+        $output = '';
+            if($resultado->count() > 0){
+                foreach($resultado as $item){
+                    $output .= '
+                    <div class="d-flex justify-content-center form-gerado cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
+                        <div class="mr-auto p-2>OPA</div>
+                            <div class="mr-auto p-2" id="'.$item->id.'">'.$item->cnae->descricao.'</div>
+                            <input type="hidden" name="cnae[]" value="'.$item->cnae->id.'">
+                            <div style="width:140px; height:25px; text-align:right;">
+                                <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
+                                    <div class="btn btn-danger btn-sm" onclick="deletar_EditarCnaeEmpresa('.$item->id.')" >X</div>
+                                </div>
+                            </div>
+                    </div>
+                    ';
+                    array_push($arrayTemp, $item->id);
+                }
+            }elseif($idEmpresa == ""){
+                $output .= '
+                        <label></label>
+                    ';
+            }else{
+                $output .= '
+                        <label>vazio</label>
+                    ';
+            }
+            $data = array(
+                'success'   => true,
+                'table_data' => $output,
+                'arrayTemp' => $arrayTemp, //atualizar o array temp
+            );
+            echo json_encode($data);
+    }
+
+    public function apagarCnaeEmpresa(Request $request)
+    {
+        $delete = CnaeEmpresa::destroy($request->idCnaeEmp);
+
+        return $delete;
     }
 
     public function foundChecklist(Request $request){

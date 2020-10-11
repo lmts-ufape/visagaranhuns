@@ -13,11 +13,15 @@ class RtEmpresa extends Model
      * @var array
      */
     protected $fillable = [
-        'resptec_id', 'empresa_id',
+        'resptec_id', 'empresa_id', 'area_id', 'horas', 'data_inicio', 'status'
     ];
 
     public function resptecnico() {
         return $this->belongsTo("\App\RespTecnico");
+    }
+
+    public function area() {
+        return $this->belongsTo("\App\Area");
     }
 
     public function empresa() {

@@ -16,6 +16,9 @@
     <script type="text/javascript" src="{{URL::asset('js/requerimento_coordenador.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/naologado.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/checklist.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/findDoc.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/findDocRt.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/requerimento_rt.js')}}" defer></script>
 
     <!-- load jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -227,8 +230,18 @@
                                 </li>
                             @elseif(Auth::user()->tipo == "rt")
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
+                                    <a class="nav-link" href="{{ route('/') }}">{{ __('Início') }}</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('listar.empresa.rt',['flag'=>"estabelecimento"]) }}">{{ __('Estabelecimentos') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('listar.empresa.rt',['flag'=>"requerimento"]) }}">{{ __('Requerimentos') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('listar.empresa.rt',['flag'=>"documentos"]) }}">{{ __('Documentos') }}</a>
+                                </li>
+
                                 {{-- <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Programação') }}</a>
                                 </li>
@@ -241,6 +254,9 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('rt.documentos') }}">
+                                            {{ __('Meus documentos') }}
+                                        </a>
                                         <a class="dropdown-item" href="{{ route('editar.dados', ['user' => Auth::user()->id]) }}">
                                             {{ __('Editar dados') }}
                                         </a>
