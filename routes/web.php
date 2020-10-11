@@ -220,11 +220,18 @@ Route::middleware(['IsRespTecnico'])->group(function () {
 
     Route::get('/empresa/documentacao',             'RespTecnicoController@documentacaoEmpresa')->name('rt.documentacao.empresa');
 
-    Route::get('/download/arquivo/empresa/rt',      'EmpresaController@downloadArquivo')->name('download.arquivo.empresa');
+    Route::get('/download/arquivo/empresa/rt',      'RespTecnicoController@downloadArquivo')->name('download.arquivo.empresa');
 
-    Route::get('/rt/requerimento',                     'RespTecnicoController@criarRequerimento')->name('criar.requerimento');
+    Route::get('/rt/requerimento',                  'RespTecnicoController@criarRequerimento')->name('criar.requerimento');
     
-    Route::post('/cadastro/requerimento',  'RespTecnicoController@cadastrarRequerimento')->name('cadastrar.requerimento');
+    Route::post('/cadastro/requerimento',           'RespTecnicoController@cadastrarRequerimento')->name('cadastrar.requerimento');
+
+
+    Route::post("/empresa/arquivos/rt",             "RespTecnicoController@anexarArquivosEmpresa")->name("anexar.arquivos.empresa.rt");
+
+    Route::get('/encontrar/doc/empresa/rt',         'RespTecnicoController@findDoc')->name('find.doc.empresa.rt');
+
+    Route::post("/empresa/editar/arquivos/rt",      "RespTecnicoController@editarArquivosEmpRt")->name("editar.arquivos.empresa.rt");
     //Empresa - Responsável Técnico
 /*
     * Consultar histórico de inspeções

@@ -159,7 +159,39 @@ class RespTecnicoController extends Controller
         $docsempresa = Docempresa::where('empresa_id', $empresa->id)->get();
         $rt = RespTecnico::where('user_id', Auth::user()->id)->first();
         $rtempresa = RtEmpresa::where('resptec_id', $rt->id)->get();
-        $checklist = Checklistemp::where('empresa_id', $empresa->id)->orderBy('id','ASC')->get();
+        $rtempresa2 = RtEmpresa::where('resptec_id', $rt->id)->pluck('area_id');
+        $checklisttemp = [];
+        $checklist = [];
+        $check = [];
+
+        // dd($docsempresa);
+
+        foreach ($rtempresa2 as $key) {
+            array_push($checklisttemp, Checklistemp::where('empresa_id', $empresa->id)->where('areas_id', $key)->orderBy('id','ASC')->get());
+        }
+
+        foreach ($checklisttemp as $indice) {
+            foreach ($indice as $indice2) {
+                array_push($checklist, $indice2);
+            }
+        }
+
+        for ($i=0; $i < count($checklist); $i++) {
+            if (count($check) == 0) {
+                array_push($check, $checklist[$i]);
+            }
+            else {
+                $temp = false;
+                for ($j=0; $j < count($check); $j++) {
+                    if($checklist[$i]->tipodocemp_id == $check[$j]->tipodocemp_id) {
+                        $temp = true;
+                    }
+                }
+                if ($temp == false) {
+                    array_push($check, $checklist[$i]);
+                }
+            }
+        }
 
         // dd($rtempresa);
 
@@ -168,7 +200,109 @@ class RespTecnicoController extends Controller
         'checklist' => $checklist,
         'docsempresa' => $docsempresa,
         'rtempresa'   => $rtempresa,
+        'tipos'       => $check,
+        'areas'       => $rtempresa2,
         ]);
+    }
+
+    public function downloadArquivo(Request $request){
+        return response()->download(storage_path('app/' . $request->file));
+    }
+
+    public function editarArquivosEmpRt(Request $request)
+    {
+
+        $validatedData = $request->validate([
+
+            'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000000'],
+
+        ]);
+
+        $docempresa = Docempresa::where("nome", $request->file)->first();
+        
+        Storage::delete($docempresa->nome);
+
+        $fileDocemp = $request->arquivo;
+
+        $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/'; 
+
+        $nomeDocemp = $request->arquivo->getClientOriginalName();
+
+        $docempresa->nome = $pathDocemp . $nomeDocemp;
+        $docempresa->save();
+
+        Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+        session()->flash('success', 'Arquivo salvo com sucesso!');
+        return back();
+    }
+
+    public function findDoc(Request $request)
+    {
+
+        $docempresa = Docempresa::find($request->id);
+
+        $data = array(
+            'nome'   => $docempresa->nome,
+        );
+
+        echo json_encode($data);
+    }
+
+    public function anexarArquivosEmpresa(Request $request)
+    {
+
+        if($request->arquivo == null){
+            session()->flash('error', 'Selecione um aquivo e tente novamente!');
+            return back();
+        }
+
+        $checklist = Checklistemp::where('tipodocemp_id', $request->tipodocempresa)
+        ->where('empresa_id', $request->empresaId)
+        ->where('areas_id', $request->area)->first();
+
+        if ($checklist == null) {
+            session()->flash('error', 'O tipo de documento específico não consta em sua checklist ou a área não está correta!');
+            return back();
+        }
+
+        else {
+            $checklist->anexado = "true";
+            $checklist->save();
+        }
+
+        $empresa = Empresa::find($request->empresaId);
+
+        $validatedData = $request->validate([
+
+            'arquivo'         => ['required', 'file', 'mimes:pdf', 'max:5000000'],
+            'tipodocempresa'  => ['required'],
+            'data_emissao'    => ['required', 'date'],
+            'data_validade'   => ['nullable', 'date'],
+
+        ]);
+
+        $fileDocemp = $request->arquivo;
+
+        $pathDocemp = 'empresas/' . $empresa->id . '/' . $request->tipodocempresa . '/';
+
+        $nomeDocemp = $request->arquivo->getClientOriginalName();
+
+        Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+        $docEmpresa = Docempresa::create([
+            'nome'  => $pathDocemp . $nomeDocemp,
+            'data_emissao'  => $request->data_emissao,
+            'data_validade' => $request->data_validade,
+            'empresa_id'  => $empresa->id,
+            'tipodocemp_id' => $request->tipodocempresa,
+        ]);
+
+
+        // return view('empresa.home_empresa');
+        session()->flash('success', 'O arquivo foi anexado com sucesso!');
+        return back();
+
     }
 
     /**
