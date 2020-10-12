@@ -707,7 +707,13 @@ class EmpresaController extends Controller
                 $temp = false;
                 for ($j=0; $j < count($checklist); $j++) {
                     if($checklisttemp[$i]->tipodocemp_id == $checklist[$j]->tipodocemp_id) {
-                        $temp = true;
+                        if ($checklist[$j]->anexado == "true") {
+                            $temp = true;
+                        }
+                        else {
+                            $checklist[$j] = $checklisttemp[$i];
+                            $temp = true;
+                        }
                     }
                 }
                 if ($temp == false) {
@@ -715,6 +721,7 @@ class EmpresaController extends Controller
                 }
             }
         }
+
 
         return view('empresa/documentacao_empresa',['nome'=>$empresa->nome,
         'areas' => $area,

@@ -273,16 +273,23 @@ class RespTecnicoController extends Controller
         ->where('empresa_id', $request->empresaId)
         ->where('areas_id', $request->area)->first();
 
+        // dd($checklist);
+
         if ($checklist == null) {
             session()->flash('error', 'O tipo de documento específico não consta em sua checklist ou a área não está correta!');
             return back();
         }
 
+        elseif ($checklist->tipodocemp_id == $request->tipodocempresa && $checklist->anexado == "true") {
+            session()->flash('error', 'Este tipo de arquivo já foi anexado!');
+            return back();
+        }
+        
         else {
             $checklist->anexado = "true";
             $checklist->save();
         }
-
+        // dd("PAROU");
         $empresa = Empresa::find($request->empresaId);
 
         $validatedData = $request->validate([

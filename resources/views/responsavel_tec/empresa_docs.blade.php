@@ -187,6 +187,7 @@
                                                                 </label>
                                                                 <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDocEmpRt({{$docempresa->id}})" style="cursor:pointer; color:#249BE3">- Editar arquivo</a>
                                                             </div>
+                                                            @break
                                                         @endif
                                                     @endforeach
                                                 @endif
