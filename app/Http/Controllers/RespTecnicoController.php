@@ -71,6 +71,22 @@ class RespTecnicoController extends Controller
          ]);
     }
 
+    public function encontrarCnae(Request $request)
+    {
+        $requerimento = Requerimento::where('empresas_id', $request->empresa)
+        ->where('resptecnicos_id', $request->respTecnico)
+        ->where('cnae_id', $request->caneId)
+        ->orderBy('created_at', 'desc')
+        ->first();
+
+        $data = array(
+            'valor'   => $requerimento->status,
+        );
+
+        echo json_encode($data);
+
+    }
+
     public function criarRequerimento(Request $request)
     {
         $id = Crypt::decrypt($request->empresa);
@@ -79,11 +95,12 @@ class RespTecnicoController extends Controller
         $areas = RtEmpresa::where("resptec_id",$rt->id)->pluck('area_id');
         $cnaesEmpresa = CnaeEmpresa::where("empresa_id", $id)->get();
         $requerimentos = Requerimento::where('empresas_id', $empresa->id)
-        ->where('resptecnicos_id', $rt->id)->get();
+        ->where('resptecnicos_id', $rt->id)->orderBy('created_at', 'desc')->get();
 
         $resultado = Empresa::find($id);
 
         $res = DB::table('cnaes_empresas')->where('empresa_id','=',2)->leftJoin('requerimentos','cnaes_empresas.id','=','requerimentos.cnae_id')->join('cnaes','cnaes_empresas.cnae_id','=','cnaes.id')->select('cnaes_empresas.id','requerimentos.tipo','requerimentos.status','requerimentos.aviso','cnaes.codigo','cnaes.descricao')->get();
+        // $resultado = DB::table('rtempresa')->where('rtempresa.empresa_id','=',2)->where('rtempresa.resptec_id','=',1)->join('cnaes_empresas','rtempresa.empresa','=','cnaes_empresas.empresa_id')->join('areas','rtempresa.area_id','=','areas.id')->join('cnaes')->where('areas_id', '=','rtempresa.area_id')->select('*')->get();
 
         $arrayResultado = [];
         foreach($res as $item){
@@ -122,6 +139,8 @@ class RespTecnicoController extends Controller
             }
         }
 
+        // dd($temp);
+
         return view('responsavel_tec/requerimento',[
             'nome'              => $empresa->nome,
             'cnaes'             => $temp,
@@ -155,9 +174,6 @@ class RespTecnicoController extends Controller
             'resptecnicos_id' => $request->resptecnico,
             'empresas_id'     => $request->empresa,
         ]);
-
-        $empresa->status_cadastro = $request->tipo;
-        $empresa->save();
 
         session()->flash('success', 'O seu requerimento foi enviado para análise!');
         return back();

@@ -226,12 +226,13 @@ Route::middleware(['IsRespTecnico'])->group(function () {
     
     Route::post('/cadastro/requerimento',           'RespTecnicoController@cadastrarRequerimento')->name('cadastrar.requerimento');
 
-
     Route::post("/empresa/arquivos/rt",             "RespTecnicoController@anexarArquivosEmpresa")->name("anexar.arquivos.empresa.rt");
 
     Route::get('/encontrar/doc/empresa/rt',         'RespTecnicoController@findDoc')->name('find.doc.empresa.rt');
 
     Route::post("/empresa/editar/arquivos/rt",      "RespTecnicoController@editarArquivosEmpRt")->name("editar.arquivos.empresa.rt");
+
+    Route::get('/cnae/encontrar',                   'RespTecnicoController@encontrarCnae')->name('encontrar.cnae');
     //Empresa - Responsável Técnico
 /*
     * Consultar histórico de inspeções

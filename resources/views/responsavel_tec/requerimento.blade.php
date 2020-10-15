@@ -30,7 +30,7 @@
                 <div class="form-group col-md-12">
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">LISTA DE CNAE</label>
+                            <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">REQUERIMENTOS</label>
                         </div>
                         <div class="form col-md-12" style="margin-top:-10px;">
                             <table class="table table-hover">
@@ -38,18 +38,24 @@
                                   <tr>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Código</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">CNAE</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Tipo</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Requerimento</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                    @if(isset($resultados))
+                                    @foreach($cnaes as $item)
+                                        <tr>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
+                                            <th type="button" class="subtituloBarraPrincipal" onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</th>
+                                        </tr>
+                                    @endforeach
+                                    {{-- @if(isset($resultados))
                                         @foreach($resultados as $item)
                                             <tr>
                                                 <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
                                                 <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
                                                 {{-- tipo --}}
-                                                @if($item->tipo == "")
+                                                {{-- @if($item->tipo == "")
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black"></th>
                                                 @else
                                                     @if($item->tipo == "primeira_licenca")
@@ -57,9 +63,9 @@
                                                     @elseif($item->tipo == "renovacao")
                                                         <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Renovação</th>
                                                     @endif
-                                                @endif
+                                                @endif --}}
                                                 {{-- status --}}
-                                                @if($item->status == "")
+                                                {{-- @if($item->status == "")
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Nenhum requerimento</th>
                                                 @elseif($item->status == "aprovado")
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:#0e6b0e; cursor:pointer;" onclick="statusCNAERequisicaoRT('aprovado','{{$item->descricao}}',null,null)" data-toggle="modal" data-target="#statusCnaeRequisicaoRTModalAprovado"><img src="{{ asset('/imagens/logo_aprovado.png') }}" width="20px" alt="Logo" style="margin-right:13px;"/> Aprovado</th>
@@ -67,8 +73,8 @@
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:#c4302b; cursor:pointer;" onclick="statusCNAERequisicaoRT('reprovado','{{$item->descricao}}','{{$item->aviso}}',null)" data-toggle="modal" data-target="#statusCnaeRequisicaoRTModalReprovado"><img src="{{ asset('/imagens/logo_atencao4.png') }}" width="20px" alt="Logo" style="margin-right:13px;"/> Reprovado</th>
                                                 @elseif($item->status == "pendente")
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:#e1ad01;"><img src="{{ asset('/imagens/logo_atencao.png') }}" width="22px" alt="Logo" style="margin-right:13px;"/>Pendente</th>
-                                                @endif
-                                            </tr>
+                                                @endif --}}
+                                            {{-- </tr>
                                         @endforeach
                                     @else
                                         <tr>
@@ -78,9 +84,41 @@
                                             <th></th>
                                         </tr>
 
-                                    @endif
+                                    @endif --}}
                                 </tbody>
-                              </table>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">HISTÓRICO</label>
+                        </div>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Código</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">CNAE</th>
+                                      <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Tipo</th>
+                                      <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
+                                      <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Data</th>
+                                      <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Aviso</th>
+                                      
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($requerimentos as $indice)
+                                        <tr>
+                                        <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->codigo}}</th>
+                                        <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->descricao}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->tipo}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->data}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->aviso}}</th>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -157,17 +195,10 @@
                                 <input type="hidden" name="cnae" id="idCnaeRequerimentoRT">
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1">Tipo de requerimento</label>
-                                    @if ($status == "aprovado2" || $status == "renovacao")
                                     <select class="form-control" id="exampleFormControlSelect1" name="tipo">
-                                        <option value="primeira_licenca" disabled>Primeira Licença</option>
-                                        <option value="renovacao">Renovação</option>
+                                        <option id="priLicenca" value="primeira_licenca">Primeira Licença</option>
+                                        <option id="renoLicenca" value="renovacao">Renovação</option>
                                     </select>
-                                    @elseif ($status == "aprovado" || $status == "primeira_licenca")
-                                    <select class="form-control" id="exampleFormControlSelect1" name="tipo">
-                                        <option value="primeira_licenca">Primeira Licença</option>
-                                        <option value="renovacao" disabled>Renovação</option>
-                                    </select>
-                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -182,4 +213,16 @@
     </div>
 @endsection
 
-
+{{-- <script type="text/javascript">
+    window.onload= function() {
+        $.ajax({
+            url:'/requerimento',
+            type:"get",
+            dataType:'json',
+            data: {"filtro": "all" },
+            success: function(response){
+                $('tbody_').html(response.table_data);
+            }
+        });
+    };
+</script> --}}
