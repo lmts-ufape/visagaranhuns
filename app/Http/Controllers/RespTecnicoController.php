@@ -298,7 +298,7 @@ class RespTecnicoController extends Controller
 
         $checklist = Checklistemp::where('tipodocemp_id', $request->tipodocempresa)
         ->where('empresa_id', $request->empresaId)
-        ->where('areas_id', $request->area)->first();
+        ->get();
 
         // dd($checklist);
 
@@ -307,16 +307,16 @@ class RespTecnicoController extends Controller
             return back();
         }
 
-        elseif ($checklist->tipodocemp_id == $request->tipodocempresa && $checklist->anexado == "true") {
-            session()->flash('error', 'Este tipo de arquivo já foi anexado!');
-            return back();
+        foreach ($checklist as $indice) {
+            if ($indice->tipodocemp_id == $request->tipodocempresa && $indice->anexado == "true") {
+                session()->flash('error', 'Este tipo de arquivo já foi anexado!');
+                return back();
+            }
+
+            $indice->anexado = "true";
+            $indice->save();
         }
         
-        else {
-            $checklist->anexado = "true";
-            $checklist->save();
-        }
-        // dd("PAROU");
         $empresa = Empresa::find($request->empresaId);
 
         $validatedData = $request->validate([

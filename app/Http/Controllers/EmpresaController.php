@@ -541,6 +541,7 @@ class EmpresaController extends Controller
             'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000000'],
 
         ]);
+        // dd($request->file);
 
         $docempresa = Docempresa::where("nome", $request->file)->first();
 
