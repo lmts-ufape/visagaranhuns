@@ -550,7 +550,7 @@ class CoordenadorController extends Controller
                         </div>
                     ';
 
-                }elseif($item->tipo == "renovacao_de_licenca"  && ($filtro == "renovacao_de_licenca" || $filtro == "all") && ($item->status == "pendente")){
+                }elseif($item->tipo == "renovacao"  && ($filtro == "renovacao_de_licenca" || $filtro == "all") && ($item->status == "pendente")){
                     $output .='
                     <div class="container cardListagem">
                         <div class="d-flex">
@@ -583,7 +583,8 @@ class CoordenadorController extends Controller
                                         <div class="form-group" style="font-size:15px;">
                                             <div>CNAE: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
                                             <div>Responsável Técnico:<span class="textoCampo"> '.$item->resptecnico->user->name.'</span></div>
-                                            <div style="margin-top:10px; margin-bottom:-10px;"><button type="button" onclick="licencaAvaliacao('.$item->id.')" class="btn btn-success">Avaliar</button></div>
+                                            <div>Status:<span class="textoCampo"> '.$item->status.'</span></div>
+                                            <div style="margin-top:10px; margin-bottom:-10px;"><button type="button" onclick="licencaAvaliacao('.$item->empresa->id.','.$item->cnae->areas_id.','.$item->id.')" class="btn btn-success">Avaliar</button></div>
                                         </div>
                                     </div>
                                 </div>
@@ -591,7 +592,7 @@ class CoordenadorController extends Controller
                         </div>
                     </div>
                 ';
-                }elseif($item->tipo == "renovacao_de_licenca"  && ($filtro == "renovacao_de_licenca" || $filtro == "all") && ($item->status == "aprovado")){
+                }elseif($item->tipo == "renovacao"  && ($filtro == "renovacao_de_licenca" || $filtro == "all") && ($item->status == "aprovado")){
                     $output .='
                     <div class="container cardListagem">
                         <div class="d-flex">
@@ -624,7 +625,7 @@ class CoordenadorController extends Controller
                                         <div class="form-group" style="font-size:15px;">
                                             <div>CNAE: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
                                             <div>Responsável Técnico:<span class="textoCampo"> '.$item->resptecnico->user->name.'</span></div>
-
+                                            <div>Status:<span class="textoCampo"> '.$item->status.'</span></div>
                                         </div>
                                     </div>
                                 </div>

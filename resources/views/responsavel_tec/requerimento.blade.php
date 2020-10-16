@@ -108,14 +108,25 @@
                                 </thead>
                                 <tbody>
                                     @foreach($requerimentos as $indice)
-                                        <tr>
-                                        <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->codigo}}</th>
-                                        <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->descricao}}</th>
+                                        @if ($indice->status == "reprovado")
+                                            <tr>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->codigo}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->descricao}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->tipo}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->data}}</th>
+                                            <th type="button" class="subtituloBarraPrincipal" style="font-size:15px; color:black" onclick="avisoReq('{{$indice->aviso}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</th>
+                                            </tr>
+                                        @else
+                                            <tr>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->codigo}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->descricao}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->tipo}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->data}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->aviso}}</th>
-                                        </tr>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 </tbody>
                             </table>
@@ -126,6 +137,29 @@
         </div>
     </div>
 </div>
+
+<!-- Modal de Aviso -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#2a9df4;">
+                    <img src="{{ asset('/imagens/logo_atencao3.png') }}" width="30px;" alt="Logo" style=" margin-right:15px; margin-top:10px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Avisos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formRequerimento" method="POST" action="{{ route('cadastrar.requerimento') }}">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div id="avisoReq" class="col-12" style="font-family: 'Roboto', sans-serif;"></div>
+                    </div>
+                </div>
+        </form>
+        </div>
+    </div>
+</div>
+
 <!-- Modal - cnae aprovado-->
 <div class="modal fade" id="statusCnaeRequisicaoRTModalAprovado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

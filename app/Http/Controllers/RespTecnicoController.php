@@ -73,18 +73,29 @@ class RespTecnicoController extends Controller
 
     public function encontrarCnae(Request $request)
     {
+
         $requerimento = Requerimento::where('empresas_id', $request->empresa)
         ->where('resptecnicos_id', $request->respTecnico)
-        ->where('cnae_id', $request->caneId)
+        ->where('cnae_id', $request->cnaeId)
         ->orderBy('created_at', 'desc')
         ->first();
 
-        $data = array(
-            'valor'   => $requerimento->status,
-        );
+        if ($requerimento == null) {
+            $data = array(
+                'tipo'    => "nenhum",
+                'valor'   => "nenhum",
+            );
 
-        echo json_encode($data);
+            echo json_encode($data);
 
+        }else {
+            $data = array(
+                'tipo'    => $requerimento->tipo,
+                'valor'   => $requerimento->status,
+            );
+
+            echo json_encode($data);
+        }
     }
 
     public function criarRequerimento(Request $request)
