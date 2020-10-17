@@ -108,6 +108,8 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::post("/licenca", "CoordenadorController@licenca")->name("licenca");
 
     Route::post("/julgar/requerimento", "CoordenadorController@julgarRequerimento")->name("julgar.requerimento");
+
+    Route::get('/download/arquivo/avaliar/requerimento',       'CoordenadorController@downloadArquivo')->name('download.arquivo.avaliar.requerimento');
     //Supervisor
 /*
     * Cadastrar/Editar/Deletar relatórios (Editar também relatórios criados pos outras pessoas)

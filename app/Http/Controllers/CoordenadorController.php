@@ -50,6 +50,11 @@ class CoordenadorController extends Controller
         return view('coordenador.cadastro_pendente', ["empresa" => $empresas]);
     }
 
+    public function downloadArquivo(Request $request)
+    {
+        return response()->download(storage_path('app/' . $request->file));
+    }
+
     /* Função para selecionar e exibir na página a empresa que será
     Avaliada
     */
