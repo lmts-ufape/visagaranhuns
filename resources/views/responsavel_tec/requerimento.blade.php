@@ -39,15 +39,28 @@
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Código</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">CNAE</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Requerimento</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($cnaes as $item)
-                                        <tr>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
-                                            <th type="button" class="subtituloBarraPrincipal" onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</th>
-                                        </tr>
+                                        @foreach ($check as $item2)
+                                            @if ($item->areas_id == $item2->area && $item2->status == "pendente")
+                                                <tr>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
+                                                    <th type="button" class="subtituloBarraPrincipal" onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</th>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusPendente">Pendente</th>
+                                                </tr>
+                                            @elseif ($item->areas_id == $item2->area && $item2->status == "completo")
+                                                <tr>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
+                                                    <th type="button" class="subtituloBarraPrincipal" onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</th>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusCompleto">Completo</th>
+                                                </tr>
+                                            @endif
+                                        @endforeach
                                     @endforeach
                                     {{-- @if(isset($resultados))
                                         @foreach($resultados as $item)
@@ -160,19 +173,19 @@
     </div>
 </div>
 
-<!-- Modal - cnae aprovado-->
-<div class="modal fade" id="statusCnaeRequisicaoRTModalAprovado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+<!-- Modal - Checklist completo-->
+<div class="modal fade" id="statusCompleto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color:white;">
-                    <img src="{{ asset('/imagens/logo_aprovado.png') }}" width="25px;" alt="Logo" style=" margin-right:15px; margin-top:10px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:#00b300; font-weight:bold; font-family: 'Roboto', sans-serif;">CNAE aprovado</h5>
+                    <img src="{{ asset('/imagens/logo_aprovado.png') }}" width="25px;" alt="Logo" style=" margin-right:15px; margin-top:10px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:#00b300; font-weight:bold; font-family: 'Roboto', sans-serif;">Checklist Completa</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-12" style="font-family: 'Roboto', sans-serif;">Cnae <label id="descricaoCNAERT" style="font-weight:bold; font-family: 'Roboto', sans-serif;"> xxxx</label> aprovado!</div>
+                    <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="descricaoCNAERT" style="font-weight:bold; font-family: 'Roboto', sans-serif;"></label>Os documentos para o checklist deste cnae foram todos anexados.</div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -181,24 +194,19 @@
         </div>
     </div>
 </div>
-<!-- Modal - cnae reprovado-->
-<div class="modal fade" id="statusCnaeRequisicaoRTModalReprovado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+<!-- Modal - Checklist pendente-->
+<div class="modal fade" id="statusPendente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color:white;">
-                    <img src="{{ asset('/imagens/logo_atencao4.png') }}" width="25px;" alt="Logo" style=" margin-right:15px; margin-top:10px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:#940405; font-weight:bold; font-family: 'Roboto', sans-serif;">CNAE reprovado</h5>
+                    <img src="{{ asset('/imagens/logo_atencao4.png') }}" width="25px;" alt="Logo" style=" margin-right:15px; margin-top:10px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:#940405; font-weight:bold; font-family: 'Roboto', sans-serif;">Checklist Pendente</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-12" style="font-family: 'Roboto', sans-serif;">Cnae <label id="descricaoCNAERTreprovado" style="font-weight:bold; font-family: 'Roboto', sans-serif;"> </label> reprovado!</div>
-
-                    <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px;">
-                        <label style="font-weight:normal; font-family: 'Roboto', sans-serif;">Motivo da reprovação: </label>
-                        <label id="avisoCNAERTreprovado" style="font-weight:bold; font-family: 'Roboto', sans-serif;"> </label>
-                    </div>
+                    <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="descricaoCNAERTreprovado" style="font-weight:bold; font-family: 'Roboto', sans-serif;"> </label>Algum documento para o checklist deste cnae ainda está pendente!</div>
                 </div>
             </div>
             <div class="modal-footer">

@@ -107,7 +107,7 @@ class RespTecnicoController extends Controller
         $cnaesEmpresa = CnaeEmpresa::where("empresa_id", $id)->get();
         $requerimentos = Requerimento::where('empresas_id', $empresa->id)
         ->where('resptecnicos_id', $rt->id)->orderBy('created_at', 'desc')->get();
-
+        $check = [];
         $resultado = Empresa::find($id);
 
         $res = DB::table('cnaes_empresas')->where('empresa_id','=',2)->leftJoin('requerimentos','cnaes_empresas.id','=','requerimentos.cnae_id')->join('cnaes','cnaes_empresas.cnae_id','=','cnaes.id')->select('cnaes_empresas.id','requerimentos.tipo','requerimentos.status','requerimentos.aviso','cnaes.codigo','cnaes.descricao')->get();
@@ -133,34 +133,43 @@ class RespTecnicoController extends Controller
             }
         }
 
-        $cnaeRequerimento = [];
-
-        foreach ($temp as $indice) {
-            foreach ($requerimentos as $indice2) {
-                if ($indice->id == $indice2->cnae_id) {
-                    $obj = (object) array(
-                        'cnaeId'    => $indice->id,
-                        'codigo'    => $indice->codigo,
-                        'descricao' => $indice->descricao,
-                        'tipo'      => $indice2->tipo,
-                        'status'    => $indice2->status,
-                    );
-                    array_push($cnaeRequerimento, $obj);
+        foreach ($areas as $key) {
+            $pendencia = "completo";
+            $checklist = Checklistemp::where('empresa_id', $empresa->id)
+            ->where('areas_id', $key)->get();
+            foreach ($checklist as $key2) {
+                if ($key2->anexado == "false") {
+                    $pendencia = "pendente";
                 }
+            }
+
+            if ($pendencia == "completo") {
+                $obj = (object) array(
+                    'area'      => $key,
+                    'status'    => "completo",
+                );
+                array_push($check, $obj);
+            } else {
+                $obj = (object) array(
+                    'area'      => $key,
+                    'status'    => "pendente",
+                );
+                array_push($check, $obj);
             }
         }
 
-        // dd($temp);
+        // dd($check);
+
 
         return view('responsavel_tec/requerimento',[
             'nome'              => $empresa->nome,
             'cnaes'             => $temp,
             'resptecnico'       => $rt->id,
-            'empresas'           => $resultado,
+            'empresas'          => $resultado,
             'status'            => $empresa->status_cadastro,
             'requerimentos'     => $requerimentos,
-            'cnaeRequerimento'  => $cnaeRequerimento,
-            'resultados'         => $arrayResultado,
+            'resultados'        => $arrayResultado,
+            'check'             => $check,
         ]);
     }
 
@@ -232,7 +241,7 @@ class RespTecnicoController extends Controller
             }
         }
 
-        // dd($rtempresa);
+        //tipos: lista de objetos checklist sem repetições, para serem escolhidos os tipos de documentos que serão enviados. $tipo->tipodocemp_id
 
         return view('responsavel_tec/empresa_docs',['nome'=>$empresa->nome,
         'empresaId' => $empresa->id,
@@ -240,7 +249,6 @@ class RespTecnicoController extends Controller
         'docsempresa' => $docsempresa,
         'rtempresa'   => $rtempresa,
         'tipos'       => $check,
-        'areas'       => $rtempresa2,
         ]);
     }
 
