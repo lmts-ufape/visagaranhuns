@@ -184,17 +184,21 @@
     window.montarLinhaInputRequerimento = function(id,elemento, tipo, cnae){
         console.log(elemento);
         return " <div class='form-gerado cardMeuCnae'>\n"+
-        "           <div class='d-flex'>\n"+
         "           <div class='mr-auto p-2'>\n"+
-        "               "+elemento+"\n"+
+        "           <div class='mr-auto p-2'>\n"+
+        "               <div class='btn-group' style='margin-bottom:-15px;'>\n"+
+        "                   <div class='form-group' style='font-size:15px;'>\n"+
+        "                       <div class='textoCampo' id='"+id+"'>"+elemento+"</div>\n"+
+        "                       <div>Tipo: <span class='textoCampo'>"+tipo+"</span></div>\n"+
+        "                       <div>Cnae: <span class='textoCampo'>"+cnae+"</span></div>\n"+
+        "                   </div>\n"+
+        "               </div>\n"+
         "               <input type='hidden' name='requerimentos[]' value='"+id+"'>\n"+
         "           </div>\n"+
-        "           <div class='mr-auto p-2'>\n"+
-        "               "+tipo+"\n"+
-        "               <input type='hidden' name='requerimentos[]' value='"+id+"'>\n"+
-        "           </div>\n"+
-        "           <div class='p-2'>\n" +
-        "               <button type='button' class='btn btn-danger' value='"+id+"' onclick='deletar(this)'>X</button>\n" +
+        "           <div style='width:140px; height:25px; text-align:right;'>\n" +
+        "               <div id='cardSelecionado' class='btn-group'>\n"+
+        "                   <button type='button' class='btn btn-danger' value='"+id+"' onclick='deletar(this)'>X</button>\n" +
+        "               </div>\n"+
         "           </div>\n"+
         "           <div>\n"+
         "       </div>\n";
