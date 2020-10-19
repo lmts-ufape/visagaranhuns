@@ -14,6 +14,9 @@ use App\Endereco;
 use App\Telefone;
 use App\CnaeEmpresa;
 use App\Requerimento;
+use App\Inspecao;
+use App\InspecAgente;
+use App\InspecRequerimento;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
@@ -39,6 +42,107 @@ class CoordenadorController extends Controller
     public function home()
     {
         return view('coordenador.home_coordenador');
+    }
+
+    public function criarInspecao()
+    {
+        $inspetores = Inspetor::all();
+        $agentes = Agente::all();
+        $requerimentos = Requerimento::where('status', 'aprovado')->get();
+
+        return view('coordenador/criar_inspecao',[
+            "inspetores"    => $inspetores,
+            "agentes"       => $agentes,
+            "requerimentos" => $requerimentos,
+        ]);
+    }
+
+    public function encontrarRequerimento(Request $request)
+    {
+        $requerimento = Requerimento::find($request->requerimentoId);
+
+        $data = array(
+            'tipo' => $requerimento->tipo,
+            'cnae' => $requerimento->cnae->descricao,
+        );
+        echo json_encode($data);
+
+    }
+
+    public function cadastrarInspecao(Request $request)
+    {
+        // dd($request);
+        $inspecao = Inspecao::create([
+            'data'            => $request->data,
+            'inspetor_id'     => $request->inspetor,
+        ]);
+
+        $temp1 = InspecAgente::create([
+            'inspecoes_id'  => $inspecao->id,
+            'agente_id'     => $request->agente1,
+        ]);
+
+        $temp2 = InspecAgente::create([
+            'inspecoes_id'  => $inspecao->id,
+            'agente_id'     => $request->agente2,
+        ]);
+
+        foreach ($request->requerimentos as $indice) {
+            $temp3 = InspecRequerimento::create([
+                'inspecoes_id'      => $inspecao->id,
+                'requerimentos_id'  => $indice,
+            ]); 
+        }
+
+        session()->flash('success', 'A inspeção foi cadastrada com sucesso e agora consta para a visualização dos agentes e inspetores.');
+        return back();
+
+    }
+
+    public function requerimentosAprovados()
+    {
+        $resultado = Requerimento::where('status', 'aprovado')->get();
+        // $resultado = Requerimento::find(1)->get();
+        // return view('coordenador/cnaes_coordenador');
+        $output = '';
+            if($resultado->count() > 0){
+                foreach($resultado as $item){
+                    $output .= '
+                    <div class="d-flex justify-content-center cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
+                        <div class="mr-auto p-2>OPA</div>
+                            <div class="mr-auto p-2">
+                                <div class="btn-group" style="margin-bottom:-15px;">
+                                    <div class="form-group" style="font-size:15px;">
+                                        <div class="textoCampo" id="'.$item->id.'">'.$item->empresa->nome.'</div>
+                                        <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
+                                        <div>Cnae: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width:140px; height:25px; text-align:right;">
+                                <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
+                                    <div class="btn btn-success btn-sm"  onclick="addRequerimento('.$item->id.')" >Adicionar</div>
+                                </div>
+                            </div>
+
+                    </div>
+
+                    ';
+                }
+            }elseif($idArea == ""){
+                $output .= '
+                        <label></label>
+                    ';
+            }else{
+                $output .= '
+                        <label>vazio</label>
+                    ';
+            }
+            $data = array(
+                'success'   => true,
+                'table_data' => $output,
+            );
+            echo json_encode($data);
     }
 
     /* Função para listar em tela todas empresas que se cadastraram

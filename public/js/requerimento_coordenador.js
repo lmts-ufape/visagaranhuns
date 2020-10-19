@@ -64,3 +64,31 @@ window.licencaAvaliacao = function($empresaId, $area, $requerimento) {
     document.getElementById("requerimento").value = $requerimento;
     document.getElementById("licenca").submit();
 }
+
+// var arrayTemp = [];
+
+// window.addRequerimento = function($id) {
+//     if(arrayTemp.findIndex(element => element == $id) == -1){ //condicao para add o requerimento na lista
+
+//         // innerText sempre pegará o primero texto da lista
+//         var elemento = document.getElementById($id).innerText;
+//         linha = montarLinhaInputRequerimento($id,elemento);
+//         $('#adicionar').append(linha);
+//         arrayTemp.push($id);
+//     }
+// }
+
+// window.montarLinhaInputRequerimento = function(id,elemento){
+//     console.log(elemento);
+//     return " <div class='form-gerado cardMeuCnae'>\n"+
+//     "           <div class='d-flex'>\n"+
+//     "           <div class='mr-auto p-2'>\n"+
+//     "               "+elemento+"\n"+
+//     "               <input type='hidden' name='requerimentos[]' value='"+id+"'>\n"+
+//     "           </div>\n"+
+//     "           <div class='p-2'>\n" +
+//     "               <button type='button' class='btn btn-danger' value='"+id+"' onclick='deletar(this)'>X</button>\n" +
+//     "           </div>\n"+
+//     "           <div>\n"+
+//     "       </div>\n";
+// }

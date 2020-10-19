@@ -119,6 +119,11 @@ Route::middleware(['IsCoordenador'])->group(function () {
 */
     // Rota para localizar
     Route::get("/coordenador/localizar", "CoordenadorController@localizar");
+
+    Route::get("/criar/inspecao",           "CoordenadorController@criarInspecao")->name("criar.inspecao");
+    Route::get("/requerimentos/aprovados",  "CoordenadorController@requerimentosAprovados")->name("requerimentos.aprovados");
+    Route::post("/cadastrar/inspecao",      "CoordenadorController@cadastrarInspecao")->name("cadastrar.inspecao");
+    Route::get("/encontrar/requerimento",   "CoordenadorController@encontrarRequerimento")->name("encontrar.requerimento");
 });
 
 // Grupo de rotas para empresa

@@ -1,0 +1,202 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+
+    <div class="barraMenu">
+        <div class="d-flex justify-content-center">
+            <div class="mr-auto p-2 styleBarraPrincipalMOBILE">
+                <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
+                    <div class="btn-group">
+                        <div style="margin-top:1px;margin-left:5px;"><img src="{{ asset('/imagens/logo_voltar.png') }}" alt="Logo" style="width:13px;"/></div>
+                        <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Voltar</div>
+                    </div>
+                </a>
+            </div>
+            <div class="mr-auto p-2 styleBarraPrincipalPC">
+                <div class="form-group">
+                    <div class="tituloBarraPrincipal">Cadastrar Inspeções</div>
+                    <div>
+                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Inspeções</div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-2">
+                <div style="width:70px">
+                </div>
+            </div>
+        </div>
+    </div>
+    @if ($message = Session::get('error'))
+        <div class="alert alert-success alert-block fade show">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{$message}}</strong>
+        </div>
+    @endif
+
+    <form id="teste" method="POST" action="{{ route('cadastrar.inspecao') }}">
+        @csrf
+
+        <div class="barraMenu" style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
+            <div class="container" style="margin-top:1rem;">
+                <div class="form-row">
+
+                    <div class="form-group col-md-12">
+                        @if ($message = Session::get('success'))
+                            <div class="alert alert-success alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{$message}}</strong>
+                            </div>
+                        @endif
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">DADOS DA INSPEÇÃO</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
+                                <label class="styleTituloDoInputCadastro" for="inputPassword4">Inspetor:<span style="color:red">*</span></label>
+                                <select class="form-control" name="inspetor" required>
+                                    @foreach ($inspetores as $item)
+                                        <option value="{{$item->id}}">{{$item->user->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
+                                <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 1:<span style="color:red">*</span></label>
+                                <select class="form-control" name="agente1" required>
+                                    @foreach ($agentes as $item)
+                                        <option value="{{$item->id}}">{{$item->user->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
+                                <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 2:<span style="color:red">*</span></label>
+                                <select class="form-control" name="agente2" required>
+                                    @foreach ($agentes as $item)
+                                        <option value="{{$item->id}}">{{$item->user->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
+                                <div class="form-group">
+                                    <label class="styleTituloDoInputCadastro">Data de Inspeção:*</label>
+                                    <input class="form-control" type="date" name="data" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form col-md-12">
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <div class="form-row">
+                                    
+                                    <div class="btn-group col-md-12">
+                                        <div class="col-md-6 styleTituloDoInputCadastro" style="margin-left:-15px;margin-right:30px;margin-bottom:10px;">Requerimentos Aprovados</div>
+                                        <div class="col-md-12 input-group input-group-sm mb-2">
+                                            {{-- <input type="text" class="form-control" placeholder="Nome ou código do CNAE"> --}}
+                                        </div>
+
+                                    </div>
+                                    <div class="form-row col-md-12">
+                                        <div style="width:100%; height:250px; display: inline-block; border: 1.5px solid #f2f2f2; border-radius: 2px; overflow:auto;">
+                                            <table cellspacing="0" cellpadding="1"width="100%" >
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="styleTituloDoInputCadastro" for="exampleFormControlSelect1">Requerimentos Selecionados</label>
+                                <div class="form-group col-md-12 areaMeusCnaes" id="adicionar">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="padding-top:1rem;padding-bottom:1.5rem;">
+                                {{-- <hr size = 7 style="padding-top:1rem;"> --}}
+                                <div class="d-flex">
+                                    <div class="mr-auto p-2">
+                                        <label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif"><span style="font-size:20px">*</span> campos obrigatórios</label>
+                                    </div>
+                                <div class="p-2">
+                                    <button type="submit" class="btn btn-success" style="width:200px;">Cadastrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+
+</div>
+@endsection
+
+<script type="text/javascript">
+    window.onload= function() {
+
+        $.ajax({
+            url:'{{ config('prefixo.PREFIXO') }}requerimentos/aprovados',
+            type:"get",
+            dataType:'json',
+            // data: {"filtro": "all" },
+            success: function(response){
+                console.log("Trabalho");
+                $('tbody').html(response.table_data);
+            }
+        });
+    };
+
+    var arrayTemp = [];
+
+    window.addRequerimento = function($id) {
+        if(arrayTemp.findIndex(element => element == $id) == -1){ //condicao para add o requerimento na lista
+
+            $.ajax({
+                url:'{{ config('prefixo.PREFIXO') }}encontrar/requerimento',
+                type:"get",
+                dataType:'json',
+                data: {"requerimentoId": $id},
+                success: function(response){
+
+                    // innerText sempre pegará o primero texto da lista
+                    var elemento = document.getElementById($id).innerText;
+                    linha = montarLinhaInputRequerimento($id,elemento, response.tipo, response.cnae);
+                    $('#adicionar').append(linha);
+                    arrayTemp.push($id);     
+                }
+            });
+        }
+    }
+
+    window.montarLinhaInputRequerimento = function(id,elemento, tipo, cnae){
+        console.log(elemento);
+        return " <div class='form-gerado cardMeuCnae'>\n"+
+        "           <div class='d-flex'>\n"+
+        "           <div class='mr-auto p-2'>\n"+
+        "               "+elemento+"\n"+
+        "               <input type='hidden' name='requerimentos[]' value='"+id+"'>\n"+
+        "           </div>\n"+
+        "           <div class='mr-auto p-2'>\n"+
+        "               "+tipo+"\n"+
+        "               <input type='hidden' name='requerimentos[]' value='"+id+"'>\n"+
+        "           </div>\n"+
+        "           <div class='p-2'>\n" +
+        "               <button type='button' class='btn btn-danger' value='"+id+"' onclick='deletar(this)'>X</button>\n" +
+        "           </div>\n"+
+        "           <div>\n"+
+        "       </div>\n";
+    }
+</script>
