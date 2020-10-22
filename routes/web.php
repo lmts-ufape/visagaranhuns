@@ -119,6 +119,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::post("/cadastrar/inspecao",      "CoordenadorController@cadastrarInspecao")->name("cadastrar.inspecao");
     Route::get("/encontrar/requerimento",   "CoordenadorController@encontrarRequerimento")->name("encontrar.requerimento");
     Route::get("/historico/inspecoes",      "CoordenadorController@historico")->name("historico.inspecoes");
+    Route::get("/pdf",                      "CoordenadorController@nameMethod")->name("gerar.pdf");
 });
 
 // Grupo de rotas para empresa

@@ -44,6 +44,33 @@ class CoordenadorController extends Controller
         return view('coordenador.home_coordenador');
     }
 
+    public function nameMethod()
+    {
+        $inspecoes = Inspecao::all();
+        $temp = [];
+
+        foreach ($inspecoes as $key) {
+            $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+            $requerimento  = Requerimento::where('id', $key->requerimentos_id)->first();
+
+            $obj = (object) array(
+                'data'          => $key->data,
+                'status'        => $key->status,
+                'inspetor'      => $key->inspetor->user->name,
+                'agente'        => $inspec_agente[0]->agente->user->name,
+                'agente'        => $inspec_agente[1]->agente->user->name,
+                'empresa'       => $requerimento->empresa->nome,
+                'cnae'          => $requerimento->cnae->descricao,                
+            );
+            array_push($temp, $obj);
+            
+        }
+    
+        return \PDF::loadView('coordenador.inspecoes', compact('temp'))
+                    ->setPaper('a4', 'landscape')
+                    ->download('inspecoes.pdf');
+    }
+
     public function criarInspecao()
     {
         $inspetores = Inspetor::all();

@@ -29,11 +29,15 @@
 
                 <div class="form-group col-md-12">
                     <div class="form-row">
-                        <div class="form-group col-md-12">
+                        <div class="form-group col-md-6">
                             <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">INSPEÇÕES</label>
                         </div>
+                        <div class="form-group col-md-6" style="align-content: right">
+                            <label style="font-size:19px;margin-top:5px;margin-bottom:5px; margin-left:435px; font-family: 'Roboto', sans-serif;"><a href="{{ route('listagem.area') }}">BAIXAR</a>
+                            </label>
+                        </div>
                         <div class="form col-md-12" style="margin-top:-10px;">
-                            <table class="table table-hover" style="width: 100%;">
+                            <table class="table table-responsive-lg table-hover" style="width: 100%;">
                                 <thead>
                                   <tr>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold; margin-right:30px;">Data</th>
