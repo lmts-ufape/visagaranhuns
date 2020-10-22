@@ -12,10 +12,10 @@ class TipoDocEmpSeeder extends Seeder
     public function run()
     {
         \App\Tipodocempresa::create([ 'nome' => 'Requerimento Preenchido', 'validade' => '5']);
-        \App\Tipodocempresa::create([ 'nome' => 'cnpj', 'validade' => '5']);
+        \App\Tipodocempresa::create([ 'nome' => 'Cnpj', 'validade' => '5']);
         \App\Tipodocempresa::create([ 'nome' => 'Contrato Social ou Registro de Firma Individual ou Certificado Mei', 'validade' => '5']);
-        \App\Tipodocempresa::create([ 'nome' => 'rg', 'validade' => '5']);
-        \App\Tipodocempresa::create([ 'nome' => 'cpf', 'validade' => '5']);
+        \App\Tipodocempresa::create([ 'nome' => 'Rg', 'validade' => '5']);
+        \App\Tipodocempresa::create([ 'nome' => 'Cpf', 'validade' => '5']);
         \App\Tipodocempresa::create([ 'nome' => 'Atestado de Regularidade do Corpo de Bombeiros', 'validade' => '5']);
         \App\Tipodocempresa::create([ 'nome' => 'Licença Anterior', 'validade' => '5']);
         \App\Tipodocempresa::create([ 'nome' => 'Licença Sanitaria', 'validade' => '5']);

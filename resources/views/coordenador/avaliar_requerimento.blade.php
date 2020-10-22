@@ -93,9 +93,8 @@
                                                 @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id)
                                                     <div class="form col-md-12">
                                                         <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
-                                                            <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}"> Baixar arquivo</a>
+                                                            <a href="{{route('download.arquivo.avaliar.requerimento', ['file' => $docempresa->nome])}}"> Baixar arquivo</a>
                                                         </label>
-                                                        <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDoc({{$docempresa->id}})" style="cursor:pointer; color:#249BE3">- Editar arquivo</a>
                                                     </div>
                                                 @endif
                                             @endforeach

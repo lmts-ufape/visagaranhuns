@@ -71,6 +71,33 @@ class RespTecnicoController extends Controller
          ]);
     }
 
+    public function encontrarCnae(Request $request)
+    {
+
+        $requerimento = Requerimento::where('empresas_id', $request->empresa)
+        ->where('resptecnicos_id', $request->respTecnico)
+        ->where('cnae_id', $request->cnaeId)
+        ->orderBy('created_at', 'desc')
+        ->first();
+
+        if ($requerimento == null) {
+            $data = array(
+                'tipo'    => "nenhum",
+                'valor'   => "nenhum",
+            );
+
+            echo json_encode($data);
+
+        }else {
+            $data = array(
+                'tipo'    => $requerimento->tipo,
+                'valor'   => $requerimento->status,
+            );
+
+            echo json_encode($data);
+        }
+    }
+
     public function criarRequerimento(Request $request)
     {
         $id = Crypt::decrypt($request->empresa);
@@ -79,11 +106,12 @@ class RespTecnicoController extends Controller
         $areas = RtEmpresa::where("resptec_id",$rt->id)->pluck('area_id');
         $cnaesEmpresa = CnaeEmpresa::where("empresa_id", $id)->get();
         $requerimentos = Requerimento::where('empresas_id', $empresa->id)
-        ->where('resptecnicos_id', $rt->id)->get();
-
+        ->where('resptecnicos_id', $rt->id)->orderBy('created_at', 'desc')->get();
+        $check = [];
         $resultado = Empresa::find($id);
 
         $res = DB::table('cnaes_empresas')->where('empresa_id','=',2)->leftJoin('requerimentos','cnaes_empresas.id','=','requerimentos.cnae_id')->join('cnaes','cnaes_empresas.cnae_id','=','cnaes.id')->select('cnaes_empresas.id','requerimentos.tipo','requerimentos.status','requerimentos.aviso','cnaes.codigo','cnaes.descricao')->get();
+        // $resultado = DB::table('rtempresa')->where('rtempresa.empresa_id','=',2)->where('rtempresa.resptec_id','=',1)->join('cnaes_empresas','rtempresa.empresa','=','cnaes_empresas.empresa_id')->join('areas','rtempresa.area_id','=','areas.id')->join('cnaes')->where('areas_id', '=','rtempresa.area_id')->select('*')->get();
 
         $arrayResultado = [];
         foreach($res as $item){
@@ -105,32 +133,43 @@ class RespTecnicoController extends Controller
             }
         }
 
-        $cnaeRequerimento = [];
-
-        foreach ($temp as $indice) {
-            foreach ($requerimentos as $indice2) {
-                if ($indice->id == $indice2->cnae_id) {
-                    $obj = (object) array(
-                        'cnaeId'    => $indice->id,
-                        'codigo'    => $indice->codigo,
-                        'descricao' => $indice->descricao,
-                        'tipo'      => $indice2->tipo,
-                        'status'    => $indice2->status,
-                    );
-                    array_push($cnaeRequerimento, $obj);
+        foreach ($areas as $key) {
+            $pendencia = "completo";
+            $checklist = Checklistemp::where('empresa_id', $empresa->id)
+            ->where('areas_id', $key)->get();
+            foreach ($checklist as $key2) {
+                if ($key2->anexado == "false") {
+                    $pendencia = "pendente";
                 }
             }
+
+            if ($pendencia == "completo") {
+                $obj = (object) array(
+                    'area'      => $key,
+                    'status'    => "completo",
+                );
+                array_push($check, $obj);
+            } else {
+                $obj = (object) array(
+                    'area'      => $key,
+                    'status'    => "pendente",
+                );
+                array_push($check, $obj);
+            }
         }
+
+        // dd($check);
+
 
         return view('responsavel_tec/requerimento',[
             'nome'              => $empresa->nome,
             'cnaes'             => $temp,
             'resptecnico'       => $rt->id,
-            'empresas'           => $resultado,
+            'empresas'          => $resultado,
             'status'            => $empresa->status_cadastro,
             'requerimentos'     => $requerimentos,
-            'cnaeRequerimento'  => $cnaeRequerimento,
-            'resultados'         => $arrayResultado,
+            'resultados'        => $arrayResultado,
+            'check'             => $check,
         ]);
     }
 
@@ -155,9 +194,6 @@ class RespTecnicoController extends Controller
             'resptecnicos_id' => $request->resptecnico,
             'empresas_id'     => $request->empresa,
         ]);
-
-        $empresa->status_cadastro = $request->tipo;
-        $empresa->save();
 
         session()->flash('success', 'O seu requerimento foi enviado para análise!');
         return back();
@@ -205,7 +241,7 @@ class RespTecnicoController extends Controller
             }
         }
 
-        // dd($rtempresa);
+        //tipos: lista de objetos checklist sem repetições, para serem escolhidos os tipos de documentos que serão enviados. $tipo->tipodocemp_id
 
         return view('responsavel_tec/empresa_docs',['nome'=>$empresa->nome,
         'empresaId' => $empresa->id,
@@ -213,7 +249,6 @@ class RespTecnicoController extends Controller
         'docsempresa' => $docsempresa,
         'rtempresa'   => $rtempresa,
         'tipos'       => $check,
-        'areas'       => $rtempresa2,
         ]);
     }
 
@@ -271,7 +306,7 @@ class RespTecnicoController extends Controller
 
         $checklist = Checklistemp::where('tipodocemp_id', $request->tipodocempresa)
         ->where('empresa_id', $request->empresaId)
-        ->where('areas_id', $request->area)->first();
+        ->get();
 
         // dd($checklist);
 
@@ -280,16 +315,16 @@ class RespTecnicoController extends Controller
             return back();
         }
 
-        elseif ($checklist->tipodocemp_id == $request->tipodocempresa && $checklist->anexado == "true") {
-            session()->flash('error', 'Este tipo de arquivo já foi anexado!');
-            return back();
+        foreach ($checklist as $indice) {
+            if ($indice->tipodocemp_id == $request->tipodocempresa && $indice->anexado == "true") {
+                session()->flash('error', 'Este tipo de arquivo já foi anexado!');
+                return back();
+            }
+
+            $indice->anexado = "true";
+            $indice->save();
         }
         
-        else {
-            $checklist->anexado = "true";
-            $checklist->save();
-        }
-        // dd("PAROU");
         $empresa = Empresa::find($request->empresaId);
 
         $validatedData = $request->validate([

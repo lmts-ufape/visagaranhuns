@@ -19,4 +19,8 @@ class Inspetor extends Model
     public function user() {
         return $this->belongsTo("\App\User");
     }
+
+    public function inspecao() {
+        return $this->hasMany("\App\Inspecao");
+    }
 }

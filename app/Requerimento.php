@@ -33,4 +33,8 @@ class Requerimento extends Model
     public function cnaeempresa() {
         return $this->hasMany("\App\CnaeEmpresa");
     }
+
+    // public function inspecao() {
+    //     return $this->belongsTo("\App\Inspecao");
+    // }
 }

@@ -108,15 +108,18 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::post("/licenca", "CoordenadorController@licenca")->name("licenca");
 
     Route::post("/julgar/requerimento", "CoordenadorController@julgarRequerimento")->name("julgar.requerimento");
-    //Supervisor
-/*
-    * Cadastrar/Editar/Deletar relatórios (Editar também relatórios criados pos outras pessoas)
-    * Cadastrar/Editar/Deletar inspeções
-    * Cadastrar/Editar/Deletar notificações de empresas
-    * Consulta de denúncias
-*/
+
+    Route::get('/download/arquivo/avaliar/requerimento',       'CoordenadorController@downloadArquivo')->name('download.arquivo.avaliar.requerimento');
+    
     // Rota para localizar
     Route::get("/coordenador/localizar", "CoordenadorController@localizar");
+
+    Route::get("/criar/inspecao",           "CoordenadorController@criarInspecao")->name("criar.inspecao");
+    Route::get("/requerimentos/aprovados",  "CoordenadorController@requerimentosAprovados")->name("requerimentos.aprovados");
+    Route::post("/cadastrar/inspecao",      "CoordenadorController@cadastrarInspecao")->name("cadastrar.inspecao");
+    Route::get("/encontrar/requerimento",   "CoordenadorController@encontrarRequerimento")->name("encontrar.requerimento");
+    Route::get("/historico/inspecoes",      "CoordenadorController@historico")->name("historico.inspecoes");
+    Route::get("/pdf",                      "CoordenadorController@nameMethod")->name("gerar.pdf");
 });
 
 // Grupo de rotas para empresa
@@ -226,12 +229,13 @@ Route::middleware(['IsRespTecnico'])->group(function () {
     
     Route::post('/cadastro/requerimento',           'RespTecnicoController@cadastrarRequerimento')->name('cadastrar.requerimento');
 
-
     Route::post("/empresa/arquivos/rt",             "RespTecnicoController@anexarArquivosEmpresa")->name("anexar.arquivos.empresa.rt");
 
     Route::get('/encontrar/doc/empresa/rt',         'RespTecnicoController@findDoc')->name('find.doc.empresa.rt');
 
     Route::post("/empresa/editar/arquivos/rt",      "RespTecnicoController@editarArquivosEmpRt")->name("editar.arquivos.empresa.rt");
+
+    Route::get('/cnae/encontrar',                   'RespTecnicoController@encontrarCnae')->name('encontrar.cnae');
     //Empresa - Responsável Técnico
 /*
     * Consultar histórico de inspeções

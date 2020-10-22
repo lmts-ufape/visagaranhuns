@@ -14,6 +14,9 @@ use App\Endereco;
 use App\Telefone;
 use App\CnaeEmpresa;
 use App\Requerimento;
+use App\Inspecao;
+use App\InspecAgente;
+use App\InspecRequerimento;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
@@ -41,6 +44,160 @@ class CoordenadorController extends Controller
         return view('coordenador.home_coordenador');
     }
 
+    public function nameMethod()
+    {
+        $inspecoes = Inspecao::all();
+        $temp = [];
+
+        foreach ($inspecoes as $key) {
+            $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+            $requerimento  = Requerimento::where('id', $key->requerimentos_id)->first();
+
+            $obj = (object) array(
+                'data'          => $key->data,
+                'status'        => $key->status,
+                'inspetor'      => $key->inspetor->user->name,
+                'agente'        => $inspec_agente[0]->agente->user->name,
+                'agente'        => $inspec_agente[1]->agente->user->name,
+                'empresa'       => $requerimento->empresa->nome,
+                'cnae'          => $requerimento->cnae->descricao,                
+            );
+            array_push($temp, $obj);
+            
+        }
+    
+        return \PDF::loadView('coordenador.inspecoes', compact('temp'))
+                    ->setPaper('a4', 'landscape')
+                    ->download('inspecoes.pdf');
+    }
+
+    public function criarInspecao()
+    {
+        $inspetores = Inspetor::all();
+        $agentes = Agente::all();
+        $requerimentos = Requerimento::where('status', 'aprovado')->get();
+
+        return view('coordenador/criar_inspecao',[
+            "inspetores"    => $inspetores,
+            "agentes"       => $agentes,
+            "requerimentos" => $requerimentos,
+        ]);
+    }
+
+    public function encontrarRequerimento(Request $request)
+    {
+        $requerimento = Requerimento::find($request->requerimentoId);
+
+        $data = array(
+            'tipo' => $requerimento->tipo,
+            'cnae' => $requerimento->cnae->descricao,
+        );
+        echo json_encode($data);
+
+    }
+
+    public function cadastrarInspecao(Request $request)
+    {
+        // dd($request);
+        foreach ($request->requerimentos as $indice) {
+            $inspecao = Inspecao::create([
+                'data'            => $request->data,
+                'status'          => 'pendente',
+                'inspetor_id'     => $request->inspetor,
+                'requerimentos_id' => $indice,
+            ]);
+
+            $temp1 = InspecAgente::create([
+                'inspecoes_id'  => $inspecao->id,
+                'agente_id'     => $request->agente1,
+            ]);
+    
+            $temp2 = InspecAgente::create([
+                'inspecoes_id'  => $inspecao->id,
+                'agente_id'     => $request->agente2,
+            ]);
+        }
+
+
+        session()->flash('success', 'A inspeção foi cadastrada com sucesso e agora consta para a visualização dos agentes e inspetores.');
+        return back();
+
+    }
+
+    public function historico()
+    {
+        $inspecoes = Inspecao::all();
+        $temp = [];
+
+        foreach ($inspecoes as $key) {
+            $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+            $requerimento  = Requerimento::where('id', $key->requerimentos_id)->first();
+
+            $obj = (object) array(
+                'data'          => $key->data,
+                'status'        => $key->status,
+                'inspetor'      => $key->inspetor->user->name,
+                'agente'        => $inspec_agente[0]->agente->user->name,
+                'agente'        => $inspec_agente[1]->agente->user->name,
+                'empresa'       => $requerimento->empresa->nome,
+                'cnae'          => $requerimento->cnae->descricao,                
+            );
+            array_push($temp, $obj);
+            
+        }
+        
+        return view('coordenador.historico_inspecao')->with([
+            "inspecoes" => $temp,
+        ]);
+
+    }
+
+    public function requerimentosAprovados()
+    {
+        $resultado = Requerimento::where('status', 'aprovado')->get();
+        // $resultado = Requerimento::find(1)->get();
+        // return view('coordenador/cnaes_coordenador');
+        $output = '';
+            if($resultado->count() > 0){
+                foreach($resultado as $item){
+                    $output .= '
+                    <div class="d-flex justify-content-center cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
+                        <div class="mr-auto p-2>OPA</div>
+                            <div class="mr-auto p-2">
+                                <div class="btn-group" style="margin-bottom:-15px;">
+                                    <div class="form-group" style="font-size:15px;">
+                                        <div class="textoCampo" id="'.$item->id.'">'.$item->empresa->nome.'</div>
+                                        <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
+                                        <div>Cnae: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width:140px; height:25px; text-align:right;">
+                                <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
+                                    <div class="btn btn-success btn-sm"  onclick="addRequerimento('.$item->id.')" >Adicionar</div>
+                                </div>
+                            </div>
+
+                    </div>
+
+                    ';
+                }
+            }elseif($idArea == ""){
+                $output .= '
+                        <label></label>
+                    ';
+            }else{
+                $output .= '
+                        <label>vazio</label>
+                    ';
+            }
+            $data = array(
+                'success'   => true,
+                'table_data' => $output,
+            );
+            echo json_encode($data);
+    }
+
     /* Função para listar em tela todas empresas que se cadastraram
     e que o acesso não foi liberado.
     */
@@ -48,6 +205,11 @@ class CoordenadorController extends Controller
     {
         $empresas = Empresa::where("status_cadastro","pendente")->get();
         return view('coordenador.cadastro_pendente', ["empresa" => $empresas]);
+    }
+
+    public function downloadArquivo(Request $request)
+    {
+        return response()->download(storage_path('app/' . $request->file));
     }
 
     /* Função para selecionar e exibir na página a empresa que será
@@ -464,7 +626,7 @@ class CoordenadorController extends Controller
         }
         // 1º licenca, renovação
         foreach($requerimentos as $item){
-                if($item->tipo == "primeira_licenca" && ($filtro == "primeira_licenca" || $filtro == "all") && ($item->status == "pendente")){
+                if($item->tipo == "Primeira Licenca" && ($filtro == "primeira_licenca" || $filtro == "all") && ($item->status == "pendente")){
                     $output .='
                         <div class="container cardListagem" id="primeiralicenca">
                             <div class="d-flex">
@@ -507,7 +669,7 @@ class CoordenadorController extends Controller
                         </div>
                     ';
 
-                }elseif($item->tipo == "primeira_licenca" && ($filtro == "primeira_licenca" || $filtro == "all") && ($item->status == "aprovado")){
+                }elseif($item->tipo == "Primeira Licenca" && ($filtro == "primeira_licenca" || $filtro == "all") && ($item->status == "aprovado")){
                     $output .='
                         <div class="container cardListagem" id="primeiralicenca">
                             <div class="d-flex">
@@ -550,7 +712,7 @@ class CoordenadorController extends Controller
                         </div>
                     ';
 
-                }elseif($item->tipo == "renovacao_de_licenca"  && ($filtro == "renovacao_de_licenca" || $filtro == "all") && ($item->status == "pendente")){
+                }elseif($item->tipo == "renovacao"  && ($filtro == "renovacao_de_licenca" || $filtro == "all") && ($item->status == "pendente")){
                     $output .='
                     <div class="container cardListagem">
                         <div class="d-flex">
@@ -583,7 +745,8 @@ class CoordenadorController extends Controller
                                         <div class="form-group" style="font-size:15px;">
                                             <div>CNAE: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
                                             <div>Responsável Técnico:<span class="textoCampo"> '.$item->resptecnico->user->name.'</span></div>
-                                            <div style="margin-top:10px; margin-bottom:-10px;"><button type="button" onclick="licencaAvaliacao('.$item->id.')" class="btn btn-success">Avaliar</button></div>
+                                            <div>Status:<span class="textoCampo"> '.$item->status.'</span></div>
+                                            <div style="margin-top:10px; margin-bottom:-10px;"><button type="button" onclick="licencaAvaliacao('.$item->empresa->id.','.$item->cnae->areas_id.','.$item->id.')" class="btn btn-success">Avaliar</button></div>
                                         </div>
                                     </div>
                                 </div>
@@ -591,7 +754,7 @@ class CoordenadorController extends Controller
                         </div>
                     </div>
                 ';
-                }elseif($item->tipo == "renovacao_de_licenca"  && ($filtro == "renovacao_de_licenca" || $filtro == "all") && ($item->status == "aprovado")){
+                }elseif($item->tipo == "renovacao"  && ($filtro == "renovacao_de_licenca" || $filtro == "all") && ($item->status == "aprovado")){
                     $output .='
                     <div class="container cardListagem">
                         <div class="d-flex">
@@ -624,7 +787,7 @@ class CoordenadorController extends Controller
                                         <div class="form-group" style="font-size:15px;">
                                             <div>CNAE: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
                                             <div>Responsável Técnico:<span class="textoCampo"> '.$item->resptecnico->user->name.'</span></div>
-
+                                            <div>Status:<span class="textoCampo"> '.$item->status.'</span></div>
                                         </div>
                                     </div>
                                 </div>

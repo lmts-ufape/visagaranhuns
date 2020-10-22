@@ -15,6 +15,15 @@ class CreateInspecoesTable extends Migration
     {
         Schema::create('inspecoes', function (Blueprint $table) {
             $table->id();
+            $table->date('data');
+            $table->string('status');
+
+            $table->bigInteger("inspetor_id")->nullable();
+            $table->foreign("inspetor_id")->references("id")->on("inspetor");
+
+            $table->bigInteger("requerimentos_id")->nullable();
+            $table->foreign("requerimentos_id")->references("id")->on("requerimentos");
+
             $table->timestamps();
         });
     }

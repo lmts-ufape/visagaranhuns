@@ -38,32 +38,17 @@ class Empresa extends Model
         return $this->hasMany("\App\Docempresa");
     }
 
-    // A pensar
-    // public function requerimento() {
-    //     return $this->hasMany("\App\Requerimento");
-    // }
-
-    // A pensar
-    // public function relatorio() {
-    //     return $this->hasMany("\App\Relatorio");
-    // }
-
-    // A pensar
-    // public function licenca() {
-    //     return $this->hasMany("\App\Licenca");
-    // }
-
-    // A pensar
-    // public function denuncia() {
-    //     return $this->hasMany("\App\Denuncia");
-    // }
-
     //A pensar
     public function cnae() {
         return $this->hasMany("\App\Cnae");
     }
+
     public function cnaeEmpresa() {
         return $this->hasMany("\App\CnaeEmpresa");
     }
+
+    // public function inspecao() {
+    //     return $this->hasMany("\App\Inspecao");
+    // }
 
 }

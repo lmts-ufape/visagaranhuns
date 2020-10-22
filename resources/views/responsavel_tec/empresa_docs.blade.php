@@ -245,7 +245,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="form col-md-12" style="margin-top:1px;margin-bottom:10px;">
+                                    {{-- <div class="form col-md-12" style="margin-top:1px;margin-bottom:10px;">
                                         <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Areas</label>
                                         <select class="form-control" id="exampleFormControlSelect1" name="area" required>
                                             <option disabled>Areas</option>
@@ -253,7 +253,7 @@
                                             <option value="{{$area->area_id}}">{{$area->area->nome}}</option>
                                             @endforeach
                                         </select>
-                                    </div>
+                                    </div> --}}
                                     <div class="form col-md-12" >
                                             <div class="row">
                                                 <div class="col">

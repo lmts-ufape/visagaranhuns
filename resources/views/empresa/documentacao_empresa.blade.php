@@ -293,6 +293,7 @@
             dataType:'json',
             data: {"id": $id},
             success: function(response){
+                console.log(response.nome);
                 $('#editarDoc').val(response.nome);
             }
         });
