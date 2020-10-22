@@ -66,10 +66,11 @@
                             </th>
                             <td >{{$item->titulo}}</td>
                             <td class="btn-group">
-                                <button type="button" class="btn btn-secondary btn-sm" style="margin-right:10px;" onclick="editarSecaoModal({{$item->id}},'{{$item->titulo}}','{{$item->descricao}}');" data-toggle="modal" data-target="#editarSecaoModal">
+                                <input type="hidden" id="descricaoConfigSecao{{$item->id}}" value="{{$item->descricao}}">
+                                <button type="button" class="btn btn-secondary btn-sm" style="margin-right:10px;" onclick="editarSecaoModal({{$item->id}},'{{$item->titulo}}');" data-toggle="modal" data-target="#editarSecaoModal">
                                     <img src="{{ asset('/imagens/logo_editar.png') }}" alt="Logo" width="17px"/>
                                 </button>
-                                <button type="button" class="btn btn-danger btn-sm" onclick="deletarSecaoModal({{$item->id}},'{{$item->titulo}}','{{$item->descricao}}')" data-toggle="modal" data-target="#deletarSecaoModal">
+                                <button type="button" class="btn btn-danger btn-sm" onclick="deletarSecaoModal({{$item->id}},'{{$item->titulo}}')" data-toggle="modal" data-target="#deletarSecaoModal">
                                     <img src="{{ asset('/imagens/logo_lixo.png') }}" alt="Logo" width="15px"/>
                                 </button>
                             </td>

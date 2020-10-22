@@ -124,9 +124,9 @@ window.editarSecao = function($id, $titulo){
         success: function(response){
             $('tbody').html(response.table_data);
             if(response.success == true){
-                alert("Seção editada com sucesso!");
+                if(!alert("Seção atualizada com sucesso!")){window.location.reload();}
             }else{
-                alert("Oops! Não foi possível editar a seção. Tente novamente!");
+                alert("Oops! Não foi possível atualizar a seção. Tente novamente!");
             }
         }
     });
@@ -142,7 +142,7 @@ window.deletarSecao = function($id, $titulo){
         success: function(response){
             $('tbody').html(response.table_data);
             if(response.success == true){
-                alert("Seção deletada com sucesso!");
+                if(!alert("Seção deletada com sucesso!")){window.location.reload();}
             }else{
                 alert("Oops! Não foi possível deletar a seção. Tente novamente!");
             }
@@ -150,17 +150,18 @@ window.deletarSecao = function($id, $titulo){
     });
 }
 //atualizar modal - editar secao
-window.editarSecaoModal = function($id, $titulo, $descricao){
-    // console.log($id, $titulo, $descricao);
+window.editarSecaoModal = function($id, $titulo){
+    let descricao = document.getElementById('descricaoConfigSecao'+$id).value;
     document.getElementById("nomeDaSecaoEditar").value = $titulo;
-    tinyMCE.get('descricaoSecaoEditar').setContent($descricao);
+    tinyMCE.get('descricaoSecaoEditar').setContent(descricao);
     document.getElementById("idSecaoEditar").value = $id;
 }
 //atualizar modal - deletar secao
-window.deletarSecaoModal = function($id,$titulo,$descricao){
-    // console.log($id, $titulo, $descricao);
+window.deletarSecaoModal = function($id,$titulo){
+    let descricao = document.getElementById('descricaoConfigSecao'+$id).value;
+    console.log(descricao);
     document.getElementById("nomeDaSecaoDeletar").value = $titulo;
-    tinyMCE.get('descricaoSecaoDeletar').setContent($descricao);
+    tinyMCE.get('descricaoSecaoDeletar').setContent(descricao);
     tinymce.get("descricaoSecaoDeletar").setMode('readonly'); //desabilitar campo de texto
     document.getElementById("idSecaoDeletar").value = $id;
 }
