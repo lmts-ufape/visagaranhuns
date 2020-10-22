@@ -110,13 +110,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::post("/julgar/requerimento", "CoordenadorController@julgarRequerimento")->name("julgar.requerimento");
 
     Route::get('/download/arquivo/avaliar/requerimento',       'CoordenadorController@downloadArquivo')->name('download.arquivo.avaliar.requerimento');
-    //Supervisor
-/*
-    * Cadastrar/Editar/Deletar relatórios (Editar também relatórios criados pos outras pessoas)
-    * Cadastrar/Editar/Deletar inspeções
-    * Cadastrar/Editar/Deletar notificações de empresas
-    * Consulta de denúncias
-*/
+    
     // Rota para localizar
     Route::get("/coordenador/localizar", "CoordenadorController@localizar");
 
@@ -124,6 +118,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get("/requerimentos/aprovados",  "CoordenadorController@requerimentosAprovados")->name("requerimentos.aprovados");
     Route::post("/cadastrar/inspecao",      "CoordenadorController@cadastrarInspecao")->name("cadastrar.inspecao");
     Route::get("/encontrar/requerimento",   "CoordenadorController@encontrarRequerimento")->name("encontrar.requerimento");
+    Route::get("/historico/inspecoes",      "CoordenadorController@historico")->name("historico.inspecoes");
 });
 
 // Grupo de rotas para empresa

@@ -13,14 +13,18 @@ class Inspecao extends Model
      * @var array
      */
     protected $fillable = [
-        'data', 'inspetor_id',
+        'data', 'status', 'inspetor_id', 'requerimentos_id'
     ];
 
     public function agente() {
         return $this->belongsToMany("\App\Agente");
     }
 
+    public function inspetor() {
+        return $this->belongsTo("\App\Inspetor");
+    }
+
     public function requerimento() {
-        return $this->hasMany("\App\Requerimento");
+        return $this->belongsTo("\App\Requerimento");
     }
 }

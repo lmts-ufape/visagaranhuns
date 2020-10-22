@@ -22,6 +22,16 @@
                 </div>
             </div>
             <div class="p-2">
+                <div class="dropdown" style="margin-top:10px; margin-right:-100px">
+                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Ações
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="{{ route('historico.inspecoes') }}">Histórico</a>
+                    </div>
+                </div>
+            </div>
+            <div class="p-2">
                 <div style="width:70px">
                 </div>
             </div>
@@ -183,24 +193,22 @@
 
     window.montarLinhaInputRequerimento = function(id,elemento, tipo, cnae){
         console.log(elemento);
-        return " <div class='form-gerado cardMeuCnae'>\n"+
-        "           <div class='mr-auto p-2'>\n"+
-        "           <div class='mr-auto p-2'>\n"+
-        "               <div class='btn-group' style='margin-bottom:-15px;'>\n"+
-        "                   <div class='form-group' style='font-size:15px;'>\n"+
-        "                       <div class='textoCampo' id='"+id+"'>"+elemento+"</div>\n"+
-        "                       <div>Tipo: <span class='textoCampo'>"+tipo+"</span></div>\n"+
-        "                       <div>Cnae: <span class='textoCampo'>"+cnae+"</span></div>\n"+
-        "                   </div>\n"+
-        "               </div>\n"+
-        "               <input type='hidden' name='requerimentos[]' value='"+id+"'>\n"+
-        "           </div>\n"+
-        "           <div style='width:140px; height:25px; text-align:right;'>\n" +
-        "               <div id='cardSelecionado' class='btn-group'>\n"+
-        "                   <button type='button' class='btn btn-danger' value='"+id+"' onclick='deletar(this)'>X</button>\n" +
-        "               </div>\n"+
-        "           </div>\n"+
-        "           <div>\n"+
-        "       </div>\n";
+        return " <div class='d-flex justify-content-center form-gerado cardMeuCnae'>\n"+
+            "            <div class='mr-auto p-2'>\n"+
+            "                <div class='btn-group' style='margin-bottom:-15px;'>\n"+
+            "                    <div class='form-group' style='font-size:15px;'>\n"+
+            "                        <div class='textoCampo' id='"+id+"'>"+elemento+"</div>\n"+
+            "                        <div>Tipo: <span class='textoCampo'>"+tipo+"</span></div>\n"+
+            "                        <div>Cnae: <span class='textoCampo'>"+cnae+"</span></div>\n"+
+            "                    </div>\n"+
+            "                </div>\n"+
+            "               <input type='hidden' name='requerimentos[]' value='"+id+"' required>\n"+
+            "            </div>\n"+
+            "            <div style='width:140px; height:25px; text-align:right;'>\n"+
+            "                <div id='cardSelecionado' class='btn-group'>\n"+
+            "                    <button type='button' class='btn btn-danger' value='"+id+"' onclick='deletar(this)'>X</button>\n"+
+            "                </div>\n"+
+            "            </div>\n"+
+            "    </div>\n";
     }
 </script>

@@ -72,30 +72,56 @@ class CoordenadorController extends Controller
     public function cadastrarInspecao(Request $request)
     {
         // dd($request);
-        $inspecao = Inspecao::create([
-            'data'            => $request->data,
-            'inspetor_id'     => $request->inspetor,
-        ]);
-
-        $temp1 = InspecAgente::create([
-            'inspecoes_id'  => $inspecao->id,
-            'agente_id'     => $request->agente1,
-        ]);
-
-        $temp2 = InspecAgente::create([
-            'inspecoes_id'  => $inspecao->id,
-            'agente_id'     => $request->agente2,
-        ]);
-
         foreach ($request->requerimentos as $indice) {
-            $temp3 = InspecRequerimento::create([
-                'inspecoes_id'      => $inspecao->id,
-                'requerimentos_id'  => $indice,
-            ]); 
+            $inspecao = Inspecao::create([
+                'data'            => $request->data,
+                'status'          => 'pendente',
+                'inspetor_id'     => $request->inspetor,
+                'requerimentos_id' => $indice,
+            ]);
+
+            $temp1 = InspecAgente::create([
+                'inspecoes_id'  => $inspecao->id,
+                'agente_id'     => $request->agente1,
+            ]);
+    
+            $temp2 = InspecAgente::create([
+                'inspecoes_id'  => $inspecao->id,
+                'agente_id'     => $request->agente2,
+            ]);
         }
+
 
         session()->flash('success', 'A inspeção foi cadastrada com sucesso e agora consta para a visualização dos agentes e inspetores.');
         return back();
+
+    }
+
+    public function historico()
+    {
+        $inspecoes = Inspecao::all();
+        $temp = [];
+
+        foreach ($inspecoes as $key) {
+            $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+            $requerimento  = Requerimento::where('id', $key->requerimentos_id)->first();
+
+            $obj = (object) array(
+                'data'          => $key->data,
+                'status'        => $key->status,
+                'inspetor'      => $key->inspetor->user->name,
+                'agente'        => $inspec_agente[0]->agente->user->name,
+                'agente'        => $inspec_agente[1]->agente->user->name,
+                'empresa'       => $requerimento->empresa->nome,
+                'cnae'          => $requerimento->cnae->descricao,                
+            );
+            array_push($temp, $obj);
+            
+        }
+        
+        return view('coordenador.historico_inspecao')->with([
+            "inspecoes" => $temp,
+        ]);
 
     }
 

@@ -34,7 +34,7 @@ class Requerimento extends Model
         return $this->hasMany("\App\CnaeEmpresa");
     }
 
-    public function inspecao() {
-        return $this->belongsTo("\App\Inspecao");
-    }
+    // public function inspecao() {
+    //     return $this->belongsTo("\App\Inspecao");
+    // }
 }
