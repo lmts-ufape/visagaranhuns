@@ -10,34 +10,34 @@ window.statusCNAERequisicaoRT = function($flag, $descricao, $aviso, $idCnae, $re
         },
         success: function(response){
             console.log(response.valor);
-            if (response.tipo == "primeira_licenca") {
+            if (response.tipo == "Primeira Licenca") {
                 console.log("Primeira Licenca");
                 if (response.valor == "pendente") {
-                    $("option[value='primeira_licenca']").prop("disabled", true);
-                    $("option[value='renovacao']").prop("disabled", true);
+                    $("option[value='Primeira Licenca']").prop("disabled", true);
+                    $("option[value='Renovacao']").prop("disabled", true);
                 }else if (response.valor == "aprovado") {
-                    $("option[value='primeira_licenca']").prop("disabled", true);
-                    $("option[value='renovacao']").prop("disabled", false);
+                    $("option[value='Primeira Licenca']").prop("disabled", true);
+                    $("option[value='Renovacao']").prop("disabled", false);
                 }else {
-                    $("option[value='primeira_licenca']").prop("disabled", false);
-                    $("option[value='renovacao']").prop("disabled", true);
+                    $("option[value='Primeira Licenca']").prop("disabled", false);
+                    $("option[value='Renovacao']").prop("disabled", true);
                 }
             }else if (response.tipo == "renovacao"){
                 console.log("Renovacao");
                 if (response.valor == "pendente") {
-                    $("option[value='primeira_licenca']").prop("disabled", true);
-                    $("option[value='renovacao']").prop("disabled", true);
+                    $("option[value='Primeira Licenca']").prop("disabled", true);
+                    $("option[value='Renovacao']").prop("disabled", true);
                 }else if (response.valor == "aprovado") {
-                    $("option[value='primeira_licenca']").prop("disabled", true);
-                    $("option[value='renovacao']").prop("disabled", false);
+                    $("option[value='Primeira Licenca']").prop("disabled", true);
+                    $("option[value='Renovacao']").prop("disabled", false);
                 }else {
-                    $("option[value='primeira_licenca']").prop("disabled", true);
-                    $("option[value='renovacao']").prop("disabled", false);
+                    $("option[value='Primeira Licenca']").prop("disabled", true);
+                    $("option[value='Renovacao']").prop("disabled", false);
                 }
             }else if (response.tipo == "nenhum") {
                 console.log("Né");
-                $("option[value='primeira_licenca']").prop("disabled", false);
-                $("option[value='renovacao']").prop("disabled", true);
+                $("option[value='Primeira Licenca']").prop("disabled", false);
+                $("option[value='Renovacao']").prop("disabled", true);
             }
         }
     });

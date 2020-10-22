@@ -599,7 +599,7 @@ class CoordenadorController extends Controller
         }
         // 1º licenca, renovação
         foreach($requerimentos as $item){
-                if($item->tipo == "primeira_licenca" && ($filtro == "primeira_licenca" || $filtro == "all") && ($item->status == "pendente")){
+                if($item->tipo == "Primeira Licenca" && ($filtro == "primeira_licenca" || $filtro == "all") && ($item->status == "pendente")){
                     $output .='
                         <div class="container cardListagem" id="primeiralicenca">
                             <div class="d-flex">
@@ -642,7 +642,7 @@ class CoordenadorController extends Controller
                         </div>
                     ';
 
-                }elseif($item->tipo == "primeira_licenca" && ($filtro == "primeira_licenca" || $filtro == "all") && ($item->status == "aprovado")){
+                }elseif($item->tipo == "Primeira Licenca" && ($filtro == "primeira_licenca" || $filtro == "all") && ($item->status == "aprovado")){
                     $output .='
                         <div class="container cardListagem" id="primeiralicenca">
                             <div class="d-flex">
