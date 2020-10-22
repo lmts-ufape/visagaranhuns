@@ -20,6 +20,7 @@ use App\InspecRequerimento;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
+use PDF;
 
 class CoordenadorController extends Controller
 {
@@ -46,7 +47,7 @@ class CoordenadorController extends Controller
 
     public function nameMethod()
     {
-        $inspecoes = Inspecao::all();
+        $inspecoes = Inspecao::where('status', 'pendente')->get();
         $temp = [];
 
         foreach ($inspecoes as $key) {
@@ -65,10 +66,10 @@ class CoordenadorController extends Controller
             array_push($temp, $obj);
             
         }
-    
-        return \PDF::loadView('coordenador.inspecoes', compact('temp'))
-                    ->setPaper('a4', 'landscape')
-                    ->download('inspecoes.pdf');
+        // dd($temp);
+        $pdf = PDF::loadView('coordenador/inspecoes', compact('temp'));
+        // dd($pdf);
+        return $pdf->setPaper('a4')->download('inspecoes.pdf');
     }
 
     public function criarInspecao()
@@ -145,7 +146,7 @@ class CoordenadorController extends Controller
             array_push($temp, $obj);
             
         }
-        
+
         return view('coordenador.historico_inspecao')->with([
             "inspecoes" => $temp,
         ]);

@@ -33,7 +33,7 @@
                             <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">INSPEÇÕES</label>
                         </div>
                         <div class="form-group col-md-6" style="align-content: right">
-                            <label style="font-size:19px;margin-top:5px;margin-bottom:5px; margin-left:435px; font-family: 'Roboto', sans-serif;"><a href="{{ route('listagem.area') }}">BAIXAR</a>
+                            <label style="font-size:19px;margin-top:5px;margin-bottom:5px; margin-left:435px; font-family: 'Roboto', sans-serif;"><a href="{{ route('gerar.pdf') }}">BAIXAR</a>
                             </label>
                         </div>
                         <div class="form col-md-12" style="margin-top:-10px;">
