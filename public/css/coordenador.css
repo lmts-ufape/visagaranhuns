@@ -8,6 +8,15 @@
     -moz-box-shadow: 0px 0px 17px -2px rgba(219,219,219,1);
     box-shadow: 0px 0px 17px -2px rgba(219,219,219,1);
 }
+.cardLogin{
+    margin:0.5rem;
+    border: 1.5px solid #f5f5f5;
+    border-radius: 10px;
+    border-color:#e3e3e3;
+    -webkit-box-shadow: 0px 0px 17px -2px rgba(219,219,219,1);
+    -moz-box-shadow: 0px 0px 17px -2px rgba(219,219,219,1);
+    box-shadow: 0px 0px 17px -2px rgba(219,219,219,1);
+}
 .cardArea{
     width: 202px;
     height:100px;

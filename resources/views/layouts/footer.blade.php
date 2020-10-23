@@ -46,12 +46,11 @@
                         <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('emconstrucao') }}" style="text-decoration: none; color:#fff;cursor:pointer">Histórico</a></li>
                         <li style="float: left; margin-right:30px;font-family:arial"></li>
                     @elseif(Auth::user()->tipo == "rt")
-                        <li style="float: left; margin-right:30px;font-family:arial"><a href="" style="text-decoration: none; color:#fff;">Início</a></li>
+                        <li style="float: left; margin-right:30px;font-family:arial"><a href="{{ route('/') }}" style="text-decoration: none; color:#fff;">Início</a></li>
                         <li style="float: left; margin-right:30px; font-family:arial"><a href="{{ route('listar.empresa.rt',['flag'=>"estabelecimento"]) }}" style="text-decoration: none; color:#fff;cursor:pointer">Estabelecimentos</a></li>
-                        <li style="float: left; margin-right:30px; font-family:arial"><a href="{{ route('listar.empresa.rt',['flag'=>"documentos"]) }}" style="text-decoration: none; color:#fff;cursor:pointer">Documentos</a></li>
                         @if(Auth::user()->status_cadastro == "aprovado")
-                            <li style="float: left; margin-right:30px; font-family:arial"><a href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'documentacao']) }}" style="text-decoration: none; color:#fff;cursor:pointer">Documentação</a></li>
-                            <li style="float: left; margin-right:30px; font-family:arial"><a href="{{ route('emconstrucao') }}" style="text-decoration: none; color:#fff;cursor:pointer">Notificação</a></li>
+                            <li style="float: left; margin-right:30px; font-family:arial"><a href="{{ route('listar.empresa.rt',['flag'=>"requerimento"]) }}" style="text-decoration: none; color:#fff;cursor:pointer">Requerimentos</a></li>
+                            <li style="float: left; margin-right:30px; font-family:arial"><a href="{{ route('listar.empresa.rt',['flag'=>"documentos"]) }}" style="text-decoration: none; color:#fff;cursor:pointer">Documentos</a></li>
                             <li style="float: left; margin-right:30px;font-family:arial"></li>
                         @endif
                     @endif

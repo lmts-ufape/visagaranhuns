@@ -36,6 +36,21 @@ class RespTecnicoController extends Controller
     {
         //
     }
+    public function home(){
+        $user = User::find(Auth::user()->id);
+        $rt = RespTecnico::where('user_id', $user->id)->first();
+        $temp = [];
+        $empresas = [];
+
+        $empresa = RtEmpresa::where('resptec_id', $rt->id)->pluck('empresa_id');
+
+        foreach ($empresa as $indice) {
+            array_push($temp, RtEmpresa::where('empresa_id', $indice)->first());
+        }
+        $empresas = array_unique($temp);
+
+        return view('responsavel_tec/home_rt',['empresas' => $empresas]);
+    }
 
     public function listarEmpresas(Request $request)
     {
@@ -266,12 +281,12 @@ class RespTecnicoController extends Controller
         ]);
 
         $docempresa = Docempresa::where("nome", $request->file)->first();
-        
+
         Storage::delete($docempresa->nome);
 
         $fileDocemp = $request->arquivo;
 
-        $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/'; 
+        $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/';
 
         $nomeDocemp = $request->arquivo->getClientOriginalName();
 
@@ -324,7 +339,7 @@ class RespTecnicoController extends Controller
             $indice->anexado = "true";
             $indice->save();
         }
-        
+
         $empresa = Empresa::find($request->empresaId);
 
         $validatedData = $request->validate([
