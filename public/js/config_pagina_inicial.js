@@ -9,11 +9,11 @@ window.criarServico = function(){
         data: {"titulo": $titulo},
         success: function(response){
             $('tbody').html(response.table_data);
-            if(response.success == true){
-                if(!alert("Serviço "+$titulo+" criado com sucesso!")){window.location.reload();}
-            }else{
-                alert("Oops! O serviço "+$titulo+" não foi criado. Tente novamente!");
-            }
+            // if(response.success == true){
+            //     if(!alert("Serviço "+$titulo+" criado com sucesso!")){window.location.reload();}
+            // }else{
+            //     alert("Oops! O serviço "+$titulo+" não foi criado. Tente novamente!");
+            // }
         }
     });
     //limpar imput

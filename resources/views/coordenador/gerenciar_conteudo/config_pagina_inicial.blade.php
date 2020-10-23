@@ -68,7 +68,7 @@
                                     </div>
                                 </div>
                             </th>
-                            <td><a href="{{ route('secao.index', ['id' => Crypt::encrypt($item->id)])}}">{{$item->titulo}}</a></td>
+                            <td class="limiteDeTexto"><a href="{{ route('secao.index', ['id' => Crypt::encrypt($item->id)])}}">{{$item->titulo}}</a></td>
                             <td class="btn-group">
                                 <button type="button" class="btn btn-secondary btn-sm" style="margin-right:10px;" onclick="editarServicoModal({{$item->id}},'{{$item->titulo}}');" data-toggle="modal" data-target="#editarServicoModal">
                                     <img src="{{ asset('/imagens/logo_editar.png') }}" alt="Logo" width="17px"/>

@@ -94,7 +94,7 @@ class ServicoController extends Controller
 
                             </div>
                         </th>
-                        <td><a href='.route('secao.index','id='.Crypt::encrypt($item->id)).'>'.$item->titulo.'</a></td>
+                        <td class="limiteDeTexto"><a href='.route('secao.index','id='.Crypt::encrypt($item->id)).'>'.$item->titulo.'</a></td>
                             <td class="btn-group">
                                 <button type="button" class="btn btn-secondary btn-sm" style="margin-right:10px;" onclick="editarServicoModal('.$item->id.',\''."$item->titulo".'\');" data-toggle="modal" data-target="#editarServicoModal">
                                     <img src="'.asset('/imagens/logo_editar.png').'" alt="Logo" width="17px"/>
@@ -160,12 +160,12 @@ class ServicoController extends Controller
 
                             </div>
                         </th>
-                        <td>'.$item->titulo.'</a></td>
+                        <td class="limiteDeTexto">'.$item->titulo.'</a></td>
                             <td class="btn-group">
-                                <button type="button" class="btn btn-secondary btn-sm" style="margin-right:10px;" onclick="editarSecaoModal('.$item->id.',\''."$item->titulo".'\',\''."$item->descricao".'\');" data-toggle="modal" data-target="#editarSecaoModal">
+                                <button type="button" class="btn btn-secondary btn-sm" style="margin-right:10px;" onclick="editarSecaoModal('.$item->id.',\''."$item->titulo".'\');" data-toggle="modal" data-target="#editarSecaoModal">
                                     <img src="'.asset('/imagens/logo_editar.png').'" alt="Logo" width="17px"/>
                                 </button>
-                                <button type="button" class="btn btn-danger btn-sm" onclick="deletarSecaoModal('.$item->id.',\''."$item->titulo".'\',\''."$item->descricao".'\')" data-toggle="modal" data-target="#deletarSecaoModal">
+                                <button type="button" class="btn btn-danger btn-sm" onclick="deletarSecaoModal('.$item->id.',\''."$item->titulo".'\')" data-toggle="modal" data-target="#deletarSecaoModal">
                                     <img src="'.asset('/imagens/logo_lixo.png') .'" alt="Logo" width="15px"/>
                                 </button>
                             </td>

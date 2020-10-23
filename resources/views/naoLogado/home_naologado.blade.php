@@ -24,7 +24,7 @@
                             <div class="col-12" style="height:80px;  text-align:right;">
                                     <img src="{{ asset('/imagens/logo_info_branco.png') }}" alt="Logo" style="width:50px; height:50px;"/>
                                 </div>
-                            <div class="col-12" style="color:white;font-family:'Noto Sans SC'; font-weight:400; font-size:15px;">{{$item->titulo}}</div>
+                            <div class="col-12 limiteDeTextoCard" style="color:white;font-family:'Noto Sans SC'; font-weight:400; font-size:15px;">{{$item->titulo}}</div>
                         </div>
                     </div>
                 </a>
