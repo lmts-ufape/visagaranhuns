@@ -8,6 +8,7 @@ use App\User;
 use App\Telefone;
 use App\Endereco;
 use App\Docempresa;
+use App\Requerimento;
 use App\Area;
 use App\Cnae;
 use App\CnaeEmpresa;
@@ -337,6 +338,64 @@ class EmpresaController extends Controller
         return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnaeEmpresa, 'rt' => $resptecnicos]);
     }
 
+    public function requerimentos(Request $request)
+    {
+
+        $id = Crypt::decrypt($request->value);
+        $empresa = Empresa::find($id);
+        // $rt = RespTecnico::where("user_id", Auth::user()->id)->first();
+        // $areas = RtEmpresa::where("resptec_id",$rt->id)->pluck('area_id');
+        $cnaesEmpresa = CnaeEmpresa::where("empresa_id", $id)->get();
+        $requerimentos = Requerimento::where('empresas_id', $empresa->id)
+        ->orderBy('created_at', 'desc')->get();
+        $check = [];
+        $cnaes = [];
+        $temp = [];
+        $temp0 = [];
+        $resultado = Empresa::find($id);
+
+        foreach ($cnaesEmpresa as $indice0) {
+            array_push($temp0, $indice0->cnae_id);
+        }
+
+        foreach ($temp0 as $indice) {
+            $cnae = Cnae::find($indice);
+            array_push($cnaes, $cnae);
+        }
+
+        $pendencia = "completo";
+        $checklist = Checklistemp::where('empresa_id', $empresa->id)
+        ->get();
+        foreach ($checklist as $key2) {
+            if ($key2->anexado == "false") {
+                $pendencia = "pendente";
+            }
+        }
+
+        if ($pendencia == "completo") {
+            $obj = (object) array(
+                'status'    => "completo",
+            );
+            array_push($check, $obj);
+        } else {
+            $obj = (object) array(
+                'status'    => "pendente",
+            );
+            array_push($check, $obj);
+        }
+
+        return view('empresa/requerimento_empresa',[
+            'nome'              => $empresa->nome,
+            'cnaes'             => $cnaes,
+            // 'resptecnico'       => $rt->id,
+            'empresas'          => $resultado,
+            'status'            => $empresa->status_cadastro,
+            'requerimentos'     => $requerimentos,
+            // 'resultados'        => $arrayResultado,
+            'check'             => $check,
+        ]);
+    }
+
     /**
      * Listar empresas
      * View: empresa/listar_empresas.blade.php
@@ -351,6 +410,9 @@ class EmpresaController extends Controller
         }elseif($request->tipo == 'documentacao'){
             $empresa = Empresa::where('user_id', Crypt::decrypt($request->user))->paginate(20);
             return view('empresa/listar_empresas',['empresas' => $empresa, 'tipo' => 'documentacao']);
+        }elseif($request->tipo == 'requerimento'){
+            $empresa = Empresa::where('user_id', Crypt::decrypt($request->user))->paginate(20);
+            return view('empresa/listar_empresas',['empresas' => $empresa, 'tipo' => 'requerimentos']);
         }
     }
 

@@ -158,6 +158,9 @@
                                     </li>
                                 @if(Auth::user()->status_cadastro == "aprovado")
                                     <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'requerimento']) }}">{{ __('Requerimentos') }}</a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a class="nav-link" href="{{ route('emconstrucao') }}">{{ __('Licenças') }}</a>
                                     </li>
                                     {{-- <li class="nav-item">
