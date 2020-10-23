@@ -80,7 +80,7 @@
                         <!-- Authentication Links -->
                         @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('/') }}">{{ __('Inicio') }}</a>
+                            <a class="nav-link" href="{{ route('/') }}">{{ __('Início') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('emconstrucao') }}">{{ __('A vigilância') }}</a>
@@ -105,7 +105,7 @@
                         @else
                             @if(Auth::user()->tipo == "coordenador")
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
+                                    <a class="nav-link" href="{{ route('/') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('pagina.requerimento') }}">{{ __('Requerimento') }}</a>
@@ -151,7 +151,7 @@
                                 </li>
                             @elseif(Auth::user()->tipo == "empresa")
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
+                                    <a class="nav-link" href="{{ route('/') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'estabelecimentos']) }}">{{ __('Estabelecimentos') }}</a>
@@ -190,7 +190,7 @@
                                 </li>
                             @elseif(Auth::user()->tipo == "inspetor")
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
+                                    <a class="nav-link" href="{{ route('/') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Programação') }}</a>
@@ -217,7 +217,7 @@
                                 </li>
                             @elseif(Auth::user()->tipo == "agente")
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
+                                    <a class="nav-link" href="{{ route('/') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Programação') }}</a>
