@@ -13,12 +13,12 @@
                     <div class="col-12" style="font-size:13.5px"></div>
                     <div class="col-12" style="font-size:13.5px">
                         <ul style="margin-left:-22px;">
-                            @foreach($empresas->slice(0,9) as $item)
+                            @foreach($empresas->slice(0,10) as $item)
                                 <li>
                                     <a href="{{ route('pagina.mostrar.empresa',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;">{{$item->nome}}</a>
                                 </li>
                             @endforeach
-                            @if(count($empresas) == 9)
+                            @if(count($empresas) >= 9)
                                 <div style="text-align:right">
                                     <a href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'estabelecimentos']) }}">Ver todos</a>
                                 </div>

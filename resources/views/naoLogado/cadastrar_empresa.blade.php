@@ -62,7 +62,7 @@
                                 <select class="form-control" name="tipo" required>
                                     <option value="" disable="" selected="" hidden="">-- Selecionar o Tipo --</option>
                                     <option value="Sociedade Empresária Limitada (LTDA)">Sociedade Empresária Limitada (LTDA)</option>
-                                    <option value="Empresa Individual de Responsabilidade Limitada (Eireli)">Empresa Individual de Responsabilidade Limitada (Eireli)</option>
+                                    <option value="Empresa Individual de Responsabilidade Limitada (Eireli)">Empresa Individual de Responsabilidade Limitada (EIRELI)</option>
                                     <option value="Empresa Individual">Empresa Individual</option>
                                     <option value="Microempreendedor Individual (MEI)">Microempreendedor Individual (MEI)</option>
                                     <option value="Sociedade Simples(SS)">Sociedade Simples(SS)</option>
