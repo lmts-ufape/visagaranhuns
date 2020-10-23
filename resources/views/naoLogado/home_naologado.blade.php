@@ -16,56 +16,34 @@
                 </div>
             </a>
         </div>
-        <div class="form-group col-md-4">
-            <div class="cardAreaGrande" style="padding:1rem; width:100%; height:100%;background-color:#88b6b6">
-                <div class="form-row">
-                    <div class="col-12" style="height:80px;  text-align:right;">
-                            <img src="{{ asset('/imagens/logo_telefone2.png') }}" alt="Logo" style="width:55px; height:60px;"/>
+        @foreach ($servicos as $item)
+            <div class="form-group col-md-4">
+                <a href="{{ route('home.informacao',["value"=>Crypt::encrypt($item->id)]) }}" style="text-decoration:none;">
+                    <div class="cardAreaGrande" style="padding:1rem; width:100%; height:100%;background-color:#88b6b6">
+                        <div class="form-row">
+                            <div class="col-12" style="height:80px;  text-align:right;">
+                                    <img src="{{ asset('/imagens/logo_info_branco.png') }}" alt="Logo" style="width:50px; height:50px;"/>
+                                </div>
+                            <div class="col-12" style="color:white;font-family:'Noto Sans SC'; font-weight:400; font-size:15px;">{{$item->titulo}}</div>
                         </div>
-                    <div class="col-12" style="color:white;font-family:'Noto Sans SC'; font-weight:400; font-size:15px">Atendimento ao setor regulado</div>
-                </div>
+                    </div>
+                </a>
             </div>
-        </div>
-        <div class="form-group col-md-4">
-            <div class="cardAreaGrande" style="padding:1rem; width:100%; height:100%;background-color:#e2cf5e">
-                <div class="form-row">
-                    <div class="col-12" style="height:80px;  text-align:right;">
-                            <img src="{{ asset('/imagens/logo_localizar1.png') }}" alt="Logo" style="width:57px; height:60px;"/>
+        @endforeach
+        @if(count($servicos)>=4)
+            <div class="form-group col-md-4">
+                <a href="{{ route('home.outras.informacoes') }}" style="text-decoration:none;">
+                    <div class="cardAreaGrande" style="padding:1rem; width:100%; height:100%;background-color:#ae71cc">
+                        <div class="form-row">
+                            <div class="col-12" style="height:80px;  text-align:right;">
+                                    <img src="{{ asset('/imagens/logo_mais.png') }}" alt="Logo" style="width:50px; height:50px;"/>
+                                </div>
+                            <div class="col-12" style="color:white;font-family:'Noto Sans SC'; font-weight:400; font-size:15px">Outros Serviços</div>
                         </div>
-                    <div class="col-12" style="color:white;font-family:'Noto Sans SC'; font-weight:400; font-size:15px">Emitir uma licença</div>
-                </div>
+                    </div>
+                </a>
             </div>
-        </div>
-        <div class="form-group col-md-4">
-            <div class="cardAreaGrande" style="padding:1rem; width:100%; height:100%;background-color:#b5cc71">
-                <div class="form-row">
-                    <div class="col-12" style="height:80px;  text-align:right;">
-                            <img src="{{ asset('/imagens/logo_folha.png') }}" alt="Logo" style="width:48px; height:60px;"/>
-                        </div>
-                    <div class="col-12" style="color:white;font-family:'Noto Sans SC'; font-weight:400; font-size:15px">Consultar documentos</div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            <div class="cardAreaGrande" style="padding:1rem; width:100%; height:100%;background-color:#cc9f71">
-                <div class="form-row">
-                    <div class="col-12" style="height:80px;  text-align:right;">
-                            <img src="{{ asset('/imagens/logo_localizar2.png') }}" alt="Logo" style="width:90px; height:60px;"/>
-                        </div>
-                    <div class="col-12" style="color:white;font-family:'Noto Sans SC'; font-weight:400; font-size:15px">Inspeções em estabelecimentos regulados</div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            <div class="cardAreaGrande" style="padding:1rem; width:100%; height:100%;background-color:#ae71cc">
-                <div class="form-row">
-                    <div class="col-12" style="height:80px;  text-align:right;">
-                            <img src="{{ asset('/imagens/logo_mais.png') }}" alt="Logo" style="width:50px; height:50px;"/>
-                        </div>
-                    <div class="col-12" style="color:white;font-family:'Noto Sans SC'; font-weight:400; font-size:15px">Outros Serviços</div>
-                </div>
-            </div>
-        </div>
+        @endif
 
         <div class="col-md-12" style="margin-left:10px;margin-top:10px; font-family:'Roboto'; font-size:18px; margin-bottom:5px;">Endereço e Contatos</div>
 

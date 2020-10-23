@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Servico;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,7 +35,8 @@ Route::get('/', function () {
         }
     }
     else {
-        return view('naoLogado.home_naologado');
+        $resultado = Servico::orderBy('posicao', 'ASC')->take(4)->get();
+        return view('naoLogado.home_naologado',['servicos'=>$resultado]);
     }
 })->name("/");
 
@@ -66,6 +68,8 @@ Route::middleware(['OnlyAdmin'])->group(function () {
 
 Route::get("/empresa/lista/cnae",  "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes.comum");
 Route::get("/emcostrucao",  function () {return view('em_construcao');})->name("emconstrucao");
+Route::get("/servicos",  "ServicoController@homeInformacoes")->name("home.informacao");
+Route::get("/servicos/outros",  "ServicoController@homeOutrasInformacoes")->name("home.outras.informacoes");
 
 
 // Grupo de rotas para coordenador
@@ -120,6 +124,19 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get("/encontrar/requerimento",   "CoordenadorController@encontrarRequerimento")->name("encontrar.requerimento");
     Route::get("/historico/inspecoes",      "CoordenadorController@historico")->name("historico.inspecoes");
     Route::get("/pdf",                      "CoordenadorController@nameMethod")->name("gerar.pdf");
+    // Rota para gerenciar conteudo
+    Route::get("/coordenador/gerenciarconteudo","ServicoController@index")->name("servico.index");
+    Route::get("/coordenador/gerenciarconteudo/criar/servico","ServicoController@ajaxCriarServico");
+    Route::get("/coordenador/gerenciarconteudo/deletar/servico","ServicoController@ajaxDeletarServico");
+    Route::get("/coordenador/gerenciarconteudo/editar/servico","ServicoController@ajaxEditarServico");
+    Route::get("/coordenador/gerenciarconteudo/editar/subir/servico","ServicoController@ajaxEditarSubirServico");
+    Route::get("/coordenador/gerenciarconteudo/editar/descer/servico","ServicoController@ajaxEditarDescerServico");
+    // Rota para gerenciar a secao
+    Route::get("/coordenador/gerenciarconteudo/secao","ServicoController@indexSecao")->name("secao.index");
+    Route::get("/coordenador/gerenciarconteudo/criar/secao","ServicoController@ajaxCriarSecao");
+    Route::get("/coordenador/gerenciarconteudo/editar/secao","ServicoController@ajaxEditarSecao");
+    Route::get("/coordenador/gerenciarconteudo/editar/subir/secao","ServicoController@ajaxEditarSubirSecao");
+    Route::get("/coordenador/gerenciarconteudo/deletar/secao","ServicoController@ajaxDeletarSecao");
 });
 
 // Grupo de rotas para empresa
