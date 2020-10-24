@@ -25,7 +25,9 @@
                         @endif
                     </div>
                     <div class="col-12" style=" text-align:right;">
-                        <a href="{{ route('pagina.adicionar.empresa') }}" style="text-decoration:none;">Criar estabelecimento</a>
+                        @if($empresas[0]->user->status_cadastro != "pendente")
+                            <a href="{{ route('pagina.adicionar.empresa') }}" style="text-decoration:none;">Criar estabelecimento</a>
+                        @endif
                     </div>
                 </div>
             </div>

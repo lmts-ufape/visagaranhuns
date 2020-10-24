@@ -196,6 +196,29 @@ class EmpresaController extends Controller
 
         return redirect()->route('confirma.cadastro');
     }
+    /*
+    *   FUNCAO: abrir a pagina editar_meus_dados
+    *   TELA: empresa/editar_meus_dados
+    *
+    */
+    public function editarMeusDados(){
+        $user = Auth::user();
+        return view('empresa/editar_meus_dados',["nome"=>$user->name, "email"=>$user->email]);
+    }
+    /*
+    *   FUNCAO: atualizar o nome do usuario
+    *   REQUEST: name
+    *
+    */
+    public function atualizarMeusDados(Request $request){
+        $validator = $request->validate([
+            'name'     => 'required|string',
+        ]);
+        $user = Auth::user();
+        $user->name = $request->name;
+        $user->save();
+        return redirect()->route('editar.gerente')->with('success', "Nome do usuário alterado com sucesso!");
+    }
 
     public function adicionarEmpresa(Request $request)
     {
@@ -412,7 +435,7 @@ class EmpresaController extends Controller
             array_push($temp, $indice);
         }
 
-        for ($i=0; $i < count($cnae); $i++) { 
+        for ($i=0; $i < count($cnae); $i++) {
             if(!in_array($cnae[$i], $temp)){
                 $cnaeEmpresa = CnaeEmpresa::create([
                     'empresa_id' => $empresa->id,
@@ -549,7 +572,7 @@ class EmpresaController extends Controller
 
         $fileDocemp = $request->arquivo;
 
-        $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/'; 
+        $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/';
 
         $nomeDocemp = $request->arquivo->getClientOriginalName();
 
@@ -827,7 +850,7 @@ class EmpresaController extends Controller
 
         // TENTANDO MUDAR AQUI EMBAIXO
         // $resultados = CnaeEmpresa::where('empresa_id', $idEmpresa)->get();
-        
+
         // $resultado = [];
 
         // foreach ($resultados as $indice) {

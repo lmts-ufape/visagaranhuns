@@ -20,6 +20,7 @@
     <script type="text/javascript" src="{{URL::asset('js/findDocRt.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/requerimento_rt.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/config_pagina_inicial.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/editar_meus_dados.js')}}" defer></script>
 
     <!-- load jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -45,6 +46,7 @@
     <link href="{{ asset('css/geral.css') }}" rel="stylesheet">
     <link href="{{ asset('css/agentes.css') }}" rel="stylesheet">
     <link href="{{ asset('css/documentos_empresa.css') }}" rel="stylesheet">
+
 
     <!-- editor de texto -->
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
@@ -176,7 +178,12 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        {{-- <a class="dropdown-item" href="{{ route('home.cadastrar') }}">Dados do estabelecimento</a> --}}
+                                        <a class="dropdown-item" href="{{ route('editar.gerente', ['user' => Auth::user()->id]) }}">
+                                                {{ __('Editar meus dados') }}
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('editar.gerente', ['user' => Auth::user()->id]) }}">
+                                                {{ __('Editar senha de acesso') }}
+                                        </a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">
@@ -188,6 +195,7 @@
                                         </form>
                                     </div>
                                 </li>
+
                             @elseif(Auth::user()->tipo == "inspetor")
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('/') }}">{{ __('Início') }}</a>
@@ -272,7 +280,7 @@
                                             {{ __('Meus documentos') }}
                                         </a>
                                         <a class="dropdown-item" href="{{ route('editar.dados', ['user' => Auth::user()->id]) }}">
-                                            {{ __('Editar dados') }}
+                                            {{ __('Editar meus dados') }}
                                         </a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
