@@ -59,15 +59,15 @@
                             <div class="form-row">
                                 <div class="form-group col-md-4"  style="padding-right:15px;">
                                     <label class="styleTituloDoInputCadastro" for="inputEmail4">Senha atual:<span style="color:red">*</span></label>
-                                    <input type="password" class="styleInputCadastro" name="senhaAtual" placeholder="">
+                                    <input type="password" class="styleInputCadastro" name="senhaAtual" placeholder="" required="required">
                                 </div>
                                 <div class="form-group col-md-4"  style="padding-right:15px;">
                                     <label class="styleTituloDoInputCadastro" for="inputEmail4">Digite sua nova senha:<span style="color:red">*</span></label>
-                                    <input type="password" class="styleInputCadastro" name="novaSenha1" placeholder="">
+                                    <input type="password" class="styleInputCadastro" name="novaSenha1" placeholder="" required="required">
                                 </div>
                                 <div class="form-group col-md-4"  style="padding-right:15px;">
                                     <label class="styleTituloDoInputCadastro" for="inputEmail4">Digite sua nova senha mais uma vez:<span style="color:red">*</span></label>
-                                    <input type="password" class="styleInputCadastro" name="novaSenha2" placeholder="">
+                                    <input type="password" class="styleInputCadastro" name="novaSenha2" placeholder="" required="required">
                                 </div>
                             </div>
 
