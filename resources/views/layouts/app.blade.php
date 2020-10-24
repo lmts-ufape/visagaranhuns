@@ -181,7 +181,7 @@
                                         <a class="dropdown-item" href="{{ route('editar.gerente', ['user' => Auth::user()->id]) }}">
                                                 {{ __('Editar meus dados') }}
                                         </a>
-                                        <a class="dropdown-item" href="{{ route('editar.gerente', ['user' => Auth::user()->id]) }}">
+                                        <a class="dropdown-item" href="{{ route('editar.senha.gerente', ['user' => Auth::user()->id]) }}">
                                                 {{ __('Editar senha de acesso') }}
                                         </a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"

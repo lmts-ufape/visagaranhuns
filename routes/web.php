@@ -156,8 +156,13 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get("/estabelecimento/lista/cnae",           "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes");
     Route::get("/listar/responsavelTecnico",            "EmpresaController@listarResponsavelTec")->name("listar.responsavelTec");
 
+    //tela de editar dados do gerente
     Route::get('/editar/meusdados',                     "EmpresaController@editarMeusDados")->name('editar.gerente');
     Route::post('/atualizar/meusdados',                 "EmpresaController@atualizarMeusDados")->name('atualizar.gerente');
+
+    //tela de editar senha de acesso do gerente
+    Route::get('/editar/gerente/senha',function () {return view('empresa/editar_senha_de_acesso');})->name('editar.senha.gerente');
+    // Route::post('/atualizar/gerente/senha',             "EmpresaController@atualizarMeusDados")->name('atualizar.gerente');
 
     //Tela de editar
     Route::get("/pagina/editar",                        "EmpresaController@edit")->name("pagina.editar.empresa");

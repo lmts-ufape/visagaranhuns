@@ -219,6 +219,20 @@ class EmpresaController extends Controller
         $user->save();
         return redirect()->route('editar.gerente')->with('success', "Nome do usuário alterado com sucesso!");
     }
+    /*
+    *   FUNCAO: atualizar senha de acesso
+    *   REQUEST: senhaAtual, senhaNovo, senhaNovoCopia
+    *
+    */
+    public function atualizarSenhaDeAcesso(Request $request){
+        // $validator = $request->validate([
+        //     'name'     => 'required|string',
+        // ]);
+        // $user = Auth::user();
+        // $user->name = $request->name;
+        // $user->save();
+        // return redirect()->route('editar.gerente')->with('success', "Nome do usuário alterado com sucesso!");
+    }
 
     public function adicionarEmpresa(Request $request)
     {
