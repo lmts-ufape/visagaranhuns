@@ -20,6 +20,7 @@ use DateTime;
 use App\AreaTipodocemp;
 use App\Checklistemp;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 
 class EmpresaController extends Controller
 {
@@ -220,18 +221,19 @@ class EmpresaController extends Controller
         return redirect()->route('editar.gerente')->with('success', "Nome do usuário alterado com sucesso!");
     }
     /*
-    *   FUNCAO: atualizar senha de acesso
-    *   REQUEST: senhaAtual, senhaNovo, senhaNovoCopia
+    *   FUNCAO: atualizar senha de acesso do gerente
+    *   REQUEST: senhaAtual, novaSenha1, novaSenha2
     *
     */
     public function atualizarSenhaDeAcesso(Request $request){
-        // $validator = $request->validate([
-        //     'name'     => 'required|string',
-        // ]);
-        // $user = Auth::user();
-        // $user->name = $request->name;
-        // $user->save();
-        // return redirect()->route('editar.gerente')->with('success', "Nome do usuário alterado com sucesso!");
+        if(Hash::check($request->senhaAtual ,Auth::user()->password) == true && $request->novaSenha1 == $request->novaSenha2 ){
+            $user = Auth::user();
+            $user->password = Hash::make($request->novaSenha1);
+            $user->save();
+            return redirect()->back()->with('success', "Senha alterada com sucesso!");
+        }else{
+            return redirect()->back()->with('error', "Verifique suas senhas e tente novamente!");
+        }
     }
 
     public function adicionarEmpresa(Request $request)

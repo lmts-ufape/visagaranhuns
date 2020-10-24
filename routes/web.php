@@ -162,7 +162,7 @@ Route::middleware(['IsEmpresa'])->group(function () {
 
     //tela de editar senha de acesso do gerente
     Route::get('/editar/gerente/senha',function () {return view('empresa/editar_senha_de_acesso');})->name('editar.senha.gerente');
-    // Route::post('/atualizar/gerente/senha',             "EmpresaController@atualizarMeusDados")->name('atualizar.gerente');
+    Route::post('/atualizar/gerente/senha',             "EmpresaController@atualizarSenhaDeAcesso")->name('atualizar.gerente');
 
     //Tela de editar
     Route::get("/pagina/editar",                        "EmpresaController@edit")->name("pagina.editar.empresa");

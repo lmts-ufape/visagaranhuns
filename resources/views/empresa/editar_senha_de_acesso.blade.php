@@ -46,7 +46,7 @@
                                         <strong>{{$message}}</strong>
                                     </div>
                                 @elseif ($message = Session::get('error'))
-                                    <div class="alert alert-warning alert-block fade show">
+                                    <div class="alert alert-danger alert-block fade show">
                                         <button type="button" class="close" data-dismiss="alert">×</button>
                                         <strong>{{$message}}</strong>
                                     </div>
@@ -54,7 +54,7 @@
                                 <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">ACESSO AO SISTEMA</label>
                             </div>
                         </div>
-                        <form id="formEditarMinhaSenhaDeAcessoEmpresa" method="POST" action="{{ route('atualizar.gerente') }}">
+                        <form method="POST" action="{{ route('atualizar.gerente') }}">
                             @csrf
                             <div class="form-row">
                                 <div class="form-group col-md-4"  style="padding-right:15px;">
@@ -63,25 +63,26 @@
                                 </div>
                                 <div class="form-group col-md-4"  style="padding-right:15px;">
                                     <label class="styleTituloDoInputCadastro" for="inputEmail4">Digite sua nova senha:<span style="color:red">*</span></label>
-                                    <input type="password" class="styleInputCadastro" name="senhaAtual" placeholder="">
+                                    <input type="password" class="styleInputCadastro" name="novaSenha1" placeholder="">
                                 </div>
                                 <div class="form-group col-md-4"  style="padding-right:15px;">
                                     <label class="styleTituloDoInputCadastro" for="inputEmail4">Digite sua nova senha mais uma vez:<span style="color:red">*</span></label>
-                                    <input type="password" class="styleInputCadastro" name="senhaAtual" placeholder="">
+                                    <input type="password" class="styleInputCadastro" name="novaSenha2" placeholder="">
+                                </div>
+                            </div>
+
+                            <hr size = 7>
+                            <div style="margin-bottom:0.2rem;">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif"><span style="font-size:20px">*</span> campos obrigatórios</label>
+                                        </div>
+                                    <div class="col-md-4">
+                                        <button type="submit" class="btn btn-success" style="width:100%;" >Atualizar</button>
+                                    </div>
                                 </div>
                             </div>
                         <form>
-                        <hr size = 7>
-                        <div style="margin-bottom:0.2rem;">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif"><span style="font-size:20px">*</span> campos obrigatórios</label>
-                                    </div>
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-success" style="width:100%;" >Atualizar</button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

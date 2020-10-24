@@ -1,7 +1,6 @@
 <footer style="padding-top:rem;">
     <div id="appRodape" style="background-color:gray; padding-bottom:1rem;">
-        <div class="row justify-content-center">
-            <div class="col-12" style="display: flex;justify-content: center;color:white; margin-bottom:-1.5rem; margin-top:10px;">
+            <div class="col-12" style="display: flex;justify-content: center;color:white; margin-bottom:-1.5rem; padding-top:0.5rem;">
                 <ul>
                     @guest
                         <li style="float: left; margin-right:30px;font-family:arial"><a href="" style="text-decoration: none; color:#fff;">Início</a></li>
@@ -34,7 +33,7 @@
                                 <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'documentacao']) }}" style="text-decoration: none; color:#fff;cursor:pointer">Documentação</a></li>
                                 <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('emconstrucao') }}" style="text-decoration: none; color:#fff;cursor:pointer">Notificação</a></li>
                             @endif
-                        <li style="float: left; margin-right:30px;"></li>
+                        <li style="float: left; margin-right:30px;font-family:arial"></li>
                     @elseif(Auth::user()->tipo == "agente")
                         <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('/') }}">Início</a></li>
                         <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('emconstrucao') }}" style="text-decoration: none; color:#fff;cursor:pointer">Programação</a></li>
@@ -56,7 +55,6 @@
                     @endif
                 </ul>
             </div>
-        </div>
         <div class="container">
             <hr style="background-color:red; color:#fff; border-color:#fff; border: solid 1px;">
         </div>
