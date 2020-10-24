@@ -255,16 +255,65 @@
     </div>
 @endsection
 
-{{-- <script type="text/javascript">
-    window.onload= function() {
-        $.ajax({
-            url:'/requerimento',
-            type:"get",
-            dataType:'json',
-            data: {"filtro": "all" },
-            success: function(response){
-                $('tbody_').html(response.table_data);
+<script type="text/javascript">
+    window.statusCNAERequisicaoRT = function($flag, $descricao, $aviso, $idCnae, $respTecnico, $empresa){
+    
+    $.ajax({
+        url:'{{ config('prefixo.PREFIXO') }}cnae/encontrar',
+        type:"get",
+        dataType:'json',
+        data: {'cnaeId': $idCnae,
+               'respTecnico': $respTecnico,
+               'empresa': $empresa,
+        },
+        success: function(response){
+            console.log(response.valor);
+            if (response.tipo == "Primeira Licenca") {
+                console.log("Primeira Licenca");
+                if (response.valor == "pendente") {
+                    $("option[value='Primeira Licenca']").prop("disabled", true);
+                    $("option[value='Renovacao']").prop("disabled", true);
+                }else if (response.valor == "aprovado") {
+                    $("option[value='Primeira Licenca']").prop("disabled", true);
+                    $("option[value='Renovacao']").prop("disabled", false);
+                }else {
+                    $("option[value='Primeira Licenca']").prop("disabled", false);
+                    $("option[value='Renovacao']").prop("disabled", true);
+                }
+            }else if (response.tipo == "renovacao"){
+                console.log("Renovacao");
+                if (response.valor == "pendente") {
+                    $("option[value='Primeira Licenca']").prop("disabled", true);
+                    $("option[value='Renovacao']").prop("disabled", true);
+                }else if (response.valor == "aprovado") {
+                    $("option[value='Primeira Licenca']").prop("disabled", true);
+                    $("option[value='Renovacao']").prop("disabled", false);
+                }else {
+                    $("option[value='Primeira Licenca']").prop("disabled", true);
+                    $("option[value='Renovacao']").prop("disabled", false);
+                }
+            }else if (response.tipo == "nenhum") {
+                console.log("Né");
+                $("option[value='Primeira Licenca']").prop("disabled", false);
+                $("option[value='Renovacao']").prop("disabled", true);
             }
-        });
-    };
-</script> --}}
+        }
+    });
+    
+    if($flag == "reprovado"){
+
+        document.getElementById('descricaoCNAERTreprovado').innerHTML = $descricao;
+        document.getElementById('avisoCNAERTreprovado').innerHTML = $aviso;
+
+    }else if($flag == "aprovado"){
+        
+        document.getElementById('descricaoCNAERT').innerHTML = $descricao;
+
+    }else if($flag == "criarRequisicao"){
+
+        document.getElementById('criarRequerimentoCNAERT').innerHTML = $descricao;
+        document.getElementById('idCnaeRequerimentoRT').value = $idCnae;
+    }
+}
+
+</script>

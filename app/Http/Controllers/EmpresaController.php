@@ -338,6 +338,31 @@ class EmpresaController extends Controller
         return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnaeEmpresa, 'rt' => $resptecnicos]);
     }
 
+    public function cadastrarRequerimento(Request $request)
+    {
+        $validator = $request->validate([
+            'tipo'     => 'required',
+            'cnae'    => 'required',
+        ]);
+
+        $empresa = Empresa::find($request->empresa);
+
+        $data = date('Y-m-d');
+
+        $requerimento = Requerimento::create([
+            'tipo'            => $request->tipo,
+            'status'          => "pendente",
+            'aviso'           => "",
+            'cnae_id'         => $request->cnae,
+            'data'            => $data,
+            'resptecnicos_id' => $request->resptecnico,
+            'empresas_id'     => $request->empresa,
+        ]);
+
+        session()->flash('success', 'O seu requerimento foi enviado para análise!');
+        return back();
+    }
+
     public function requerimentos(Request $request)
     {
 
@@ -576,6 +601,33 @@ class EmpresaController extends Controller
         $docempresa = Docempresa::where("empresa_id", $id)->get();
         // Definir a página para a listagem de arquivos de uma empresa
         return view('/', ["arquivos" => $docempresa]);
+    }
+
+    public function encontrarCnae(Request $request)
+    {
+
+        $requerimento = Requerimento::where('empresas_id', $request->empresa)
+        // ->where('resptecnicos_id', 1)
+        ->where('cnae_id', $request->cnaeId)
+        ->orderBy('created_at', 'desc')
+        ->first();
+
+        if ($requerimento == null) {
+            $data = array(
+                'tipo'    => "nenhum",
+                'valor'   => "nenhum",
+            );
+
+            echo json_encode($data);
+
+        }else {
+            $data = array(
+                'tipo'    => $requerimento->tipo,
+                'valor'   => $requerimento->status,
+            );
+
+            echo json_encode($data);
+        }
     }
 
     public function findDoc(Request $request)

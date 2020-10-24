@@ -49,14 +49,14 @@
                                                 <tr>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
-                                                    <th type="button" class="subtituloBarraPrincipal" onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</th>
+                                                    <th type="button" class="subtituloBarraPrincipal" onclick="statusCNAERequisicaoEmpresa('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</th>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusPendente">Pendente</th>
                                                 </tr>
                                             @elseif ($item2->status == "completo")
                                                 <tr>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
-                                                    <th type="button" class="subtituloBarraPrincipal" onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</th>
+                                                    <th type="button" class="subtituloBarraPrincipal" onclick="statusCNAERequisicaoEmpresa('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</th>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusCompleto">Completo</th>
                                                 </tr>
                                             @endif
@@ -189,7 +189,7 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="formRequerimento" method="POST" action="{{ route('cadastrar.requerimento') }}">
+                <form id="formRequerimento" method="POST" action="{{ route('cadastrar.requerimento.empresa') }}">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
@@ -218,3 +218,65 @@
         </div>
     </div>
 @endsection
+
+<script type="text/javascript">
+
+window.statusCNAERequisicaoEmpresa = function($flag, $descricao, $aviso, $idCnae, $empresa){
+    console.log($empresa);
+    $.ajax({
+        url:'{{ config('prefixo.PREFIXO') }}cnae/encontrar/empresa',
+        type:"get",
+        dataType:'json',
+        data: {'cnaeId'     : $idCnae,
+               'empresa'    : $empresa,
+        },
+        success: function(response){
+            
+            if (response.tipo == "Primeira Licenca") {
+                console.log("Primeira Licenca");
+                if (response.valor == "pendente") {
+                    $("option[value='Primeira Licenca']").prop("disabled", true);
+                    $("option[value='Renovacao']").prop("disabled", true);
+                }else if (response.valor == "aprovado") {
+                    $("option[value='Primeira Licenca']").prop("disabled", true);
+                    $("option[value='Renovacao']").prop("disabled", false);
+                }else {
+                    $("option[value='Primeira Licenca']").prop("disabled", false);
+                    $("option[value='Renovacao']").prop("disabled", true);
+                }
+            }else if (response.tipo == "Renovacao"){
+                console.log("Renovacao");
+                if (response.valor == "pendente") {
+                    $("option[value='Primeira Licenca']").prop("disabled", true);
+                    $("option[value='Renovacao']").prop("disabled", true);
+                }else if (response.valor == "aprovado") {
+                    $("option[value='Primeira Licenca']").prop("disabled", true);
+                    $("option[value='Renovacao']").prop("disabled", false);
+                }else {
+                    $("option[value='Primeira Licenca']").prop("disabled", true);
+                    $("option[value='Renovacao']").prop("disabled", false);
+                }
+            }else if (response.tipo == "nenhum") {
+                console.log("Astrolábio");
+                $("option[value='Primeira Licenca']").prop("disabled", false);
+                $("option[value='Renovacao']").prop("disabled", true);
+            }
+        }
+    });
+    
+    if($flag == "reprovado"){
+
+        document.getElementById('descricaoCNAERTreprovado').innerHTML = $descricao;
+        document.getElementById('avisoCNAERTreprovado').innerHTML = $aviso;
+    }else if($flag == "aprovado"){
+            
+        document.getElementById('descricaoCNAERT').innerHTML = $descricao;
+    }else if($flag == "criarRequisicao"){
+
+        document.getElementById('criarRequerimentoCNAERT').innerHTML = $descricao;
+        document.getElementById('idCnaeRequerimentoRT').value = $idCnae;
+    }
+
+}
+
+</script>
