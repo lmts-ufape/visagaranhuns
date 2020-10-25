@@ -7,6 +7,7 @@
     -webkit-box-shadow: 0px 0px 17px -2px rgba(219,219,219,1);
     -moz-box-shadow: 0px 0px 17px -2px rgba(219,219,219,1);
     box-shadow: 0px 0px 17px -2px rgba(219,219,219,1);
+    background-color:white;
 }
 .cardLogin{
     margin:0.5rem;
@@ -16,6 +17,7 @@
     -webkit-box-shadow: 0px 0px 17px -2px rgba(219,219,219,1);
     -moz-box-shadow: 0px 0px 17px -2px rgba(219,219,219,1);
     box-shadow: 0px 0px 17px -2px rgba(219,219,219,1);
+    background-color:white;
 }
 .cardArea{
     width: 202px;
@@ -24,7 +26,7 @@
     border: 1.5px solid #f2f2f2;
     border-radius: 10px;
     border-color:#e3e3e3;
-    background-color:#f2f2f2;
+    background-color:white;
 }
 .cardArea:hover{
     width: 202px;
@@ -37,7 +39,7 @@
     -moz-box-shadow: 0px 0px 17px -2px rgba(219,219,219,1);
     box-shadow: 0px 0px 17px -2px rgba(219,219,219,1);
     cursor:pointer;
-    background-color:#f3f3f3;
+    background-color:white;
 }
 
 .cardEmpresa{
@@ -131,6 +133,7 @@ box-shadow: 0px 0px 11px -4px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 0px 11px -7px rgba(0,0,0,0.75);
     box-shadow: 0px 0px 11px -7px rgba(0,0,0,0.75);
     margin:5px;
+    background-color:white;
 }
 .cardDashboard:hover{
     margin:0.4rem;
@@ -144,6 +147,7 @@ box-shadow: 0px 0px 11px -4px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 0px 15px -7px rgba(0,0,0,0.75);
     box-shadow: 0px 0px 15px -7px rgba(0,0,0,0.75);
     margin:5px;
+    background-color:white;
 }
 
 .cardDashboard.conteudo{
