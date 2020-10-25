@@ -14,9 +14,9 @@
             </div>
             <div class="mr-auto p-2 styleBarraPrincipalPC">
                 <div class="form-group">
-                    <div class="tituloBarraPrincipal">{{$titulo}}</div>
+                    <div class="tituloBarraPrincipal"><label class="limiteDeTexto" style="margin-bottom:-0.3rem;">{{$titulo}}</label></div>
                     <div>
-                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Serviços > {{$titulo}}</div>
+                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Serviços > <label class="limiteDeTexto" style="margin-bottom:-0.3rem;">{{$titulo}}</label></div>
                     </div>
                 </div>
             </div>

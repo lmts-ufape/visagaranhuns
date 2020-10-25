@@ -35,7 +35,7 @@
             </div>
         </div>
     </div>
-    <div class="barraMenu" style="margin-top:2rem; margin-bottom:5rem;padding:15px;">
+    <div class="barraMenu" style="margin-top:2rem; margin-bottom:5rem;padding:15px; background-color:white">
         <div class="d-flex justify-content-center">
             <div class="mr-auto p-2 ">
                 <label style="font-size:19px;margin-top:-10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">Serviços cadastrados</label>
@@ -68,9 +68,9 @@
                                     </div>
                                 </div>
                             </th>
-                            <td><a href="{{ route('secao.index', ['id' => Crypt::encrypt($item->id)])}}">{{$item->titulo}}</a></td>
+                            <td class="limiteDeTexto"><a href="{{ route('secao.index', ['id' => Crypt::encrypt($item->id)])}}">{{$item->titulo}}</a></td>
                             <td class="btn-group">
-                                <button type="button" class="btn btn-secondary btn-sm" style="margin-right:10px;" onclick="editarServicoModal({{$item->id}},'{{$item->titulo}}');" data-toggle="modal" data-target="#editarServicoModal">
+                                <button type="button" class="btn btn-secondary btn-sm" style="margin-right:10px;" onclick="editarServicoModal({{$item->id}},'{{$item->titulo}}','{{$item->cor}}','{{$item->icone}}');" data-toggle="modal" data-target="#editarServicoModal">
                                     <img src="{{ asset('/imagens/logo_editar.png') }}" alt="Logo" width="17px"/>
                                 </button>
                                 <button type="button" class="btn btn-danger btn-sm" onclick="deletarServicoModal({{$item->id}},'{{$item->titulo}}')" data-toggle="modal" data-target="#deletarServicoModal">
@@ -103,20 +103,17 @@
 
                     <div class="col-12" style="font-family: 'Roboto', sans-serif;">Título</div>
                     <div class="col-12"><input type="text" class="form-control" id="idTitulo"></div>
-
-                    {{-- <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px;">Ícone</div>
-                    <div class="col-12">
-                        <select class="custom-select" id="inputGroupSelect01">
-                            <option selected>Selecione o ícone...</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div> --}}
-
-                    {{-- <div class="col-12" style="font-family: 'Roboto', sans-serif;">Cor</div>
-                    <div class="col-12"><input type="text" class="form-control" ></div> --}}
-
+                    <div class="col-3" style="font-family: 'Roboto', sans-serif;">Cor<input type="color" class="form-control" id="idCor"></div>
+                    <div class="col-9" style="font-family: 'Roboto', sans-serif;">Icone
+                        <select id="idIcone" class="form-control">
+                            <option value="/imagens/logo_info_branco.png" selected> -- Selecione um ícone --</option>
+                            <option value="/imagens/logo_folha.png">Papel</option>
+                            <option value="/imagens/logo_info_branco.png">Informação</option>
+                            <option value="/imagens/logo_predio2.png">Prédio</option>
+                            <option value="/imagens/logo_telefone2.png">Telefone</option>
+                            <option value="/imagens/logo_editar.png">Lápis</option>
+                          </select>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -163,12 +160,22 @@
                     <div class="form-row">
                         <div class="col-12" style="font-family: 'Roboto', sans-serif;">Título</div>
                         <div class="col-12"><input type="text" class="form-control" id="nomeDoServicoEditar"></div>
+                        <div class="col-3" style="font-family: 'Roboto', sans-serif;">Cor<input type="color" class="form-control" id="corServicoEditar"></div>
+                        <div class="col-9" style="font-family: 'Roboto', sans-serif;">Icone
+                            <select id="iconeServicoEditar" class="form-control">
+                                <option id="logoFolha" value="/imagens/logo_folha.png">Papel</option>
+                                <option id="logoInfoBranco" value="/imagens/logo_info_branco.png">Informação</option>
+                                <option id="logoPredio" value="/imagens/logo_predio2.png">Prédio</option>
+                                <option id="logoTelefone" value="/imagens/logo_telefone2.png">Telefone</option>
+                                <option id="logoEditar" value="/imagens/logo_editar.png">Lápis</option>
+                            </select>
+                        </div>
                         <input type="hidden" id="idServicoEditar">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"style="width:100px;">Não</button>
-                    <button type="submit" class="btn btn-success botao-form"  data-dismiss="modal" onclick="editarServico(idServicoEditar, nomeDoServicoEditar)">Sim, editar serviço</button>
+                    <button type="submit" class="btn btn-success botao-form"  data-dismiss="modal" onclick="editarServico(idServicoEditar, nomeDoServicoEditar, corServicoEditar, iconeServicoEditar)">Sim, editar serviço</button>
                 </div>
             </div>
         </div>

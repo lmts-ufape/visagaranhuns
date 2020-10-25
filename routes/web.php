@@ -31,7 +31,7 @@ Route::get('/', function () {
             return view('agente.home_agente');
         }
         elseif (Auth::user()->tipo == "rt") {
-            return view('responsavel_tec.home_rt');
+            return redirect()->route('home.rt');
         }
     }
     else {
@@ -114,7 +114,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::post("/julgar/requerimento", "CoordenadorController@julgarRequerimento")->name("julgar.requerimento");
 
     Route::get('/download/arquivo/avaliar/requerimento',       'CoordenadorController@downloadArquivo')->name('download.arquivo.avaliar.requerimento');
-    
+
     // Rota para localizar
     Route::get("/coordenador/localizar", "CoordenadorController@localizar");
 
@@ -155,6 +155,14 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get("/listar/empresas/",                     "EmpresaController@listarEmpresas")->name("listar.empresas");
     Route::get("/estabelecimento/lista/cnae",           "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes");
     Route::get("/listar/responsavelTecnico",            "EmpresaController@listarResponsavelTec")->name("listar.responsavelTec");
+
+    //tela de editar dados do gerente
+    Route::get('/editar/meusdados',                     "EmpresaController@editarMeusDados")->name('editar.gerente');
+    Route::post('/atualizar/meusdados',                 "EmpresaController@atualizarMeusDados")->name('atualizar.gerente');
+
+    //tela de editar senha de acesso do gerente
+    Route::get('/editar/gerente/senha',function () {return view('empresa/editar_senha_de_acesso');})->name('editar.senha.gerente');
+    Route::post('/atualizar/gerente/senha',             "EmpresaController@atualizarSenhaDeAcesso")->name('atualizar.gerente');
 
     //Tela de editar
     Route::get("/pagina/editar",                        "EmpresaController@edit")->name("pagina.editar.empresa");
@@ -224,9 +232,11 @@ Route::middleware(['IsAgente'])->group(function () {
 
 // Grupo de rotas para responsável técnico
 Route::middleware(['IsRespTecnico'])->group(function () {
-    Route::get('/editar/dados', 'RespTecnicoController@edit')->name('editar.dados');
-    Route::get('/home/rt', function () {return view('responsavel_tec/home_rt');})->name('home.rt');
-    Route::post('/atualizar/rt','RespTecnicoController@update')->name('update.rt');
+    Route::get('/editar/dados',                     'RespTecnicoController@edit')->name('editar.dados');
+
+    Route::get('/home/rt',                          'RespTecnicoController@home')->name('home.rt');
+
+    Route::post('/atualizar/rt',                    'RespTecnicoController@update')->name('update.rt');
 
     Route::get('/rt/documentos',                    'RespTecnicoController@showDocumentacao')->name('rt.documentos');
 
@@ -247,7 +257,7 @@ Route::middleware(['IsRespTecnico'])->group(function () {
     Route::get('/download/arquivo/empresa/rt',      'RespTecnicoController@downloadArquivo')->name('download.arquivo.empresa');
 
     Route::get('/rt/requerimento',                  'RespTecnicoController@criarRequerimento')->name('criar.requerimento');
-    
+
     Route::post('/cadastro/requerimento',           'RespTecnicoController@cadastrarRequerimento')->name('cadastrar.requerimento');
 
     Route::post("/empresa/arquivos/rt",             "RespTecnicoController@anexarArquivosEmpresa")->name("anexar.arquivos.empresa.rt");

@@ -17,6 +17,8 @@ class CreateServicosTable extends Migration
             $table->id();
             $table->string('titulo');
             $table->bigInteger('posicao');
+            $table->string('cor');
+            $table->string('icone');
             $table->timestamps();
         });
     }
