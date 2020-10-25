@@ -94,6 +94,14 @@
                                     <div style="margin-top:2.4px;margin-right:10px;font-size:15px; width:35px;"></div>
                                     @endif
                                 </a>
+                            @elseif($tipo == "requerimentos")
+                                <a href="{{ route('mostrar.requerimentos',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;">
+                                    @if ($item->status_cadastro == "aprovado")
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    @else
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px; width:35px;"></div>
+                                    @endif
+                                </a>
                             @endif
                         </div>
                     </div>

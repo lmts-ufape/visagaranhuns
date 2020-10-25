@@ -171,12 +171,16 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get('/foundChecklist','EmpresaController@foundChecklist')->name('found.checklist');
 
     // Download de arquivos anexados
-    Route::get('/download/arquivo',       'EmpresaController@downloadArquivo')->name('download.arquivo');
+    Route::get('/download/arquivo',                    'EmpresaController@downloadArquivo')->name('download.arquivo');
 
-    Route::get('/encontrar/doc',          'EmpresaController@findDoc')->name('find.doc');
+    Route::get('/encontrar/doc',                       'EmpresaController@findDoc')->name('find.doc');
 
     // Apagar registro em CnaeEmpr
-    Route::get('/apagar/cnae/empresa',    'EmpresaController@apagarCnaeEmpresa')->name('apagar.cnae.empresa');
+    Route::get('/apagar/cnae/empresa',                 'EmpresaController@apagarCnaeEmpresa')->name('apagar.cnae.empresa');
+
+    Route::get('/requerimentos/representante',         'EmpresaController@requerimentos')->name('mostrar.requerimentos');
+    Route::get('/cnae/encontrar/empresa',              'EmpresaController@encontrarCnae')->name('encontrar.cnae.empresa');
+    Route::post('/cadastro/requerimento/empresa',      'EmpresaController@cadastrarRequerimento')->name('cadastrar.requerimento.empresa');
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
     * Editar/Anexar dados da empresa
