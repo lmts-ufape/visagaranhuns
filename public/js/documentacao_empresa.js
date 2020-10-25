@@ -1,0 +1,15 @@
+function verificarArquivoAnexado_Empresa(){
+    let arquivo = document.getElementById("arquivoSelecionado_empresa");
+
+    if(arquivo.files[0].type.split('/')[1] != "pdf"){
+        document.getElementById("idCorCabecalhoModalDocumentoEmpresa").style.backgroundColor = "red";
+        document.getElementById("idTituloDaMensagemModalDocumentoEmpresa").innerHTML = "O arquivo selecionado não é do tipo .PDF! ";
+        $("#exampleModalAnexarDocumentoEmpresa").modal({show: true});
+        document.getElementById("arquivoSelecionado_empresa").value = "" //limpar a o input
+    }else if(arquivo.files[0].size > 5000000 && arquivo.files[0].type.split('/')[1] == "pdf"){
+        document.getElementById("idCorCabecalhoModalDocumentoEmpresa").style.backgroundColor = "red";
+        document.getElementById("idTituloDaMensagemModalDocumentoEmpresa").innerHTML = "O arquivo selecionado é maior que 5mb!";
+        $("#exampleModalAnexarDocumentoEmpresa").modal({show: true});
+        document.getElementById("arquivoSelecionado_empresa").value = "" //limpar a o input
+    }
+}

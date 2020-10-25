@@ -250,22 +250,25 @@
                                     <div class="form col-md-12" >
                                             <div class="row">
                                                 <div class="col">
-                                                    <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Emissão</label>
-                                                    <input type="date" class="form-control" placeholder="" name="data_emissao" required>
+                                                    <label for="data_emissao" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Emissão <span style="font-size:20px;color:red">*</span></label>
+                                                    <input type="date" class="form-control" id="data_emissao" placeholder="" name="data_emissao" required>
                                                 </div>
                                                 <div class="col">
-                                                    <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Validade</label>
-                                                    <input type="date" class="form-control" placeholder="" name="data_validade">
+                                                    <label for="data_validade" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Validade</label>
+                                                    <input type="date" class="form-control" id="data_validade" placeholder="" name="data_validade">
                                                 </div>
                                             </div>
                                     </div>
                                     <div class="form col-md-12" style="margin-top: 30px">
-
-                                        <input type="file" class="form-control-file" id="arquivo" name="arquivo" required>
+                                        <input type="file" class="form-control-file" id="arquivoSelecionado_empresa" name="arquivo" required onchange="verificarArquivoAnexado_Empresa()">
                                         <label for="" style="color:red;margin-top:4px;">Arquivo no formato PDF e tamanho máximo de 5mb</label>
                                     </div>
                                     <div class="form col-md-12" style="margin-top: 20px">
                                         <button type="submit" class="btn btn-success" style="width:100%;">Enviar</button>
+                                    </div>
+                                    <hr style="margin-top: 40px; margin-bottom:10px">
+                                    <div class="col-md-12">
+                                        <label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif"><span style="font-size:20px">*</span> campos obrigatórios</label>
                                     </div>
                                 </form>
                             </div>
@@ -282,6 +285,30 @@
                         </div>
                     </form>
                 </div>
+    </div>
+</div>
+<!-- Modal de Aviso -->
+<div class="modal fade" id="exampleModalAnexarDocumentoEmpresa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header" id="idCorCabecalhoModalDocumentoEmpresa">
+                        <img src="{{ asset('/imagens/logo_atencao3.png') }}" width="30px;" alt="Logo" style=" margin-right:15px; margin-top:10px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Aviso</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="idTituloDaMensagemModalDocumentoEmpresa"></label></div>
+                        <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal"style="width:200px;">Fechar</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script type="text/javascript">

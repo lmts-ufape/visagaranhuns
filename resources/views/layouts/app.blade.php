@@ -21,6 +21,7 @@
     <script type="text/javascript" src="{{URL::asset('js/requerimento_rt.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/config_pagina_inicial.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/editar_meus_dados.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/documentacao_empresa.js')}}" defer></script>
 
     <!-- load jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -166,7 +167,7 @@
                                         <a class="nav-link" href="{{ route('listar.responsavelTec') }}">{{ __('Responsável Técnico') }}</a>
                                     </li> --}}
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'documentacao']) }}">{{ __('Documentacao') }}</a>
+                                        <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'documentacao']) }}">{{ __('Documentação') }}</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('emconstrucao') }}" style="margin-right:30px;">{{ __('Notificação') }}</a>
