@@ -21,6 +21,7 @@ use DateTime;
 use App\AreaTipodocemp;
 use App\Checklistemp;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Validator;
 
 class EmpresaController extends Controller
 {
@@ -679,6 +680,27 @@ class EmpresaController extends Controller
     public function anexarArquivos(Request $request)
     {
 
+        $messages = [
+            'max'      => 'O tamanho máximo do arquivo deve ser de 5mb!',
+            'required' => 'O campo :attribute não foi passado!',
+            'mimes'    => 'O arquivo anexado não está no formato pdf!',
+            'date'     => 'Campo data está inválido!',
+            'file'     => 'Um arquivo deve ser anexado!',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'arquivo'        => 'required|file|mimes:pdf|max:5000',
+            'tipodocempresa' => 'required',
+            'data_emissao'   => 'required|date',
+            'data_validade'  => 'nullable|date',
+        ], $messages);
+
+        
+        if ($validator->fails()) {
+            return back()
+                    ->withErrors($validator);
+        }
+
         if($request->tipodocempresa == "Tipos de documentos"){
             session()->flash('error', 'Selecione um documento!');
             return back();
@@ -706,15 +728,6 @@ class EmpresaController extends Controller
         }
 
         $empresa = Empresa::find($request->empresaId);
-
-        $validatedData = $request->validate([
-
-            'arquivo'         => ['required', 'file', 'mimes:pdf', 'max:5000000'],
-            'tipodocempresa'  => ['required'],
-            'data_emissao'    => ['required', 'date'],
-            'data_validade'   => ['nullable', 'date'],
-
-        ]);
 
         $fileDocemp = $request->arquivo;
 

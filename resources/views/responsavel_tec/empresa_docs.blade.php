@@ -142,12 +142,12 @@
                         </div>
 
                         <div class="form-group col-md-7">
-                            {{-- @if($errors->has('arquivo'))
+                            @if($errors->any())
                                 <div class="alert alert-warning alert-block fade show">
                                     <button type="button" class="close" data-dismiss="alert">×</button>
-                                    <strong>Atenção ao formato do arquivo (PDF) e tamanho máximo de 5mb</strong>
+                                    <strong>{{$errors->first()}}</strong>
                                 </div>
-                            @endif --}}
+                            @endif
                             @if ($message = Session::get('success'))
                                 <div class="alert alert-success alert-block fade show">
                                     <button type="button" class="close" data-dismiss="alert">×</button>
@@ -239,7 +239,7 @@
                                     <div class="form col-md-12" style="margin-top:1px;margin-bottom:10px;">
                                         <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Tipo de documento</label>
                                         <select class="form-control" id="exampleFormControlSelect1" name="tipodocempresa" required>
-                                            <option disabled>Tipos de documentos</option>
+                                            <option disabled selected>Tipos de documentos</option>
                                             @foreach ($tipos as $tipo)
                                             <option value="{{$tipo->tipodocemp_id}}">{{$tipo->nomeDoc}}</option>
                                             @endforeach

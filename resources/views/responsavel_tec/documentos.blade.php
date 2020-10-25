@@ -142,7 +142,7 @@
                                     <div class="form col-md-12" style="margin-top:1px;margin-bottom:10px;">
                                         <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Tipo de documento</label>
                                         <select class="form-control" id="exampleFormControlSelect1" name="tipodocres" required>
-                                            <option>Tipos de documentos</option>
+                                            <option disabled selected>Tipos de documentos</option>
                                             @foreach ($checklist as $tipo)
                                             <option value="{{$tipo->tipodocres_id}}">{{$tipo->nomeDoc}}</option>
                                             @endforeach
