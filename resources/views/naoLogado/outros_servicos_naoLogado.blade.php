@@ -7,10 +7,10 @@
         @foreach ($servicos as $item)
             <div class="form-group col-md-4">
                 <a href="{{ route('home.informacao',["value"=>Crypt::encrypt($item->id)]) }}" style="text-decoration:none;">
-                    <div class="cardAreaGrande" style="padding:1rem; width:100%; height:100%;background-color:#88b6b6">
+                    <div class="cardAreaGrande" style="padding:1rem; width:100%; height:100%;background-color:{{$item->cor}}">
                         <div class="form-row">
                             <div class="col-12" style="height:80px;  text-align:right;">
-                                    <img src="{{ asset('/imagens/logo_info_branco.png') }}" alt="Logo" style="width:50px; height:50px;"/>
+                                    <img src="{{ $item->icone }}" alt="Logo" style="width:40px;"/>
                                 </div>
                             <div class="col-12" style="color:white;font-family:'Noto Sans SC'; font-weight:400; font-size:15px;">{{$item->titulo}}</div>
                         </div>

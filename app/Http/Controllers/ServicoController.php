@@ -14,7 +14,7 @@ class ServicoController extends Controller
         return view('coordenador/gerenciar_conteudo/config_pagina_inicial',["servicos"=>$resultado]);
     }
     public function ajaxCriarServico(Request $request){
-        $resultado = Servico::create(['titulo'=>"$request->titulo",'posicao'=>Servico::count()+1]);
+        $resultado = Servico::create(['titulo'=>"$request->titulo",'posicao'=>Servico::count()+1,'cor'=>$request->cor, 'icone'=>$request->icone ]);
         $this->listarServicos($resultado->save());
     }
     public function ajaxDeletarServico(Request $request){
@@ -40,6 +40,8 @@ class ServicoController extends Controller
     public function ajaxEditarServico(Request $request){
         $resultado = Servico::where('id','=',$request->id)->first();
         $resultado->titulo = $request->titulo;
+        $resultado->cor = $request->cor;
+        $resultado->icone = $request->icone;
         $this->listarServicos($resultado->save());
     }
     public function ajaxEditarSubirServico(Request $request){
@@ -83,7 +85,7 @@ class ServicoController extends Controller
             foreach($resultado as $item){
                 // $titulo = $item->titulo;
                 $output .= '
-                    <tr>
+                    <tr style="background-color:white">
                         <th>
                             <div class="btn-group">
                                 <label style="margin-right:5px; margin-top:1.5px;">'.$cont.'</label>
@@ -96,7 +98,7 @@ class ServicoController extends Controller
                         </th>
                         <td class="limiteDeTexto"><a href='.route('secao.index','id='.Crypt::encrypt($item->id)).'>'.$item->titulo.'</a></td>
                             <td class="btn-group">
-                                <button type="button" class="btn btn-secondary btn-sm" style="margin-right:10px;" onclick="editarServicoModal('.$item->id.',\''."$item->titulo".'\');" data-toggle="modal" data-target="#editarServicoModal">
+                                <button type="button" class="btn btn-secondary btn-sm" style="margin-right:10px;" onclick="editarServicoModal('.$item->id.',\''."$item->titulo".'\',\''."$item->cor".'\',\''."$item->icone".'\');" data-toggle="modal" data-target="#editarServicoModal">
                                     <img src="'.asset('/imagens/logo_editar.png').'" alt="Logo" width="17px"/>
                                 </button>
                                 <button type="button" class="btn btn-danger btn-sm" onclick="deletarServicoModal('.$item->id.',\''."$item->titulo".'\')" data-toggle="modal" data-target="#deletarServicoModal">
