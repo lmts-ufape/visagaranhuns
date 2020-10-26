@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
 use DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class RespTecnicoController extends Controller
 {
@@ -744,30 +745,36 @@ class RespTecnicoController extends Controller
      */
     public function update(Request $request)
     {
-        $respTecnico = RespTecnico::find($request->respTecnico);
-        $user = User::where('id', $respTecnico->user_id)->first();
+        if(($request->password == $request->password_confirmation) && Hash::check($request->password ,Auth::user()->password) == true){
+            $respTecnico = RespTecnico::find($request->respTecnico);
+            $user = User::where('id', $respTecnico->user_id)->first();
 
-        $validator = $request->validate([
-            'nome'     => 'required|string',
-            'formacao' => 'required|string',
-            'especializacao' => 'nullable|string',
-            'cpf'            => 'required|string',
-            'telefone'       => 'required|string',
-        ]);
+            $validator = $request->validate([
+                'nome'     => 'required|string',
+                'formacao' => 'required|string',
+                'especializacao' => 'nullable|string',
+                'cpf'            => 'required|string',
+                'telefone'       => 'required|string',
+            ]);
 
-        $user->name = $request->nome;
-        $user->password = bcrypt($request->password);
-        $user->save();
+            $user->name = $request->nome;
+            // $user->password = bcrypt($request->password);
+            $user->save();
 
-        $respTecnico->formacao = $request->formacao;
-        if(isset($request->especializacao)){
-            $respTecnico->especializacao = $request->especializacao;
+            $respTecnico->formacao = $request->formacao;
+            if(isset($request->especializacao)){
+                $respTecnico->especializacao = $request->especializacao;
+            }
+            $respTecnico->cpf = $request->cpf;
+            $respTecnico->telefone = $request->telefone;
+            $respTecnico->save();
+
+            session()->flash('success', 'Dados alterados com sucesso!');
+            return redirect()->back();
+        }else{
+            session()->flash('error', 'Verifique sua senha e tente novamente!');
+            return redirect()->back();
         }
-        $respTecnico->cpf = $request->cpf;
-        $respTecnico->telefone = $request->telefone;
-        $respTecnico->save();
-
-        return redirect()->route('/');
     }
 
     /**
