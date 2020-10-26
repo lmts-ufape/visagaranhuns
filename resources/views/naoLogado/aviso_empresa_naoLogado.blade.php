@@ -7,7 +7,7 @@
         </div>
         <div class="row subtitulo">
             <div class="col-sm-12">
-                <p>A solicitação de cadastro de usuário e empresa foi realizada com sucesso!
+                <p>A solicitação de cadastro do estabelecimento foi realizado com sucesso!
 
 Seus dados encontram-se em avaliação, espere a sua aprovação para que possa ter acesso a outras funcionalidades do sistema.
     </p>
