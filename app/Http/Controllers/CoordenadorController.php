@@ -578,6 +578,8 @@ class CoordenadorController extends Controller
     }
     public function listarRequerimentos($filtro){
         $requerimentos = Requerimento::orderBy('created_at', 'ASC')->get();
+        // $requerimentos = Requerimento::where('id', 1)->get();
+        // $requerimentos = Requerimento::find(1);
         $empresas = Empresa::orderBy('created_at', 'ASC')->get();
         $output = '';
         // avaliar cadastro da empresa
@@ -627,7 +629,7 @@ class CoordenadorController extends Controller
         }
         // 1º licenca, renovação
         foreach($requerimentos as $item){
-                if($item->tipo == "Primeira Licenca" && ($filtro == "primeira_licenca" || $filtro == "all") && ($item->status == "pendente")){
+                if($item->tipo == "Primeira Licenca" && ($item->resptecnicos_id != null) && ($filtro == "primeira_licenca" || $filtro == "all") && ($item->status == "pendente")){
                     $output .='
                         <div class="container cardListagem" id="primeiralicenca">
                             <div class="d-flex">
@@ -670,7 +672,7 @@ class CoordenadorController extends Controller
                         </div>
                     ';
 
-                }elseif($item->tipo == "Primeira Licenca" && ($filtro == "primeira_licenca" || $filtro == "all") && ($item->status == "aprovado")){
+                }elseif($item->tipo == "Primeira Licenca" && ($item->resptecnicos_id == null) && ($filtro == "primeira_licenca" || $filtro == "all") && ($item->status == "pendente")){
                     $output .='
                         <div class="container cardListagem" id="primeiralicenca">
                             <div class="d-flex">
@@ -702,9 +704,9 @@ class CoordenadorController extends Controller
                                         <div class="btn-group" style="margin-bottom:-15px;">
                                             <div class="form-group" style="font-size:15px;">
                                                 <div>CNAE: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
-                                                <div>Responsável Técnico:<span class="textoCampo"> '.$item->resptecnico->user->name.'</span></div>
+                                                <div>Representante Legal:<span class="textoCampo"> '.$item->empresa->user->name.'</span></div>
                                                 <div>Status:<span class="textoCampo"> '.$item->status.'</span></div>
-
+                                                <div style="margin-top:10px; margin-bottom:-10px;"><button type="button" onclick="licencaAvaliacao('.$item->empresa->id.','.$item->cnae->areas_id.','.$item->id.')" class="btn btn-success">Avaliar</button></div>
                                             </div>
                                         </div>
                                     </div>
@@ -713,7 +715,7 @@ class CoordenadorController extends Controller
                         </div>
                     ';
 
-                }elseif($item->tipo == "renovacao"  && ($filtro == "renovacao_de_licenca" || $filtro == "all") && ($item->status == "pendente")){
+                }elseif($item->tipo == "Renovacao"  && ($item->resptecnicos_id != null) && ($filtro == "renovacao_de_licenca" || $filtro == "all") && ($item->status == "pendente")){
                     $output .='
                     <div class="container cardListagem">
                         <div class="d-flex">
@@ -755,7 +757,7 @@ class CoordenadorController extends Controller
                         </div>
                     </div>
                 ';
-                }elseif($item->tipo == "renovacao"  && ($filtro == "renovacao_de_licenca" || $filtro == "all") && ($item->status == "aprovado")){
+                }elseif($item->tipo == "Renovacao"  && ($item->resptecnicos_id == null) && ($filtro == "renovacao_de_licenca" || $filtro == "all") && ($item->status == "pendente")){
                     $output .='
                     <div class="container cardListagem">
                         <div class="d-flex">
@@ -787,8 +789,9 @@ class CoordenadorController extends Controller
                                     <div class="btn-group" style="margin-bottom:-15px;">
                                         <div class="form-group" style="font-size:15px;">
                                             <div>CNAE: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
-                                            <div>Responsável Técnico:<span class="textoCampo"> '.$item->resptecnico->user->name.'</span></div>
+                                            <div>Representante Legal:<span class="textoCampo"> '.$item->empresa->user->name.'</span></div>
                                             <div>Status:<span class="textoCampo"> '.$item->status.'</span></div>
+                                            <div style="margin-top:10px; margin-bottom:-10px;"><button type="button" onclick="licencaAvaliacao('.$item->empresa->id.','.$item->cnae->areas_id.','.$item->id.')" class="btn btn-success">Avaliar</button></div>
                                         </div>
                                     </div>
                                 </div>

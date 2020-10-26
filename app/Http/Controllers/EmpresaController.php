@@ -22,6 +22,7 @@ use App\AreaTipodocemp;
 use App\Checklistemp;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class EmpresaController extends Controller
 {
@@ -197,6 +198,44 @@ class EmpresaController extends Controller
 
 
         return redirect()->route('confirma.cadastro');
+    }
+    /*
+    *   FUNCAO: abrir a pagina editar_meus_dados
+    *   TELA: empresa/editar_meus_dados
+    *
+    */
+    public function editarMeusDados(){
+        $user = Auth::user();
+        return view('empresa/editar_meus_dados',["nome"=>$user->name, "email"=>$user->email]);
+    }
+    /*
+    *   FUNCAO: atualizar o nome do usuario
+    *   REQUEST: name
+    *
+    */
+    public function atualizarMeusDados(Request $request){
+        $validator = $request->validate([
+            'name'     => 'required|string',
+        ]);
+        $user = Auth::user();
+        $user->name = $request->name;
+        $user->save();
+        return redirect()->route('editar.gerente')->with('success', "Nome do usuário alterado com sucesso!");
+    }
+    /*
+    *   FUNCAO: atualizar senha de acesso do gerente
+    *   REQUEST: senhaAtual, novaSenha1, novaSenha2
+    *
+    */
+    public function atualizarSenhaDeAcesso(Request $request){
+        if(Hash::check($request->senhaAtual ,Auth::user()->password) == true && $request->novaSenha1 == $request->novaSenha2 ){
+            $user = Auth::user();
+            $user->password = Hash::make($request->novaSenha1);
+            $user->save();
+            return redirect()->back()->with('success', "Senha alterada com sucesso!");
+        }else{
+            return redirect()->back()->with('error', "Verifique suas senhas e tente novamente!");
+        }
     }
 
     public function adicionarEmpresa(Request $request)
@@ -450,6 +489,7 @@ class EmpresaController extends Controller
      */
     public function editarEmpresa(Request $request)
     {
+        dd($request);
 
         $empresa = Empresa::find($request->empresaId);
         $user = User::find(Auth::user()->id);
@@ -471,11 +511,12 @@ class EmpresaController extends Controller
             'complemento'  => 'nullable|string',
         ]);
 
-        $user->name = $request->nome;
-        $user->save();
+        // $user->name = $request->nome;
+        // $user->save();
 
         $empresa->cnpjcpf = $request->cnpjcpf;
         $empresa->tipo    = $request->tipo;
+        $empresa->nome    = $request->nome;
         $empresa->save();
 
         $telefone->telefone1 = $request->telefone1;
@@ -500,7 +541,7 @@ class EmpresaController extends Controller
             array_push($temp, $indice);
         }
 
-        for ($i=0; $i < count($cnae); $i++) { 
+        for ($i=0; $i < count($cnae); $i++) {
             if(!in_array($cnae[$i], $temp)){
                 $cnaeEmpresa = CnaeEmpresa::create([
                     'empresa_id' => $empresa->id,
@@ -664,7 +705,7 @@ class EmpresaController extends Controller
 
         $fileDocemp = $request->arquivo;
 
-        $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/'; 
+        $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/';
 
         $nomeDocemp = $request->arquivo->getClientOriginalName();
 
@@ -954,7 +995,7 @@ class EmpresaController extends Controller
 
         // TENTANDO MUDAR AQUI EMBAIXO
         // $resultados = CnaeEmpresa::where('empresa_id', $idEmpresa)->get();
-        
+
         // $resultado = [];
 
         // foreach ($resultados as $indice) {

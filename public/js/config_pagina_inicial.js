@@ -2,18 +2,20 @@
 
 window.criarServico = function(){
     let $titulo = document.getElementById('idTitulo').value;
+    let $cor = document.getElementById('idCor').value;
+    let $icone = document.getElementById('idIcone').value;
     $.ajax({
         url:'/coordenador/gerenciarconteudo/criar/servico',
         type:"get",
         dataType:'json',
-        data: {"titulo": $titulo},
+        data: {"titulo": $titulo, "cor":$cor, "icone":$icone},
         success: function(response){
             $('tbody').html(response.table_data);
-            if(response.success == true){
-                if(!alert("Serviço "+$titulo+" criado com sucesso!")){window.location.reload();}
-            }else{
-                alert("Oops! O serviço "+$titulo+" não foi criado. Tente novamente!");
-            }
+            // if(response.success == true){
+            //     if(!alert("Serviço "+$titulo+" criado com sucesso!")){window.location.reload();}
+            // }else{
+            //     alert("Oops! O serviço "+$titulo+" não foi criado. Tente novamente!");
+            // }
         }
     });
     //limpar imput
@@ -35,12 +37,12 @@ window.deletarServico = function($id){
         }
     });
 }
-window.editarServico = function($id, $titulo){
+window.editarServico = function($id, $titulo, $cor, $icone){
     $.ajax({
         url:'/coordenador/gerenciarconteudo/editar/servico',
         type:"get",
         dataType:'json',
-        data: {"id": $id.value, 'titulo':$titulo.value},
+        data: {"id": $id.value, 'titulo':$titulo.value, 'cor':$cor.value, 'icone':$icone.value},
         success: function(response){
             $('tbody').html(response.table_data);
             if(response.success == true){
@@ -74,10 +76,21 @@ window.descerPosicaoServico = function($id,$posicao){
     });
 }
 //atualizar modal - editar
-window.editarServicoModal = function($id, $titulo){
-    // console.log($id, $titulo);
+window.editarServicoModal = function($id, $titulo, $cor, $icone){
     document.getElementById("nomeDoServicoEditar").value = $titulo;
     document.getElementById("idServicoEditar").value = $id;
+    document.getElementById("corServicoEditar").value = $cor;
+    if($icone == "/imagens/logo_info_branco.png"){
+        document.getElementById("logoInfoBranco").selected = "true";
+    }else if($icone == "/imagens/logo_folha.png"){
+        document.getElementById("logoFolha").selected = "true";
+    }else if($icone == "/imagens/logo_predio2.png"){
+        document.getElementById("logoPredio").selected = "true";
+    }else if($icone == "/imagens/logo_telefone2.png"){
+        document.getElementById("logoTelefone").selected = "true";
+    }else if($icone == "/imagens/logo_editar.png"){
+        document.getElementById("logoEditar").selected = "true";
+    }
 }
 //atualizar modal - deletar
 window.deletarServicoModal = function($id,$titulo){

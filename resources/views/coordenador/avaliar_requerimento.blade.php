@@ -135,7 +135,7 @@
                                                 <div class="col-12" style="font-family: 'Roboto', sans-serif;">Tem certeza de que deseja reprovar o requerimento do estabelecimento <label id="nomeDoEstabelecimento" style="font-weight:bold; font-family: 'Roboto', sans-serif;">{{$empresa->nome}}</label>?</div>
                                                 <div class="col-12" style="font-family: 'Roboto', sans-serif;">
                                                     <label for="exampleFormControlTextarea1">Problemas:</label>
-                                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="avisos" required></textarea>
+                                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="avisos"></textarea>
                                                 </div>
                                                 {{-- <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px;"><img src="{{ asset('/imagens/logo_bloqueado.png') }}" alt="Logo" style="width:15px; margin-right:5px;"/> Essa ação não poderá ser desfeita</div> --}}
                                             </div>

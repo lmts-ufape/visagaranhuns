@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <div class="tituloBarraPrincipal">Perfil do estabelecimento</div>
                     <div>
-                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Áreas > CNAE > Estabelecimentos > {{$empresa->nome}}</div>
+                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Áreas > CNAE > Estabelecimentos > <label class="limiteDeTexto" style="margin-bottom:-0.3rem;">{{$empresa->nome}}</label></div>
                     </div>
                 </div>
             </div>
@@ -41,7 +41,7 @@
             <div class="form-row">
                 <div class="form-group col-md-12" >
                     <div>
-                        <label style="color:black; font-size:35px;  margin-bottom:-10px; font-weight:400; font-family: 'Libre Baskerville', serif;;
+                        <label class="limiteDeTexto" style="color:black; font-size:35px;  margin-bottom:-10px; font-weight:400; font-family: 'Libre Baskerville', serif;;
                         ;">{{$empresa->nome}}</label>
                     </div>
                     <hr size = 7 style="margin-bottom:-2px;">
@@ -54,7 +54,7 @@
                         </div>
                         <div class="form col-md-12" style="margin-top:-10px;">
                             <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nome: </label>
-                            <span style="color:#707070">{{$empresa->nome}}</span>
+                            <span class="limiteDeTexto" style="color:#707070;">{{$empresa->nome}}</span>
                         </div>
                         <div class="form col-md-12" style="margin-top:-10px;">
                             <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CNPJ: </label>
@@ -109,7 +109,7 @@
                             </div>
                         <div class="form col-md-12" style="margin-top:-10px;">
                             <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nome: </label>
-                            <span style="color:#707070">{{$empresa->user->name}}</span>
+                            <span class="limiteDeTexto" style="color:#707070">{{$empresa->user->name}}</span>
                         </div>
                         {{-- <div class="form col-md-12" style="margin-top:-10px;">
                             <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CPF: </label>
@@ -182,8 +182,8 @@
                     </div>
                     <div class="col-12">
                         @foreach($cnae as $item)
-                            <div class="form col-md-12" style="margin-top:-10px;margin-left:-10px;">
-                                <img src="{{ asset('/imagens/logo_ponto.png') }}" alt="Logo" style="margin-top:-5px; margin-right:5px;"/>
+                            <div class="form col-md-12" style="margin-top:-10px;margin-bottom:5px;margin-left:-10px;">
+                                <img src="{{ asset('/imagens/logo_ponto.png') }}" alt="Logo" style="margin-top:-3px; margin-right:5px;"/>
                                 <label >{{$item->cnae->codigo}} </label> |
                                 <span style="color:#707070">{{$item->cnae->descricao}}</span>
                             </div>
