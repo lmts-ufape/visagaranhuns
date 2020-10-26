@@ -54,7 +54,7 @@
                                 <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">DADOS DO REPRESENTANTE LEGAL</label>
                             </div>
                         </div>
-                        <form id="formEditarMeusDadosEmpresa" method="POST" action="{{ route('atualizar.gerente') }}">
+                        <form id="formEditarMeusDadosEmpresa" method="POST" action="{{ route('atualizar.gerente.nome') }}">
                             @csrf
                             <div class="form-row">
                                 <div class="form-group col-md-4"  style="padding-right:15px;">
