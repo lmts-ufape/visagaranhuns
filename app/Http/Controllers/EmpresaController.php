@@ -489,6 +489,7 @@ class EmpresaController extends Controller
      */
     public function editarEmpresa(Request $request)
     {
+        dd($request);
 
         $empresa = Empresa::find($request->empresaId);
         $user = User::find(Auth::user()->id);
@@ -510,11 +511,12 @@ class EmpresaController extends Controller
             'complemento'  => 'nullable|string',
         ]);
 
-        $user->name = $request->nome;
-        $user->save();
+        // $user->name = $request->nome;
+        // $user->save();
 
         $empresa->cnpjcpf = $request->cnpjcpf;
         $empresa->tipo    = $request->tipo;
+        $empresa->nome    = $request->nome;
         $empresa->save();
 
         $telefone->telefone1 = $request->telefone1;

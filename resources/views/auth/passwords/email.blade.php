@@ -3,7 +3,7 @@
 @section('content')
     <div class="row justify-content-center" style="padding-bottom:2rem;">
         <div class="cardLogin" style="width:420px; padding-left:25px;padding-right:25px; padding-top:2rem; padding-bottom:2rem;">
-            <form method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('password.email') }}">
                 @csrf
                 <div class="row justify-content-center">
                     <div class="col-md-12 tituloBarraPrincipal" style="text-align:center">
