@@ -172,7 +172,7 @@ window.editarSecaoModal = function($id, $titulo){
 //atualizar modal - deletar secao
 window.deletarSecaoModal = function($id,$titulo){
     let descricao = document.getElementById('descricaoConfigSecao'+$id).value;
-    console.log(descricao);
+    // console.log(descricao);
     document.getElementById("nomeDaSecaoDeletar").value = $titulo;
     tinyMCE.get('descricaoSecaoDeletar').setContent(descricao);
     tinymce.get("descricaoSecaoDeletar").setMode('readonly'); //desabilitar campo de texto
