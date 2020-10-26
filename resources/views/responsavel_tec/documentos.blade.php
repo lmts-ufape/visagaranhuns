@@ -151,7 +151,7 @@
                                     <div class="form col-md-12" >
                                             <div class="row">
                                                 <div class="col">
-                                                    <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Emissão</label>
+                                                    <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Emissão <span style="color:red">*</span></label>
                                                     <input type="date" class="form-control" placeholder="First name" name="data_emissao" required>
                                                 </div>
                                                 <div class="col">
@@ -166,6 +166,10 @@
                                     </div>
                                     <div class="form col-md-12" style="margin-top: 20px">
                                         <button type="submit" class="btn btn-success" style="width:100%;">Enviar</button>
+                                    </div>
+                                    <hr style="margin-top: 40px; margin-bottom:10px">
+                                    <div class="col-md-12">
+                                        <label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif"><span style="font-size:20px">*</span> Campo obrigatório</label>
                                     </div>
                                 </form>
                             </div>

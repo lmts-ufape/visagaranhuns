@@ -66,10 +66,12 @@ class CoordenadorController extends Controller
             array_push($temp, $obj);
             
         }
-        // dd($temp);
-        $pdf = PDF::loadView('coordenador/inspecoes', compact('temp'));
+        // dd($temp[0]->data);
+        // $pdf = PDF::loadView('coordenador/inspecoes', compact('temp'));
         // dd($pdf);
-        return $pdf->setPaper('a4')->download('inspecoes.pdf');
+        return PDF::loadView('coordenador/inspecoes', compact('temp'))->stream();
+
+        // return $pdf->stream('inspecoes.pdf');
     }
 
     public function criarInspecao()

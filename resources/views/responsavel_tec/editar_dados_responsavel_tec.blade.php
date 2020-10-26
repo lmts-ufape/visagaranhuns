@@ -3,8 +3,8 @@
 @section('content')
 <div class="container">
     <div class="barraMenu">
-        <div class="d-flex">
-            <div class="mr-auto p-2">
+        <div class="d-flex justify-content-center">
+            <div class="mr-auto p-2 styleBarraPrincipalMOBILE">
                 <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
                     <div class="btn-group">
                         <div style="margin-top:1px;margin-left:5px;"><img src="{{ asset('/imagens/logo_voltar.png') }}" alt="Logo" style="width:13px;"/></div>
@@ -12,107 +12,110 @@
                     </div>
                 </a>
             </div>
-           <div class="p-2">
-                <div class="dropdown">
-
+            <div class="mr-auto p-2 styleBarraPrincipalPC">
+                <div class="form-group">
+                    <div class="tituloBarraPrincipal">Editar meus dados</div>
+                    <div>
+                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Editar meus dados </div>
+                    </div>
                 </div>
+            </div>
+            <div class="p-2">
+                {{-- <div class="dropdown" style="width:50px"> --}}
+                    {{-- <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Ações
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item btn btn-primary" data-toggle="modal" data-target="#exampleModal">Convidar agente</a>
+                    </div> --}}
+                {{-- </div> --}}
             </div>
         </div>
     </div>
-    <div class="barraMenu">
-            <div class="d-flex justify-content-center">
-                <div class="mr-auto p-2 styleBarraPrincipalMOBILE">
-                    <a href="javascript: history.go(-1)" style="text-decoration:none;cursor:pointer;color:black;">
-                        <div class="btn-group">
-                            <div style="margin-top:1px;margin-left:5px;"><img src="{{ asset('/imagens/logo_voltar.png') }}" alt="Logo" style="width:13px;"/></div>
-                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Voltar</div>
+
+    <div class="container">
+            <div class="barraMenu" style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
+                <div class="container" style="margin-top:1rem;">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    @if ($message = Session::get('success'))
+                                        <div class="alert alert-success alert-block fade show">
+                                            <button type="button" class="close" data-dismiss="alert">×</button>
+                                            <strong>{{$message}}</strong>
+                                        </div>
+                                    @elseif ($message = Session::get('error'))
+                                        <div class="alert alert-warning alert-block fade show">
+                                            <button type="button" class="close" data-dismiss="alert">×</button>
+                                            <strong>{{$message}}</strong>
+                                        </div>
+                                    @endif
+                                    <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">MEUS DADOS</label>
+                                </div>
+                            </div>
+                            <form id="teste" method="POST" action="{{ route('update.rt') }}">
+                                @csrf
+                                <input type="hidden" name="respTecnico" value="{{$respTecnico->id}}">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4"  style="padding-right:15px;">
+                                        <label class="styleTituloDoInputCadastro" for="nome">Nome Completo<span style="color:red">*</span></label>
+                                        <input type="text" id="nome" class="styleInputCadastro" name="nome" value="{{$user->name}}" required>
+                                    </div>
+                                    <div class="form-group col-md-4"  style="padding-right:15px;">
+                                        <label class="styleTituloDoInputCadastro" for="cpf">CPF:<span style="color:red">*</span></label>
+                                        <input type="text" id="cpf" class="styleInputCadastro" name="cpf" value="{{$respTecnico->cpf}}" required>
+                                    </div>
+                                    <div class="form-group col-md-4"  style="padding-right:15px;">
+                                        <label class="styleTituloDoInputCadastro" for="formacao">Formação:<span style="color:red">*</span></label>
+                                        <input type="text" id="formacao" class="styleInputCadastro" name="formacao" value="{{$respTecnico->formacao}}" required>
+                                    </div>
+                                    <div class="form-group col-md-4"  style="padding-right:15px;">
+                                        <label class="styleTituloDoInputCadastro" for="especializacao">Especialização:<span style="color:red">*</span></label>
+                                        <input type="text" id="especializacao" class="styleInputCadastro" name="especializacao" value="{{$respTecnico->especializacao}}" required>
+                                    </div>
+                                    <div class="form-group col-md-4"  style="padding-right:15px;">
+                                        <label class="styleTituloDoInputCadastro" for="inputTelefone1">Telefone:<span style="color:red">*</span></label>
+                                        <input type="text" class="styleInputCadastro" name="telefone" id="inputTelefone1" value="{{$respTecnico->telefone}}" required>
+                                    </div>
+                                </div>
+                                <div>
+                                    <hr style="margin-top:35px; margin-bottom:25px;">
+                                        <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif; margin-bottom:15px;">SALVAR ALTERAÇÕES</label>
+                                </div>
+                                <div class="form-row">
+                                        <div class="form-group col-md-4"  style="padding-right:15px;">
+                                            <label class="styleTituloDoInputCadastro" for="email">E-mail:<span style="color:red">*</span></label>
+                                            <input type="email" id="email" class="styleInputCadastro" name="email" placeholder="{{$user->email}}" disabled>
+                                        </div>
+                                        <div class="form-group col-md-4"  style="padding-right:15px;">
+                                            <label class="styleTituloDoInputCadastro" for="password">Senha:<span style="color:red">*</span></label>
+                                            <input id="password" id="password" type="password" class="styleInputCadastro" name="password" required autocomplete="new-password">
+                                        </div>
+                                        <div class="form-group col-md-4"  style="padding-right:15px;">
+                                            <label class="styleTituloDoInputCadastro" for="password-confirm">Confirmar senha:<span style="color:red">*</span></label>
+                                            <input id="password-confirm" type="password" class="styleInputCadastro" name="password_confirmation" required autocomplete="new-password">
+                                        </div>
+                                    </div>
+                            <hr size = 7>
+                            <div style="margin-bottom:0.2rem;">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif"><span style="font-size:20px">*</span> campos obrigatórios</label>
+                                        </div>
+                                    <div class="col-md-4">
+                                        <button type="submit" class="btn btn-success" style="width:100%;">Atualizar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <form>
                         </div>
-                    </a>
-                </div>
-                <div class="mr-auto p-2 styleBarraPrincipalPC">
-                    <div class="btn-group">
-                        <div style="font-size:20px; font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;margin-bottom:-5px">Editar responsável técnico</div>
-                    </div>
-                </div>
-                <div class="p-2">
-                    <div style="width:70px">
                     </div>
                 </div>
             </div>
         </div>
 
-    <form id="teste" method="POST" action="{{ route('update.rt') }}">
-        @csrf
-        <input type="hidden" name="respTecnico" value="{{$respTecnico->id}}">
-        <div class="container" style="margin-top:1rem;margin-left:10px;">
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="inputEmail4">Nome Completo<span style="color:red">*</span></label>
-                <input type="text" class="form-control" name="nome" value="{{$user->name}}" required>
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="inputPassword4">CPF:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control" name="cpf" value="{{$respTecnico->cpf}}" required>
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="inputPassword4">Formação:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control" name="formacao" value="{{$respTecnico->formacao}}" required>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="inputEmail4">Especialização:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control" name="especializacao" value="{{$respTecnico->especializacao}}" required>
-                </div>
-                <div class="form-grtextoup col-md-4">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputEmail4">Telefone:<span style="color:red">*</span></label>
-                            <input type="text" class="form-control" name="telefone" id="inputTelefone1" value="{{$respTecnico->telefone}}" required>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="barraMenu" style="margin-top:0.7rem;">
-                <div class="d-flex">
-                    <div class="mr-auto p-2">
-                        <div class="btn-group">
-                            <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Email para login de acesso ao sistema</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container" style="margin-top:1rem;margin-left:1px;">
-                <div class="container" style="margin-top:1rem;margin-left:10px;">
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="inputEmail4">E-mail:<span style="color:red">*</span></label>
-                            <input type="email" class="form-control" name="email" placeholder="{{$user->email}}" disabled>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputPassword4">Senha:<span style="color:red">*</span></label>
-                            <input id="password" type="password" class="form-control" name="password" required autocomplete="new-password">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputPassword4">Confirmar senha:<span style="color:red">*</span></label>
-                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-        <hr size = 7>
-        <div style="margin-bottom:10rem;">
-                <div class="d-flex">
-                    <div class="mr-auto p-2">
-                    </div>
-                <div class="p-2">
-                    <button type="submit" class="btn btn-success" style="width:340px;">Cadastrar</button>
-                </div>
-            </div>
-        </div>
-    </form>
 </div>
 @endsection
 

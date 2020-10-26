@@ -37,7 +37,7 @@ class ConfirmaCadastroUser extends Mailable
     {
         if ($this->decisao == "true") {
 
-            $subject = 'Visa G - Aprovação de cadastro de usuário';
+            $subject = 'Visa - Aprovação de cadastro de usuário';
             return $this->to($this->user->email, $this->user->name)
                         ->subject($subject)
                         ->view('email.ConfirmaCadastroUsuario', [
@@ -45,7 +45,7 @@ class ConfirmaCadastroUser extends Mailable
                         ]);
         }
         else {
-            $subject = 'Visa G - Reprovação de cadastro de usuário';
+            $subject = 'Visa - Reprovação de cadastro de usuário';
             return $this->to($this->user->email, $this->user->name)
                         ->subject($subject)
                         ->view('email.ReprovaCadastroUsuario', [
