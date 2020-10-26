@@ -49,15 +49,15 @@
                                                 <tr>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
-                                                    <th type="button" class="subtituloBarraPrincipal" onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</th>
-                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusPendente">Pendente</th>
+                                                    <th><button type="button" class="btn btn-success btn-sm subtituloBarraPrincipal" style="color:white;font-size:15px; " onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</button></th>
+                                                    <th><button class="btn btn-warning btn-sm subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusPendente">Pendente</button></th>
                                                 </tr>
                                             @elseif ($item->areas_id == $item2->area && $item2->status == "completo")
                                                 <tr>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
-                                                    <th type="button" class="subtituloBarraPrincipal" onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</th>
-                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusCompleto">Completo</th>
+                                                    <th><button type="button" class="btn btn-success btn-sm subtituloBarraPrincipal" style="color:white;font-size:15px; " onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</button></th>
+                                                    <th><button class="btn btn-success btn-sm subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusCompleto">Completo</button></th>
                                                 </tr>
                                             @endif
                                         @endforeach
@@ -116,7 +116,7 @@
                                       <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
                                       <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Data</th>
                                       <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Aviso</th>
-                                      
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -128,7 +128,8 @@
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->tipo}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->data}}</th>
-                                            <th type="button" class="subtituloBarraPrincipal" style="font-size:15px; color:black" onclick="avisoReq('{{$indice->aviso}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</th>
+                                            <input type="hidden" id="avisoTempRequerimentoRt{{$indice->id}}" value="{!! $indice->aviso !!}">
+                                            <th><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="avisoReqRt('{{$indice->id}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
                                             </tr>
                                         @else
                                             <tr>
@@ -153,7 +154,7 @@
 
 <!-- Modal de Aviso -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color:#2a9df4;">
                     <img src="{{ asset('/imagens/logo_atencao3.png') }}" width="30px;" alt="Logo" style=" margin-right:15px; margin-top:10px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Avisos</h5>
@@ -165,7 +166,8 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row">
-                        <div id="avisoReq" class="col-12" style="font-family: 'Roboto', sans-serif;"></div>
+                        <div id="avisoReq" class="col-12" style="font-family: 'Roboto', sans-serif; margin-bottom:10px;">Motivo da reprovação do requerimento:</div>
+                        <div class="col-12"><textarea name="avisoRequerimentoRt" id="avisoRequerimentoRt" cols="30" rows="10"></textarea></div>
                     </div>
                 </div>
         </form>
@@ -198,8 +200,8 @@
 <div class="modal fade" id="statusPendente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header" style="background-color:white;">
-                    <img src="{{ asset('/imagens/logo_atencao4.png') }}" width="25px;" alt="Logo" style=" margin-right:15px; margin-top:10px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:#940405; font-weight:bold; font-family: 'Roboto', sans-serif;">Checklist Pendente</h5>
+            <div class="modal-header" style="background-color:#fce205;">
+                    <img src="{{ asset('/imagens/logo_atencao4.png') }}" width="25px;" alt="Logo" style=" margin-right:15px; margin-top:10px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:black; font-weight:bold; font-family: 'Roboto', sans-serif;">Checklist Pendente</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -219,7 +221,7 @@
 <div class="modal fade" id="requerimentoCnaeRequisicaoRTModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header" style="background-color:#2a9df4;">
+                <div class="modal-header" style="background-color:#3ea81f;">
                         <img src="{{ asset('/imagens/logo_atencao3.png') }}" width="30px;" alt="Logo" style=" margin-right:15px; margin-top:10px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Criar requerimento</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -257,7 +259,7 @@
 
 <script type="text/javascript">
     window.statusCNAERequisicaoRT = function($flag, $descricao, $aviso, $idCnae, $respTecnico, $empresa){
-    
+
     $.ajax({
         url:'{{ config('prefixo.PREFIXO') }}cnae/encontrar',
         type:"get",
@@ -299,14 +301,14 @@
             }
         }
     });
-    
+
     if($flag == "reprovado"){
 
         document.getElementById('descricaoCNAERTreprovado').innerHTML = $descricao;
         document.getElementById('avisoCNAERTreprovado').innerHTML = $aviso;
 
     }else if($flag == "aprovado"){
-        
+
         document.getElementById('descricaoCNAERT').innerHTML = $descricao;
 
     }else if($flag == "criarRequisicao"){

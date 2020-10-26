@@ -20,6 +20,13 @@
                             <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Estabelecimentos</div>
                         </div>
                     </div>
+                @elseif($tipo == "requerimentos")
+                    <div class="form-group">
+                        <div class="tituloBarraPrincipal">Requerimentos</div>
+                        <div>
+                            <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Requerimentos</div>
+                        </div>
+                    </div>
                 @else
                     <div class="form-group">
                         <div class="tituloBarraPrincipal">Documentação</div>
