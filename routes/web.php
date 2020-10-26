@@ -267,6 +267,11 @@ Route::middleware(['IsRespTecnico'])->group(function () {
     Route::post("/empresa/editar/arquivos/rt",      "RespTecnicoController@editarArquivosEmpRt")->name("editar.arquivos.empresa.rt");
 
     Route::get('/cnae/encontrar',                   'RespTecnicoController@encontrarCnae')->name('encontrar.cnae');
+
+    //tela de editar senha de acesso do rt
+    Route::get('/editar/rt/senha',function () {return view('responsavel_tec/editar_senha_de_acesso');})->name('editar.senha.rt');
+    Route::post('/atualizar/rt/senha',             "RespTecnicoController@atualizarSenhaDeAcesso")->name('atualizar.senha.rt');
+
     //Empresa - Responsável Técnico
 /*
     * Consultar histórico de inspeções

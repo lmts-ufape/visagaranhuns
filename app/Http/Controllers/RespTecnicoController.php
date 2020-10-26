@@ -787,4 +787,19 @@ class RespTecnicoController extends Controller
     {
         //
     }
+    /*
+    *   FUNCAO: atualizar senha de acesso do RT
+    *   REQUEST: senhaAtual, novaSenha1, novaSenha2
+    *
+    */
+    public function atualizarSenhaDeAcesso(Request $request){
+        if(Hash::check($request->senhaAtual ,Auth::user()->password) == true && $request->novaSenha1 == $request->novaSenha2 ){
+            $user = Auth::user();
+            $user->password = Hash::make($request->novaSenha1);
+            $user->save();
+            return redirect()->back()->with('success', "Senha alterada com sucesso!");
+        }else{
+            return redirect()->back()->with('error', "Verifique suas senhas e tente novamente!");
+        }
+    }
 }

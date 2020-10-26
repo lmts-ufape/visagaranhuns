@@ -292,6 +292,9 @@
                                         <a class="dropdown-item" href="{{ route('editar.dados', ['user' => Auth::user()->id]) }}">
                                             {{ __('Editar meus dados') }}
                                         </a>
+                                        <a class="dropdown-item" href="{{ route('editar.senha.rt', ['user' => Auth::user()->id]) }}">
+                                                {{ __('Editar senha de acesso') }}
+                                        </a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">
