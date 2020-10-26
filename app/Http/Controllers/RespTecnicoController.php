@@ -447,7 +447,6 @@ class RespTecnicoController extends Controller
         $user    = User::where("email", $request->email)->first();
 
         if ($user != null) {
-
             for ($i=0; $i < count($request->area); $i++) {
                 $rtempresa = RtEmpresa::where('area_id', $request->area[$i])
                 ->where('empresa_id', $request->empresaId)->first();
@@ -562,7 +561,8 @@ class RespTecnicoController extends Controller
                 }
             }
 
-            return redirect()->route('/');
+            session()->flash('success', 'O responsável Técnico foi cadastrado com sucesso!');
+            return back();
         }
     }
 

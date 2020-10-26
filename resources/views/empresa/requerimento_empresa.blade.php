@@ -92,7 +92,7 @@
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->tipo}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->data}}</th>
-                                            <input type="hidden" id="teste{{$indice->id}}" value="{!! $indice->aviso !!}">
+                                            <input type="hidden" id="teste{{$indice->id}}" value="{{ $indice->aviso }}">
                                             <th><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="avisoReq('{{$indice->id}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
                                             </tr>
                                         @else

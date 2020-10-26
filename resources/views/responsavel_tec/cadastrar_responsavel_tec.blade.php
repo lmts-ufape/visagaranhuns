@@ -38,6 +38,18 @@
                             </div>
                         </div>
                     </div>
+                    @if ($message = Session::get('error'))
+                            <div class="alert alert-warning alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{$message}}</strong>
+                            </div>
+                    @endif
+                    @if ($message = Session::get('success'))
+                            <div class="alert alert-warning alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{$message}}</strong>
+                            </div>
+                    @endif
                     <div class="form-row">
                         <div class="form-group col-md-4" style="padding-right:15px;">
                             <label class="styleTituloDoInputCadastro" for="inputEmail4">Nome Completo<span style="color:red">*</span></label>
@@ -79,18 +91,7 @@
                     </div>
                     <div class="form-row">
                         <div class="container" style="margin-top:10px;margin-left:10px;">
-                            @if ($message = Session::get('error'))
-                                    <div class="alert alert-warning alert-block fade show">
-                                        <button type="button" class="close" data-dismiss="alert">×</button>
-                                        <strong>{{$message}}</strong>
-                                    </div>
-                            @endif
-                            @if ($message = Session::get('success'))
-                                    <div class="alert alert-succes alert-block fade show">
-                                        <button type="button" class="close" data-dismiss="alert">×</button>
-                                        <strong>{{$message}}</strong>
-                                    </div>
-                            @endif
+
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     @foreach ($areas as $item)
