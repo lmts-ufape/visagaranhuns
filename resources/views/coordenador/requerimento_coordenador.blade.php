@@ -189,6 +189,7 @@
             dataType:'json',
             data: {"filtro": "all" },
             success: function(response){
+                console.log("AQUI!!!!!");
                 $('tbody_').html(response.table_data);
             }
         });

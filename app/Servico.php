@@ -13,6 +13,6 @@ class Servico extends Model
      * @var array
      */
     protected $fillable = [
-        'titulo','posicao',
+        'titulo','posicao','cor','icone'
     ];
 }

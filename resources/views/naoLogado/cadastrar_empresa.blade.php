@@ -49,12 +49,12 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-4" style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="inputEmail4">Nome/Razão Social:<span style="color:red">*</span></label>
-                                <input class="styleInputCadastro" type="text" name="nome" placeholder="">
+                                <label class="styleTituloDoInputCadastro" for="nome">Nome/Razão Social:<span style="color:red">*</span></label>
+                                <input class="styleInputCadastro" type="text" id="nome" name="nome" placeholder="">
                             </div>
                             <div class="form-group col-md-4" style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="inputPassword4">CNPJ/CPF:<span style="color:red">*</span></label>
-                                <input class="styleInputCadastro" type="text" class="form-control" name="cnpjcpf" placeholder="">
+                                <label class="styleTituloDoInputCadastro" for="cnpjcpf">CNPJ/CPF:<span style="color:red">*</span></label>
+                                <input class="styleInputCadastro" type="text" id="cnpjcpf" class="form-control" name="cnpjcpf" placeholder="">
                             </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Tipo:<span style="color:red">*</span></label>
@@ -62,7 +62,7 @@
                                 <select class="form-control" name="tipo" required>
                                     <option value="" disable="" selected="" hidden="">-- Selecionar o Tipo --</option>
                                     <option value="Sociedade Empresária Limitada (LTDA)">Sociedade Empresária Limitada (LTDA)</option>
-                                    <option value="Empresa Individual de Responsabilidade Limitada (Eireli)">Empresa Individual de Responsabilidade Limitada (Eireli)</option>
+                                    <option value="Empresa Individual de Responsabilidade Limitada (Eireli)">Empresa Individual de Responsabilidade Limitada (EIRELI)</option>
                                     <option value="Empresa Individual">Empresa Individual</option>
                                     <option value="Microempreendedor Individual (MEI)">Microempreendedor Individual (MEI)</option>
                                     <option value="Sociedade Simples(SS)">Sociedade Simples(SS)</option>
@@ -72,18 +72,18 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-4" style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="inputEmail4">E-mail do estabelecimento:</label>
-                                <input class="styleInputCadastro" type="email" class="form-control" name="emailEmpresa" placeholder="">
+                                <label class="styleTituloDoInputCadastro" for="emailEmpresa">E-mail do estabelecimento:</label>
+                                <input class="styleInputCadastro" type="email" id="emailEmpresa" class="form-control" name="emailEmpresa" placeholder="">
                             </div>
                             <div class="form-group col-md-4" style="padding-right:15px;">
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label class="styleTituloDoInputCadastro" for="inputEmail4">Telefone 1:<span style="color:red">*</span></label>
-                                        <input class="styleInputCadastro" type="text" class="form-control" name="telefone1" id="inputEmail4" placeholder="">
+                                        <label class="styleTituloDoInputCadastro" for="telefone1">Telefone 1:<span style="color:red">*</span></label>
+                                        <input class="styleInputCadastro" type="text" id="telefone1" class="form-control" name="telefone1" id="inputEmail4" placeholder="">
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label class="styleTituloDoInputCadastro" for="inputPassword4">Telefone 2:</label>
-                                        <input class="styleInputCadastro" type="text" class="form-control" name="telefone2" placeholder="">
+                                        <label class="styleTituloDoInputCadastro" for="telefone2">Telefone 2:</label>
+                                        <input class="styleInputCadastro" type="text" id="telefone2" class="form-control" name="telefone2" placeholder="">
                                     </div>
                                 </div>
                             </div>
@@ -139,35 +139,35 @@
                                 <label style="font-size:19px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">ENDEREÇO DO ESTABELECIMENTO</label>
                             </div>
                             <div class="form-group col-md-4" style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="inputPassword4">CEP:<span style="color:red">*</span></label>
+                                <label class="styleTituloDoInputCadastro" for="cep">CEP:<span style="color:red">*</span></label>
                                 <input class="styleInputCadastro" value="{{old('cep')}}" onblur="pesquisacep(this.value);" id="cep" type="text"  name="cep" required autocomplete="cep" placeholder="" size="10" maxlength="9">
                             </div>
                             <div class="form-group col-md-4" style="margin-top:-5px; padding-right:15px">
-                                <label class="styleTituloDoInputCadastro" for="inputEmail4">UF:<span style="color:red">*</span></label>
+                                <label class="styleTituloDoInputCadastro" for="uf">UF:<span style="color:red">*</span></label>
                                 <input readonly type="text" class="form-control" name="uf" placeholder="" id="uf" value="{{ old('uf') }}">
                             </div>
                             <div class="form-group col-md-4" style="margin-top:-5px; padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="inputEmail4">Cidade:<span style="color:red">*</span></label>
+                                <label class="styleTituloDoInputCadastro" for="cidade">Cidade:<span style="color:red">*</span></label>
                                 <input readonly id="cidade" type="text" class="form-control" name="cidade" placeholder="" required value="{{ old('cidade') }}">
                             </div>
 
                         </div>
                         <div class="form-row" style="padding-bottom:1.5rem;">
                             <div class="form-group col-md-4"  style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="inputEmail4">Bairro:<span style="color:red">*</span></label>
+                                <label class="styleTituloDoInputCadastro" for="bairro">Bairro:<span style="color:red">*</span></label>
                                 <input value="{{old('bairro')}}" id="bairro" type="text" class="styleInputCadastro" name="bairro" placeholder="" required>
                             </div>
                             <div class="form-group col-md-4"  style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="inputEmail4">Rua:<span style="color:red">*</span></label>
+                                <label class="styleTituloDoInputCadastro" for="rua">Rua:<span style="color:red">*</span></label>
                                 <input value="{{old('rua')}}" id="rua" type="text" class="styleInputCadastro" name="rua" placeholder="" required>
                             </div>
                             <div class="form-group col-md-4"  style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="inputPassword4">Número:<span style="color:red">*</span></label>
-                                <input type="text" class="styleInputCadastro" name="numero" placeholder="" required>
+                                <label class="styleTituloDoInputCadastro" for="numero">Número:<span style="color:red">*</span></label>
+                                <input type="text" class="styleInputCadastro" id="numero" name="numero" placeholder="" required>
                             </div>
                             <div class="form-group col-md-4"  style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="inputPassword4">Complemento:</label>
-                                <input type="text" class="styleInputCadastro" name="complemento" placeholder="">
+                                <label class="styleTituloDoInputCadastro" for="complemento">Complemento:</label>
+                                <input type="text" class="styleInputCadastro" id="complemento" name="complemento" placeholder="">
                             </div>
                         </div>
 
@@ -176,19 +176,19 @@
                                 <label style="font-size:19px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">DADOS DO REPRESENTANTE LEGAL E ACESSO AO SISTEMA</label>
                             </div>
                             <div class="form-group col-md-4"  style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="inputEmail4">Nome do Usuário:<span style="color:red">*</span></label>
-                                <input type="text" class="styleInputCadastro" name="name" placeholder=""></div>
+                                <label class="styleTituloDoInputCadastro" for="name">Nome do Usuário:<span style="color:red">*</span></label>
+                                <input type="text" class="styleInputCadastro" id="name" name="name" placeholder=""></div>
                             <div class="form-group col-md-4"  style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="inputEmail4">E-mail:<span style="color:red">*</span></label>
-                                <input type="email" class="styleInputCadastro" name="email" placeholder="">
+                                <label class="styleTituloDoInputCadastro" for="email">E-mail:<span style="color:red">*</span></label>
+                                <input type="email" class="styleInputCadastro" id="email" name="email" placeholder="">
                             </div>
                             <div class="form-group col-md-4"  style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="inputPassword4">Senha:<span style="color:red">*</span></label>
-                                <input type="password" class="styleInputCadastro" name="password" placeholder="">
+                                <label class="styleTituloDoInputCadastro" for="password">Senha:<span style="color:red">*</span></label>
+                                <input type="password" class="styleInputCadastro" id="password" name="password" placeholder="">
                             </div>
                             <div class="form-group col-md-4"  style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="inputPassword4">Confirmar senha:<span style="color:red">*</span></label>
-                                <input type="password" class="styleInputCadastro" name="confirmarsenha" placeholder="">
+                                <label class="styleTituloDoInputCadastro" for="confirmarsenha">Confirmar senha:<span style="color:red">*</span></label>
+                                <input type="password" class="styleInputCadastro" id="confirmarsenha" name="confirmarsenha" placeholder="">
                             </div>
                         </div>
 

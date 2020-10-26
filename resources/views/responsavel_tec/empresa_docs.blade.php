@@ -142,12 +142,12 @@
                         </div>
 
                         <div class="form-group col-md-7">
-                            {{-- @if($errors->has('arquivo'))
+                            @if($errors->any())
                                 <div class="alert alert-warning alert-block fade show">
                                     <button type="button" class="close" data-dismiss="alert">×</button>
-                                    <strong>Atenção ao formato do arquivo (PDF) e tamanho máximo de 5mb</strong>
+                                    <strong>{{$errors->first()}}</strong>
                                 </div>
-                            @endif --}}
+                            @endif
                             @if ($message = Session::get('success'))
                                 <div class="alert alert-success alert-block fade show">
                                     <button type="button" class="close" data-dismiss="alert">×</button>
@@ -185,7 +185,7 @@
                                                                 <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
                                                                     <a href="{{route('download.arquivo.empresa', ['file' => $docempresa->nome])}}"> Baixar arquivo</a>
                                                                 </label>
-                                                                <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDocEmpRt({{$docempresa->id}})" style="cursor:pointer; color:#249BE3">- Editar arquivo</a>
+                                                                <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDocEmpRt({{$docempresa->id}})" style="cursor:pointer; color:#249BE3">- Substituir arquivo</a>
                                                             </div>
                                                             @break
                                                         @endif
@@ -212,9 +212,9 @@
                                     <form id="editDocForm" method="POST" action="{{ route('editar.arquivos.empresa.rt') }}" enctype="multipart/form-data">
                                         @csrf
                                         <div class="form-group">
-                                            <label for="exampleFormControlFile1">Editar arquivo</label>
+                                            <label for="exampleFormControlFile1">Substituir arquivo</label>
                                             <input id="editarDoc" type="hidden" name="file" value="">
-                                            <input type="file" class="form-control-file" id="exampleFormControlFile1" name="arquivo">
+                                            <input type="file" class="form-control-file" id="arquivoSelecionado_edit" name="arquivo" onchange="verificarArquivoAnexado_Empresa_Rt_Edit()">
                                         </div>
                                     </form>
                                 </div>
@@ -239,7 +239,7 @@
                                     <div class="form col-md-12" style="margin-top:1px;margin-bottom:10px;">
                                         <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Tipo de documento</label>
                                         <select class="form-control" id="exampleFormControlSelect1" name="tipodocempresa" required>
-                                            <option disabled>Tipos de documentos</option>
+                                            <option disabled selected>Tipos de documentos</option>
                                             @foreach ($tipos as $tipo)
                                             <option value="{{$tipo->tipodocemp_id}}">{{$tipo->nomeDoc}}</option>
                                             @endforeach
@@ -268,7 +268,7 @@
                                     </div>
                                     <div class="form col-md-12" style="margin-top: 30px">
 
-                                        <input type="file" class="form-control-file" id="arquivo" name="arquivo" required>
+                                        <input type="file" class="form-control-file" id="arquivoSelecionado_empresa" name="arquivo" required onchange="verificarArquivoAnexado_Empresa_Rt()">
                                         <label for="" style="color:red;margin-top:4px;">Arquivo no formato PDF e tamanho máximo de 5mb</label>
                                     </div>
                                     <div class="form col-md-12" style="margin-top: 20px">
@@ -289,6 +289,54 @@
                     </form>
                 </div>
     </div>
+</div>
+<!-- Modal de Aviso -->
+<div class="modal fade" id="exampleModalAnexarDocumentoEmpresa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" id="idCorCabecalhoModalDocumentoEmpresa">
+                    <img src="{{ asset('/imagens/logo_atencao3.png') }}" width="30px;" alt="Logo" style=" margin-right:15px; margin-top:10px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Aviso</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="idTituloDaMensagemModalDocumentoEmpresa"></label></div>
+                    <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px;">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal"style="width:200px;">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Modal de Aviso Edit -->
+<div class="modal fade" id="exampleModalAnexarDocumentoEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" id="idCorCabecalhoModalDocumentoEdit">
+                    <img src="{{ asset('/imagens/logo_atencao3.png') }}" width="30px;" alt="Logo" style=" margin-right:15px; margin-top:10px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Aviso</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="idTituloDaMensagemModalDocumentoEdit"></label></div>
+                    <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px;">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal"style="width:200px;">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 <script type="text/javascript">
     window.findDocEmpRt = function($id){

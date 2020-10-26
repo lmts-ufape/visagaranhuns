@@ -1,62 +1,10 @@
-window.statusCNAERequisicaoRT = function($flag, $descricao, $aviso, $idCnae, $respTecnico, $empresa){
-    
-    $.ajax({
-        url:'/cnae/encontrar',
-        type:"get",
-        dataType:'json',
-        data: {'cnaeId': $idCnae,
-               'respTecnico': $respTecnico,
-               'empresa': $empresa,
-        },
-        success: function(response){
-            console.log(response.valor);
-            if (response.tipo == "Primeira Licenca") {
-                console.log("Primeira Licenca");
-                if (response.valor == "pendente") {
-                    $("option[value='Primeira Licenca']").prop("disabled", true);
-                    $("option[value='Renovacao']").prop("disabled", true);
-                }else if (response.valor == "aprovado") {
-                    $("option[value='Primeira Licenca']").prop("disabled", true);
-                    $("option[value='Renovacao']").prop("disabled", false);
-                }else {
-                    $("option[value='Primeira Licenca']").prop("disabled", false);
-                    $("option[value='Renovacao']").prop("disabled", true);
-                }
-            }else if (response.tipo == "renovacao"){
-                console.log("Renovacao");
-                if (response.valor == "pendente") {
-                    $("option[value='Primeira Licenca']").prop("disabled", true);
-                    $("option[value='Renovacao']").prop("disabled", true);
-                }else if (response.valor == "aprovado") {
-                    $("option[value='Primeira Licenca']").prop("disabled", true);
-                    $("option[value='Renovacao']").prop("disabled", false);
-                }else {
-                    $("option[value='Primeira Licenca']").prop("disabled", true);
-                    $("option[value='Renovacao']").prop("disabled", false);
-                }
-            }else if (response.tipo == "nenhum") {
-                console.log("Né");
-                $("option[value='Primeira Licenca']").prop("disabled", false);
-                $("option[value='Renovacao']").prop("disabled", true);
-            }
-        }
-    });
-    
-    if($flag == "reprovado"){
 
-        document.getElementById('descricaoCNAERTreprovado').innerHTML = $descricao;
-        document.getElementById('avisoCNAERTreprovado').innerHTML = $aviso;
-    }else if($flag == "aprovado"){
-        
-        document.getElementById('descricaoCNAERT').innerHTML = $descricao;
-    }else if($flag == "criarRequisicao"){
 
-        document.getElementById('criarRequerimentoCNAERT').innerHTML = $descricao;
-        document.getElementById('idCnaeRequerimentoRT').value = $idCnae;
-    }
-
+window.avisoReq = function($id){
+    tinyMCE.get('avisoRequerimentoEmpresa').setContent(document.getElementById("teste"+$id).value);
+    tinymce.get("avisoRequerimentoEmpresa").setMode('readonly'); //desabilitar campo de texto
 }
-
-window.avisoReq = function($aviso){
-    $("#avisoReq").html($aviso);
+window.avisoReqRt = function($id){
+    tinyMCE.get('avisoRequerimentoRt').setContent(document.getElementById("avisoTempRequerimentoRt"+$id).value);
+    tinymce.get("avisoRequerimentoRt").setMode('readonly'); //desabilitar campo de texto
 }

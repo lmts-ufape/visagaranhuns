@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <div class="tituloBarraPrincipal">Gerenciar seções</div>
                     <div>
-                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Gerenciar conteúdo > {{$titulo}} > Gerenciar seções</div>
+                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Gerenciar conteúdo > <label class="limiteDeTexto" style="margin-bottom:-0.3rem;">{{$titulo}}</label> > Gerenciar seções</div>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                                     <label style="margin-right:5px; margin-top:1.5px;">{{$cont}}</label>
                                 </div>
                             </th>
-                            <td >{{$item->titulo}}</td>
+                            <td class="limiteDeTexto">{{$item->titulo}}</td>
                             <td class="btn-group">
                                 <input type="hidden" id="descricaoConfigSecao{{$item->id}}" value="{{$item->descricao}}">
                                 <button type="button" class="btn btn-secondary btn-sm" style="margin-right:10px;" onclick="editarSecaoModal({{$item->id}},'{{$item->titulo}}');" data-toggle="modal" data-target="#editarSecaoModal">
@@ -103,19 +103,6 @@
 
                     <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px">Descrição</div>
                     <div class="col-12"><textarea type="text" class="form-control" id="descricaoSecao"></textarea></div>
-
-                    {{-- <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px;">Ícone</div>
-                    <div class="col-12">
-                        <select class="custom-select" id="inputGroupSelect01">
-                            <option selected>Selecione o ícone...</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div> --}}
-
-                    {{-- <div class="col-12" style="font-family: 'Roboto', sans-serif;">Cor</div>
-                    <div class="col-12"><input type="text" class="form-control" ></div> --}}
 
                 </div>
             </div>

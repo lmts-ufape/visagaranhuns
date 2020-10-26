@@ -20,6 +20,13 @@
                             <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Estabelecimentos</div>
                         </div>
                     </div>
+                @elseif($tipo == "requerimentos")
+                    <div class="form-group">
+                        <div class="tituloBarraPrincipal">Requerimentos</div>
+                        <div>
+                            <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Requerimentos</div>
+                        </div>
+                    </div>
                 @else
                     <div class="form-group">
                         <div class="tituloBarraPrincipal">Documentação</div>
@@ -88,6 +95,14 @@
                                 </a>
                             @elseif($tipo == "documentacao")
                                 <a href="{{ route('pagina.mostrar.documentacao',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;">
+                                    @if ($item->status_cadastro == "aprovado")
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    @else
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px; width:35px;"></div>
+                                    @endif
+                                </a>
+                            @elseif($tipo == "requerimentos")
+                                <a href="{{ route('mostrar.requerimentos',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;">
                                     @if ($item->status_cadastro == "aprovado")
                                         <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
                                     @else

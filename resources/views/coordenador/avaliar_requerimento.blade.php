@@ -108,7 +108,7 @@
                                     <div class="col-auto">
                                             <button type="button" class="btn btn-danger" style="margin-right:5px;" data-toggle="modal" data-target="#exampleModal1">Reprovar Requerimento</button>
                                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal2">Aprovar Requerimento</button>
-                    
+
                                     </div>
                                 </div>
                             </div>
@@ -116,7 +116,7 @@
 
                         <!-- Modal - reprovar cadastro-->
                         <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header" style="background-color:red;">
                                             <img src="{{ asset('/imagens/logo_atencao3.png') }}" alt="Logo" style=" margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabel" style="font-size:20px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Reprovar Requerimento</h5>
@@ -134,18 +134,18 @@
                                             <div class="row">
                                                 <div class="col-12" style="font-family: 'Roboto', sans-serif;">Tem certeza de que deseja reprovar o requerimento do estabelecimento <label id="nomeDoEstabelecimento" style="font-weight:bold; font-family: 'Roboto', sans-serif;">{{$empresa->nome}}</label>?</div>
                                                 <div class="col-12" style="font-family: 'Roboto', sans-serif;">
-                                                    <label for="exampleFormControlTextarea1">Problemas:</label>
-                                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="avisos" required></textarea>
+                                                    <label for="exampleFormControlTextarea1">Informe o motivo da reprovação do requerimento: <span style="color:red">*</span></label>
+                                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="avisos"></textarea>
                                                 </div>
-                                                {{-- <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px;"><img src="{{ asset('/imagens/logo_bloqueado.png') }}" alt="Logo" style="width:15px; margin-right:5px;"/> Essa ação não poderá ser desfeita</div> --}}
                                             </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Não</button>
-                                            <div class="col-md-12" style="padding-left:0">
-                                                <button type="submit" class="btn btn-success botao-form" style="width:100%">
-                                                        Sim, reprovar cadastro
-                                                </button>
+                                        <div class="modal-footer justify-content-between">
+                                            <div>
+                                                <label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif"><span style="font-size:20px">*</span> Campo obrigatório</label>
+                                            </div>
+                                            <div>
+                                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" style="width:100px; margin-right:15px;">Não</button>
+                                                <button type="submit" class="btn btn-success botao-form">Sim, reprovar cadastro</button>
                                             </div>
                                         </div>
                                     </form>

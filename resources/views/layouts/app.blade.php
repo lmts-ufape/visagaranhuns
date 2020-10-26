@@ -20,6 +20,10 @@
     <script type="text/javascript" src="{{URL::asset('js/findDocRt.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/requerimento_rt.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/config_pagina_inicial.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/editar_meus_dados.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/documentacao_empresa.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/documentacao_empresa_rt.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/documentacao_rt.js')}}" defer></script>
 
     <!-- load jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -45,6 +49,7 @@
     <link href="{{ asset('css/geral.css') }}" rel="stylesheet">
     <link href="{{ asset('css/agentes.css') }}" rel="stylesheet">
     <link href="{{ asset('css/documentos_empresa.css') }}" rel="stylesheet">
+
 
     <!-- editor de texto -->
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
@@ -80,7 +85,7 @@
                         <!-- Authentication Links -->
                         @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('/') }}">{{ __('Inicio') }}</a>
+                            <a class="nav-link" href="{{ route('/') }}">{{ __('Início') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('emconstrucao') }}">{{ __('A vigilância') }}</a>
@@ -105,7 +110,7 @@
                         @else
                             @if(Auth::user()->tipo == "coordenador")
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
+                                    <a class="nav-link" href="{{ route('/') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('pagina.requerimento') }}">{{ __('Requerimento') }}</a>
@@ -151,12 +156,15 @@
                                 </li>
                             @elseif(Auth::user()->tipo == "empresa")
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
+                                    <a class="nav-link" href="{{ route('/') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'estabelecimentos']) }}">{{ __('Estabelecimentos') }}</a>
                                     </li>
                                 @if(Auth::user()->status_cadastro == "aprovado")
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'requerimento']) }}">{{ __('Requerimentos') }}</a>
+                                    </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('emconstrucao') }}">{{ __('Licenças') }}</a>
                                     </li>
@@ -164,7 +172,7 @@
                                         <a class="nav-link" href="{{ route('listar.responsavelTec') }}">{{ __('Responsável Técnico') }}</a>
                                     </li> --}}
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'documentacao']) }}">{{ __('Documentacao') }}</a>
+                                        <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'documentacao']) }}">{{ __('Documentação') }}</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('emconstrucao') }}" style="margin-right:30px;">{{ __('Notificação') }}</a>
@@ -176,7 +184,12 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        {{-- <a class="dropdown-item" href="{{ route('home.cadastrar') }}">Dados do estabelecimento</a> --}}
+                                        <a class="dropdown-item" href="{{ route('editar.gerente', ['user' => Auth::user()->id]) }}">
+                                                {{ __('Editar meus dados') }}
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('editar.senha.gerente', ['user' => Auth::user()->id]) }}">
+                                                {{ __('Editar senha de acesso') }}
+                                        </a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">
@@ -188,9 +201,10 @@
                                         </form>
                                     </div>
                                 </li>
+
                             @elseif(Auth::user()->tipo == "inspetor")
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
+                                    <a class="nav-link" href="{{ route('/') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Programação') }}</a>
@@ -217,7 +231,7 @@
                                 </li>
                             @elseif(Auth::user()->tipo == "agente")
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Início') }}</a>
+                                    <a class="nav-link" href="{{ route('/') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Programação') }}</a>
@@ -272,7 +286,7 @@
                                             {{ __('Meus documentos') }}
                                         </a>
                                         <a class="dropdown-item" href="{{ route('editar.dados', ['user' => Auth::user()->id]) }}">
-                                            {{ __('Editar dados') }}
+                                            {{ __('Editar meus dados') }}
                                         </a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
@@ -300,74 +314,7 @@
             @yield('content')
         </div>
         {{-- footer --}}
-        <div id="appRodape" style="background-color:gray; padding-bottom:1rem;">
-                <div class="container" >
-                    <div class="row justify-content-center">
-                        <div class="col-sm-2" align="center">
-                            <div class="row justify-content-center">
-                                <div class="col-sm-12 " style="margin-top:2.2rem;">
-                                    <a href="http://ww3.uag.ufrpe.br/" target="_blank"><img src="{{ asset('/imagens/logo_ufape.png') }}" alt="Logo" /></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-3" align="center">
-                            <div class="row justify-content-center">
-                                <div class="col-sm-12 "style="margin-top:2.5rem;">
-                                    <a target="_blank" href="http://lmts.uag.ufrpe.br/"><img src="{{ asset('/imagens/logo_lmts.png') }}" alt="Logo" style="margin-top:15px;"/></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-3" align="center">
-                          <div class="row justify-content-center" style="margin-top:15px;">
-                            <div class="col-sm-12 styleItemMapaDoSite" id="" style="font-weight:bold; font-family:arial">Mapa do site</div>
-                            @guest
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Início</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >A vigilância</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Orientações</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Legislação</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Contato</a></div>
-                            @elseif(Auth::user()->tipo == "coordenador")
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Início</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Requerimento</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Programação</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Inspetores</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Estabelecimentos</a></div>
-                            @elseif(Auth::user()->tipo == "empresa")
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Início</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Estabelecimentos</a></div>
-                                @if(Auth::user()->status_cadastro == "aprovado")
-                                    <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Licenças</a></div>
-                                    <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Responsável Técnico</a></div>
-                                    <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Documentação</a></div>
-                                    <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Notificação</a></div>
-                                @endif
-                            @elseif(Auth::user()->tipo == "agente")
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Início</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Programação</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Histórico</a></div>
-                            @elseif(Auth::user()->tipo == "inspetor")
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Início</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Programação</a></div>
-                                <div class="col-sm-12 styleItemMapaDoSite" style=" font-family:arial"><a >Histórico</a></div>
-                            @endif
-                          </div>
-                        </div>
-                        <div class="col-sm-4" align="center">
-                          <div class="row justify-content-center" style="margin-top:15px; margin-top:2.4rem;">
-                                {{-- <div class="col-sm-12" id="" style="font-weight:bold; font-family:arial; color:white">Apoio</div> --}}
-                            <div style="margin:3px;"><img src="{{ asset('/imagens/logo_secretaria.png') }}"></div>
-                          </div>
-                        </div>
-                </div>
-            </div>
-            {{-- <div class="row">
-              <div class="col-md-12" align="center" style="color:black; margin-top:10px; border-bottom:1px;border-style: solid; border-width:1px;">
-                <a href="https://www.google.com/maps/place/UFAPE+-+Universidade+Federal+do+Agreste+de+Pernambuco/@-8.9067588,-36.4943075,15z/data=!4m2!3m1!1s0x0:0x9e8a2fd11fab3580?sa=X&ved=2ahUKEwjegOe_z_voAhXhH7kGHYjPD5EQ_BIwCnoECA0QCg" target="tab"
-                style="font-size:14px; font-family:arial; color:honeydew;">Av. Bom Pastor, s/n - Boa Vista, Garanhuns - PE, 55292-270</a>
-              </div>
-            </div> --}}
-            <!--x footer x-->
-        </div>
+        @include('layouts.footer')
     </div>
 
 

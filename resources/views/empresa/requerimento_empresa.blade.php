@@ -45,59 +45,23 @@
                                 <tbody>
                                     @foreach($cnaes as $item)
                                         @foreach ($check as $item2)
-                                            @if ($item->areas_id == $item2->area && $item2->status == "pendente")
+                                            @if ($item2->status == "pendente")
                                                 <tr>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
-                                                    <th><button type="button" class="btn btn-success btn-sm subtituloBarraPrincipal" style="color:white;font-size:15px; " onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</button></th>
-                                                    <th><button class="btn btn-warning btn-sm subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusPendente">Pendente</button></th>
+                                                    <th><button type="button" class="btn btn-success btn-sm subtituloBarraPrincipal" style="color:white;font-size:15px; " onclick="statusCNAERequisicaoEmpresa('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</button></th>
+                                                    <th><button class="btn btn-warning btn-sm subtituloBarraPrincipal" style="font-size:15px; cursor:pointer;" data-toggle="modal" data-target="#statusPendente">Pendente</button></th>
                                                 </tr>
-                                            @elseif ($item->areas_id == $item2->area && $item2->status == "completo")
+                                            @elseif ($item2->status == "completo")
                                                 <tr>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
-                                                    <th><button type="button" class="btn btn-success btn-sm subtituloBarraPrincipal" style="color:white;font-size:15px; " onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</button></th>
+                                                    <th><button type="button" class="btn btn-success btn-sm subtituloBarraPrincipal" style="color:white;font-size:15px; " onclick="statusCNAERequisicaoEmpresa('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</button></th>
                                                     <th><button class="btn btn-success btn-sm subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusCompleto">Completo</button></th>
                                                 </tr>
                                             @endif
                                         @endforeach
                                     @endforeach
-                                    {{-- @if(isset($resultados))
-                                        @foreach($resultados as $item)
-                                            <tr>
-                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
-                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
-                                                {{-- tipo --}}
-                                                {{-- @if($item->tipo == "")
-                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black"></th>
-                                                @else
-                                                    @if($item->tipo == "primeira_licenca")
-                                                        <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Primeira licença</th>
-                                                    @elseif($item->tipo == "renovacao")
-                                                        <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Renovação</th>
-                                                    @endif
-                                                @endif --}}
-                                                {{-- status --}}
-                                                {{-- @if($item->status == "")
-                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Nenhum requerimento</th>
-                                                @elseif($item->status == "aprovado")
-                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:#0e6b0e; cursor:pointer;" onclick="statusCNAERequisicaoRT('aprovado','{{$item->descricao}}',null,null)" data-toggle="modal" data-target="#statusCnaeRequisicaoRTModalAprovado"><img src="{{ asset('/imagens/logo_aprovado.png') }}" width="20px" alt="Logo" style="margin-right:13px;"/> Aprovado</th>
-                                                @elseif($item->status == "reprovado")
-                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:#c4302b; cursor:pointer;" onclick="statusCNAERequisicaoRT('reprovado','{{$item->descricao}}','{{$item->aviso}}',null)" data-toggle="modal" data-target="#statusCnaeRequisicaoRTModalReprovado"><img src="{{ asset('/imagens/logo_atencao4.png') }}" width="20px" alt="Logo" style="margin-right:13px;"/> Reprovado</th>
-                                                @elseif($item->status == "pendente")
-                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:#e1ad01;"><img src="{{ asset('/imagens/logo_atencao.png') }}" width="22px" alt="Logo" style="margin-right:13px;"/>Pendente</th>
-                                                @endif --}}
-                                            {{-- </tr>
-                                        @endforeach
-                                    @else
-                                        <tr>
-                                            <th></th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Nenhum cnae cadastrado.</th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-
-                                    @endif --}}
                                 </tbody>
                             </table>
                         </div>
@@ -128,8 +92,8 @@
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->tipo}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->data}}</th>
-                                            <input type="hidden" id="avisoTempRequerimentoRt{{$indice->id}}" value="{{ $indice->aviso }}">
-                                            <th><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="avisoReqRt('{{$indice->id}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
+                                            <input type="hidden" id="teste{{$indice->id}}" value="{{ $indice->aviso }}">
+                                            <th><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="avisoReq('{{$indice->id}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
                                             </tr>
                                         @else
                                             <tr>
@@ -154,7 +118,7 @@
 
 <!-- Modal de Aviso -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color:#2a9df4;">
                     <img src="{{ asset('/imagens/logo_atencao3.png') }}" width="30px;" alt="Logo" style=" margin-right:15px; margin-top:10px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Avisos</h5>
@@ -167,10 +131,10 @@
                 <div class="modal-body">
                     <div class="row">
                         <div id="avisoReq" class="col-12" style="font-family: 'Roboto', sans-serif; margin-bottom:10px;">Motivo da reprovação do requerimento:</div>
-                        <div class="col-12"><textarea name="avisoRequerimentoRt" id="avisoRequerimentoRt" cols="30" rows="10"></textarea></div>
+                        <div class="col-12"><textarea name="avisoRequerimentoEmpresa" id="avisoRequerimentoEmpresa" cols="30" rows="10"></textarea></div>
                     </div>
                 </div>
-        </form>
+            </form>
         </div>
     </div>
 </div>
@@ -227,14 +191,14 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="formRequerimento" method="POST" action="{{ route('cadastrar.requerimento') }}">
+                <form id="formRequerimento" method="POST" action="{{ route('cadastrar.requerimento.empresa') }}">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-12" style="font-family: 'Roboto', sans-serif;">Criar requerimento para o CNAE <label id="criarRequerimentoCNAERT" style="font-weight:bold; font-family: 'Roboto', sans-serif;"> </label> ?</div>
 
                             <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px;">
-                                <input type="hidden" name="resptecnico" value="{{$resptecnico}}">
+                                {{-- <input type="hidden" name="resptecnico" value="{{$resptecnico}}"> --}}
                                 <input type="hidden" name="empresa" value="{{$empresas->id}}">
                                 <input type="hidden" name="cnae" id="idCnaeRequerimentoRT">
                                 <div class="form-group">
@@ -258,18 +222,18 @@
 @endsection
 
 <script type="text/javascript">
-    window.statusCNAERequisicaoRT = function($flag, $descricao, $aviso, $idCnae, $respTecnico, $empresa){
 
+window.statusCNAERequisicaoEmpresa = function($flag, $descricao, $aviso, $idCnae, $empresa){
+    console.log($empresa);
     $.ajax({
-        url:'{{ config('prefixo.PREFIXO') }}cnae/encontrar',
+        url:'{{ config('prefixo.PREFIXO') }}cnae/encontrar/empresa',
         type:"get",
         dataType:'json',
-        data: {'cnaeId': $idCnae,
-               'respTecnico': $respTecnico,
-               'empresa': $empresa,
+        data: {'cnaeId'     : $idCnae,
+               'empresa'    : $empresa,
         },
         success: function(response){
-            console.log(response.valor);
+
             if (response.tipo == "Primeira Licenca") {
                 console.log("Primeira Licenca");
                 if (response.valor == "pendente") {
@@ -282,7 +246,7 @@
                     $("option[value='Primeira Licenca']").prop("disabled", false);
                     $("option[value='Renovacao']").prop("disabled", true);
                 }
-            }else if (response.tipo == "renovacao"){
+            }else if (response.tipo == "Renovacao"){
                 console.log("Renovacao");
                 if (response.valor == "pendente") {
                     $("option[value='Primeira Licenca']").prop("disabled", true);
@@ -295,7 +259,7 @@
                     $("option[value='Renovacao']").prop("disabled", false);
                 }
             }else if (response.tipo == "nenhum") {
-                console.log("Né");
+                console.log("Astrolábio");
                 $("option[value='Primeira Licenca']").prop("disabled", false);
                 $("option[value='Renovacao']").prop("disabled", true);
             }
@@ -306,16 +270,15 @@
 
         document.getElementById('descricaoCNAERTreprovado').innerHTML = $descricao;
         document.getElementById('avisoCNAERTreprovado').innerHTML = $aviso;
-
     }else if($flag == "aprovado"){
 
         document.getElementById('descricaoCNAERT').innerHTML = $descricao;
-
     }else if($flag == "criarRequisicao"){
 
         document.getElementById('criarRequerimentoCNAERT').innerHTML = $descricao;
         document.getElementById('idCnaeRequerimentoRT').value = $idCnae;
     }
+
 }
 
 </script>

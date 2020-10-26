@@ -10,20 +10,24 @@
                         <img src="{{ asset('/imagens/logo_predio.png') }}" alt="Logo" style="width:17px; height:20px; margin-top:-5px; margin-right:5px;"/>
                         <label class="cardDashboard_titulo">Estabelecimentos</label>
                     </div>
-                    <div class="col-12" style="font-size:13.5px"></div>
-                    <div class="col-12" style="font-size:13.5px">
-                        <ul style="margin-left:-22px;">
-                            @foreach($empresas->slice(0,9) as $item)
+                    <div class="col-12" style="font-size:13.5px; margin-bottom:-0.4rem">
+                        <ul style="margin-left:-5px; height:175px; width:175px;overflow: auto;">
+                            @foreach($empresas as $item)
                                 <li>
                                     <a href="{{ route('pagina.mostrar.empresa',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;">{{$item->nome}}</a>
                                 </li>
                             @endforeach
-                            @if(count($empresas) == 9)
-                                <div style="text-align:right">
-                                    <a href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'estabelecimentos']) }}">Ver todos</a>
-                                </div>
-                            @endif
                         </ul>
+                    </div>
+                    <div class="col-12" style="height:20px; text-align:right;">
+                        @if(count($empresas) >= 8)
+                            <a href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'estabelecimentos']) }}" style="text-decoration:none;">Ver todos</a>
+                        @endif
+                    </div>
+                    <div class="col-12" style=" text-align:right;">
+                        @if($empresas[0]->user->status_cadastro != "pendente")
+                            <a href="{{ route('pagina.adicionar.empresa') }}" style="text-decoration:none;">Criar estabelecimento</a>
+                        @endif
                     </div>
                 </div>
             </div>

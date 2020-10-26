@@ -24,6 +24,7 @@ use App\Checklistemp;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
 use DB;
+use Illuminate\Support\Facades\Validator;
 
 class RespTecnicoController extends Controller
 {
@@ -35,6 +36,21 @@ class RespTecnicoController extends Controller
     public function index()
     {
         //
+    }
+    public function home(){
+        $user = User::find(Auth::user()->id);
+        $rt = RespTecnico::where('user_id', $user->id)->first();
+        $temp = [];
+        $empresas = [];
+
+        $empresa = RtEmpresa::where('resptec_id', $rt->id)->pluck('empresa_id');
+
+        foreach ($empresa as $indice) {
+            array_push($temp, RtEmpresa::where('empresa_id', $indice)->first());
+        }
+        $empresas = array_unique($temp);
+
+        return view('responsavel_tec/home_rt',['empresas' => $empresas]);
     }
 
     public function listarEmpresas(Request $request)
@@ -76,6 +92,7 @@ class RespTecnicoController extends Controller
 
         $requerimento = Requerimento::where('empresas_id', $request->empresa)
         ->where('resptecnicos_id', $request->respTecnico)
+        ->orWhere('resptecnicos_id', null)
         ->where('cnae_id', $request->cnaeId)
         ->orderBy('created_at', 'desc')
         ->first();
@@ -266,12 +283,12 @@ class RespTecnicoController extends Controller
         ]);
 
         $docempresa = Docempresa::where("nome", $request->file)->first();
-        
+
         Storage::delete($docempresa->nome);
 
         $fileDocemp = $request->arquivo;
 
-        $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/'; 
+        $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/';
 
         $nomeDocemp = $request->arquivo->getClientOriginalName();
 
@@ -299,6 +316,26 @@ class RespTecnicoController extends Controller
     public function anexarArquivosEmpresa(Request $request)
     {
 
+        $messages = [
+            'max'      => 'O arquivo não pode ser maior que 5mb!',
+            'required' => 'O campo :attribute não foi passado!',
+            'mimes'    => 'O arquivo anexado não está no formato pdf!',
+            'date'     => 'Campo data está inválido!',
+            'file'     => 'Um arquivo deve ser anexado!',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'arquivo'        => 'required|file|mimes:pdf|max:5000',
+            'tipodocempresa' => 'required',
+            'data_emissao'   => 'required|date',
+            'data_validade'  => 'nullable|date',
+        ], $messages);
+
+        if ($validator->fails()) {
+            return back()
+                    ->withErrors($validator);
+        }
+
         if($request->arquivo == null){
             session()->flash('error', 'Selecione um aquivo e tente novamente!');
             return back();
@@ -324,17 +361,8 @@ class RespTecnicoController extends Controller
             $indice->anexado = "true";
             $indice->save();
         }
-        
+
         $empresa = Empresa::find($request->empresaId);
-
-        $validatedData = $request->validate([
-
-            'arquivo'         => ['required', 'file', 'mimes:pdf', 'max:5000000'],
-            'tipodocempresa'  => ['required'],
-            'data_emissao'    => ['required', 'date'],
-            'data_validade'   => ['nullable', 'date'],
-
-        ]);
 
         $fileDocemp = $request->arquivo;
 
@@ -419,7 +447,6 @@ class RespTecnicoController extends Controller
         $user    = User::where("email", $request->email)->first();
 
         if ($user != null) {
-
             for ($i=0; $i < count($request->area); $i++) {
                 $rtempresa = RtEmpresa::where('area_id', $request->area[$i])
                 ->where('empresa_id', $request->empresaId)->first();
@@ -534,7 +561,8 @@ class RespTecnicoController extends Controller
                 }
             }
 
-            return redirect()->route('/');
+            session()->flash('success', 'O responsável Técnico foi cadastrado com sucesso!');
+            return back();
         }
     }
 
@@ -616,6 +644,27 @@ class RespTecnicoController extends Controller
 
     public function anexarArquivos(Request $request)
     {
+
+        $messages = [
+            // 'size'      => 'O arquivo não pode ser maior que 5mb!',
+            'required' => 'O campo :attribute não foi passado!',
+            'mimes'    => 'O arquivo anexado não está no formato pdf!',
+            'date'     => 'Campo data está inválido!',
+            'file'     => 'Um arquivo deve ser anexado!',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            // 'arquivo'        => 'required|file|mimes:pdf|size:5000',
+            'tipodocres'     => 'required',
+            'data_emissao'   => 'required|date',
+            'data_validade'  => 'nullable|date',
+        ], $messages);
+
+        if ($validator->fails()) {
+            return back()
+                    ->withErrors($validator);
+        }
+
         if($request->tipodocres == "Tipos de documentos"){
             session()->flash('error', 'Selecione um documento!');
             return back();
@@ -635,15 +684,6 @@ class RespTecnicoController extends Controller
             $indice->anexado = "true";
             $indice->save();
         }
-
-        $validatedData = $request->validate([
-
-            'arquivo'         => ['required', 'file', 'mimes:pdf', 'max:5000000'],
-            'tipodocres'      => ['required'],
-            'data_emissao'    => ['required', 'date'],
-            'data_validade'   => ['nullable', 'date'],
-
-        ]);
 
         $fileDocemp = $request->arquivo;
 

@@ -8,16 +8,22 @@
     display:none;
 }
 .tituloBarraPrincipal{
-    font-size:20px; font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;margin-bottom:-5px; font-family:Roboto
+    font-size:20px; font-weight:bold; color:black; margin-left:0px; margin-left:10px;margin-bottom:-5px; font-family:Roboto
 }
 .subtituloBarraPrincipal{
-    font-size:18px; font-weight:normal; color:#707070; margin-left:0px; margin-left:10px;margin-bottom:-5px; font-family:Roboto
+    font-size:18px; font-weight:normal; color:black; margin-left:0px; margin-left:10px;margin-bottom:-5px; font-family:Roboto
 }
 .styleTituloDoInputCadastro{
-    font-size:16px;font-family: 'Quicksand', sans-serif;
+    font-size:16px;font-family: 'Quicksand', sans-serif; font-weight: bold;
 }
 .styleInputCadastro{
-    width:100%; border:none; border-bottom:1px solid #ccc; outline: none; padding-bottom: 5px;
+    width:100%; border:none; border-bottom:2px solid #808080; outline: none; padding-bottom: 5px;
+}
+.limiteDeTexto{
+    max-width: 40ch; overflow: hidden; text-overflow: ellipsis;white-space: nowrap;
+}
+.limiteDeTextoCard{
+    max-width: 40ch; overflow: hidden; text-overflow: ellipsis;white-space: nowrap;
 }
 .cardCadastro{
     background-color:white;
@@ -35,5 +41,11 @@
 @media screen and (max-width: 1025px) and (min-width: 200px){
     .styleBarraPrincipalMOBILE{
         display:block;
+    }
+    .limiteDeTexto{
+        max-width: 18ch; overflow: hidden; text-overflow: ellipsis;white-space: nowrap;
+    }
+    .limiteDeTextoCard{
+        max-width: 55ch; overflow: hidden; text-overflow: ellipsis;white-space: nowrap;
     }
 }
