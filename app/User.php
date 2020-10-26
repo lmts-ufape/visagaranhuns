@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\meuResetDeSenha;
 
 class User extends Authenticatable
 {
@@ -39,5 +40,10 @@ class User extends Authenticatable
 
     public function empresa() {
         return $this->hasMany("\App\Empresa");
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new meuResetDeSenha($token));
     }
 }
