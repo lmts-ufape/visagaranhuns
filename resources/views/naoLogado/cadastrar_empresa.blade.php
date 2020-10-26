@@ -54,7 +54,7 @@
                             </div>
                             <div class="form-group col-md-4" style="padding-right:15px;">
                                 <label class="styleTituloDoInputCadastro" for="cnpjcpf">CNPJ/CPF:<span style="color:red">*</span></label>
-                                <input class="styleInputCadastro" type="text" id="cnpjcpf" class="form-control" name="cnpjcpf" placeholder="">
+                                <input class="styleInputCadastro" type="text" id="cnpjcpf" class="form-control" name="cnpjcpf" placeholder="" maxlength="14">
                             </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Tipo:<span style="color:red">*</span></label>
