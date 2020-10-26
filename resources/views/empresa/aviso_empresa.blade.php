@@ -19,10 +19,10 @@
                                 <label style="font-size:35px;margin-top:10px;font-weight:bold;color:#6c63ff; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">PARABÉNS!</label>
                             </div>
                             <div class="form col-md-12" style="margin-top:10px;">
-                                <label style="font-weight:normal;font-size:22px; font-family: 'Roboto', sans-serif; color:#3f3d56; line-height:30px;">A solicitação de cadastro de usuário e empresa foi realizada com sucesso!</label>
+                                <label style="font-weight:normal;font-size:22px; font-family: 'Roboto', sans-serif; color:#3f3d56; line-height:30px;">A solicitação do seu cadastro foi realizado com sucesso!</label>
                             </div>
                             <div class="form col-md-12" style="margin-top:10px;">
-                                <label style="font-size:16px;font-family: 'Quicksand', sans-serif;">Seus dados encontram-se em avaliação, espere a sua aprovação para que possa ter acesso a outras funcionalidades do sistema. </label>
+                                <label style="font-size:16px;font-family: 'Quicksand', sans-serif;">Aguarde a sua aprovação para que possa ter acesso a outras funcionalidades.</label>
                             </div>
                             <div class="form col-md-12" style="margin-top:40px;">
                                 <a class="btn btn-success botao-form"  href="{{route("/")}}" style="weight:500px; color:white;">Clique aqui</a>
@@ -35,14 +35,14 @@
         </div>
         <div style="margin-top:0.5rem; margin-bottom:5rem;padding:0px;">
             <div class="container" style="margin-top:2rem;">
-                <div class="row" style="padding-top:15px;">
+                {{-- <div class="row" style="padding-top:15px;">
                     <div class="col-6">
                         <a href="http://ww3.uag.ufrpe.br/" target="_blank" style="font-family: 'Roboto', sans-serif; text-decoration:none; color:black;">VISA-GARANHUNS foi desenvolvido pela Universidade Federal do Agreste de Pernambuco - UFAPE</a>
                     </div>
                     <div class="col-6" style="margin-top:-10px; text-align:right">
                         <img src="{{ asset('/imagens/logo_visa_menu.png') }}" alt="Logo" style="width:200px; margin-bottom:0px;"/>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
 
