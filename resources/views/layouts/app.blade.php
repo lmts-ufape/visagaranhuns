@@ -278,7 +278,11 @@
                                 </li> --}}
                                 <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                        Olá, <span style="font-weight:bold; color:black;">{{ Auth::user()->name }}</span> <span class="caret"></span>
+                                        <?php
+                                            $nomeCompleto = Auth::user()->name;
+                                            $nome = explode(" ", $nomeCompleto);
+                                        ?>
+                                        Olá, <span style="font-weight:bold; color:black;">{{ $nome[0] }}</span> <span class="caret"></span>
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
