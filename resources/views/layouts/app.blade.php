@@ -267,7 +267,7 @@
                                     <a class="nav-link" href="{{ route('listar.empresa.rt',['flag'=>"requerimento"]) }}">{{ __('Requerimentos') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('listar.empresa.rt',['flag'=>"documentos"]) }}">{{ __('Documentos') }}</a>
+                                    <a class="nav-link" href="{{ route('listar.empresa.rt',['flag'=>"documentos"]) }}">{{ __('Documentação') }}</a>
                                 </li>
 
                                 {{-- <li class="nav-item">
@@ -291,6 +291,9 @@
                                         </a>
                                         <a class="dropdown-item" href="{{ route('editar.dados', ['user' => Auth::user()->id]) }}">
                                             {{ __('Editar meus dados') }}
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('editar.senha.rt', ['user' => Auth::user()->id]) }}">
+                                            {{ __('Editar senha de acesso') }}
                                         </a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();

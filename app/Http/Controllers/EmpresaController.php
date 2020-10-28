@@ -319,25 +319,45 @@ class EmpresaController extends Controller
             array_push($areasOrdenado, $indice);
         }
 
+        // for ($i=0; $i < count($areasOrdenado); $i++) {
+        //     $areatipodocemp = AreaTipodocemp::where('area_id', $areasOrdenado[$i])->get();
+
+        //     foreach ($areatipodocemp as $indice) {
+
+        //         // ABAIXO SAI, CASO SEJA DUPLICADO
+        //         $checklist = Checklistemp::where('nomeDoc', $indice->tipodocemp->nome)
+        //         ->where('empresa_id', $empresa->id)
+        //         ->first();
+
+        //         if ($checklist == null) {
+        //             $cnaeEmpresa = Checklistemp::create([
+        //                 'anexado' => 'false',
+        //                 'areas_id' => $areasOrdenado[$i],
+        //                 'nomeDoc' => $indice->tipodocemp->nome,
+        //                 'tipodocemp_id' => $indice->tipodocemp->id,
+        //                 'empresa_id' => $empresa->id,
+        //             ]);
+        //         }
+        //     }
+        // }
+
         for ($i=0; $i < count($areasOrdenado); $i++) {
             $areatipodocemp = AreaTipodocemp::where('area_id', $areasOrdenado[$i])->get();
 
             foreach ($areatipodocemp as $indice) {
 
                 // ABAIXO SAI, CASO SEJA DUPLICADO
-                $checklist = Checklistemp::where('nomeDoc', $indice->tipodocemp->nome)
-                ->where('empresa_id', $empresa->id)
-                ->first();
+                // $checklist = Checklistemp::where('nomeDoc', $indice->tipodocemp->nome)
+                // ->where('empresa_id', $empresa->id)
+                // ->first();
 
-                if ($checklist == null) {
-                    $cnaeEmpresa = Checklistemp::create([
-                        'anexado' => 'false',
-                        // 'areas_id' => $areasOrdenado[$i], VOLTA CASO FIQUE DUPLICADO
-                        'nomeDoc' => $indice->tipodocemp->nome,
-                        'tipodocemp_id' => $indice->tipodocemp->id,
-                        'empresa_id' => $empresa->id,
-                    ]);
-                }
+                $cnaeEmpresa = Checklistemp::create([
+                    'anexado' => 'false',
+                    'areas_id' => $areasOrdenado[$i],
+                    'nomeDoc' => $indice->tipodocemp->nome,
+                    'tipodocemp_id' => $indice->tipodocemp->id,
+                    'empresa_id' => $empresa->id,
+                ]);
             }
         }
 
@@ -865,7 +885,7 @@ class EmpresaController extends Controller
             array_push($area, Area::find($indice));
         }
 
-        $checklisttemp = Checklistemp::where('empresa_id', $empresa->id)->orderBy('id','ASC')->get();
+        $checklisttemp = Checklistemp::where('empresa_id', $empresa->id)->orderBy('nomeDoc','ASC')->get();
         $checklist = [];
 
         for ($i=0; $i < count($checklisttemp); $i++) {

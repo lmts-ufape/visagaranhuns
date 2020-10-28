@@ -48,7 +48,8 @@ class CoordenadorController extends Controller
     public function nameMethod()
     {
         $inspecoes = Inspecao::where('status', 'pendente')->get();
-        $temp = [];
+        $inspecao = [];
+        $empNome = [];
 
         foreach ($inspecoes as $key) {
             $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
@@ -58,20 +59,22 @@ class CoordenadorController extends Controller
                 'data'          => $key->data,
                 'status'        => $key->status,
                 'inspetor'      => $key->inspetor->user->name,
-                'agente'        => $inspec_agente[0]->agente->user->name,
-                'agente'        => $inspec_agente[1]->agente->user->name,
+                'agente1'       => $inspec_agente[0]->agente->user->name,
+                'agente2'       => $inspec_agente[1]->agente->user->name,
                 'empresa'       => $requerimento->empresa->nome,
                 'cnae'          => $requerimento->cnae->descricao,                
             );
-            array_push($temp, $obj);
-            
+            array_push($inspecao, $obj);
         }
-        // dd($temp[0]->data);
-        // $pdf = PDF::loadView('coordenador/inspecoes', compact('temp'));
-        // dd($pdf);
-        return PDF::loadView('coordenador/inspecoes', compact('temp'))->stream();
 
-        // return $pdf->stream('inspecoes.pdf');
+        foreach ($inspecao as $indice) {
+            array_push($empNome, $indice->empresa);
+        }
+        
+        $empresas = array_unique($empNome);
+
+        $pdf = PDF::loadView('coordenador/inspecoes', compact('inspecao', 'empresas'));
+        return $pdf->setPaper('a4')->stream('inspecoes.pdf');
     }
 
     public function criarInspecao()
@@ -245,7 +248,7 @@ class CoordenadorController extends Controller
         $docsempresa = Docempresa::where('empresa_id', $empresa->id)->get();
         $checklist = Checklistemp::where('empresa_id', $empresa->id)
         ->where('areas_id', $request->area)
-        ->orderBy('id','ASC')
+        ->orderBy('nomeDoc','ASC')
         ->get();
 
 
