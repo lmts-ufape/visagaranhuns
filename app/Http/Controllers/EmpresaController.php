@@ -509,7 +509,6 @@ class EmpresaController extends Controller
      */
     public function editarEmpresa(Request $request)
     {
-        dd($request);
 
         $empresa = Empresa::find($request->empresaId);
         $user = User::find(Auth::user()->id);
@@ -626,29 +625,7 @@ class EmpresaController extends Controller
 
 
         return view('empresa/editar_empresa', ["empresa" => $empresa, "areas" => $areas]);
-        // // Empresa que será editada
-        // $empresa = Empresa::where("user_id", $id)->first();
-        // // Cnaes que podem ser escolhidos para troca
-        // $ensino       = Cnae::where("areas_id", "1")->get();
-        // $saude        = Cnae::where("areas_id", "2")->get();
-        // $distrSaude   = Cnae::where("areas_id", "3")->get();
-        // $camPipa      = Cnae::where("areas_id", "4")->get();
-        // $tratAgua     = Cnae::where("areas_id", "5")->get();
-        // $mei          = Cnae::where("areas_id", "6")->get();
-        // $diversos     = Cnae::where("areas_id", "7")->get();
-        // $meiAlimentos = Cnae::where("areas_id", "8")->get();
-
-        // // Definir a página para a edição de empresa
-        // return view('empresa.editar', [
-        //     'empresa'    => $empresa,
-        //     'ensino'     => $ensino,
-        //     'saude'      => $saude,
-        //     'distrSaude' => $distrSaude,
-        //     'camPipa'    => $camPipa,
-        //     'tratAgua'   => $tratAgua,
-        //     'mei'        => $mei,
-        //     'diversos'   => $diversos,
-        // ]);
+        
     }
 
     /**

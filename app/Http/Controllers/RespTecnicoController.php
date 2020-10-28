@@ -92,8 +92,8 @@ class RespTecnicoController extends Controller
     {
 
         $requerimento = Requerimento::where('empresas_id', $request->empresa)
-        ->where('resptecnicos_id', $request->respTecnico)
-        ->orWhere('resptecnicos_id', null)
+        // ->where('resptecnicos_id', $request->respTecnico)
+        // ->orWhere('resptecnicos_id', null)
         ->where('cnae_id', $request->cnaeId)
         ->orderBy('created_at', 'desc')
         ->first();
