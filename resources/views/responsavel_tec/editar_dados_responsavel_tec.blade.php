@@ -64,7 +64,7 @@
                                     </div>
                                     <div class="form-group col-md-4"  style="padding-right:15px;">
                                         <label class="styleTituloDoInputCadastro" for="cpf">CPF:<span style="color:red">*</span></label>
-                                        <input type="text" id="cpf" class="styleInputCadastro" name="cpf" value="{{$respTecnico->cpf}}" required>
+                                        <input type="text" id="cpf" class="styleInputCadastro" name="cpf" value="{{$respTecnico->cpf}}" required maxlength="11">
                                     </div>
                                     <div class="form-group col-md-4"  style="padding-right:15px;">
                                         <label class="styleTituloDoInputCadastro" for="formacao">Formação:<span style="color:red">*</span></label>
@@ -76,27 +76,9 @@
                                     </div>
                                     <div class="form-group col-md-4"  style="padding-right:15px;">
                                         <label class="styleTituloDoInputCadastro" for="inputTelefone1">Telefone:<span style="color:red">*</span></label>
-                                        <input type="text" class="styleInputCadastro" name="telefone" id="inputTelefone1" value="{{$respTecnico->telefone}}" required>
+                                        <input type="text" class="styleInputCadastro" name="telefone" id="inputTelefone1" value="{{$respTecnico->telefone}}" required maxlength="11">
                                     </div>
                                 </div>
-                                <div>
-                                    <hr style="margin-top:35px; margin-bottom:25px;">
-                                        <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif; margin-bottom:15px;">SALVAR ALTERAÇÕES</label>
-                                </div>
-                                <div class="form-row">
-                                        <div class="form-group col-md-4"  style="padding-right:15px;">
-                                            <label class="styleTituloDoInputCadastro" for="email">E-mail:<span style="color:red">*</span></label>
-                                            <input type="email" id="email" class="styleInputCadastro" name="email" placeholder="{{$user->email}}" disabled>
-                                        </div>
-                                        <div class="form-group col-md-4"  style="padding-right:15px;">
-                                            <label class="styleTituloDoInputCadastro" for="password">Senha:<span style="color:red">*</span></label>
-                                            <input id="password" id="password" type="password" class="styleInputCadastro" name="password" required autocomplete="new-password">
-                                        </div>
-                                        <div class="form-group col-md-4"  style="padding-right:15px;">
-                                            <label class="styleTituloDoInputCadastro" for="password-confirm">Confirmar senha:<span style="color:red">*</span></label>
-                                            <input id="password-confirm" type="password" class="styleInputCadastro" name="password_confirmation" required autocomplete="new-password">
-                                        </div>
-                                    </div>
                             <hr size = 7>
                             <div style="margin-bottom:0.2rem;">
                                     <div class="row">

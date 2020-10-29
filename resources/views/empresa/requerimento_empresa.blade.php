@@ -38,8 +38,8 @@
                                   <tr>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Código</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">CNAE</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Requerimento</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Requerimento</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Documentação</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -49,8 +49,8 @@
                                                 <tr>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
-                                                    <th><button type="button" class="btn btn-success btn-sm subtituloBarraPrincipal" style="color:white;font-size:15px; " onclick="statusCNAERequisicaoEmpresa('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</button></th>
-                                                    <th><button class="btn btn-warning btn-sm subtituloBarraPrincipal" style="font-size:15px; cursor:pointer;" data-toggle="modal" data-target="#statusPendente">Pendente</button></th>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-success btn-sm subtituloBarraPrincipal" style="color:white;font-size:15px; " onclick="statusCNAERequisicaoEmpresa('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</button></th>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button class="btn btn-warning btn-sm subtituloBarraPrincipal" style="font-size:15px; cursor:pointer;" data-toggle="modal" data-target="#statusPendente">Pendente</button></th>
                                                 </tr>
                                             @elseif ($item2->status == "completo")
                                                 <tr>
@@ -79,7 +79,7 @@
                                       <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Tipo</th>
                                       <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
                                       <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Data</th>
-                                      <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Aviso</th>
+                                      <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Aviso</th>
 
                                     </tr>
                                 </thead>
@@ -93,7 +93,7 @@
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->data}}</th>
                                             <input type="hidden" id="teste{{$indice->id}}" value="{{ $indice->aviso }}">
-                                            <th><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="avisoReq('{{$indice->id}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="avisoReq('{{$indice->id}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
                                             </tr>
                                         @else
                                             <tr>
@@ -225,6 +225,7 @@
 
 window.statusCNAERequisicaoEmpresa = function($flag, $descricao, $aviso, $idCnae, $empresa){
     console.log($empresa);
+    console.log($idCnae);
     $.ajax({
         url:'{{ config('prefixo.PREFIXO') }}cnae/encontrar/empresa',
         type:"get",
@@ -233,7 +234,7 @@ window.statusCNAERequisicaoEmpresa = function($flag, $descricao, $aviso, $idCnae
                'empresa'    : $empresa,
         },
         success: function(response){
-
+            console.log(response);
             if (response.tipo == "Primeira Licenca") {
                 console.log("Primeira Licenca");
                 if (response.valor == "pendente") {

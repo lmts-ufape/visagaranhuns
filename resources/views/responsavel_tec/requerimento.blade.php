@@ -26,20 +26,31 @@
     <div class="barraMenu" style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
         <div class="container" style="margin-top:1rem;">
             <div class="form-row">
-
                 <div class="form-group col-md-12">
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">REQUERIMENTOS</label>
                         </div>
+                        @if ($message = Session::get('error'))
+                            <div class="alert alert-warning alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong style="margin-right: 30px;">{{$message}}</strong>
+                            </div>
+                        @endif
+                        @if ($message = Session::get('success'))
+                            <div class="alert alert-warning alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong style="margin-right: 30px;">{{$message}}</strong>
+                            </div>
+                        @endif
                         <div class="form col-md-12" style="margin-top:-10px;">
                             <table class="table table-hover">
                                 <thead>
                                   <tr>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Código</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">CNAE</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Requerimento</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Requerimento</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Documentação</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -49,15 +60,15 @@
                                                 <tr>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
-                                                    <th><button type="button" class="btn btn-success btn-sm subtituloBarraPrincipal" style="color:white;font-size:15px; " onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</button></th>
-                                                    <th><button class="btn btn-warning btn-sm subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusPendente">Pendente</button></th>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-success btn-sm subtituloBarraPrincipal" style="color:white; font-size:15px;" onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</button></th>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button class="btn btn-warning btn-sm subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusPendente">Pendente</button></th>
                                                 </tr>
                                             @elseif ($item->areas_id == $item2->area && $item2->status == "completo")
                                                 <tr>
-                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
-                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
-                                                    <th><button type="button" class="btn btn-success btn-sm subtituloBarraPrincipal" style="color:white;font-size:15px; " onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</button></th>
-                                                    <th><button class="btn btn-success btn-sm subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusCompleto">Completo</button></th>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">{{$item->codigo}}</th>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">{{$item->descricao}}</th>
+                                                    <th><button type="button" class="btn btn-success btn-sm subtituloBarraPrincipal" style="color:white; text-align:center; vertical-align:middle; font-size:15px; " onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</button></th>
+                                                    <th><button class="btn btn-success btn-sm subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusCompleto">Completo</button></th>
                                                 </tr>
                                             @endif
                                         @endforeach
@@ -107,7 +118,7 @@
                             <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">HISTÓRICO</label>
                         </div>
                         <div class="form col-md-12" style="margin-top:-10px;">
-                            <table class="table table-hover">
+                            <table class="table table-hover" cellspacing="0" cellpadding="4" width="100%" style="border:1px solid #000;">
                                 <thead>
                                     <tr>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Código</th>
@@ -115,7 +126,7 @@
                                       <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Tipo</th>
                                       <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
                                       <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Data</th>
-                                      <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Aviso</th>
+                                      <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Aviso</th>
 
                                     </tr>
                                 </thead>
@@ -129,7 +140,7 @@
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->data}}</th>
                                             <input type="hidden" id="avisoTempRequerimentoRt{{$indice->id}}" value="{{ $indice->aviso }}">
-                                            <th><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="avisoReqRt('{{$indice->id}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="avisoReqRt('{{$indice->id}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
                                             </tr>
                                         @else
                                             <tr>
@@ -138,7 +149,7 @@
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->tipo}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->data}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->aviso}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">{{$indice->aviso}}</th>
                                             </tr>
                                         @endif
                                     @endforeach
@@ -269,7 +280,7 @@
                'empresa': $empresa,
         },
         success: function(response){
-            console.log(response.valor);
+            console.log(response.tipo);
             if (response.tipo == "Primeira Licenca") {
                 console.log("Primeira Licenca");
                 if (response.valor == "pendente") {
@@ -282,7 +293,7 @@
                     $("option[value='Primeira Licenca']").prop("disabled", false);
                     $("option[value='Renovacao']").prop("disabled", true);
                 }
-            }else if (response.tipo == "renovacao"){
+            }else if (response.tipo == "Renovacao"){
                 console.log("Renovacao");
                 if (response.valor == "pendente") {
                     $("option[value='Primeira Licenca']").prop("disabled", true);
