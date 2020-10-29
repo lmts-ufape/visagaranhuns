@@ -47,9 +47,13 @@ class CoordenadorController extends Controller
 
     public function nameMethod()
     {
+        $date = date('Y-m-d');
+
+        // $inspecoes = Inspecao::where('status', 'pendente')->where('data', $date)->get();
         $inspecoes = Inspecao::where('status', 'pendente')->get();
         $inspecao = [];
         $empNome = [];
+        $emps = [];
 
         foreach ($inspecoes as $key) {
             $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
@@ -70,10 +74,32 @@ class CoordenadorController extends Controller
         foreach ($inspecao as $indice) {
             array_push($empNome, $indice->empresa);
         }
-        
+
         $empresas = array_unique($empNome);
 
-        $pdf = PDF::loadView('coordenador/inspecoes', compact('inspecao', 'empresas'));
+        foreach ($empresas as $indice) {
+            $emp = Empresa::where('nome', $indice)->first();
+            $endereco = Endereco::where('empresa_id', $emp->id)->first();
+            $telefone = Telefone::where('empresa_id', $emp->id)->first();
+
+            $obj = (object) array(
+                'nome'       => $emp->nome,
+                'email'      => $emp->nome,
+                'cnpjcpf'    => $emp->nome,
+                'tipo'       => $emp->nome,
+                'cep'        => $endereco->cep,
+                'rua'        => $endereco->rua,
+                'numero'     => $endereco->numero,
+                'bairro'     => $endereco->bairro,
+                'complemento'=> $endereco->complemento,
+                'telefone1'  => $telefone->telefone1,
+                'telefone2'  => $telefone->telefone2,                
+            );
+
+            array_push($emps, $obj);
+        }
+        
+        $pdf = PDF::loadView('coordenador/inspecoes', compact('inspecao', 'emps'));
         return $pdf->setPaper('a4')->stream('inspecoes.pdf');
     }
 

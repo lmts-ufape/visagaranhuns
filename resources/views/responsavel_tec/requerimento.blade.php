@@ -118,7 +118,7 @@
                             <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">HISTÓRICO</label>
                         </div>
                         <div class="form col-md-12" style="margin-top:-10px;">
-                            <table class="table table-hover">
+                            <table class="table table-hover" cellspacing="0" cellpadding="4" width="100%" style="border:1px solid #000;">
                                 <thead>
                                     <tr>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Código</th>

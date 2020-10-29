@@ -30,7 +30,7 @@ class Empresa extends Model
     }
 
     public function endereco() {
-        return $this->hasMany("\App\Endereco");
+        return $this->hasOne("\App\Endereco");
     }
 
     //Documentos da empresa
