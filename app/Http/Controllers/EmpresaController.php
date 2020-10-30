@@ -433,40 +433,52 @@ class EmpresaController extends Controller
         $cnaesEmpresa = CnaeEmpresa::where("empresa_id", $id)->get();
         $requerimentos = Requerimento::where('empresas_id', $empresa->id)
         ->orderBy('created_at', 'desc')->get();
+        $areasIds = [];
         $check = [];
         $cnaes = [];
         $temp = [];
         $temp0 = [];
         $resultado = Empresa::find($id);
 
+        // Pegando todos os ids dos cnaes da empresa
         foreach ($cnaesEmpresa as $indice0) {
             array_push($temp0, $indice0->cnae_id);
         }
 
+        // Pegando os cnaes e a área especifica de cada cnae
         foreach ($temp0 as $indice) {
             $cnae = Cnae::find($indice);
             array_push($cnaes, $cnae);
+            array_push($areasIds, $cnae->areas_id);
         }
 
-        $pendencia = "completo";
-        $checklist = Checklistemp::where('empresa_id', $empresa->id)
-        ->get();
-        foreach ($checklist as $key2) {
-            if ($key2->anexado == "false") {
-                $pendencia = "pendente";
+        // Removendo areas repetidas
+        $areas = array_unique($areasIds);
+
+        // Verificando se a checklist de documentos desta empresa (Tabela: checklistemp) está completa (True) ou incompleta (False), por áreas
+        foreach ($areas as $key) {
+            $pendencia = "completo";
+            $checklist = Checklistemp::where('empresa_id', $empresa->id)
+            ->where('areas_id', $key)->get();
+            foreach ($checklist as $key2) {
+                if ($key2->anexado == "false") {
+                    $pendencia = "pendente";
+                }
             }
-        }
-
-        if ($pendencia == "completo") {
-            $obj = (object) array(
-                'status'    => "completo",
-            );
-            array_push($check, $obj);
-        } else {
-            $obj = (object) array(
-                'status'    => "pendente",
-            );
-            array_push($check, $obj);
+    
+            if ($pendencia == "completo") {
+                $obj = (object) array(
+                    'area'      => $key,
+                    'status'    => "completo",
+                );
+                array_push($check, $obj);
+            } else {
+                $obj = (object) array(
+                    'area'      => $key,
+                    'status'    => "pendente",
+                );
+                array_push($check, $obj);
+            }
         }
 
         return view('empresa/requerimento_empresa',[
@@ -509,7 +521,7 @@ class EmpresaController extends Controller
      */
     public function editarEmpresa(Request $request)
     {
-
+        dd($request);
         $empresa = Empresa::find($request->empresaId);
         $user = User::find(Auth::user()->id);
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
