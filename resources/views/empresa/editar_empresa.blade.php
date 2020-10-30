@@ -129,33 +129,33 @@
                                 </div>
                                 <div class="form-group col-md-4" style="padding-right:15px;">
                                     <label class="styleTituloDoInputCadastro" for="inputPassword4">CEP:<span style="color:red">*</span></label>
-                                    <input class="styleInputCadastro" value="{{$empresa->endereco[0]->cep}}" onblur="pesquisacep(this.value);" id="cep" type="text"  name="cep" required autocomplete="cep" placeholder="" size="10" maxlength="9">
+                                    <input class="styleInputCadastro" value="{{$empresa->endereco->cep}}" onblur="pesquisacep(this.value);" id="cep" type="text"  name="cep" required autocomplete="cep" placeholder="" size="10" maxlength="9">
                                 </div>
                                 <div class="form-group col-md-4" style="margin-top:-5px; padding-right:15px">
                                     <label class="styleTituloDoInputCadastro" for="inputEmail4">UF:<span style="color:red">*</span></label>
-                                    <input readonly type="text" class="form-control" name="uf" placeholder="" id="uf" value="{{$empresa->endereco[0]->uf}}">
+                                    <input readonly type="text" class="form-control" name="uf" placeholder="" id="uf" value="{{$empresa->endereco->uf}}">
                                 </div>
                                 <div class="form-group col-md-4" style="margin-top:-5px; padding-right:15px;">
                                     <label class="styleTituloDoInputCadastro" for="inputEmail4">Cidade:<span style="color:red">*</span></label>
-                                    <input readonly id="cidade" type="text" class="form-control" name="cidade" placeholder="" required value="{{$empresa->endereco[0]->cidade}}">
+                                    <input readonly id="cidade" type="text" class="form-control" name="cidade" placeholder="" required value="{{$empresa->endereco->cidade}}">
                                 </div>
                             </div>
                             <div class="form-row" style="padding-bottom:1.5rem;">
                                 <div class="form-group col-md-4">
                                     <label class="styleTituloDoInputCadastro" for="inputEmail4">Bairro:<span style="color:red">*</span></label>
-                                    <input value="{{$empresa->endereco[0]->bairro}}" id="bairro" type="text" class="styleInputCadastro" name="bairro" placeholder="" required>
+                                    <input value="{{$empresa->endereco->bairro}}" id="bairro" type="text" class="styleInputCadastro" name="bairro" placeholder="" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="styleTituloDoInputCadastro" for="inputEmail4">Rua:<span style="color:red">*</span></label>
-                                    <input value="{{$empresa->endereco[0]->rua}}" id="rua" type="text" class="styleInputCadastro" name="rua" placeholder="" required>
+                                    <input value="{{$empresa->endereco->rua}}" id="rua" type="text" class="styleInputCadastro" name="rua" placeholder="" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="styleTituloDoInputCadastro" for="inputPassword4">Número:<span style="color:red">*</span></label>
-                                    <input value="{{$empresa->endereco[0]->numero}}" type="text" class="styleInputCadastro" name="numero" placeholder="" required>
+                                    <input value="{{$empresa->endereco->numero}}" type="text" class="styleInputCadastro" name="numero" placeholder="" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="styleTituloDoInputCadastro" for="inputPassword4">Complemento:</label>
-                                    <input value="{{$empresa->endereco[0]->complemento}}" type="text" class="styleInputCadastro" name="complemento" placeholder="">
+                                    <input value="{{$empresa->endereco->complemento}}" type="text" class="styleInputCadastro" name="complemento" placeholder="">
                                 </div>
                             </div>
 
