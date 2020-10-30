@@ -28,7 +28,7 @@
 </head>
 <body>
   {{-- <img style="position: absolute; width: 60px; height: auto;" src="{{asset('imagens/logo_atencao2.png')}}"> --}}
-  <img src="public/imagens/logo_atencao2.png" style="position: absolute; width: 60px; height: auto;">
+  {{-- <img src="public/imagens/logo_atencao2.png" style="position: absolute; width: 60px; height: auto;"> --}}
   <table style="width: 100%;">
     <tr>
       <td align="center">

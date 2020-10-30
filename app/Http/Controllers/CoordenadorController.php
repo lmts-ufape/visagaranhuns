@@ -49,8 +49,9 @@ class CoordenadorController extends Controller
     {
         $date = date('Y-m-d');
 
-        // $inspecoes = Inspecao::where('status', 'pendente')->where('data', $date)->get();
-        $inspecoes = Inspecao::where('status', 'pendente')->get();
+        $inspecoes = Inspecao::where('status', 'pendente')->where('data', $date)->get();
+        // dd($inspecoes);
+        // $inspecoes = Inspecao::where('status', 'pendente')->get();
         $inspecao = [];
         $empNome = [];
         $emps = [];
