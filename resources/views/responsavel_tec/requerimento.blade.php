@@ -60,15 +60,15 @@
                                                 <tr>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
-                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-success btn-sm subtituloBarraPrincipal" style="color:white; font-size:15px;" onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</button></th>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-success btn-sm subtituloBarraPrincipal" style="color:white; font-size:15px;" onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal" disabled>Criar</button></th>
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button class="btn btn-warning btn-sm subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusPendente">Pendente</button></th>
                                                 </tr>
                                             @elseif ($item->areas_id == $item2->area && $item2->status == "completo")
                                                 <tr>
-                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">{{$item->codigo}}</th>
-                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">{{$item->descricao}}</th>
-                                                    <th><button type="button" class="btn btn-success btn-sm subtituloBarraPrincipal" style="color:white; text-align:center; vertical-align:middle; font-size:15px; " onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</button></th>
-                                                    <th><button class="btn btn-success btn-sm subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusCompleto">Completo</button></th>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->codigo}}</th>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->descricao}}</th>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-success btn-sm subtituloBarraPrincipal" style="color:white; font-size:15px; " onclick="statusCNAERequisicaoRT('criarRequisicao','{{$item->descricao}}',null, '{{$item->id}}', '{{$resptecnico}}', '{{$empresas->id}}')" data-toggle="modal" data-target="#requerimentoCnaeRequisicaoRTModal">Criar</button></th>
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button class="btn btn-success btn-sm subtituloBarraPrincipal" style="font-size:15px; color:black; cursor:pointer;" data-toggle="modal" data-target="#statusCompleto">Completo</button></th>
                                                 </tr>
                                             @endif
                                         @endforeach
@@ -219,7 +219,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="descricaoCNAERTreprovado" style="font-weight:bold; font-family: 'Roboto', sans-serif;"> </label>Algum documento para o checklist deste cnae ainda está pendente!</div>
+                    <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="descricaoCNAERTreprovado" style="font-weight:bold; font-family: 'Roboto', sans-serif;"> </label>Ainda há documentos que não foram anexados! Verifique clicando <a href="{{route('rt.documentacao.empresa', ['empresa' => Crypt::encrypt($empresas->id)])}}" style="weight:500px;">aqui</a>.</div>
                 </div>
             </div>
             <div class="modal-footer">
