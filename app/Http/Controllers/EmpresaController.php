@@ -627,8 +627,9 @@ class EmpresaController extends Controller
                 }
             }
         }
-
-        return redirect()->route('/');
+ 
+        session()->flash('success', 'Os dados da empresa foram atualizados!');
+        return back();
 
     }
 
@@ -1101,7 +1102,7 @@ class EmpresaController extends Controller
 
             // Remover também registro da tabela "rtempresa"
             $rtempresa = RtEmpresa::where('empresa_id', $request->empresaId)
-            ->where('areas_id', $area)->delete();
+            ->where('area_id', $area)->delete();
 
             // Remove o cnae da empresa
             $delete = CnaeEmpresa::destroy($request->idCnaeEmp);

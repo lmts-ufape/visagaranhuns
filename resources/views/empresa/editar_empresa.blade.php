@@ -44,6 +44,18 @@
                                 <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">DADOS DO ESTABELECIMENTO</label>
                             </div>
                         </div>
+                        @if ($message = Session::get('error'))
+                        <div class="alert alert-warning alert-block fade show">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <strong style="margin-right: 30px;">{{$message}}</strong>
+                        </div>
+                        @endif
+                        @if ($message = Session::get('success'))
+                            <div class="alert alert-warning alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong style="margin-right: 30px;">{{$message}}</strong>
+                            </div>
+                        @endif
                         <div class="form-row">
                             <div class="form-group col-md-4" style="padding-right:15px;">
                                 <label class="styleTituloDoInputCadastro" for="inputEmail4">Nome/Razão Social:<span style="color:red">*</span></label>
@@ -227,21 +239,30 @@
 
     window.deletar_EditarCnaeEmpresa = function($obj, $empresaId){
 
-        var index = arrayTemp.findIndex(element => element == $obj); //encontrar o indice no arrayTemp
-        if ( index > -1) {
-            arrayTemp.splice(index, 1); //remover o elemento do array
-            $('#cardSelecionado'+$obj).closest('.form-gerado').remove();
-        }
-
-        $.ajax({
-            url:'{{ config('prefixo.PREFIXO') }}apagar/cnae/empresa',
-            type:"get",
-            dataType:'json',
-            data: {"idCnaeEmp": $obj, "empresaId": $empresaId},
-            success: function(response){
-                console.log(response.valor);
+        var x;
+        var r=confirm("Atenção! Você tem certeza que deseja apagar este CNAE!?");
+        if (r==true)
+        {
+            var index = arrayTemp.findIndex(element => element == $obj); //encontrar o indice no arrayTemp
+            if ( index > -1) {
+                arrayTemp.splice(index, 1); //remover o elemento do array
+                $('#cardSelecionado'+$obj).closest('.form-gerado').remove();
             }
-        });
+
+            $.ajax({
+                url:'{{ config('prefixo.PREFIXO') }}apagar/cnae/empresa',
+                type:"get",
+                dataType:'json',
+                data: {"idCnaeEmp": $obj, "empresaId": $empresaId},
+                success: function(response){
+                    console.log(response.valor);
+                }
+            });
+        }
+        else
+        {
+            x="Você pressionou Cancelar!";
+        }
         // console.log("GW");
     }
 </script>
