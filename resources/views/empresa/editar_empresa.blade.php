@@ -167,7 +167,7 @@
                                         </div>
                                     <div class="p-2">
                                         <input type="hidden" name="empresaId" value="{{$empresa->id}}">
-                                        <button type="submit" class="btn btn-success" style="width:340px;">Cadastrar</button>
+                                        <button type="submit" class="btn btn-success" style="width:340px;">Atualizar</button>
                                     </div>
                                 </div>
                             </div>
@@ -226,22 +226,20 @@
     }
 
     window.deletar_EditarCnaeEmpresa = function($obj, $empresaId){
-        console.log("Alien");
+
         var index = arrayTemp.findIndex(element => element == $obj); //encontrar o indice no arrayTemp
         if ( index > -1) {
             arrayTemp.splice(index, 1); //remover o elemento do array
             $('#cardSelecionado'+$obj).closest('.form-gerado').remove();
         }
 
-        // console.log("GW");
         $.ajax({
             url:'{{ config('prefixo.PREFIXO') }}apagar/cnae/empresa',
             type:"get",
             dataType:'json',
             data: {"idCnaeEmp": $obj, "empresaId": $empresaId},
             success: function(response){
-                // console.log("GW");
-                // $('tbody').html(response.table_data);
+                console.log(response.valor);
             }
         });
         // console.log("GW");
