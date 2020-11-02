@@ -310,6 +310,7 @@ class EmpresaController extends Controller
         $cnaempresa = CnaeEmpresa::where("empresa_id", $empresa->id)->pluck('cnae_id');
         $cnaes = [];
         $areas = [];
+        $areas_cont_ordenado = [];
 
         foreach ($cnaempresa as $indice) {
             array_push($cnaes, Cnae::find($indice));
@@ -318,11 +319,16 @@ class EmpresaController extends Controller
             array_push($areas, $indice->areas_id);
         }
 
+        $areas_cont = array_count_values($areas);
         $resultAreas = array_unique($areas);
         $areasOrdenado = [];
 
         foreach ($resultAreas as $indice) {
             array_push($areasOrdenado, $indice);
+        }
+
+        foreach ($areas_cont as $indice) {
+            array_push($areas_cont_ordenado, $indice);
         }
 
         // for ($i=0; $i < count($areasOrdenado); $i++) {
@@ -360,10 +366,12 @@ class EmpresaController extends Controller
                 $cnaeEmpresa = Checklistemp::create([
                     'anexado' => 'false',
                     'areas_id' => $areasOrdenado[$i],
+                    'num_cnae' => $areas_cont_ordenado[$i],
                     'nomeDoc' => $indice->tipodocemp->nome,
                     'tipodocemp_id' => $indice->tipodocemp->id,
                     'empresa_id' => $empresa->id,
                 ]);
+
             }
         }
 
@@ -748,15 +756,14 @@ class EmpresaController extends Controller
 
     public function editarArquivos(Request $request)
     {
-
         $validatedData = $request->validate([
 
-            'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000000'],
+            'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000'],
 
         ]);
-        // dd($request->file);
 
-        $docempresa = Docempresa::where("nome", $request->file)->first();
+        $docempresa = Docempresa::where("nome", $request->file)
+        ->where('empresa_id', $request->empresa_id)->first();
 
         Storage::delete($docempresa->nome);
 
@@ -777,7 +784,7 @@ class EmpresaController extends Controller
 
     public function anexarArquivos(Request $request)
     {
-
+ 
         $messages = [
             'max'      => 'O tamanho máximo do arquivo deve ser de 5mb!',
             'required' => 'O campo :attribute não foi passado!',
@@ -832,6 +839,22 @@ class EmpresaController extends Controller
         $pathDocemp = 'empresas/' . $empresa->id . '/' . $request->tipodocempresa . '/';
 
         $nomeDocemp = $request->arquivo->getClientOriginalName();
+
+        $docempresa = Docempresa::where('empresa_id', $empresa->id)->where('tipodocemp_id', $request->tipodocempresa)->first();
+
+        if ($docempresa != null) {
+
+            Storage::delete($docempresa->nome);
+            // dd($pathDocemp . $nomeDocemp);
+            $docempresa->nome = $pathDocemp . $nomeDocemp;
+            $docempresa->save();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+            
+            session()->flash('success', 'Arquivo salvo com sucesso!');
+            return back();
+
+        }
 
         Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
 

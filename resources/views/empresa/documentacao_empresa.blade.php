@@ -216,6 +216,7 @@
                                         <div class="form-group">
                                           <label for="exampleFormControlFile1">Substituir arquivo</label>
                                           <input id="editarDoc" type="hidden" name="file" value="">
+                                          <input id="empresa_id" type="hidden" name="empresa_id" value="{{$empresaId}}">
                                           <input type="file" class="form-control-file" id="arquivoSelecionado_edit" name="arquivo" onchange="verificarArquivoAnexado_Empresa_Edit()">
                                         </div>
                                     </form>
