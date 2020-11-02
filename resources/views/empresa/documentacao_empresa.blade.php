@@ -255,7 +255,7 @@
                                                     <input type="date" class="form-control" id="data_emissao" placeholder="" name="data_emissao" required>
                                                 </div>
                                                 <div class="col">
-                                                    <label for="data_validade" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Validade</label>
+                                                    <label for="data_validade" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Validade<span style="font-size:20px;color:red"></span></label>
                                                     <input type="date" class="form-control" id="data_validade" placeholder="" name="data_validade">
                                                 </div>
                                             </div>

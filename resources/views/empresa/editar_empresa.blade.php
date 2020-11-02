@@ -237,7 +237,17 @@
         }
     }
 
-    window.deletar_EditarCnaeEmpresa = function($obj, $empresaId){
+    window.deletar_EditarCnaeEmpresa = function($obj, $empresaId, $cnaeId){
+
+        // $.ajax({
+        //     url:'{{ config('prefixo.PREFIXO') }}verificar/requerimento/inspecao',
+        //     type:"get",
+        //     dataType:'json',
+        //     data: {"idCnaeEmp": $obj, "empresaId": $empresaId},
+        //     success: function(response){
+        //         console.log(response.valor);
+        //     }
+        // });
 
         var x;
         var r=confirm("Atenção! Você tem certeza que deseja apagar este CNAE!?");

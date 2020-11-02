@@ -109,6 +109,11 @@ class EmpresaController extends Controller
             'cep'      => 'required|string',
         ]);
 
+        if ($request['cnae'] == null) {
+            session()->flash('error', 'Atenção! Uma empresa deve possuir pelo menos um CNAE. (Lista: CNAE Selecionado)');
+            return back();
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -556,8 +561,10 @@ class EmpresaController extends Controller
             'complemento'  => 'nullable|string',
         ]);
 
-        // $user->name = $request->nome;
-        // $user->save();
+        if ($request['cnae'] == null) {
+            session()->flash('error', 'Atenção! Uma empresa deve possuir pelo menos um CNAE. (Lista: CNAE Selecionado)');
+            return back();
+        }
 
         $empresa->cnpjcpf = $request->cnpjcpf;
         $empresa->tipo    = $request->tipo;
@@ -1081,10 +1088,10 @@ class EmpresaController extends Controller
                     <div class="d-flex justify-content-center form-gerado cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
                         <div class="mr-auto p-2>OPA</div>
                             <div class="mr-auto p-2" id="'.$item->id.'">'.$item->cnae->descricao.'</div>
-                            <input type="hidden" name="cnae[]" value="'.$item->cnae->id.'">
+                            <input type="hidden" name="cnae[]" value="'.$item->cnae->id.'" required>
                             <div style="width:140px; height:25px; text-align:right;">
                                 <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
-                                    <div class="btn btn-danger btn-sm" onclick="deletar_EditarCnaeEmpresa('.$item->id.','.$item->empresa_id.')" >X</div>
+                                    <div class="btn btn-danger btn-sm" onclick="deletar_EditarCnaeEmpresa('.$item->id.','.$item->empresa_id.','.$item->cnae->id.')" >X</div>
                                 </div>
                             </div>
                     </div>
@@ -1097,7 +1104,7 @@ class EmpresaController extends Controller
                     ';
             }else{
                 $output .= '
-                        <label>vazio</label>
+                        <label></label>
                     ';
             }
             $data = array(
