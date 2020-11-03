@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Servico;
+use App\Empresa;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,6 @@ use App\Servico;
 
 Route::get('/', function () {
     if (Auth::check()) {
-        // dd('dkjbfkdsjbfskdj');
         if (Auth::user()->tipo == "coordenador") {
             return view('coordenador.home_coordenador');
         }
@@ -53,6 +53,13 @@ Route::post('/completar/cadastro/agente','AgenteController@store')->name('comple
 //Cadastro de empresa
 Route::post("/empresa/cadastro", "EmpresaController@store")->name("cadastrar.empresa");
 Route::get("/home/cadastro/empresa", "EmpresaController@create")->name("home.cadastrar");
+
+// Denuncias
+Route::get("/denuncias", function () {
+
+    $empresa = Empresa::all();
+    return view('naoLogado/denuncias', ['empresas' => $empresa]);
+})->name("pagina.denuncia");
 
 // Aviso de pendencia de empresa
 Route::get("/confirma/cadastro", function () {
