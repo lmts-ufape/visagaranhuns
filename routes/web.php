@@ -189,6 +189,9 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get('/requerimentos/representante',         'EmpresaController@requerimentos')->name('mostrar.requerimentos');
     Route::get('/cnae/encontrar/empresa',              'EmpresaController@encontrarCnae')->name('encontrar.cnae.empresa');
     Route::post('/cadastro/requerimento/empresa',      'EmpresaController@cadastrarRequerimento')->name('cadastrar.requerimento.empresa');
+
+    
+    Route::get('/verificar/requerimento/inspecao',     'EmpresaController@verificarRequerimentoInspecao')->name('varificar.requerimento.inspecao');
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
     * Editar/Anexar dados da empresa

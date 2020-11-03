@@ -239,40 +239,43 @@
 
     window.deletar_EditarCnaeEmpresa = function($obj, $empresaId, $cnaeId){
 
-        // $.ajax({
-        //     url:'{{ config('prefixo.PREFIXO') }}verificar/requerimento/inspecao',
-        //     type:"get",
-        //     dataType:'json',
-        //     data: {"idCnaeEmp": $obj, "empresaId": $empresaId},
-        //     success: function(response){
-        //         console.log(response.valor);
-        //     }
-        // });
+        $.ajax({
+            url:'{{ config('prefixo.PREFIXO') }}verificar/requerimento/inspecao',
+            type:"get",
+            dataType:'json',
+            data: {"cnaeId": $cnaeId, "empresaId": $empresaId},
+            success: function(response){
+                console.log(response.success);
+                if (response.success == true) {
+                    alert("Este CNAE está em um processo de avaliação de requerimento ou inspeção! Portanto não pode ser deletado nesse momento.");
+                } else {
+                    var x;
+                    var r=confirm("Atenção! Você tem certeza que deseja apagar este CNAE!?");
+                    if (r==true)
+                    {
+                        var index = arrayTemp.findIndex(element => element == $obj); //encontrar o indice no arrayTemp
+                        if ( index > -1) {
+                            arrayTemp.splice(index, 1); //remover o elemento do array
+                            $('#cardSelecionado'+$obj).closest('.form-gerado').remove();
+                        }
 
-        var x;
-        var r=confirm("Atenção! Você tem certeza que deseja apagar este CNAE!?");
-        if (r==true)
-        {
-            var index = arrayTemp.findIndex(element => element == $obj); //encontrar o indice no arrayTemp
-            if ( index > -1) {
-                arrayTemp.splice(index, 1); //remover o elemento do array
-                $('#cardSelecionado'+$obj).closest('.form-gerado').remove();
-            }
-
-            $.ajax({
-                url:'{{ config('prefixo.PREFIXO') }}apagar/cnae/empresa',
-                type:"get",
-                dataType:'json',
-                data: {"idCnaeEmp": $obj, "empresaId": $empresaId},
-                success: function(response){
-                    console.log(response.valor);
+                        $.ajax({
+                            url:'{{ config('prefixo.PREFIXO') }}apagar/cnae/empresa',
+                            type:"get",
+                            dataType:'json',
+                            data: {"idCnaeEmp": $obj, "empresaId": $empresaId},
+                            success: function(response){
+                                console.log(response.valor);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        x="Você pressionou Cancelar!";
+                    }                    
                 }
-            });
-        }
-        else
-        {
-            x="Você pressionou Cancelar!";
-        }
+            }
+        });
         // console.log("GW");
     }
 </script>

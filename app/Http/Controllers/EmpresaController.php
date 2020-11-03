@@ -15,6 +15,7 @@ use App\CnaeEmpresa;
 use App\RespTecnico;
 use App\RtEmpresa;
 use App\Tipodocempresa;
+use App\Inspecao;
 use Illuminate\Support\Facades\Storage;
 use Auth;
 use DateTime;
@@ -1068,6 +1069,61 @@ class EmpresaController extends Controller
             );
             echo json_encode($data);
     }
+
+    public function verificarRequerimentoInspecao(Request $request)
+    {
+        $requerimento = Requerimento::where('empresas_id', $request->empresaId)
+        ->where('cnae_id', $request->cnaeId)
+        ->orderBy('created_at', 'desc')
+        ->first();
+
+        if ($requerimento == null) {
+            $data = array(
+                'success'  => false,
+            );
+            echo json_encode($data);
+        } elseif ($requerimento->status == "pendente") {
+
+            $data = array(
+                'success'  => true,
+            );
+            echo json_encode($data);
+
+        } elseif ($requerimento->status == "aprovado") {
+            $inspecao = Inspecao::where('requerimentos_id', $requerimento->id)->first();
+
+            if ($inspecao == null) {
+                $data = array(
+                    'success'  => false,
+                );
+                echo json_encode($data);
+            } else {
+                if ($inspecao->status == "aprovado") {
+                    $data = array(
+                        'success'  => false,
+                    );
+                    echo json_encode($data);
+                }elseif ($inspecao->status == "reprovado") {
+                    $data = array(
+                        'success'  => false,
+                    );
+                    echo json_encode($data);
+                } else {
+                    $data = array(
+                        'success'  => true,
+                    );
+                    echo json_encode($data);
+                }
+            }
+        } elseif ($requerimento->status == "reprovado") {
+            $data = array(
+                'success'  => false,
+            );
+            echo json_encode($data);
+        }
+    }
+
+
      /*
     * Função para mostrar na tela os cnaes da empresa
     * Tela: editar_empresa.blade
