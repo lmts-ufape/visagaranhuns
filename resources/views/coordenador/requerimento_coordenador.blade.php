@@ -32,6 +32,12 @@
                 </div>
             </div>
         </div>
+        @if ($message = Session::get('error'))
+            <div class="alert alert-warning alert-block fade show">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>{{$message}}</strong>
+            </div>
+        @endif
         @if(!empty($aprovado))
         <div class="alert alert-warning alert-block fade show">
             <button type="button" class="close" data-dismiss="alert">×</button>
@@ -86,27 +92,27 @@
                         <label class="textoCampo">Selecione o Inspetor</label>
                         <select class="custom-select" id="inputGroupSelect01" name="inspetor" required>
                             <option selected> -- Selecione o Inspetor -- </option>
-                            @foreach ($inspetores as $item)
+                            {{-- @foreach ($inspetores as $item)
                             <option value="{{$item->id}}">{{$item->user->name}}</option>
-                        @endforeach
+                        @endforeach --}}
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="textoCampo">Selecione o Agente 1</label>
                         <select class="custom-select" id="inputGroupSelect01" name="agente1" required>
                             <option selected> -- Selecione o Agente 1 -- </option>
-                            @foreach ($agentes as $item)
+                            {{-- @foreach ($agentes as $item)
                                 <option value="{{$item->id}}">{{$item->user->name}}</option>
-                            @endforeach
+                            @endforeach --}}
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="textoCampo">Selecione o Agente 2</label>
                         <select class="custom-select" id="inputGroupSelect01" name="agente2" required>
                             <option selected> -- Selecione o Agente 2 -- </option>
-                            @foreach ($agentes as $item)
+                            {{-- @foreach ($agentes as $item)
                                 <option value="{{$item->id}}">{{$item->user->name}}</option>
-                            @endforeach
+                            @endforeach --}}
                         </select>
                     </div>
                     <div class="form-group">

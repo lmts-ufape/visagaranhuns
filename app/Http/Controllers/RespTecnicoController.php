@@ -119,30 +119,24 @@ class RespTecnicoController extends Controller
     public function criarRequerimento(Request $request)
     {
         $id = Crypt::decrypt($request->empresa);
-        $empresa = Empresa::find($id);
-        $rt = RespTecnico::where("user_id", Auth::user()->id)->first();
-        $areas = RtEmpresa::where("resptec_id",$rt->id)->where('empresa_id', $empresa->id)->pluck('area_id');
-        $cnaesEmpresa = CnaeEmpresa::where("empresa_id", $id)->get();
-
-        $requerimentos = Requerimento::where('empresas_id', $empresa->id)
-        ->where('resptecnicos_id', $rt->id)->orderBy('created_at', 'desc')->get();
+        $empresa = Empresa::find($id); // Empresa
+        $rt = RespTecnico::where("user_id", Auth::user()->id)->first(); //Responsavel Técnico
+        $areas = RtEmpresa::where("resptec_id",$rt->id)->where('empresa_id', $empresa->id)->pluck('area_id'); //Areas especificas do responsavel técnico
+        $cnaesEmpresa = CnaeEmpresa::where("empresa_id", $id)->get(); //Cnaes especificos da empresa
+        $requerimentos = Requerimento::where('empresas_id', $empresa->id) 
+        ->where('resptecnicos_id', $rt->id)->orderBy('created_at', 'desc')->get(); // Requerimentos da empresa
         $check = [];
+        $temp0 = [];
+        $temp = [];
         $resultado = Empresa::find($id);
 
-        $res = DB::table('cnaes_empresas')->where('empresa_id','=',2)->leftJoin('requerimentos','cnaes_empresas.id','=','requerimentos.cnae_id')->join('cnaes','cnaes_empresas.cnae_id','=','cnaes.id')->select('cnaes_empresas.id','requerimentos.tipo','requerimentos.status','requerimentos.aviso','cnaes.codigo','cnaes.descricao')->get();
-        // $resultado = DB::table('rtempresa')->where('rtempresa.empresa_id','=',2)->where('rtempresa.resptec_id','=',1)->join('cnaes_empresas','rtempresa.empresa','=','cnaes_empresas.empresa_id')->join('areas','rtempresa.area_id','=','areas.id')->join('cnaes')->where('areas_id', '=','rtempresa.area_id')->select('*')->get();
-
-        $arrayResultado = [];
-        foreach($res as $item){
-            array_push($arrayResultado, $item);
-        }
-
-        $temp0 = [];
+        
+        // Pegando os ids dos cnaes da empresa
         foreach ($cnaesEmpresa as $indice0) {
             array_push($temp0, $indice0->cnae_id);
         }
-        $temp = [];
 
+        // Pegando os cnaes especificos das áreas do responsavel técnico
         foreach ($areas as $indice) {
             $cnaes = Cnae::where('areas_id', $indice)->get();
             foreach ($cnaes as $indice2) {
@@ -152,6 +146,7 @@ class RespTecnicoController extends Controller
             }
         }
 
+        // Verificando se a checklist de documentos desta empresa (Tabela: checklistemp) está completa (True) ou incompleta (False), por áreas
         foreach ($areas as $key) {
             $pendencia = "completo";
             $checklist = Checklistemp::where('empresa_id', $empresa->id)
@@ -177,8 +172,6 @@ class RespTecnicoController extends Controller
             }
         }
 
-        // dd($arrayResultado);
-
         return view('responsavel_tec/requerimento',[
             'nome'              => $empresa->nome,
             'cnaes'             => $temp,
@@ -186,7 +179,7 @@ class RespTecnicoController extends Controller
             'empresas'          => $resultado,
             'status'            => $empresa->status_cadastro,
             'requerimentos'     => $requerimentos,
-            'resultados'        => $arrayResultado,
+            // 'resultados'        => $arrayResultado,
             'check'             => $check,
         ]);
     }

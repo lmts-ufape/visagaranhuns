@@ -21,6 +21,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
 use PDF;
+use Illuminate\Support\Facades\Validator;
 
 class CoordenadorController extends Controller
 {
@@ -49,8 +50,9 @@ class CoordenadorController extends Controller
     {
         $date = date('Y-m-d');
 
-        // $inspecoes = Inspecao::where('status', 'pendente')->where('data', $date)->get();
-        $inspecoes = Inspecao::where('status', 'pendente')->get();
+        $inspecoes = Inspecao::where('status', 'pendente')->where('data', $date)->get();
+        // dd($inspecoes);
+        // $inspecoes = Inspecao::where('status', 'pendente')->get();
         $inspecao = [];
         $empNome = [];
         $emps = [];
@@ -288,7 +290,7 @@ class CoordenadorController extends Controller
 
     public function julgarRequerimento(Request $request)
     {
-
+ 
         if ($request->decisao == "true") {
             
             $requerimento = Requerimento::find($request->requerimento);
@@ -300,6 +302,12 @@ class CoordenadorController extends Controller
             return view('coordenador/requerimento_coordenador',["inspetores" => $inspetores,"agentes" => $agentes])->with('aprovado', 'O requerimento foi aprovado!');
 
         } else {
+
+            // Verifica se o campos avisos foi passado ou não!
+            if($request->avisos == null){
+                session()->flash('error', 'Você deve informar o motivo da reprovação no campo Avisos!');
+                return redirect()->route('pagina.requerimento');
+            }
 
             $requerimento = Requerimento::find($request->requerimento);
             $requerimento->status = "reprovado";

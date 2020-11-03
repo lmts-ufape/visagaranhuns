@@ -17,6 +17,7 @@ class CreateChecklistempTable extends Migration
             $table->id();
             $table->string('anexado');
             $table->string('nomeDoc');
+            $table->bigInteger('num_cnae'); //Numero de cnaes associado a uma area
 
             $table->bigInteger("areas_id")->nullable();
             $table->foreign("areas_id")->references("id")->on("areas");

@@ -49,12 +49,12 @@
                         </div>
 
                         <div class="form-group col-md-7">
-                            {{-- @if($errors->has('arquivo'))
+                            @if($errors->any())
                                 <div class="alert alert-warning alert-block fade show">
                                     <button type="button" class="close" data-dismiss="alert">×</button>
-                                    <strong>Atenção ao formato do arquivo (PDF) e tamanho máximo de 5mb</strong>
+                                    <strong>{{$errors->first()}}</strong>
                                 </div>
-                            @endif --}}
+                            @endif
                             @if ($message = Session::get('success'))
                                 <div class="alert alert-success alert-block fade show">
                                     <button type="button" class="close" data-dismiss="alert">×</button>
@@ -145,7 +145,7 @@
                                             </div>
                                             <div>
                                                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" style="width:100px; margin-right:15px;">Não</button>
-                                                <button type="submit" class="btn btn-success botao-form">Sim, reprovar cadastro</button>
+                                                <button type="submit" class="btn btn-success botao-form">Sim, reprovar requerimento</button>
                                             </div>
                                         </div>
                                     </form>
@@ -178,7 +178,7 @@
 
                                                 <div class="col-md-12" style="padding-right:0">
                                                     <button type="submit" class="btn btn-success botao-form" style="width:100%">
-                                                        Sim, aprovar cadastro
+                                                        Sim, aprovar requerimento
                                                     </button>
                                                 </div>
                                             </form>

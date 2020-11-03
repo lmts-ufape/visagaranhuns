@@ -44,6 +44,18 @@
                                 <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">DADOS DO ESTABELECIMENTO</label>
                             </div>
                         </div>
+                        @if ($message = Session::get('error'))
+                        <div class="alert alert-warning alert-block fade show">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <strong style="margin-right: 30px;">{{$message}}</strong>
+                        </div>
+                        @endif
+                        @if ($message = Session::get('success'))
+                            <div class="alert alert-warning alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong style="margin-right: 30px;">{{$message}}</strong>
+                            </div>
+                        @endif
                         <div class="form-row">
                             <div class="form-group col-md-4" style="padding-right:15px;">
                                 <label class="styleTituloDoInputCadastro" for="inputEmail4">Nome/Razão Social:<span style="color:red">*</span></label>
@@ -129,33 +141,33 @@
                                 </div>
                                 <div class="form-group col-md-4" style="padding-right:15px;">
                                     <label class="styleTituloDoInputCadastro" for="inputPassword4">CEP:<span style="color:red">*</span></label>
-                                    <input class="styleInputCadastro" value="{{$empresa->endereco[0]->cep}}" onblur="pesquisacep(this.value);" id="cep" type="text"  name="cep" required autocomplete="cep" placeholder="" size="10" maxlength="9">
+                                    <input class="styleInputCadastro" value="{{$empresa->endereco->cep}}" onblur="pesquisacep(this.value);" id="cep" type="text"  name="cep" required autocomplete="cep" placeholder="" size="10" maxlength="9">
                                 </div>
                                 <div class="form-group col-md-4" style="margin-top:-5px; padding-right:15px">
                                     <label class="styleTituloDoInputCadastro" for="inputEmail4">UF:<span style="color:red">*</span></label>
-                                    <input readonly type="text" class="form-control" name="uf" placeholder="" id="uf" value="{{$empresa->endereco[0]->uf}}">
+                                    <input readonly type="text" class="form-control" name="uf" placeholder="" id="uf" value="{{$empresa->endereco->uf}}">
                                 </div>
                                 <div class="form-group col-md-4" style="margin-top:-5px; padding-right:15px;">
                                     <label class="styleTituloDoInputCadastro" for="inputEmail4">Cidade:<span style="color:red">*</span></label>
-                                    <input readonly id="cidade" type="text" class="form-control" name="cidade" placeholder="" required value="{{$empresa->endereco[0]->cidade}}">
+                                    <input readonly id="cidade" type="text" class="form-control" name="cidade" placeholder="" required value="{{$empresa->endereco->cidade}}">
                                 </div>
                             </div>
                             <div class="form-row" style="padding-bottom:1.5rem;">
                                 <div class="form-group col-md-4">
                                     <label class="styleTituloDoInputCadastro" for="inputEmail4">Bairro:<span style="color:red">*</span></label>
-                                    <input value="{{$empresa->endereco[0]->bairro}}" id="bairro" type="text" class="styleInputCadastro" name="bairro" placeholder="" required>
+                                    <input value="{{$empresa->endereco->bairro}}" id="bairro" type="text" class="styleInputCadastro" name="bairro" placeholder="" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="styleTituloDoInputCadastro" for="inputEmail4">Rua:<span style="color:red">*</span></label>
-                                    <input value="{{$empresa->endereco[0]->rua}}" id="rua" type="text" class="styleInputCadastro" name="rua" placeholder="" required>
+                                    <input value="{{$empresa->endereco->rua}}" id="rua" type="text" class="styleInputCadastro" name="rua" placeholder="" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="styleTituloDoInputCadastro" for="inputPassword4">Número:<span style="color:red">*</span></label>
-                                    <input value="{{$empresa->endereco[0]->numero}}" type="text" class="styleInputCadastro" name="numero" placeholder="" required>
+                                    <input value="{{$empresa->endereco->numero}}" type="text" class="styleInputCadastro" name="numero" placeholder="" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="styleTituloDoInputCadastro" for="inputPassword4">Complemento:</label>
-                                    <input value="{{$empresa->endereco[0]->complemento}}" type="text" class="styleInputCadastro" name="complemento" placeholder="">
+                                    <input value="{{$empresa->endereco->complemento}}" type="text" class="styleInputCadastro" name="complemento" placeholder="">
                                 </div>
                             </div>
 
@@ -167,7 +179,7 @@
                                         </div>
                                     <div class="p-2">
                                         <input type="hidden" name="empresaId" value="{{$empresa->id}}">
-                                        <button type="submit" class="btn btn-success" style="width:340px;">Cadastrar</button>
+                                        <button type="submit" class="btn btn-success" style="width:340px;">Atualizar</button>
                                     </div>
                                 </div>
                             </div>
@@ -225,23 +237,43 @@
         }
     }
 
-    window.deletar_EditarCnaeEmpresa = function($obj, $empresaId){
-        console.log("Alien");
-        var index = arrayTemp.findIndex(element => element == $obj); //encontrar o indice no arrayTemp
-        if ( index > -1) {
-            arrayTemp.splice(index, 1); //remover o elemento do array
-            $('#cardSelecionado'+$obj).closest('.form-gerado').remove();
-        }
+    window.deletar_EditarCnaeEmpresa = function($obj, $empresaId, $cnaeId){
 
-        // console.log("GW");
         $.ajax({
-            url:'{{ config('prefixo.PREFIXO') }}apagar/cnae/empresa',
+            url:'{{ config('prefixo.PREFIXO') }}verificar/requerimento/inspecao',
             type:"get",
             dataType:'json',
-            data: {"idCnaeEmp": $obj, "empresaId": $empresaId},
+            data: {"cnaeId": $cnaeId, "empresaId": $empresaId},
             success: function(response){
-                // console.log("GW");
-                // $('tbody').html(response.table_data);
+                console.log(response.success);
+                if (response.success == true) {
+                    alert("Este CNAE está em um processo de avaliação de requerimento ou inspeção! Portanto não pode ser deletado nesse momento.");
+                } else {
+                    var x;
+                    var r=confirm("Atenção! Você tem certeza que deseja apagar este CNAE!?");
+                    if (r==true)
+                    {
+                        var index = arrayTemp.findIndex(element => element == $obj); //encontrar o indice no arrayTemp
+                        if ( index > -1) {
+                            arrayTemp.splice(index, 1); //remover o elemento do array
+                            $('#cardSelecionado'+$obj).closest('.form-gerado').remove();
+                        }
+
+                        $.ajax({
+                            url:'{{ config('prefixo.PREFIXO') }}apagar/cnae/empresa',
+                            type:"get",
+                            dataType:'json',
+                            data: {"idCnaeEmp": $obj, "empresaId": $empresaId},
+                            success: function(response){
+                                console.log(response.valor);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        x="Você pressionou Cancelar!";
+                    }                    
+                }
             }
         });
         // console.log("GW");
