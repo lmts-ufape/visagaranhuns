@@ -27,12 +27,6 @@
             </div>
         </div>
     </div>
-    @if ($message = Session::get('error'))
-        <div class="alert alert-success alert-block fade show">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>{{$message}}</strong>
-        </div>
-    @endif
 
     <form id="teste" method="POST" action="{{ route('cadastrar.empresa') }}">
         @csrf
@@ -47,6 +41,12 @@
                                 <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">DADOS DO ESTABELECIMENTO</label>
                             </div>
                         </div>
+                        @if ($message = Session::get('error'))
+                            <div class="alert alert-success alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{$message}}</strong>
+                            </div>
+                        @endif
                         <div class="form-row">
                             <div class="form-group col-md-4" style="padding-right:15px;">
                                 <label class="styleTituloDoInputCadastro" for="nome">Nome/Razão Social:<span style="color:red">*</span></label>

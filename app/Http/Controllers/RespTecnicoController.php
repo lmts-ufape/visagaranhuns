@@ -92,8 +92,8 @@ class RespTecnicoController extends Controller
     {
 
         $requerimento = Requerimento::where('empresas_id', $request->empresa)
-        ->where('resptecnicos_id', $request->respTecnico)
-        ->orWhere('resptecnicos_id', null)
+        // ->where('resptecnicos_id', $request->respTecnico)
+        // ->orWhere('resptecnicos_id', null)
         ->where('cnae_id', $request->cnaeId)
         ->orderBy('created_at', 'desc')
         ->first();
@@ -119,29 +119,24 @@ class RespTecnicoController extends Controller
     public function criarRequerimento(Request $request)
     {
         $id = Crypt::decrypt($request->empresa);
-        $empresa = Empresa::find($id);
-        $rt = RespTecnico::where("user_id", Auth::user()->id)->first();
-        $areas = RtEmpresa::where("resptec_id",$rt->id)->pluck('area_id');
-        $cnaesEmpresa = CnaeEmpresa::where("empresa_id", $id)->get();
-        $requerimentos = Requerimento::where('empresas_id', $empresa->id)
-        ->where('resptecnicos_id', $rt->id)->orderBy('created_at', 'desc')->get();
+        $empresa = Empresa::find($id); // Empresa
+        $rt = RespTecnico::where("user_id", Auth::user()->id)->first(); //Responsavel Técnico
+        $areas = RtEmpresa::where("resptec_id",$rt->id)->where('empresa_id', $empresa->id)->pluck('area_id'); //Areas especificas do responsavel técnico
+        $cnaesEmpresa = CnaeEmpresa::where("empresa_id", $id)->get(); //Cnaes especificos da empresa
+        $requerimentos = Requerimento::where('empresas_id', $empresa->id) 
+        ->where('resptecnicos_id', $rt->id)->orderBy('created_at', 'desc')->get(); // Requerimentos da empresa
         $check = [];
+        $temp0 = [];
+        $temp = [];
         $resultado = Empresa::find($id);
 
-        $res = DB::table('cnaes_empresas')->where('empresa_id','=',2)->leftJoin('requerimentos','cnaes_empresas.id','=','requerimentos.cnae_id')->join('cnaes','cnaes_empresas.cnae_id','=','cnaes.id')->select('cnaes_empresas.id','requerimentos.tipo','requerimentos.status','requerimentos.aviso','cnaes.codigo','cnaes.descricao')->get();
-        // $resultado = DB::table('rtempresa')->where('rtempresa.empresa_id','=',2)->where('rtempresa.resptec_id','=',1)->join('cnaes_empresas','rtempresa.empresa','=','cnaes_empresas.empresa_id')->join('areas','rtempresa.area_id','=','areas.id')->join('cnaes')->where('areas_id', '=','rtempresa.area_id')->select('*')->get();
-
-        $arrayResultado = [];
-        foreach($res as $item){
-            array_push($arrayResultado, $item);
-        }
-
-        $temp0 = [];
+        
+        // Pegando os ids dos cnaes da empresa
         foreach ($cnaesEmpresa as $indice0) {
             array_push($temp0, $indice0->cnae_id);
         }
-        $temp = [];
 
+        // Pegando os cnaes especificos das áreas do responsavel técnico
         foreach ($areas as $indice) {
             $cnaes = Cnae::where('areas_id', $indice)->get();
             foreach ($cnaes as $indice2) {
@@ -151,6 +146,7 @@ class RespTecnicoController extends Controller
             }
         }
 
+        // Verificando se a checklist de documentos desta empresa (Tabela: checklistemp) está completa (True) ou incompleta (False), por áreas
         foreach ($areas as $key) {
             $pendencia = "completo";
             $checklist = Checklistemp::where('empresa_id', $empresa->id)
@@ -176,9 +172,6 @@ class RespTecnicoController extends Controller
             }
         }
 
-        // dd($check);
-
-
         return view('responsavel_tec/requerimento',[
             'nome'              => $empresa->nome,
             'cnaes'             => $temp,
@@ -186,7 +179,7 @@ class RespTecnicoController extends Controller
             'empresas'          => $resultado,
             'status'            => $empresa->status_cadastro,
             'requerimentos'     => $requerimentos,
-            'resultados'        => $arrayResultado,
+            // 'resultados'        => $arrayResultado,
             'check'             => $check,
         ]);
     }
@@ -224,16 +217,14 @@ class RespTecnicoController extends Controller
         $empresa = Empresa::where('id', $idEmpresa)->first();
         $docsempresa = Docempresa::where('empresa_id', $empresa->id)->get();
         $rt = RespTecnico::where('user_id', Auth::user()->id)->first();
-        $rtempresa = RtEmpresa::where('resptec_id', $rt->id)->get();
-        $rtempresa2 = RtEmpresa::where('resptec_id', $rt->id)->pluck('area_id');
+        $rtempresa = RtEmpresa::where('resptec_id', $rt->id)->where('empresa_id', $empresa->id)->get();
+        $rtempresa2 = RtEmpresa::where('resptec_id', $rt->id)->where('empresa_id', $empresa->id)->pluck('area_id');
         $checklisttemp = [];
         $checklist = [];
         $check = [];
 
-        // dd($docsempresa);
-
         foreach ($rtempresa2 as $key) {
-            array_push($checklisttemp, Checklistemp::where('empresa_id', $empresa->id)->where('areas_id', $key)->orderBy('id','ASC')->get());
+            array_push($checklisttemp, Checklistemp::where('empresa_id', $empresa->id)->where('areas_id', $key)->orderBy('nomeDoc','ASC')->get());
         }
 
         foreach ($checklisttemp as $indice) {
@@ -258,7 +249,7 @@ class RespTecnicoController extends Controller
                 }
             }
         }
-
+        // dd($checklist);
         //tipos: lista de objetos checklist sem repetições, para serem escolhidos os tipos de documentos que serão enviados. $tipo->tipodocemp_id
 
         return view('responsavel_tec/empresa_docs',['nome'=>$empresa->nome,
@@ -620,7 +611,7 @@ class RespTecnicoController extends Controller
         $temp = [];
         $checkrespt = [];
 
-        $checklistresp = Checklistresp::where('resptecnicos_id', $rt->id)->orderBy('id','ASC')->pluck('tipodocres_id');
+        $checklistresp = Checklistresp::where('resptecnicos_id', $rt->id)->orderBy('nomeDoc','ASC')->pluck('tipodocres_id');
         for ($i=0; $i < count($checklistresp); $i++) {
             array_push($temp, $checklistresp[$i]);
         }
@@ -641,6 +632,18 @@ class RespTecnicoController extends Controller
             'docsrt'    => $docsrt,
         ]);
 
+    }
+
+    public function atualizarSenhaDeAcesso(Request $request)
+    {
+        if(Hash::check($request->senhaAtual ,Auth::user()->password) == true && $request->novaSenha1 == $request->novaSenha2 ){
+            $user = Auth::user();
+            $user->password = Hash::make($request->novaSenha1);
+            $user->save();
+            return redirect()->back()->with('success', "Senha alterada com sucesso!");
+        }else{
+            return redirect()->back()->with('error', "Verifique suas senhas e tente novamente!");
+        }
     }
 
     public function anexarArquivos(Request $request)
@@ -745,36 +748,31 @@ class RespTecnicoController extends Controller
      */
     public function update(Request $request)
     {
-        if(($request->password == $request->password_confirmation) && Hash::check($request->password ,Auth::user()->password) == true){
-            $respTecnico = RespTecnico::find($request->respTecnico);
-            $user = User::where('id', $respTecnico->user_id)->first();
+        $respTecnico = RespTecnico::find($request->respTecnico);
+        $user = User::where('id', $respTecnico->user_id)->first();
 
-            $validator = $request->validate([
-                'nome'     => 'required|string',
-                'formacao' => 'required|string',
-                'especializacao' => 'nullable|string',
-                'cpf'            => 'required|string',
-                'telefone'       => 'required|string',
-            ]);
+        $validator = $request->validate([
+            'nome'     => 'required|string',
+            'formacao' => 'required|string',
+            'especializacao' => 'nullable|string',
+            'cpf'            => 'required|string',
+            'telefone'       => 'required|string',
+        ]);
 
-            $user->name = $request->nome;
-            // $user->password = bcrypt($request->password);
-            $user->save();
+        $user->name = $request->nome;
+        // $user->password = bcrypt($request->password);
+        $user->save();
 
-            $respTecnico->formacao = $request->formacao;
-            if(isset($request->especializacao)){
-                $respTecnico->especializacao = $request->especializacao;
-            }
-            $respTecnico->cpf = $request->cpf;
-            $respTecnico->telefone = $request->telefone;
-            $respTecnico->save();
-
-            session()->flash('success', 'Dados alterados com sucesso!');
-            return redirect()->back();
-        }else{
-            session()->flash('error', 'Verifique sua senha e tente novamente!');
-            return redirect()->back();
+        $respTecnico->formacao = $request->formacao;
+        if(isset($request->especializacao)){
+            $respTecnico->especializacao = $request->especializacao;
         }
+        $respTecnico->cpf = $request->cpf;
+        $respTecnico->telefone = $request->telefone;
+        $respTecnico->save();
+
+        session()->flash('success', 'Dados alterados com sucesso!');
+        return redirect()->back();
     }
 
     /**

@@ -21,6 +21,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
 use PDF;
+use Illuminate\Support\Facades\Validator;
 
 class CoordenadorController extends Controller
 {
@@ -47,8 +48,14 @@ class CoordenadorController extends Controller
 
     public function nameMethod()
     {
-        $inspecoes = Inspecao::where('status', 'pendente')->get();
-        $temp = [];
+        $date = date('Y-m-d');
+
+        $inspecoes = Inspecao::where('status', 'pendente')->where('data', $date)->get();
+        // dd($inspecoes);
+        // $inspecoes = Inspecao::where('status', 'pendente')->get();
+        $inspecao = [];
+        $empNome = [];
+        $emps = [];
 
         foreach ($inspecoes as $key) {
             $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
@@ -58,20 +65,44 @@ class CoordenadorController extends Controller
                 'data'          => $key->data,
                 'status'        => $key->status,
                 'inspetor'      => $key->inspetor->user->name,
-                'agente'        => $inspec_agente[0]->agente->user->name,
-                'agente'        => $inspec_agente[1]->agente->user->name,
+                'agente1'       => $inspec_agente[0]->agente->user->name,
+                'agente2'       => $inspec_agente[1]->agente->user->name,
                 'empresa'       => $requerimento->empresa->nome,
                 'cnae'          => $requerimento->cnae->descricao,                
             );
-            array_push($temp, $obj);
-            
+            array_push($inspecao, $obj);
         }
-        // dd($temp[0]->data);
-        // $pdf = PDF::loadView('coordenador/inspecoes', compact('temp'));
-        // dd($pdf);
-        return PDF::loadView('coordenador/inspecoes', compact('temp'))->stream();
 
-        // return $pdf->stream('inspecoes.pdf');
+        foreach ($inspecao as $indice) {
+            array_push($empNome, $indice->empresa);
+        }
+
+        $empresas = array_unique($empNome);
+
+        foreach ($empresas as $indice) {
+            $emp = Empresa::where('nome', $indice)->first();
+            $endereco = Endereco::where('empresa_id', $emp->id)->first();
+            $telefone = Telefone::where('empresa_id', $emp->id)->first();
+
+            $obj = (object) array(
+                'nome'       => $emp->nome,
+                'email'      => $emp->nome,
+                'cnpjcpf'    => $emp->nome,
+                'tipo'       => $emp->nome,
+                'cep'        => $endereco->cep,
+                'rua'        => $endereco->rua,
+                'numero'     => $endereco->numero,
+                'bairro'     => $endereco->bairro,
+                'complemento'=> $endereco->complemento,
+                'telefone1'  => $telefone->telefone1,
+                'telefone2'  => $telefone->telefone2,                
+            );
+
+            array_push($emps, $obj);
+        }
+        
+        $pdf = PDF::loadView('coordenador/inspecoes', compact('inspecao', 'emps'));
+        return $pdf->setPaper('a4')->stream('inspecoes.pdf');
     }
 
     public function criarInspecao()
@@ -245,7 +276,7 @@ class CoordenadorController extends Controller
         $docsempresa = Docempresa::where('empresa_id', $empresa->id)->get();
         $checklist = Checklistemp::where('empresa_id', $empresa->id)
         ->where('areas_id', $request->area)
-        ->orderBy('id','ASC')
+        ->orderBy('nomeDoc','ASC')
         ->get();
 
 
@@ -259,7 +290,7 @@ class CoordenadorController extends Controller
 
     public function julgarRequerimento(Request $request)
     {
-
+ 
         if ($request->decisao == "true") {
             
             $requerimento = Requerimento::find($request->requerimento);
@@ -271,6 +302,12 @@ class CoordenadorController extends Controller
             return view('coordenador/requerimento_coordenador',["inspetores" => $inspetores,"agentes" => $agentes])->with('aprovado', 'O requerimento foi aprovado!');
 
         } else {
+
+            // Verifica se o campos avisos foi passado ou não!
+            if($request->avisos == null){
+                session()->flash('error', 'Você deve informar o motivo da reprovação no campo Avisos!');
+                return redirect()->route('pagina.requerimento');
+            }
 
             $requerimento = Requerimento::find($request->requerimento);
             $requerimento->status = "reprovado";
