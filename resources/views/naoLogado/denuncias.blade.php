@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    <form id="teste" method="POST" action="{{ route('cadastrar.empresa') }}">
+    <form id="teste" method="POST" action="{{ route('cadastrar.denuncia') }}">
         @csrf
 
         <div class="barraMenu" style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
@@ -41,8 +41,19 @@
                                 <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">DADOS DO DENUNCIANTE</label>
                             </div>
                         </div>
-                        @if ($message = Session::get('error'))
+                        @if($errors->any())
+                            <div class="alert alert-warning alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{$errors->first()}}</strong>
+                            </div>
+                        @endif
+                        @if ($message = Session::get('success'))
                             <div class="alert alert-success alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{$message}}</strong>
+                            </div>
+                        @elseif ($message = Session::get('error'))
+                            <div class="alert alert-warning alert-block fade show">
                                 <button type="button" class="close" data-dismiss="alert">×</button>
                                 <strong>{{$message}}</strong>
                             </div>
@@ -50,19 +61,18 @@
                         <div class="form-row">
                             <div class="form-group col-md-4" style="padding-right:15px;">
                                 <label class="styleTituloDoInputCadastro" for="nome">Nome:<span style="color:red">*</span></label>
-                                <input class="styleInputCadastro" type="text" id="nome" name="nome" placeholder="">
+                                <input class="styleInputCadastro" type="text" id="nome" name="nome" placeholder="" required>
                             </div>
                             <div class="form-group col-md-4" style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="cnpjcpf">Email:<span style="color:red">*</span></label>
-                                <input class="styleInputCadastro" type="text" id="cnpjcpf" class="form-control" name="cnpjcpf" placeholder="" maxlength="14">
+                                <label class="styleTituloDoInputCadastro" for="email">Email:</label>
+                                <input class="styleInputCadastro" type="email" id="email" class="form-control" name="email" placeholder="">
                             </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
-                                <label class="styleTituloDoInputCadastro" for="inputPassword4">Empresa:<span style="color:red">*</span></label>
-                                {{-- <input type="text" class="form-control"  name="tipo" placeholder="" required> --}}
-                                <select class="form-control" name="tipo" required>
+                                <label class="styleTituloDoInputCadastro" for="empresa">Empresa:<span style="color:red">*</span></label>
+                                <select class="form-control" name="empresa" required>
                                     @foreach ($empresas as $item)
                                         <option value="" disable="" selected="" hidden="">-- Selecionar Empresa --</option>
-                                        <option value="Sociedade Empresária Limitada (LTDA)">{{$item->nome}}</option>
+                                        <option value="{{$item->id}}">{{$item->nome}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -70,8 +80,8 @@
                         <div class="form-row">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label class="styleTituloDoInputCadastro" for="telefone1">Telefone:<span style="color:red">*</span></label>
-                                    <input class="styleInputCadastro" type="text" id="telefone1" class="form-control" name="telefone1" id="inputEmail4" placeholder="">
+                                    <label class="styleTituloDoInputCadastro" for="telefone1">Telefone:</label>
+                                    <input class="styleInputCadastro" type="text" id="telefone1" class="form-control" name="telefone" maxlength="11" id="inputEmail4" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -80,15 +90,15 @@
                     <div class="form col-md-12">
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                                <label style="font-size:19px;margin-top:-10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">DENÚNCIA</label>
+                                <label style="font-size:19px;margin-top:-10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">DENÚNCIA<span style="color:red">*</span></label>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                      </div>
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="denuncia"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>

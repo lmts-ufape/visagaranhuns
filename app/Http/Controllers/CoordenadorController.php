@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
 use PDF;
 use Illuminate\Support\Facades\Validator;
+use App\Denuncia;
 
 class CoordenadorController extends Controller
 {
@@ -128,6 +129,13 @@ class CoordenadorController extends Controller
         );
         echo json_encode($data);
 
+    }
+
+    public function paginaDenuncias()
+    {
+        
+
+        return view('coordenador/denuncias');
     }
 
     public function cadastrarInspecao(Request $request)
@@ -844,6 +852,99 @@ class CoordenadorController extends Controller
 
 
 
+        $data = array(
+            'success'   => true,
+            'table_data' => $output,
+        );
+        echo json_encode($data);
+    }
+
+    public function ajaxListarDenuncia(Request $request)
+    {
+        $this->listarDenuncias($request->filtro);
+    }
+    public function listarDenuncias($filtro){
+        
+        $denuncias = Denuncia::all();
+        $temp = [];
+        $empresas = [];
+
+        foreach ($denuncias as $indice) {
+
+            if (count($temp) == 0) {
+                $obj = (object) array(
+                    'nome'  => $indice->empresa->nome,
+                    'id'    => $indice->empresa->id,
+                );
+                array_push($temp, $obj);   
+            }
+            else {
+                $found = false;
+                foreach ($temp as $indice2) {
+                    if ($indice->empresa->nome == $indice2->nome) {
+                        $found = true;
+                        break;
+                    }
+                }
+                if ($found == false) {
+                    $obj = (object) array(
+                        'nome'  => $indice->empresa->nome,
+                        'id'    => $indice->empresa->id,
+                    );
+                    array_push($temp, $obj);
+                }
+            }
+        }
+
+        foreach ($temp as $key) {
+            $empresa = Empresa::find($key->id);
+            array_push($empresas,$empresa);
+        }
+        $output = '';
+
+        // avaliar cadastro da empresa
+        foreach($empresas as $item){
+            $output .='
+                    <div class="container cardListagem" id="primeiralicenca">
+                    <div class="d-flex">
+                        <div class="mr-auto p-2">
+                            <div class="btn-group" style="margin-bottom:-15px;">
+                                <div class="form-group" style="font-size:15px;">
+                                    <div class="textoCampo">'.$item->nome.'</div>
+                                    <span>Denúncia Pendente</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-2">
+                            <div class="form-group" style="font-size:15px;">
+                                <div>'.$item->created_at->format('d/m/Y').'</div>
+                            </div>
+                        </div>
+                        <div class="p-2">
+                            <div class="dropdown">
+                                <button class="btn btn-info  btn-sm" type="button" id="dropdownMenuButton'.$item->id.'" onclick="abrir_fechar_card_requerimento(\''."$item->created_at".'\'+\''."$filtro".'\'+'.$item->id.')">
+                                +
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="'.$item->created_at.''.$filtro.''.$item->id.'" style="display:none;">
+                        <hr style="margin-bottom:-0.1rem; margin-top:-0.2rem;">
+                        <div class="d-flex">
+                            <div class="mr-auto p-2">
+                                <div class="form-group" style="font-size:15px;">
+                                    <div>CNPJ: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
+                                    <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
+                                    <div>Proprietário: <span class="textoCampo">'.$item->user->name.'</span></div>
+                                    <div style="margin-top:10px; margin-bottom:-10px;"><button type="button" onclick="empresaId('.$item->id.')" class="btn btn-success">Verificar Denúncias</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ';
+        }
+        
         $data = array(
             'success'   => true,
             'table_data' => $output,

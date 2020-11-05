@@ -60,6 +60,7 @@ Route::get("/denuncias", function () {
     $empresa = Empresa::all();
     return view('naoLogado/denuncias', ['empresas' => $empresa]);
 })->name("pagina.denuncia");
+Route::post("/cadastrar/denuncia", "DenunciaController@cadastrarDenuncia")->name("cadastrar.denuncia");
 
 // Aviso de pendencia de empresa
 Route::get("/confirma/cadastro", function () {
@@ -98,6 +99,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
     //Tela de Requerimento
     Route::get("/requerimento/inspetor", "CoordenadorController@listarRequerimentoInspetorEAgente")->name("pagina.requerimento");
     Route::get("/requerimento", "CoordenadorController@ajaxListarRequerimento")->name("lista.requerimento");
+    Route::get("/denuncia", "CoordenadorController@ajaxListarDenuncia")->name("lista.denuncia");
 
     // Listar e baixar arquivos de uma empresa
     Route::get("/empresa/arquivos", "EmpresaController@listarArquivos")->name("empresa.arquivos");
@@ -144,6 +146,9 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get("/coordenador/gerenciarconteudo/editar/secao","ServicoController@ajaxEditarSecao");
     Route::get("/coordenador/gerenciarconteudo/editar/subir/secao","ServicoController@ajaxEditarSubirSecao");
     Route::get("/coordenador/gerenciarconteudo/deletar/secao","ServicoController@ajaxDeletarSecao");
+
+    // Página de denúncia
+    Route::get("/pagina/denuncia/coordenador", "CoordenadorController@paginaDenuncias")->name("pagina.denuncia.coordenador");
 });
 
 // Grupo de rotas para empresa
