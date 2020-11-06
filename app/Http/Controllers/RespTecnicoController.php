@@ -249,7 +249,7 @@ class RespTecnicoController extends Controller
                 }
             }
         }
-        // dd($checklist);
+
         //tipos: lista de objetos checklist sem repetições, para serem escolhidos os tipos de documentos que serão enviados. $tipo->tipodocemp_id
 
         return view('responsavel_tec/empresa_docs',['nome'=>$empresa->nome,
@@ -262,6 +262,7 @@ class RespTecnicoController extends Controller
     }
 
     public function downloadArquivo(Request $request){
+        dd($request->file);
         return response()->download(storage_path('app/' . $request->file));
     }
 
@@ -335,30 +336,37 @@ class RespTecnicoController extends Controller
 
         $checklist = Checklistemp::where('tipodocemp_id', $request->tipodocempresa)
         ->where('empresa_id', $request->empresaId)
-        ->get();
-
-        // dd($checklist);
+        ->where('areas_id', $request->area)->first();
 
         if ($checklist == null) {
-            session()->flash('error', 'O tipo de documento específico não consta em sua checklist ou a área não está correta!');
+            session()->flash('error', 'O tipo de documento específico não consta em sua checklist!');
             return back();
         }
 
-        foreach ($checklist as $indice) {
-            if ($indice->tipodocemp_id == $request->tipodocempresa && $indice->anexado == "true") {
-                session()->flash('error', 'Este tipo de arquivo já foi anexado!');
-                return back();
-            }
+        // foreach ($checklist as $indice) {
+        //     if ($indice->tipodocemp_id == $request->tipodocempresa && $indice->anexado == "true") {
+        //         session()->flash('error', 'Este tipo de arquivo já foi anexado!');
+        //         return back();
+        //     }
 
-            $indice->anexado = "true";
-            $indice->save();
+        //     $indice->anexado = "true";
+        //     $indice->save();
+        // }
+
+        if ($checklist->tipodocemp_id == $request->tipodocempresa && $checklist->anexado == "true") {
+            session()->flash('error', 'Este tipo de arquivo já foi anexado para essa área!');
+            return back();
         }
+
+        $checklist->anexado = "true";
+        $checklist->save();
 
         $empresa = Empresa::find($request->empresaId);
 
         $fileDocemp = $request->arquivo;
 
-        $pathDocemp = 'empresas/' . $empresa->id . '/' . $request->tipodocempresa . '/';
+        // $pathDocemp = 'empresas/' . $empresa->id . '/' . $request->tipodocempresa . '/';
+        $pathDocemp = 'empresas/' . $empresa->id . '/' . $request->area . '/' . $request->tipodocempresa . '/';
 
         $nomeDocemp = $request->arquivo->getClientOriginalName();
 
@@ -366,6 +374,7 @@ class RespTecnicoController extends Controller
 
         $docEmpresa = Docempresa::create([
             'nome'  => $pathDocemp . $nomeDocemp,
+            'area'  => $request->area,
             'data_emissao'  => $request->data_emissao,
             'data_validade' => $request->data_validade,
             'empresa_id'  => $empresa->id,
