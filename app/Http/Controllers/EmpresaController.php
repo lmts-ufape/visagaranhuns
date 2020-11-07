@@ -773,6 +773,11 @@ class EmpresaController extends Controller
         $docempresa = Docempresa::where("nome", $request->file)
         ->where('empresa_id', $request->empresa_id)->first();
 
+        if ($docempresa == null) {
+            session()->flash('error', 'Erro ao procurar arquivo que será substituido!');
+            return back();
+        }
+
         Storage::delete($docempresa->nome);
 
         $fileDocemp = $request->arquivo;
@@ -783,6 +788,12 @@ class EmpresaController extends Controller
         $nomeDocemp = $request->arquivo->getClientOriginalName();
 
         $docempresa->nome = $pathDocemp . $nomeDocemp;
+        if ($request->data_emissao_editar != null) {
+            $docempresa->data_emissao = $request->data_emissao_editar;
+        }
+        if ($request->data_validade_editar != null) {
+            $docempresa->data_validade = $request->data_validade_editar;
+        }
         $docempresa->save();
 
         Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
@@ -1103,7 +1114,7 @@ class EmpresaController extends Controller
             echo json_encode($data);
 
         } elseif ($requerimento->status == "aprovado") {
-            $inspecao = Inspecao::where('requerimentos_id', $requerimento->id)->first();
+            $inspecao = Inspecao::where('requerimento_id', $requerimento->id)->first();
 
             if ($inspecao == null) {
                 $data = array(
@@ -1205,6 +1216,10 @@ class EmpresaController extends Controller
 
             // Remove o cnae da empresa
             $delete = CnaeEmpresa::destroy($request->idCnaeEmp);
+
+            // Removendo os documentos que foram anexados a essa área
+            $docsempresa = Docempresa::where('empresa_id', $request->empresaId)
+            ->where('area', $area)->delete();
 
             $data = array(
                 'valor'   => "Área Removida",

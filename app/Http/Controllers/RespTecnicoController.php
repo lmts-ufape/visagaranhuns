@@ -262,7 +262,7 @@ class RespTecnicoController extends Controller
     }
 
     public function downloadArquivo(Request $request){
-        dd($request->file);
+
         return response()->download(storage_path('app/' . $request->file));
     }
 
@@ -271,11 +271,18 @@ class RespTecnicoController extends Controller
 
         $validatedData = $request->validate([
 
-            'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000000'],
+            'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000'],
 
         ]);
 
-        $docempresa = Docempresa::where("nome", $request->file)->first();
+        $docempresa = Docempresa::where("nome", $request->file)
+        ->where('empresa_id', $request->empresa_id)
+        ->first();
+
+        if ($docempresa == null) {
+            session()->flash('error', 'Erro ao procurar arquivo que será substituido!');
+            return back();
+        }
 
         Storage::delete($docempresa->nome);
 
@@ -286,6 +293,14 @@ class RespTecnicoController extends Controller
         $nomeDocemp = $request->arquivo->getClientOriginalName();
 
         $docempresa->nome = $pathDocemp . $nomeDocemp;
+        
+        if ($request->data_emissao_editar != null) {
+            $docempresa->data_emissao = $request->data_emissao_editar;
+        }
+        if ($request->data_validade_editar != null) {
+            $docempresa->data_validade = $request->data_validade_editar;
+        }
+        
         $docempresa->save();
 
         Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
@@ -337,7 +352,7 @@ class RespTecnicoController extends Controller
         $checklist = Checklistemp::where('tipodocemp_id', $request->tipodocempresa)
         ->where('empresa_id', $request->empresaId)
         ->where('areas_id', $request->area)->first();
-
+        // dd($request->arquivo);
         if ($checklist == null) {
             session()->flash('error', 'O tipo de documento específico não consta em sua checklist!');
             return back();
