@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Inspetor;
 use App\User;
+use App\Inspecao;
+use App\Endereco;
+use App\Telefone;
 use Auth;
 
 class InspetorController extends Controller
@@ -117,5 +120,34 @@ class InspetorController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function inspecoes(Request $request)
+    {
+        $inspecoes = Inspecao::where('inspetor_id', 1)
+        ->where('status', 'pendente')->get();
+        $temp = [];
+
+        foreach ($inspecoes as $indice) {
+            $endereco = Endereco::where('empresa_id', $indice->requerimento->empresa->id)
+            ->first();
+            $telefone = Telefone::where('empresa_id', $indice->requerimento->empresa->id)
+            ->first();
+
+            $obj = (object) array(
+                'empresa_nome'  => $indice->requerimento->empresa->nome,
+                'rua'           => $endereco->rua,
+                'numero'        => $endereco->numero,
+                'bairro'        => $endereco->bairro,
+                'cep'           => $endereco->cep,
+                'cnpjcpf'          => $indice->requerimento->empresa->cnpjcpf,
+                'representante_legal' => $indice->requerimento->empresa->user->name,
+                'telefone1'     => $telefone->telefone1,
+                'telefone2'     => $telefone->telefone2,
+                'data'          => $indice->data,
+                'status'        => $indice->status,
+            );
+            array_push($temp, $obj);
+        }
     }
 }

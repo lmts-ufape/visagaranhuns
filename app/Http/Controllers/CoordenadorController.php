@@ -146,7 +146,7 @@ class CoordenadorController extends Controller
                 'data'            => $request->data,
                 'status'          => 'pendente',
                 'inspetor_id'     => $request->inspetor,
-                'requerimentos_id' => $indice,
+                'requerimento_id' => $indice,
             ]);
 
             $temp1 = InspecAgente::create([
@@ -173,7 +173,7 @@ class CoordenadorController extends Controller
 
         foreach ($inspecoes as $key) {
             $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
-            $requerimento  = Requerimento::where('id', $key->requerimentos_id)->first();
+            $requerimento  = Requerimento::where('id', $key->requerimento_id)->first();
 
             $obj = (object) array(
                 'data'          => $key->data,
