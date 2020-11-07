@@ -116,6 +116,9 @@
                                     <a class="nav-link" href="{{ route('pagina.requerimento') }}">{{ __('Requerimento') }}</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('pagina.denuncia.coordenador') }}">{{ __('Denúncia') }}</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('criar.inspecao') }}">{{ __('Programação') }}</a>
                                 </li>
                                 <li class="nav-item dropdown">
