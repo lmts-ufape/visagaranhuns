@@ -769,7 +769,7 @@ class EmpresaController extends Controller
             'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000'],
 
         ]);
-
+        
         $docempresa = Docempresa::where("nome", $request->file)
         ->where('empresa_id', $request->empresa_id)->first();
 
@@ -777,7 +777,8 @@ class EmpresaController extends Controller
 
         $fileDocemp = $request->arquivo;
 
-        $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/';
+        // $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/';
+        $pathDocemp = 'empresas/' . $request->empresa_id . '/' . $docempresa->area . '/' . $request->tipodocempresa . '/';
 
         $nomeDocemp = $request->arquivo->getClientOriginalName();
 
@@ -792,7 +793,7 @@ class EmpresaController extends Controller
 
     public function anexarArquivos(Request $request)
     {
- 
+
         $messages = [
             'max'      => 'O tamanho máximo do arquivo deve ser de 5mb!',
             'required' => 'O campo :attribute não foi passado!',
@@ -823,51 +824,61 @@ class EmpresaController extends Controller
         }
 
         $checklist = Checklistemp::where('tipodocemp_id', $request->tipodocempresa)
-        ->where('empresa_id', $request->empresaId)->get();
+        ->where('empresa_id', $request->empresaId)->where('areas_id', $request->area)->first();
 
         if ($checklist == null) {
             session()->flash('error', 'O tipo de documento específico não consta em sua checklist!');
             return back();
         }
 
-        foreach ($checklist as $indice) {
-            if ($indice->tipodocemp_id == $request->tipodocempresa && $indice->anexado == "true") {
-                session()->flash('error', 'Este tipo de arquivo já foi anexado!');
-                return back();
-            }
+        // foreach ($checklist as $indice) {
+        //     if ($indice->tipodocemp_id == $request->tipodocempresa && $indice->anexado == "true") {
+        //         session()->flash('error', 'Este tipo de arquivo já foi anexado!');
+        //         return back();
+        //     }
 
-            $indice->anexado = "true";
-            $indice->save();
+        //     $indice->anexado = "true";
+        //     $indice->save();
+        // }
+
+        if ($checklist->tipodocemp_id == $request->tipodocempresa && $checklist->anexado == "true") {
+            session()->flash('error', 'Este tipo de arquivo já foi anexado para essa área!');
+            return back();
         }
+
+        $checklist->anexado = "true";
+        $checklist->save();
 
         $empresa = Empresa::find($request->empresaId);
 
         $fileDocemp = $request->arquivo;
 
-        $pathDocemp = 'empresas/' . $empresa->id . '/' . $request->tipodocempresa . '/';
+        // $pathDocemp = 'empresas/' . $empresa->id . '/' . $request->tipodocempresa . '/';
+        $pathDocemp = 'empresas/' . $empresa->id . '/' . $request->area . '/' . $request->tipodocempresa . '/';
 
         $nomeDocemp = $request->arquivo->getClientOriginalName();
 
-        $docempresa = Docempresa::where('empresa_id', $empresa->id)->where('tipodocemp_id', $request->tipodocempresa)->first();
+        // $docempresa = Docempresa::where('empresa_id', $empresa->id)->where('tipodocemp_id', $request->tipodocempresa)->first();
 
-        if ($docempresa != null) {
+        // if ($docempresa != null) {
 
-            Storage::delete($docempresa->nome);
-            // dd($pathDocemp . $nomeDocemp);
-            $docempresa->nome = $pathDocemp . $nomeDocemp;
-            $docempresa->save();
+        //     Storage::delete($docempresa->nome);
+        //     // dd($pathDocemp . $nomeDocemp);
+        //     $docempresa->nome = $pathDocemp . $nomeDocemp;
+        //     $docempresa->save();
 
-            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+        //     Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
             
-            session()->flash('success', 'Arquivo salvo com sucesso!');
-            return back();
+        //     session()->flash('success', 'Arquivo salvo com sucesso!');
+        //     return back();
 
-        }
+        // }
 
         Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
 
         $docEmpresa = Docempresa::create([
             'nome'  => $pathDocemp . $nomeDocemp,
+            'area'  => $request->area,
             'data_emissao'  => $request->data_emissao,
             'data_validade' => $request->data_validade,
             'empresa_id'  => $empresa->id,
@@ -935,10 +946,12 @@ class EmpresaController extends Controller
         $empresa = Empresa::where('id', $idEmpresa)->first();
         $docsempresa = Docempresa::where('empresa_id', $empresa->id)->get();
         $cnaempresa = CnaeEmpresa::where("empresa_id", $idEmpresa)->pluck('cnae_id');
-        $tipos = Tipodocempresa::all();
+        $tipos = Tipodocempresa::orderBy('nome','ASC')->get();
         $cnaes = [];
         $areas = [];
         $area = [];
+
+        // dd($tipos);
 
         foreach ($cnaempresa as $indice) {
             array_push($cnaes, Cnae::find($indice));
@@ -955,35 +968,35 @@ class EmpresaController extends Controller
 
         $checklisttemp = Checklistemp::where('empresa_id', $empresa->id)->orderBy('nomeDoc','ASC')->get();
         $checklist = [];
-
-        for ($i=0; $i < count($checklisttemp); $i++) {
-            if (count($checklist) == 0) {
-                array_push($checklist, $checklisttemp[$i]);
-            }
-            else {
-                $temp = false;
-                for ($j=0; $j < count($checklist); $j++) {
-                    if($checklisttemp[$i]->tipodocemp_id == $checklist[$j]->tipodocemp_id) {
-                        if ($checklist[$j]->anexado == "true") {
-                            $temp = true;
-                        }
-                        else {
-                            $checklist[$j] = $checklisttemp[$i];
-                            $temp = true;
-                        }
-                    }
-                }
-                if ($temp == false) {
-                    array_push($checklist, $checklisttemp[$i]);
-                }
-            }
-        }
-
+        // dd($checklisttemp);
+        // for ($i=0; $i < count($checklisttemp); $i++) {
+        //     if (count($checklist) == 0) {
+        //         array_push($checklist, $checklisttemp[$i]);
+        //     }
+        //     else {
+        //         $temp = false;
+        //         for ($j=0; $j < count($checklist); $j++) {
+        //             if($checklisttemp[$i]->tipodocemp_id == $checklist[$j]->tipodocemp_id) {
+        //                 if ($checklist[$j]->anexado == "true") {
+        //                     $temp = true;
+        //                 }
+        //                 else {
+        //                     $checklist[$j] = $checklisttemp[$i];
+        //                     $temp = true;
+        //                 }
+        //             }
+        //         }
+        //         if ($temp == false) {
+        //             array_push($checklist, $checklisttemp[$i]);
+        //         }
+        //     }
+        // }
+        
 
         return view('empresa/documentacao_empresa',['nome'=>$empresa->nome,
         'areas' => $area,
         'empresaId' => $empresa->id,
-        'checklist' => $checklist,
+        'checklist' => $checklisttemp,
         'docsempresa' => $docsempresa,
         'tipos' => $tipos
         ]);

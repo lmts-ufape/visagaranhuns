@@ -172,31 +172,34 @@
                                 <div class="form-group col-md-12">
                                     <label style="font-size:19px;margin-top:2px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">{{$item->nome}}</label>
                                 </div> --}}
+                                @foreach ($areas as $item)
+                                    <div class="form-group col-md-12">
+                                        <label style="font-size:14px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">{{$item->nome}}</label>
+                                    </div>
+                                    @foreach ($checklist as $indice)
+                                        @if ($indice->areas_id == $item->id)
+                                            @if($indice->anexado == "false")
+                                            <div class="form col-md-12">
+                                                <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/> {{$indice->nomeDoc}} -
 
-                                @foreach ($checklist as $indice)
-                                        @if($indice->anexado == "false")
-                                        <div class="form col-md-12">
-                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/> {{$indice->nomeDoc}} -
-
-                                                <span style="color:#e1ad01">Pendente</span>
-                                            </label>
-                                        </div>
-                                        @else
-                                            @foreach ($docsempresa as $docempresa)
-                                                @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id)
-                                                    <div class="form col-md-12">
-                                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
-                                                            <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}"> Baixar arquivo</a>
-                                                        </label>
-                                                        <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDoc({{$docempresa->id}})" style="cursor:pointer; color:#249BE3">- Substituir arquivo</a>
-                                                    </div>
-                                                @endif
-                                            @endforeach
+                                                    <span style="color:#e1ad01">Pendente</span>
+                                                </label>
+                                            </div>
+                                            @else
+                                                @foreach ($docsempresa as $docempresa)
+                                                    @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id && $docempresa->area == $item->id)
+                                                        <div class="form col-md-12">
+                                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
+                                                                <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}"> Baixar arquivo</a>
+                                                            </label>
+                                                            <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDoc({{$docempresa->id}})" style="cursor:pointer; color:#249BE3">- Substituir arquivo</a>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            @endif
                                         @endif
-                                    {{-- @endif --}}
-                                {{-- @endforeach --}}
+                                    @endforeach
                                 @endforeach
-
                             </div>
                         </div>
 
@@ -240,13 +243,26 @@
 
                                     <input id="empresa" type="hidden" name="empresaId" value="{{$empresaId}}">
                                     <div class="form col-md-12" style="margin-top:1px;margin-bottom:10px;">
-                                        <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Tipo de documento</label>
+                                        <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Tipo de documento <span style="font-size:20px;color:red">*</span></label>
                                         <select class="form-control" id="exampleFormControlSelect1" name="tipodocempresa" required>
                                             <option disabled selected>Tipos de documentos</option>
-                                            @foreach ($checklist as $tipo)
-                                            <option value="{{$tipo->tipodocemp_id}}">{{$tipo->nomeDoc}}</option>
+                                            @foreach ($tipos as $tipo)
+                                            <option value="{{$tipo->id}}">{{$tipo->nome}}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                    <div class="form col-md-6" >
+                                        <div class="row">
+                                            <div class="col">
+                                                <label for="data_emissao" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Áreas <span style="font-size:20px;color:red">*</span></label>
+                                                <select class="form-control" id="exampleFormControlSelect1" name="area" required>
+                                                    <option disabled selected>Áreas</option>
+                                                    @foreach ($areas as $area)
+                                                    <option value="{{$area->id}}">{{$area->nome}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form col-md-12" >
                                             <div class="row">

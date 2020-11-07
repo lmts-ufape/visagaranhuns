@@ -21,8 +21,8 @@ class CreateInspecoesTable extends Migration
             $table->bigInteger("inspetor_id")->nullable();
             $table->foreign("inspetor_id")->references("id")->on("inspetor");
 
-            $table->bigInteger("requerimentos_id")->nullable();
-            $table->foreign("requerimentos_id")->references("id")->on("requerimentos");
+            $table->bigInteger("requerimento_id")->nullable();
+            $table->foreign("requerimento_id")->references("id")->on("requerimentos");
 
             $table->timestamps();
         });

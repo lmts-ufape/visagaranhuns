@@ -47,8 +47,8 @@ class Empresa extends Model
         return $this->hasMany("\App\CnaeEmpresa");
     }
 
-    // public function inspecao() {
-    //     return $this->hasMany("\App\Inspecao");
-    // }
+    public function denuncia() {
+        return $this->hasMany("\App\Denuncia");
+    }
 
 }
