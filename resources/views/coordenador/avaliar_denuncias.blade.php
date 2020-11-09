@@ -63,9 +63,9 @@
                                         <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->telefone}}</th>
                                         @if ($item->status == "pendente")
                                         <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Pendente</th>
-                                        @elseif ($item->status == "aprovado")
-                                        <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Aprovado</th>
-                                        @elseif ($item->status == "arquivado")
+                                        @elseif ($item->status == "Acatado")
+                                        <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Acatado</th>
+                                        @elseif ($item->status == "Arquivado")
                                         <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Arquivado</th>
                                         @endif
                                         <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denuncia('{{$item->denuncia}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
@@ -126,10 +126,10 @@
 
                         <input  type="hidden" name="empresa"       value="{{$empresa->id}}">
                         <input  type="hidden" name="decisao"       value="false">
-                        <input  type="hidden" name="denunciaId"    id="denunciaId" value="">
+                        <input  type="hidden" name="denunciaId"    id="denunciaIdArquivar" value="">
 
                         <div class="col-md-12" style="padding-right:0">
-                            <button type="button" class="btn btn-outline-secondary botao-form" style="width:100px;">Arquivar</button>
+                            <button type="submit" class="btn btn-outline-secondary botao-form" style="width:100px;">Arquivar</button>
                         </div>
                     </form>
                     <form method="POST" action="{{ route('avaliar.denuncia') }}">
@@ -137,7 +137,7 @@
 
                         <input  type="hidden" name="empresa"       value="{{$empresa->id}}">
                         <input  type="hidden" name="decisao"       value="true">
-                        <input  type="hidden" name="denunciaId"    id="denunciaId" value="">
+                        <input  type="hidden" name="denunciaId"    id="denunciaIdAcatar" value="">
 
                         <div class="col-md-12" style="padding-right:0">
                             <button type="submit" class="btn btn-outline-secondary botao-form" style="width:100%">

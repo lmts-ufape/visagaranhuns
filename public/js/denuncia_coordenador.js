@@ -30,6 +30,7 @@ window.denuncia = function($descricao){
 
 window.denunciaId = function($id){
     console.log($id);
-    document.getElementById("denunciaId").value = $id;
+    document.getElementById("denunciaIdArquivar").value = $id;
+    document.getElementById("denunciaIdAcatar").value = $id;
 }
 

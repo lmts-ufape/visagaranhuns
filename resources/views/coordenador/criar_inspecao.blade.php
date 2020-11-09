@@ -104,7 +104,7 @@
                                 <div class="form-row">
                                     
                                     <div class="btn-group col-md-12">
-                                        <div class="col-md-6 styleTituloDoInputCadastro" style="margin-left:-15px;margin-right:30px;margin-bottom:10px;">Requerimentos Aprovados</div>
+                                        <div class="col-md-12 styleTituloDoInputCadastro" style="margin-left:-15px;margin-right:30px;margin-bottom:10px;">Requerimentos Aprovados ou Denúncias</div>
                                         <div class="col-md-12 input-group input-group-sm mb-2">
                                             {{-- <input type="text" class="form-control" placeholder="Nome ou código do CNAE"> --}}
                                         </div>

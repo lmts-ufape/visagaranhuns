@@ -290,7 +290,26 @@ class CoordenadorController extends Controller
 
     public function avaliarDenuncia(Request $request)
     {
-        dd($request);
+        // dd($request->decisao);
+        if ($request->decisao == "true") {
+
+            $denuncia = Denuncia::find($request->denunciaId);
+            $denuncia->status = "Acatado";
+            $denuncia->save();
+
+            session()->flash('success', 'Denúncia acatada com sucesso!');
+            return redirect()->route('pagina.denuncia.coordenador');
+
+        } elseif ($request->decisao == "false") {
+
+            $denuncia = Denuncia::find($request->denunciaId);
+            $denuncia->status = "Arquivado";
+            $denuncia->save();
+
+            session()->flash('success', 'Denúncia arquivada com sucesso!');
+            return redirect()->route('pagina.denuncia.coordenador');
+        }
+        
     }
 
     public function licenca(Request $request)
@@ -927,7 +946,7 @@ class CoordenadorController extends Controller
                             <div class="btn-group" style="margin-bottom:-15px;">
                                 <div class="form-group" style="font-size:15px;">
                                     <div class="textoCampo">'.$item->nome.'</div>
-                                    <span>Denúncia Pendente</span>
+                                    <span>Denúncias</span>
                                 </div>
                             </div>
                         </div>

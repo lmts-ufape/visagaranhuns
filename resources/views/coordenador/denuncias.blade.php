@@ -38,6 +38,12 @@
                 <strong>{{$message}}</strong>
             </div>
         @endif
+        @if ($message = Session::get('success'))
+        <div class="alert alert-success alert-block fade show">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{$message}}</strong>
+        </div>
+        @endif
         @if(!empty($aprovado))
         <div class="alert alert-warning alert-block fade show">
             <button type="button" class="close" data-dismiss="alert">×</button>
