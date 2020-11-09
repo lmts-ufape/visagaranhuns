@@ -88,9 +88,9 @@
 
     </div>
 
-<form id="submeterId" method="POST" action="{{route('pagina.detalhes')}}">
+<form id="submeterIdDenuncia" method="POST" action="{{route('pagina.detalhes.denuncia')}}">
     @csrf
-    <input id="inputSubmeterId" type="hidden" name="empresa" value="">
+    <input id="inputSubmeterIdDenuncia" type="hidden" name="empresa" value="">
 </form>
 
 <form id="licenca" method="POST" action="{{route('licenca')}}">

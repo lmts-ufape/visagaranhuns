@@ -277,6 +277,22 @@ class CoordenadorController extends Controller
         ]);
     }
 
+    public function paginaDetalhesDenuncia(Request $request)
+    {
+        $empresa = Empresa::find($request->empresa);
+        $denuncias = Denuncia::where('empresa_id', $request->empresa)->get();
+
+        return view("coordenador/avaliar_denuncias")->with([
+            "empresa" => $empresa,
+            "denuncias" => $denuncias,
+        ]);
+    }
+
+    public function avaliarDenuncia(Request $request)
+    {
+        dd($request);
+    }
+
     public function licenca(Request $request)
     {
         $empresa = Empresa::find($request->empresa);
@@ -936,7 +952,7 @@ class CoordenadorController extends Controller
                                     <div>CNPJ: <span class="textoCampo">'.$item->cnpjcpf.'</span></div>
                                     <div>Tipo: <span class="textoCampo">'.$item->tipo.'</span></div>
                                     <div>Proprietário: <span class="textoCampo">'.$item->user->name.'</span></div>
-                                    <div style="margin-top:10px; margin-bottom:-10px;"><button type="button" onclick="empresaId('.$item->id.')" class="btn btn-success">Verificar Denúncias</button></div>
+                                    <div style="margin-top:10px; margin-bottom:-10px;"><button type="button" onclick="empresaIdDenuncia('.$item->id.')" class="btn btn-success">Verificar Denúncias</button></div>
                                 </div>
                             </div>
                         </div>

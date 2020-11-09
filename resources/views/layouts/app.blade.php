@@ -24,6 +24,7 @@
     <script type="text/javascript" src="{{URL::asset('js/documentacao_empresa.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/documentacao_empresa_rt.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/documentacao_rt.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/denuncia_coordenador.js')}}" defer></script>
 
     <!-- load jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

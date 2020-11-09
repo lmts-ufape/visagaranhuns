@@ -148,7 +148,9 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get("/coordenador/gerenciarconteudo/deletar/secao","ServicoController@ajaxDeletarSecao");
 
     // Página de denúncia
-    Route::get("/pagina/denuncia/coordenador", "InspetorController@inspecoes")->name("pagina.denuncia.coordenador");
+    Route::get("/pagina/denuncia/coordenador", "CoordenadorController@paginaDenuncias")->name("pagina.denuncia.coordenador");
+    Route::post("/pagina/detalhes/denuncia", "CoordenadorController@paginaDetalhesDenuncia")->name("pagina.detalhes.denuncia");
+    Route::post("/avaliar/denuncia", "CoordenadorController@avaliarDenuncia")->name("avaliar.denuncia");
 });
 
 // Grupo de rotas para empresa
