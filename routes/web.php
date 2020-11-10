@@ -215,6 +215,7 @@ Route::middleware(['IsEmpresa'])->group(function () {
 // Grupo de rotas para inspetor
 Route::middleware(['IsInspetor'])->group(function () {
     Route::get('/home/inspetor', 'InspetorController@home')->name('home.inspetor');
+    Route::get('/programacao/inspetor', 'InspetorController@showProgramacao')->name('show.programacao');
 /*
     (WEB)
     * Cadastrar/Editar/Deletar relatórios (Próprios)

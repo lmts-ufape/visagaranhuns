@@ -49,7 +49,7 @@ class InspetorController extends Controller
     public function store(Request $request)
     {
         $user = User::find(Auth::user()->id);
-        
+
         $validator = $request->validate([
             'nome'     => 'required|string',
             'formacao' => 'required|string',
@@ -149,5 +149,17 @@ class InspetorController extends Controller
             );
             array_push($temp, $obj);
         }
+    }
+    /*
+    * FUNCAO: Mostrar a pagina de programacao
+    * ENTRADA:
+    * SAIDA: Listar inspecoes programadas para o inspetor
+    */
+    public function showProgramacao(){
+
+        $inspetor = Inspetor::where('user_id','=',Auth::user()->id)->first();
+        $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
+
+        return view('inspetor/programacao_inspetor', ['inspecoes' => $inspecoes]);
     }
 }
