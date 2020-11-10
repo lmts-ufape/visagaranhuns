@@ -134,3 +134,17 @@ window.mostrarBotaoAdicionar = function(valor){
 
 }
 
+var tempIdCardDenuncia = -1;
+window.mostrarBotaoAdicionarDenuncia = function(valor){
+    if(tempIdCardDenuncia == -1){
+        document.getElementById("cardSelecionadoDenuncia"+valor).style.display = "block";
+        this.tempIdCardDenuncia=document.getElementById("cardSelecionadoDenuncia"+valor);
+    }else if(tempIdCardDenuncia != -1){
+        tempIdCardDenuncia.style.display = "none";
+        document.getElementById("cardSelecionadoDenuncia"+valor).style.display = "block";
+        this.tempIdCardDenuncia=document.getElementById("cardSelecionadoDenuncia"+valor);
+
+    }
+
+}
+

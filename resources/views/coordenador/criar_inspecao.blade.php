@@ -163,15 +163,17 @@
             dataType:'json',
             // data: {"filtro": "all" },
             success: function(response){
-                console.log("Trabalho");
+                console.log("PASSOU!");
                 $('tbody').html(response.table_data);
             }
         });
     };
 
     var arrayTemp = [];
+    var arrayTempDenuncia = [];
 
     window.addRequerimento = function($id) {
+
         if(arrayTemp.findIndex(element => element == $id) == -1){ //condicao para add o requerimento na lista
 
             $.ajax({
@@ -191,8 +193,36 @@
         }
     }
 
+    window.addDenuncia = function($id) {
+        console.log('TESTE DE CONCATENACAO' + $id);
+        if(arrayTempDenuncia.findIndex(element => element == $id) == -1){ //condicao para add o requerimento na lista
+
+            // innerText sempre pegará o primero texto da lista
+            var elemento = document.getElementById('empresa'+$id).innerText;
+            linha = montarLinhaInputDenuncia($id,elemento);
+            $('#adicionar').append(linha);
+            arrayTempDenuncia.push($id);
+
+            // $.ajax({
+            //     url:'{{ config('prefixo.PREFIXO') }}encontrar/requerimento',
+            //     type:"get",
+            //     dataType:'json',
+            //     data: {"requerimentoId": $id},
+            //     success: function(response){
+
+            //         // innerText sempre pegará o primero texto da lista
+            //         var elemento = document.getElementById($id).innerText;
+            //         linha = montarLinhaInputRequerimento($id,elemento, response.tipo, response.cnae);
+            //         $('#adicionar').append(linha);
+            //         arrayTemp.push($id);     
+            //     }
+            // });
+        }
+    }
+
+    // Montar linha para requerimento
     window.montarLinhaInputRequerimento = function(id,elemento, tipo, cnae){
-        console.log(elemento);
+        console.log("AQUUUUUUUUUUUUUEEEEEEEEEEEEEEEEEEEEEEE");
         return " <div class='d-flex justify-content-center form-gerado cardMeuCnae'>\n"+
             "            <div class='mr-auto p-2'>\n"+
             "                <div class='btn-group' style='margin-bottom:-15px;'>\n"+
@@ -203,6 +233,27 @@
             "                    </div>\n"+
             "                </div>\n"+
             "               <input type='hidden' name='requerimentos[]' value='"+id+"' required>\n"+
+            "            </div>\n"+
+            "            <div style='width:140px; height:25px; text-align:right;'>\n"+
+            "                <div id='cardSelecionado' class='btn-group'>\n"+
+            "                    <button type='button' class='btn btn-danger' value='"+id+"' onclick='deletar(this)'>X</button>\n"+
+            "                </div>\n"+
+            "            </div>\n"+
+            "    </div>\n";
+    }
+
+    // Montar linha para denuncia
+    window.montarLinhaInputDenuncia = function(id,elemento){
+
+        return " <div class='d-flex justify-content-center form-gerado cardMeuCnae'>\n"+
+            "            <div class='mr-auto p-2'>\n"+
+            "                <div class='btn-group' style='margin-bottom:-15px;'>\n"+
+            "                    <div class='form-group' style='font-size:15px;'>\n"+
+            "                        <div class='textoCampo' id='"+id+"'>"+elemento+"</div>\n"+
+            "                        <div>Tipo: <span class='textoCampo'>Denúncia</span></div>\n"+
+            "                    </div>\n"+
+            "                </div>\n"+
+            "               <input type='hidden' name='empresas[]' value='"+id+"' required>\n"+
             "            </div>\n"+
             "            <div style='width:140px; height:25px; text-align:right;'>\n"+
             "                <div id='cardSelecionado' class='btn-group'>\n"+

@@ -51,29 +51,49 @@ class CoordenadorController extends Controller
     {
         $date = date('Y-m-d');
 
-        $inspecoes = Inspecao::where('status', 'pendente')->where('data', $date)->get();
-        // dd($inspecoes);
-        // $inspecoes = Inspecao::where('status', 'pendente')->get();
+        // $inspecoes = Inspecao::where('status', 'pendente')->where('data', $date)->get();
+        $inspecoes = Inspecao::where('status', 'pendente')->get();
         $inspecao = [];
         $empNome = [];
         $emps = [];
 
         foreach ($inspecoes as $key) {
-            $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
-            $requerimento  = Requerimento::where('id', $key->requerimentos_id)->first();
 
-            $obj = (object) array(
-                'data'          => $key->data,
-                'status'        => $key->status,
-                'inspetor'      => $key->inspetor->user->name,
-                'agente1'       => $inspec_agente[0]->agente->user->name,
-                'agente2'       => $inspec_agente[1]->agente->user->name,
-                'empresa'       => $requerimento->empresa->nome,
-                'cnae'          => $requerimento->cnae->descricao,                
-            );
-            array_push($inspecao, $obj);
+            if ($key->motivo == "Primeira Licenca" || $key->motivo == "Renovacao") {
+
+                $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+                $requerimento  = Requerimento::where('id', $key->requerimento_id)->first();
+    
+                $obj = (object) array(
+                    'data'          => $key->data,
+                    'status'        => $key->status,
+                    'inspetor'      => $key->inspetor->user->name,
+                    'agente1'        => $inspec_agente[0]->agente->user->name,
+                    'agente2'        => $inspec_agente[1]->agente->user->name,
+                    'empresa'       => $requerimento->empresa->nome,
+                    'cnae'          => $requerimento->cnae->descricao,              
+                );
+                array_push($inspecao, $obj);
+
+            } elseif ($key->motivo == "Denuncia") {
+
+                $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+                $empresa = Empresa::find($key->empresas_id);
+                
+                $obj = (object) array(
+                    'data'          => $key->data,
+                    'status'        => $key->status,
+                    'inspetor'      => $key->inspetor->user->name,
+                    'agente1'        => $inspec_agente[0]->agente->user->name,
+                    'agente2'        => $inspec_agente[1]->agente->user->name,
+                    'empresa'       => $empresa->nome,
+                    'cnae'          => "Denúncia",              
+                );
+                array_push($inspecao, $obj);
+            }
+
         }
-
+        // dd($inspecao);
         foreach ($inspecao as $indice) {
             array_push($empNome, $indice->empresa);
         }
@@ -142,11 +162,34 @@ class CoordenadorController extends Controller
     {
         // dd($request);
         foreach ($request->requerimentos as $indice) {
+            $requerimento = Requerimento::find($indice);
             $inspecao = Inspecao::create([
                 'data'            => $request->data,
                 'status'          => 'pendente',
                 'inspetor_id'     => $request->inspetor,
                 'requerimento_id' => $indice,
+                'empresas_id'      => $requerimento->empresa->id,
+                'motivo'          => $requerimento->tipo,
+            ]);
+
+            $temp1 = InspecAgente::create([
+                'inspecoes_id'  => $inspecao->id,
+                'agente_id'     => $request->agente1,
+            ]);
+    
+            $temp2 = InspecAgente::create([
+                'inspecoes_id'  => $inspecao->id,
+                'agente_id'     => $request->agente2,
+            ]);
+        }
+
+        foreach ($request->empresas as $indice) {
+            $inspecao = Inspecao::create([
+                'data'            => $request->data,
+                'status'          => 'pendente',
+                'inspetor_id'     => $request->inspetor,
+                'empresas_id'      => $indice,
+                'motivo'          => "Denuncia",
             ]);
 
             $temp1 = InspecAgente::create([
@@ -170,24 +213,43 @@ class CoordenadorController extends Controller
     {
         $inspecoes = Inspecao::all();
         $temp = [];
-
+        
         foreach ($inspecoes as $key) {
-            $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
-            $requerimento  = Requerimento::where('id', $key->requerimento_id)->first();
 
-            $obj = (object) array(
-                'data'          => $key->data,
-                'status'        => $key->status,
-                'inspetor'      => $key->inspetor->user->name,
-                'agente'        => $inspec_agente[0]->agente->user->name,
-                'agente'        => $inspec_agente[1]->agente->user->name,
-                'empresa'       => $requerimento->empresa->nome,
-                'cnae'          => $requerimento->cnae->descricao,                
-            );
-            array_push($temp, $obj);
-            
+            if ($key->motivo == "Primeira Licenca" || $key->motivo == "Renovacao") {
+
+                $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+                $requerimento  = Requerimento::where('id', $key->requerimento_id)->first();
+    
+                $obj = (object) array(
+                    'data'          => $key->data,
+                    'status'        => $key->status,
+                    'inspetor'      => $key->inspetor->user->name,
+                    'agente'        => $inspec_agente[0]->agente->user->name,
+                    'agente'        => $inspec_agente[1]->agente->user->name,
+                    'empresa'       => $requerimento->empresa->nome,
+                    'cnae'          => $requerimento->cnae->descricao,              
+                );
+                array_push($temp, $obj);
+
+            } elseif ($key->motivo == "Denuncia") {
+
+                $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+                $empresa = Empresa::find($key->empresas_id);
+                
+                $obj = (object) array(
+                    'data'          => $key->data,
+                    'status'        => $key->status,
+                    'inspetor'      => $key->inspetor->user->name,
+                    'agente'        => $inspec_agente[0]->agente->user->name,
+                    'agente'        => $inspec_agente[1]->agente->user->name,
+                    'empresa'       => $empresa->nome,
+                    'cnae'          => "Denúncia",              
+                );
+                array_push($temp, $obj);
+            }
         }
-
+        
         return view('coordenador.historico_inspecao')->with([
             "inspecoes" => $temp,
         ]);
@@ -197,8 +259,43 @@ class CoordenadorController extends Controller
     public function requerimentosAprovados()
     {
         $resultado = Requerimento::where('status', 'aprovado')->get();
-        // $resultado = Requerimento::find(1)->get();
-        // return view('coordenador/cnaes_coordenador');
+
+        $denuncias = Denuncia::where('status', 'Acatado')->get();
+        $temp = [];
+        $empresas = [];
+
+        foreach ($denuncias as $indice) {
+
+            if (count($temp) == 0) {
+                $obj = (object) array(
+                    'nome'  => $indice->empresa->nome,
+                    'id'    => $indice->empresa->id,
+                );
+                array_push($temp, $obj);   
+            }
+            else {
+                $found = false;
+                foreach ($temp as $indice2) {
+                    if ($indice->empresa->nome == $indice2->nome) {
+                        $found = true;
+                        break;
+                    }
+                }
+                if ($found == false) {
+                    $obj = (object) array(
+                        'nome'  => $indice->empresa->nome,
+                        'id'    => $indice->empresa->id,
+                    );
+                    array_push($temp, $obj);
+                }
+            }
+        }
+
+        foreach ($temp as $key) {
+            $empresa = Empresa::find($key->id);
+            array_push($empresas,$empresa);
+        }
+
         $output = '';
             if($resultado->count() > 0){
                 foreach($resultado as $item){
@@ -220,6 +317,29 @@ class CoordenadorController extends Controller
                                 </div>
                             </div>
 
+                    </div>
+
+                    ';
+                }
+            }
+            if(isset($empresas)){
+                foreach($empresas as $indice){
+                    $output .= '
+                    <div class="d-flex justify-content-center cardMeuCnae" onmouseenter="mostrarBotaoAdicionarDenuncia('.$indice->id.')">
+                        <div class="mr-auto p-2>OPA</div>
+                            <div class="mr-auto p-2">
+                                <div class="btn-group" style="margin-bottom:-15px;">
+                                    <div class="form-group" style="font-size:15px;">
+                                        <div class="textoCampo" id="empresa'.$indice->id.'">'.$indice->nome.'</div>
+                                        <div>Tipo: <span class="textoCampo">Denúncia</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width:140px; height:25px; text-align:right;">
+                                <div id="cardSelecionadoDenuncia'.$indice->id.'" class="btn-group" style="display:none;">
+                                    <div class="btn btn-success btn-sm"  onclick="addDenuncia('.$indice->id.')" >Adicionar</div>
+                                </div>
+                            </div>
                     </div>
 
                     ';
@@ -899,7 +1019,7 @@ class CoordenadorController extends Controller
         $this->listarDenuncias($request->filtro);
     }
     public function listarDenuncias($filtro){
-        
+         
         $denuncias = Denuncia::all();
         $temp = [];
         $empresas = [];

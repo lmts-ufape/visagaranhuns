@@ -52,7 +52,7 @@
                                 <tbody>
                                     @foreach($inspecoes as $item)
                                         <tr>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->data}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{date('d-m-Y', strtotime($item->data))}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->inspetor}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->agente}}</th>

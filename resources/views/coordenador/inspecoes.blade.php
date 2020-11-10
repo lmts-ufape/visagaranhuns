@@ -104,7 +104,7 @@
         @if ($item->empresa == $indice->nome)
           <tbody>
             <tr>
-              <td>{{$item->data}}</td>
+              <td>{{date('d-m-Y', strtotime($item->data))}}</td>
               <td>{{$item->inspetor}}</td>
               <td>{{$item->agente1}}</td>
               <td>{{$item->agente2}}</td>
