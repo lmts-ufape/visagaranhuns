@@ -16,6 +16,11 @@ class CreateInspecaoFotosTable extends Migration
         Schema::create('inspecao_fotos', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string("imagemInspecao");
+            $table->string("descricao");
+
+            $table->bigInteger("inspecao_id")->nullable();
+            $table->foreign("inspecao_id")->references("id")->on("inspecoes");
         });
     }
 

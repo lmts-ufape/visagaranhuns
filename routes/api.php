@@ -25,12 +25,11 @@ Route::post("/login",  "ApiController@apiLogin")->name("api.login");
 Route::post("/refresh",  "ApiController@apiRefresh")->name("api.refresh");
 
 //baixar inspecoes
+Route::post("/download/inspecoes",  "ApiController@apiDonwloadInspecoes")->name("api.download.inspecoes");
 
 //baixar dados da empresa
 
 //baixar documentos
 
-//enviar fotos
-
-
-Route::get("/teste",  "ApiController@teste")->name("api.teste");
+//salvar img da inspecao
+Route::post("/save/img",  "ApiController@apiSaveImg")->name("api.save.img");
