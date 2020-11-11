@@ -51,7 +51,30 @@ class RespTecnicoController extends Controller
         }
         $empresas = array_unique($temp);
 
-        return view('responsavel_tec/home_rt',['empresas' => $empresas]);
+
+        $countPendente = 0;
+        $countAnexado  = 0;
+
+        // $empresa = Auth::user()->empresa;
+        foreach ($empresas as $indice) {
+
+            $checklistPendente = Checklistemp::where('empresa_id', $indice->empresa_id)
+            ->where('anexado', 'false')
+            ->where('areas_id', $indice->area_id)
+            ->get();
+            $countPendente = $countPendente + count($checklistPendente);
+
+            $checklistAnexado  = Checklistemp::where('empresa_id', $indice->empresa_id)
+            ->where('anexado', 'true')
+            ->where('areas_id', $indice->area_id)
+            ->get();
+            $countAnexado = $countAnexado + count($checklistAnexado);
+        }
+        
+        return view('responsavel_tec/home_rt',
+        ['empresas' => $empresas,
+        'anexados' => $countAnexado,
+        'pendentes' => $countPendente]);
     }
 
     public function listarEmpresas(Request $request)
