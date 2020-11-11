@@ -53,15 +53,26 @@ class EmpresaController extends Controller
 
     public function home()
     {
-        // dd(Auth::user()->empresa);
+        $countPendente = 0;
+        $countAnexado  = 0;
+
         $empresa = Auth::user()->empresa;
-        // $id = Crypt::decrypt($request->value);
-        // $empresa = Empresa::where("id","=", $idEmpresa)->get();
-        // $endereco = Endereco::where('empresa_id', $empresa->id)->first();
-        // $telefone = Telefone::where('empresa_id', $empresa->id)->first();
-        // $cnae = CnaeEmpresa::where('empresa_id', $id)->get();
-        // $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->get();
-        return view('empresa.home_empresa',["empresas" => $empresa]);
+        foreach ($empresa as $indice) {
+            $checklistPendente = Checklistemp::where('empresa_id', $indice->id)
+            ->where('anexado', 'false')
+            ->get();
+            $countPendente = $countPendente + count($checklistPendente);
+
+            $checklistAnexado  = Checklistemp::where('empresa_id', $indice->id)
+            ->where('anexado', 'true')
+            ->get();
+            $countAnexado = $countAnexado + count($checklistAnexado);
+        }
+        
+        return view('empresa.home_empresa',
+        ["empresas" => $empresa,
+        'anexados' => $countAnexado,
+        'pendentes' => $countPendente]);
     }
 
     /**

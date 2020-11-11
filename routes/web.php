@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Servico;
 use App\Empresa;
+use App\Denuncia;
+use App\Requerimento;
+use App\Inspecao;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +22,40 @@ use App\Empresa;
 Route::get('/', function () {
     if (Auth::check()) {
         if (Auth::user()->tipo == "coordenador") {
-            return view('coordenador.home_coordenador');
+
+        $denunciasAcatado     = Denuncia::where('status', 'Acatado')->get();
+        $denunciasArquivado   = Denuncia::where('status', 'Arquivado')->get();
+        $denunAcatado         = count($denunciasAcatado);
+        $denunArquivado       = count($denunciasArquivado);
+
+        $requerimentosAprovado  = Requerimento::where('status', 'aprovado')->get();
+        $requerimentosReprovado = Requerimento::where('status', 'reprovado')->get();
+        $requerimentosPendente  = Requerimento::where('status', 'pendente')->get();
+        $reqAprovado  = count($requerimentosAprovado);
+        $reqReprovado = count($requerimentosReprovado);
+        $reqPendente  = count($requerimentosPendente);
+
+        $inspecoesPendente      = Inspecao::where('status', 'pendente')->get();
+        $inspecoesCompleta      = Inspecao::where('status', 'completo')->get();
+        $inspecPendente         = count($inspecoesPendente);
+        $inspecCompleta         = count($inspecoesCompleta);
+
+        $empresasPendente      = Empresa::where('status_cadastro', 'pendente')->get();
+        $empresasAprovada      = Empresa::where('status_cadastro', 'aprovado')->get();
+        $empPendente           = count($empresasPendente);
+        $empAprovada           = count($empresasAprovada);
+              
+        return view('coordenador.home_coordenador',
+        ['denunciasAcatado'      => $denunAcatado,
+        'denunciasArquivado'     => $denunArquivado,
+        'requerimentosAprovado'  => $reqAprovado,
+        'requerimentosReprovado' => $reqReprovado,
+        'requerimentosPendente'  => $reqPendente,
+        'inspecoesPendente'      => $inspecPendente,
+        'inspecoesCompleta'      => $inspecCompleta,
+        'empresasPendente'       => $empPendente,
+        'empresasAprovada'       => $empAprovada,
+        ]);
         }
         elseif (Auth::user()->tipo == "empresa") {
             return redirect()->route('home.empresa');
