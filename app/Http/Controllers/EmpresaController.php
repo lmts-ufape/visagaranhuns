@@ -762,7 +762,9 @@ class EmpresaController extends Controller
         $docempresa = Docempresa::find($request->id);
 
         $data = array(
-            'nome'   => $docempresa->nome,
+            'nome'          => $docempresa->nome,
+            'data_emissao'  => $docempresa->data_emissao,
+            'data_validade' => $docempresa->data_validade,
         );
 
         echo json_encode($data);
@@ -789,28 +791,46 @@ class EmpresaController extends Controller
             return back();
         }
 
-        Storage::delete($docempresa->nome);
+        if($request->arquivo != null) {
 
-        $fileDocemp = $request->arquivo;
+            Storage::delete($docempresa->nome);
 
-        // $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/';
-        $pathDocemp = 'empresas/' . $request->empresa_id . '/' . $docempresa->area . '/' . $request->tipodocempresa . '/';
+            $fileDocemp = $request->arquivo;
+    
+            // $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/';
+            $pathDocemp = 'empresas/' . $request->empresa_id . '/' . $docempresa->area . '/' . $request->tipodocempresa . '/';
+    
+            $nomeDocemp = $request->arquivo->getClientOriginalName();
+    
+            $docempresa->nome = $pathDocemp . $nomeDocemp;
+            if ($request->data_emissao_editar != null) {
+                $docempresa->data_emissao = $request->data_emissao_editar;
+            }
+            if ($request->data_validade_editar != null) {
+                $docempresa->data_validade = $request->data_validade_editar;
+            }
+            $docempresa->save();
+    
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+    
+            session()->flash('success', 'Arquivo salvo com sucesso!');
+            return back();
 
-        $nomeDocemp = $request->arquivo->getClientOriginalName();
+        }else {
 
-        $docempresa->nome = $pathDocemp . $nomeDocemp;
-        if ($request->data_emissao_editar != null) {
-            $docempresa->data_emissao = $request->data_emissao_editar;
+            if ($request->data_emissao_editar != null) {
+                $docempresa->data_emissao = $request->data_emissao_editar;
+            }
+            if ($request->data_validade_editar != null) {
+                $docempresa->data_validade = $request->data_validade_editar;
+            }
+            $docempresa->save();
+
+            session()->flash('success', 'Datas atualizadas!');
+            return back();
         }
-        if ($request->data_validade_editar != null) {
-            $docempresa->data_validade = $request->data_validade_editar;
-        }
-        $docempresa->save();
 
-        Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
 
-        session()->flash('success', 'Arquivo salvo com sucesso!');
-        return back();
     }
 
     public function anexarArquivos(Request $request)

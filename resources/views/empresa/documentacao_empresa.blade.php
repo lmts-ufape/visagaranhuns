@@ -220,11 +220,11 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Emissão</label>
-                                                    <input type="date" class="form-control" placeholder="" name="data_emissao_editar">
+                                                    <input type="date" class="form-control" placeholder="" id="data_emissao_edit" name="data_emissao_editar">
                                                 </div>
                                                 <div class="col">
                                                     <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Validade</label>
-                                                    <input type="date" class="form-control" placeholder="" name="data_validade_editar">
+                                                    <input type="date" class="form-control" placeholder="" id="data_validade_edit" name="data_validade_editar">
                                                 </div>
                                             </div>
                                         </div>
@@ -374,8 +374,10 @@
             dataType:'json',
             data: {"id": $id},
             success: function(response){
-                console.log(response.nome);
+                console.log(response.data_emissao);
                 $('#editarDoc').val(response.nome);
+                $('#data_emissao_edit').val(response.data_emissao);
+                $('#data_validade_edit').val(response.data_validade);
             }
         });
     }
