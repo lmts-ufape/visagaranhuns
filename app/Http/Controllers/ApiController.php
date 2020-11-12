@@ -119,7 +119,7 @@ class ApiController extends Controller
     *   RETURN: confirmacao que a imagem foi salva
     */
     public function apiSaveImg(Request $request){
-        
+
         $destinationPath = public_path('imagens/inspecoes');
         $image1=$request->photo;
         $_image1 = rand().'.jpeg';
@@ -128,8 +128,9 @@ class ApiController extends Controller
         $fotoDaInspecao = new InspecaoFoto;
         $fotoDaInspecao->imagemInspecao = $_image1;
         $fotoDaInspecao->inspecao_id = $request->id;
+        $fotoDaInspecao->orientation = $request->orientation;
         $fotoDaInspecao->descricao = "";
         $fotoDaInspecao->save();
-        
+
     }
 }

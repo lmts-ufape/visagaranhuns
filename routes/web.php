@@ -202,7 +202,7 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get('/cnae/encontrar/empresa',              'EmpresaController@encontrarCnae')->name('encontrar.cnae.empresa');
     Route::post('/cadastro/requerimento/empresa',      'EmpresaController@cadastrarRequerimento')->name('cadastrar.requerimento.empresa');
 
-    
+
     Route::get('/verificar/requerimento/inspecao',     'EmpresaController@verificarRequerimentoInspecao')->name('varificar.requerimento.inspecao');
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
@@ -216,6 +216,9 @@ Route::middleware(['IsEmpresa'])->group(function () {
 Route::middleware(['IsInspetor'])->group(function () {
     Route::get('/home/inspetor', 'InspetorController@home')->name('home.inspetor');
     Route::get('/programacao/inspetor', 'InspetorController@showProgramacao')->name('show.programacao');
+    Route::get('/programacao/inspecao/album', 'InspetorController@showAlbum')->name('show.album');
+    Route::post('/delete/foto', 'InspetorController@deleteFoto')->name('delete.foto');
+    Route::post('/save/descricao', 'InspetorController@saveDescricao')->name('save.descricao');
 /*
     (WEB)
     * Cadastrar/Editar/Deletar relatórios (Próprios)

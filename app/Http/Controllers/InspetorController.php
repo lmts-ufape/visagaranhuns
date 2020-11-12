@@ -7,8 +7,10 @@ use App\Inspetor;
 use App\User;
 use App\Inspecao;
 use App\Endereco;
+use App\InspecaoFoto;
 use App\Telefone;
 use Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class InspetorController extends Controller
 {
@@ -150,16 +152,49 @@ class InspetorController extends Controller
             array_push($temp, $obj);
         }
     }
+
     /*
     * FUNCAO: Mostrar a pagina de programacao
     * ENTRADA:
     * SAIDA: Listar inspecoes programadas para o inspetor
     */
     public function showProgramacao(){
-
         $inspetor = Inspetor::where('user_id','=',Auth::user()->id)->first();
         $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
-
         return view('inspetor/programacao_inspetor', ['inspecoes' => $inspecoes]);
+    }
+
+    /*
+    * FUNCAO: Mostrar as imagens capturadas pela camera
+    * ENTRADA: inspecao_id
+    * SAIDA: listagem com as imagens da camera
+    */
+    public function showAlbum(Request $request){
+        $resultado = InspecaoFoto::where('inspecao_id','=', Crypt::decrypt($request->value))->orderBy('created_at','ASC')->get();
+        return view('inspetor/album_inspetor', ['album' => $resultado]);
+    }
+    /*
+    * FUNCAO:  Deletar uma imagem
+    * ENTRADA: inspecao_id, imagem_id
+    * SAIDA:
+    */
+    public function deleteFoto(Request $request){
+        $nomeDoArquivo = "";
+        $resultado = InspecaoFoto::where('id','=',Crypt::decrypt($request->value))->first();
+        $nomeDoArquivo = $resultado->imagemInspecao;
+        $resultado->delete();
+        unlink("imagens/inspecoes/".$nomeDoArquivo);
+        return redirect()->back()->with('success', "Foto deletada com sucesso!");
+    }
+    /*
+    * FUNCAO: Add descricao a imagem
+    * ENTRADA: inspecao_id, descricao
+    * SAIDA:
+    */
+    public function saveDescricao(Request $request){
+        $resultado = InspecaoFoto::where('id','=',$request->inspecao_id)->first();
+        $resultado->descricao = $request->descricao;
+        $resultado->save();
+        return redirect()->back()->with('success'.$resultado->id, "Comentário salvo com sucesso!");
     }
 }

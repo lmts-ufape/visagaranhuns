@@ -46,7 +46,7 @@
                             <table class="table table-responsive-lg table-hover" style="width: 100%;">
                                 <thead>
                                   <tr>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Estabelecimento/CNAE</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold; width:100%">Estabelecimento/Tipo/CNAE</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold; margin-right:30px;">Data</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Ações</th>
@@ -58,7 +58,7 @@
                                         <tr>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                 <div class="btn-form">
-                                                    <div>{{$item->requerimento->empresa->nome}}</div>
+                                                    <div style="font-weight:bold;">{{$item->requerimento->empresa->nome}}</div>
                                                     <div>{{$item->requerimento->tipo}}</div>
                                                     <div>{{$item->requerimento->cnae->descricao}}</div>
                                                 </div>
@@ -73,7 +73,7 @@
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                 <div class="btn-group">
-                                                    <div style="margin:5px;"><button type="button" class="btn btn-success">Fotos</button></div>
+                                                    <div style="margin:5px;"><a href="{{ route('show.album', ['value' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-success" style="color:white;">Álbum</a></div>
                                                     <div style="margin:5px;"><button type="button" class="btn btn-primary">Relatório</button></div>
                                                     <div style="margin:5px;"><button type="button" class="btn btn-secondary">Notificações</button></div>
                                                 </div>
