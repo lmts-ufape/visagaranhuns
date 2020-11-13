@@ -188,6 +188,9 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::post("/pagina/detalhes/denuncia", "CoordenadorController@paginaDetalhesDenuncia")->name("pagina.detalhes.denuncia");
     Route::post("/avaliar/denuncia", "CoordenadorController@avaliarDenuncia")->name("avaliar.denuncia");
 
+    // Deletar inspecao
+    Route::get("/deletar/inspecao",           "CoordenadorController@deletarInspecao")->name("deletar.inspecao");
+
 });
 
 // Grupo de rotas para empresa

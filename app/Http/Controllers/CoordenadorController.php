@@ -256,6 +256,7 @@ class CoordenadorController extends Controller
                 $requerimento  = Requerimento::where('id', $key->requerimento_id)->first();
     
                 $obj = (object) array(
+                    'id'            => $key->id,
                     'data'          => $key->data,
                     'status'        => $key->status,
                     'inspetor'      => $key->inspetor->user->name,
@@ -272,6 +273,7 @@ class CoordenadorController extends Controller
                 $empresa = Empresa::find($key->empresas_id);
                 
                 $obj = (object) array(
+                    'id'            => $key->id,
                     'data'          => $key->data,
                     'status'        => $key->status,
                     'inspetor'      => $key->inspetor->user->name,
@@ -290,13 +292,47 @@ class CoordenadorController extends Controller
 
     }
 
+    public function deletarInspecao(Request $request)
+    {
+        $id = Crypt::decrypt($request->inspecaoId);
+        $inspecao = Inspecao::find($id);
+
+        $inspAgente = InspecAgente::where('inspecoes_id', $inspecao->id)->delete();
+
+        if ($inspecao == null || $inspAgente == null) {
+            session()->flash('error', 'Inspeção não encontrada ou Agente por inspeção não encontrado!');
+            return back();
+        }
+
+        $inspecao->delete();
+
+        session()->flash('success', 'A inspeção foi apagada com sucesso.');
+        return back();
+    }
+
     public function requerimentosAprovados()
     {
-        $resultado = Requerimento::where('status', 'aprovado')->get();
-
-        $denuncias = Denuncia::where('status', 'Acatado')->get();
+        $resultados = Requerimento::where('status', 'aprovado')->get();
+        $denuncia = Denuncia::where('status', 'Acatado')->get();
         $temp = [];
         $empresas = [];
+        $denuncias = [];
+        $resultado = [];
+
+        foreach ($resultados as $indice) {
+            $inspecao = Inspecao::where('requerimento_id', $indice->id)->first();
+            if ($inspecao == null) {
+                array_push($resultado, $indice);
+            }
+        }
+
+        foreach ($denuncia as $indice) {
+            $inspecao = Inspecao::where('requerimento_id', null)
+            ->where('empresas_id', $indice->empresa_id)->first();
+            if ($inspecao == null) {
+                array_push($denuncias, $indice);
+            }
+        }
 
         foreach ($denuncias as $indice) {
 
