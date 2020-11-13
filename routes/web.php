@@ -61,7 +61,7 @@ Route::get('/', function () {
             return redirect()->route('home.empresa');
         }
         elseif (Auth::user()->tipo == "inspetor") {
-            return view('inspetor.home_inspetor');
+            return redirect()->route('home.inspetor');
         }
         elseif (Auth::user()->tipo == "agente") {
             return view('agente.home_agente');
@@ -241,7 +241,7 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get('/cnae/encontrar/empresa',              'EmpresaController@encontrarCnae')->name('encontrar.cnae.empresa');
     Route::post('/cadastro/requerimento/empresa',      'EmpresaController@cadastrarRequerimento')->name('cadastrar.requerimento.empresa');
 
-    
+
     Route::get('/verificar/requerimento/inspecao',     'EmpresaController@verificarRequerimentoInspecao')->name('varificar.requerimento.inspecao');
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
@@ -254,17 +254,14 @@ Route::middleware(['IsEmpresa'])->group(function () {
 // Grupo de rotas para inspetor
 Route::middleware(['IsInspetor'])->group(function () {
     Route::get('/home/inspetor', 'InspetorController@home')->name('home.inspetor');
-/*
-    (WEB)
-    * Cadastrar/Editar/Deletar relatórios (Próprios)
-    * Consultar suas inspeções
-    * Cadastrar/Editar/Deletar notificações de empresas
-    (APP)
-    * Concluir inspeção (Mudar status de inspeção)
-    * Cadastrar imagens
-    * Cadastrar áudio
-    * Listar documentos anexados por empresa
-*/
+    Route::get('/programacao/inspetor', 'InspetorController@showProgramacao')->name('show.programacao');
+    Route::get('/programacao/inspecao/album', 'InspetorController@showAlbum')->name('show.album');
+    Route::post('/delete/foto', 'InspetorController@deleteFoto')->name('delete.foto');
+    Route::post('/save/descricao', 'InspetorController@saveDescricao')->name('save.descricao');
+    Route::get('/programacao/inspecao/relatorio', 'InspetorController@showRelatorio')->name('show.relatorio');
+    Route::post('/save/relatorio', 'InspetorController@saveRelatorio')->name('save.relatorio');
+    Route::get('/historico/inspetor', 'InspetorController@showHistorico')->name('show.historico');
+
 });
 
 // Grupo de rotas para Agente
