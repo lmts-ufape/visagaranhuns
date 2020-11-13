@@ -17,7 +17,7 @@ class Cnae extends Model
     ];
 
     public function area() {
-        return $this->belongsTo("\App\Area");
+        return $this->belongsTo("\App\Area",'areas_id');
     }
 
     public function empresa() {

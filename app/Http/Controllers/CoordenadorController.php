@@ -192,49 +192,51 @@ class CoordenadorController extends Controller
 
     public function cadastrarInspecao(Request $request)
     {
-        // dd($request);
-        foreach ($request->requerimentos as $indice) {
-            $requerimento = Requerimento::find($indice);
-            $inspecao = Inspecao::create([
-                'data'            => $request->data,
-                'status'          => 'pendente',
-                'inspetor_id'     => $request->inspetor,
-                'requerimento_id' => $indice,
-                'empresas_id'      => $requerimento->empresa->id,
-                'motivo'          => $requerimento->tipo,
-            ]);
-
-            $temp1 = InspecAgente::create([
-                'inspecoes_id'  => $inspecao->id,
-                'agente_id'     => $request->agente1,
-            ]);
+        if (isset($request->requerimentos)) {
+            foreach ($request->requerimentos as $indice) {
+                $requerimento = Requerimento::find($indice);
+                $inspecao = Inspecao::create([
+                    'data'            => $request->data,
+                    'status'          => 'pendente',
+                    'inspetor_id'     => $request->inspetor,
+                    'requerimento_id' => $indice,
+                    'empresas_id'      => $requerimento->empresa->id,
+                    'motivo'          => $requerimento->tipo,
+                ]);
     
-            $temp2 = InspecAgente::create([
-                'inspecoes_id'  => $inspecao->id,
-                'agente_id'     => $request->agente2,
-            ]);
+                $temp1 = InspecAgente::create([
+                    'inspecoes_id'  => $inspecao->id,
+                    'agente_id'     => $request->agente1,
+                ]);
+        
+                $temp2 = InspecAgente::create([
+                    'inspecoes_id'  => $inspecao->id,
+                    'agente_id'     => $request->agente2,
+                ]);
+            }
         }
 
-        foreach ($request->empresas as $indice) {
-            $inspecao = Inspecao::create([
-                'data'            => $request->data,
-                'status'          => 'pendente',
-                'inspetor_id'     => $request->inspetor,
-                'empresas_id'      => $indice,
-                'motivo'          => "Denuncia",
-            ]);
-
-            $temp1 = InspecAgente::create([
-                'inspecoes_id'  => $inspecao->id,
-                'agente_id'     => $request->agente1,
-            ]);
+        if (isset($request->empresas)) {
+            foreach ($request->empresas as $indice) {
+                $inspecao = Inspecao::create([
+                    'data'            => $request->data,
+                    'status'          => 'pendente',
+                    'inspetor_id'     => $request->inspetor,
+                    'empresas_id'      => $indice,
+                    'motivo'          => "Denuncia",
+                ]);
     
-            $temp2 = InspecAgente::create([
-                'inspecoes_id'  => $inspecao->id,
-                'agente_id'     => $request->agente2,
-            ]);
+                $temp1 = InspecAgente::create([
+                    'inspecoes_id'  => $inspecao->id,
+                    'agente_id'     => $request->agente1,
+                ]);
+        
+                $temp2 = InspecAgente::create([
+                    'inspecoes_id'  => $inspecao->id,
+                    'agente_id'     => $request->agente2,
+                ]);
+            }
         }
-
 
         session()->flash('success', 'A inspeção foi cadastrada com sucesso e agora consta para a visualização dos agentes e inspetores.');
         return back();

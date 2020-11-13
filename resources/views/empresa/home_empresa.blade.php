@@ -59,13 +59,13 @@
                     <div class="col-12">
                         <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Documentos Pendentes</label>
                         <div class="form-group">
-                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$anexados}}</div>
+                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$pendentes}}</div>
                         </div>
                     </div>
                     <div class="col-12">
                         <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Documentos Anexados</label>
                         <div class="form-group">
-                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$pendentes}}</div>
+                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$anexados}}</div>
                         </div>
                     </div>
                 </div>

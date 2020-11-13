@@ -68,6 +68,7 @@ class EmpresaController extends Controller
             ->get();
             $countAnexado = $countAnexado + count($checklistAnexado);
         }
+        // dd($countPendente);
         
         return view('empresa.home_empresa',
         ["empresas" => $empresa,

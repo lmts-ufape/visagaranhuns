@@ -17,7 +17,7 @@ class InspecAgente extends Model
     ];
 
     public function inspecao() {
-        return $this->belongsTo("\App\Inspecao");
+        return $this->belongsTo("\App\Inspecao",'inspecoes_id');
     }
 
     public function agente() {
