@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRelatoriosTable extends Migration
+class CreateInspecaoRelatoriosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,14 @@ class CreateRelatoriosTable extends Migration
      */
     public function up()
     {
-        Schema::create('relatorios', function (Blueprint $table) {
+        Schema::create('inspecao_relatorios', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+
+            $table->longText("relatorio");
+
+            $table->bigInteger("inspecao_id")->nullable();
+            $table->foreign("inspecao_id")->references("id")->on("inspecoes");
         });
     }
 
@@ -26,6 +31,6 @@ class CreateRelatoriosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('relatorios');
+        Schema::dropIfExists('inspecao_relatorios');
     }
 }

@@ -219,17 +219,10 @@ Route::middleware(['IsInspetor'])->group(function () {
     Route::get('/programacao/inspecao/album', 'InspetorController@showAlbum')->name('show.album');
     Route::post('/delete/foto', 'InspetorController@deleteFoto')->name('delete.foto');
     Route::post('/save/descricao', 'InspetorController@saveDescricao')->name('save.descricao');
-/*
-    (WEB)
-    * Cadastrar/Editar/Deletar relatórios (Próprios)
-    * Consultar suas inspeções
-    * Cadastrar/Editar/Deletar notificações de empresas
-    (APP)
-    * Concluir inspeção (Mudar status de inspeção)
-    * Cadastrar imagens
-    * Cadastrar áudio
-    * Listar documentos anexados por empresa
-*/
+    Route::get('/programacao/inspecao/relatorio', 'InspetorController@showRelatorio')->name('show.relatorio');
+    Route::post('/save/relatorio', 'InspetorController@saveRelatorio')->name('save.relatorio');
+    Route::get('/historico/inspetor', 'InspetorController@showHistorico')->name('show.historico');
+
 });
 
 // Grupo de rotas para Agente

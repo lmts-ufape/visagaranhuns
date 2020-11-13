@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container" style="margin-bottom:10%">
-    <div class="form-row justify-content-center" style="margin-bottom:3rem; margin-top:1.5rem">
+<div class="container" style="margin-bottom:5%">
+    <div class="form-row justify-content-center" style="margin-bottom:3rem; margin-top:1.5em">
         <div class="cardDashboard">
             <div class="container">
                 <div class="form-row">
@@ -48,7 +48,7 @@
                         <img src="{{ asset('/imagens/logo_megafone.png') }}" alt="Logo" style="width:17px; height:20px; margin-top:-5px; margin-right:5px;"/>
                         <label class="cardDashboard_titulo">Avisos</label>
                     </div>
-                    @if($aviso != "null")
+                    @if($aviso == 1)
                         <label style="margin-left:5px; font-family: 'Roboto', sans-serif;">Dispositivo:</label>
                         <div style="text-align:center; width:100%; margin-top:15%"><img src="{{ asset('/imagens/logo_aprovado2.png') }}" alt="Logo" style="width:60px;margin-top:-9px; margin-right:5px; margin-bottom:10px;"/><label style="font-size: 20px; color:#909090">Seu aplicativo está instalado e pronto para ser utilizado.</label></div>
                     @else

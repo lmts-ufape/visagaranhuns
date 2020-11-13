@@ -8,6 +8,7 @@ use App\User;
 use App\Inspecao;
 use App\Endereco;
 use App\InspecaoFoto;
+use App\InspecaoRelatorio;
 use App\Telefone;
 use Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -32,10 +33,10 @@ class InspetorController extends Controller
         $pendente = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->count();
         $aprovado = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'aprovado')->orderBy('data', 'ASC')->count();
         $aviso = $token->remember_token;
-        if($token->remember_token != "null"){
-            return view('inspetor.home_inspetor',['pendente' => $pendente, 'aprovado' => $aprovado, 'aviso' => 1]);
-        }else{
+        if($aviso == null){
             return view('inspetor.home_inspetor',['pendente' => $pendente, 'aprovado' => $aprovado, 'aviso' => 0]);
+        }else{
+            return view('inspetor.home_inspetor',['pendente' => $pendente, 'aprovado' => $aprovado, 'aviso' => 1]);
         }
     }
 
@@ -196,6 +197,30 @@ class InspetorController extends Controller
         return redirect()->back()->with('success', "Foto deletada com sucesso!");
     }
     /*
+    * FUNCAO: mostrar a pagina de relatorio
+    * ENTRADA: inspecao_id
+    * SAIDA:
+    */
+    public function showRelatorio(Request $request){
+        $resultado = InspecaoFoto::where('inspecao_id','=', Crypt::decrypt($request->value))->orderBy('created_at','ASC')->get();
+        $relatorio = InspecaoRelatorio::where('inspecao_id','=', Crypt::decrypt($request->value))->first();
+        if($relatorio == null){
+            return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => ""]);
+        }else{
+            return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => $relatorio->relatorio]);
+        }
+    }
+    /*
+    * FUNCAO: mostrar a pagina de historico
+    * ENTRADA:
+    * SAIDA:
+    */
+    public function showHistorico(){
+        $inspetor = Inspetor::where('user_id','=',Auth::user()->id)->first();
+        $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'aprovado')->orderBy('data', 'ASC')->get();
+        return view('inspetor/historico_inspetor', ['inspecoes' => $inspecoes]);
+    }
+    /*
     * FUNCAO: Add descricao a imagem
     * ENTRADA: inspecao_id, descricao
     * SAIDA:
@@ -205,5 +230,24 @@ class InspetorController extends Controller
         $resultado->descricao = $request->descricao;
         $resultado->save();
         return redirect()->back()->with('success'.$resultado->id, "Comentário salvo com sucesso!");
+    }
+    /*
+    * FUNCAO: salvar/atualizar o relatorio
+    * ENTRADA: relatorio
+    * SAIDA:
+    */
+    public function saveRelatorio(Request $request){
+        $verifica = InspecaoRelatorio::where('inspecao_id','=',$request->inspecao_id)->exists();
+        if($verifica == true){ //atualizo
+            $atualizar = InspecaoRelatorio::where('inspecao_id','=',$request->inspecao_id)->first();
+            $atualizar->update(['relatorio'=>$request->relatorio]);
+            return redirect()->back()->with('success', "Relatório atualizado com sucesso!");
+        }else{ //salvo
+            $relatorio = new InspecaoRelatorio;
+            $relatorio->inspecao_id = $request->inspecao_id;
+            $relatorio->relatorio = $request->relatorio;
+            $relatorio->save();
+            return redirect()->back()->with('success', "Relatório salvo com sucesso!");
+        }
     }
 }

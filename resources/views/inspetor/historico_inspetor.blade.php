@@ -14,9 +14,9 @@
             </div>
             <div class="mr-auto p-2 styleBarraPrincipalPC">
                 <div class="form-group">
-                    <div class="tituloBarraPrincipal">Programação</div>
+                    <div class="tituloBarraPrincipal">Histórico</div>
                     <div>
-                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Programação</div>
+                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Histórico</div>
                     </div>
                 </div>
             </div>
@@ -74,8 +74,8 @@
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                 <div class="btn-group">
-                                                    <div style="margin:5px;"><a href="{{ route('show.album', ['value' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-success" style="color:white;">Álbum</a></div>
-                                                    <div style="margin:5px;"><a href="{{ route('show.relatorio', ['value' => Crypt::encrypt($item->id)])}}" type="button" class="btn btn-primary">Relatório</a></div>
+                                                    <div style="margin:5px;"><a type="button" class="btn btn-success" style="color:white;">Álbum</a></div>
+                                                    <div style="margin:5px;"><a type="button" class="btn btn-primary">Relatório</a></div>
 
                                                 </div>
                                             </th>
@@ -84,7 +84,7 @@
                                 </table>
                                 @endforeach
                             @else
-                                <div style="margin-bottom:5rem; text-align:center; font-size:19px;"> Nenhuma inspeção programada!</div>
+                                <div style="margin-bottom:5rem; text-align:center; font-size:19px;"> Nenhuma inspeção!</div>
                             @endif
                         </div>
                     </div>
