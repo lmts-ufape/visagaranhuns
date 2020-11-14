@@ -163,7 +163,7 @@
             dataType:'json',
             // data: {"filtro": "all" },
             success: function(response){
-                console.log("PASSOU!");
+                // console.log(response.table_data);
                 $('tbody').html(response.table_data);
             }
         });
@@ -194,7 +194,7 @@
     }
 
     window.addDenuncia = function($id) {
-        console.log('TESTE DE CONCATENACAO' + $id);
+        console.log('CAMINHOOOO');
         if(arrayTempDenuncia.findIndex(element => element == $id) == -1){ //condicao para add o requerimento na lista
 
             // innerText sempre pegará o primero texto da lista
@@ -244,7 +244,7 @@
 
     // Montar linha para denuncia
     window.montarLinhaInputDenuncia = function(id,elemento){
-
+        console.log("AQUI MERMO");
         return " <div class='d-flex justify-content-center form-gerado cardMeuCnae'>\n"+
             "            <div class='mr-auto p-2'>\n"+
             "                <div class='btn-group' style='margin-bottom:-15px;'>\n"+
@@ -257,7 +257,7 @@
             "            </div>\n"+
             "            <div style='width:140px; height:25px; text-align:right;'>\n"+
             "                <div id='cardSelecionado' class='btn-group'>\n"+
-            "                    <button type='button' class='btn btn-danger' value='"+id+"' onclick='deletar(this)'>X</button>\n"+
+            "                    <button type='button' class='btn btn-danger' value='"+id+"' onclick='deletarDenuncia(this)'>X</button>\n"+
             "                </div>\n"+
             "            </div>\n"+
             "    </div>\n";

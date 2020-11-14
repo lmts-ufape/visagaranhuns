@@ -367,7 +367,7 @@ class CoordenadorController extends Controller
         }
 
         $output = '';
-            if($resultado->count() > 0){
+            if(count($resultado) > 0){
                 foreach($resultado as $item){
                     $output .= '
                     <div class="d-flex justify-content-center cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">

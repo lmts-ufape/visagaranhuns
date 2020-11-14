@@ -38,6 +38,16 @@ window.deletar = function(obj){
     }
 }
 
+window.deletarDenuncia = function(obj){
+
+    var index = arrayTempDenuncia.findIndex(element => element == obj.value); //encontrar o indice no arrayTemp
+    if ( index > -1) {
+        arrayTempDenuncia.splice(index, 1); //remover o elemento do array
+        obj.closest('.form-gerado').remove();
+        return false;
+    }
+}
+
 window.montarLinhaInput = function(id,elemento){
 
     return " <div class='form-gerado cardMeuCnae'>\n"+
