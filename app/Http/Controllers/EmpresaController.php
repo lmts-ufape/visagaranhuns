@@ -103,14 +103,20 @@ class EmpresaController extends Controller
             return back();
         }
 
-        $validator = $request->validate([
+        $messages = [
+            'unique'   => 'Um campo igual a :attribute já está cadastrado no sistema!',
+            'required' => 'O campo :attribute não foi passado!',
+            'string'   => 'O campo :attribute deve ser texto!',
+        ];
+
+        $validator = Validator::make($request->all(), [
             'name'     => 'required|string',
-            'email'    => 'required|email',
+            'email'    => 'required|email|unique:users,email',
             'password' => 'required',
             'nome'     => 'required|string',
-            'cnpjcpf'  => 'required|string',
+            'cnpjcpf'  => 'required|string|unique:empresas,cnpjcpf',
             'tipo'     => 'required|string',
-            'emailEmpresa' => 'nullable|email',
+            'emailEmpresa' => 'nullable|email|unique:empresas,email',
             'telefone1' => 'required|string',
             'telefone2' => 'nullable|string',
             'rua'      => 'required|string',
@@ -120,7 +126,13 @@ class EmpresaController extends Controller
             'complemento' => 'nullable|string',
             'uf'       => 'required|string',
             'cep'      => 'required|string',
-        ]);
+        ], $messages);
+
+        
+        if ($validator->fails()) {
+            return back()
+                    ->withErrors($validator);
+        }
 
         if ($request['cnae'] == null) {
             session()->flash('error', 'Atenção! Uma empresa deve possuir pelo menos um CNAE. (Lista: CNAE Selecionado)');
@@ -264,12 +276,23 @@ class EmpresaController extends Controller
 
     public function adicionarEmpresa(Request $request)
     {
-        $user_id = $request->user;
+        
+        $user_id = Auth::user()->id;
+        $empRepetida = Empresa::where('nome', $request->nome)->first();
 
-        // Sujeito a mudanças
-        $validator = $request->validate([
+        if($empRepetida != null){
+            return redirect()->route('confirma.cadastro');
+        }
+
+        $messages = [
+            'unique'   => 'Um campo igual a :attribute já está cadastrado no sistema!',
+            'required' => 'O campo :attribute não foi passado!',
+            'string'   => 'O campo :attribute deve ser texto!',
+        ];
+
+        $validator = Validator::make($request->all(), [
             'nome'     => 'required|string',
-            'cnpjcpf'  => 'required|string',
+            'cnpjcpf'  => 'required|string|unique:empresas,cnpjcpf',
             'tipo'     => 'required|string',
             'email'    => 'nullable|email',
             'telefone1' => 'required|string',
@@ -281,7 +304,13 @@ class EmpresaController extends Controller
             'uf'       => 'required|string',
             'cep'      => 'required|string',
             'complemento' => 'nullable|string',
-        ]);
+        ], $messages);
+
+        
+        if ($validator->fails()) {
+            return back()
+                    ->withErrors($validator);
+        }
 
         $empresa = Empresa::create([
             'nome' => $request->nome,

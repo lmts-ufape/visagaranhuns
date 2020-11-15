@@ -17,7 +17,7 @@ class CreateEmpresasTable extends Migration
             $table->id();
             $table->string('nome');
             $table->string('email')->nullable();
-            $table->string('cnpjcpf');
+            $table->string('cnpjcpf')->unique();
             $table->string('status_inspecao');
             $table->string('status_cadastro');
             $table->string('tipo');
