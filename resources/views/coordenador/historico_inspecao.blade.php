@@ -176,6 +176,7 @@
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1">Tipo de requerimento</label>
                                     <select class="form-control" id="exampleFormControlSelect1" name="tipo">
+                                        <option value="" data-default disabled selected> -- Selecione -- </option>
                                         <option id="priLicenca" value="primeira_licenca">Primeira Licença</option>
                                         <option id="renoLicenca" value="renovacao">Renovação</option>
                                     </select>

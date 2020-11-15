@@ -258,7 +258,7 @@
                                     <div class="form col-md-12" style="margin-top:1px;margin-bottom:10px;">
                                         <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Tipo de documento <span style="font-size:20px;color:red">*</span></label>
                                         <select class="form-control" id="exampleFormControlSelect1" name="tipodocempresa" required>
-                                            <option disabled selected>Tipos de documentos</option>
+                                            <option value="" data-default disabled selected> -- Selecione -- </option>
                                             @foreach ($tipos as $tipo)
                                             <option value="{{$tipo->id}}">{{$tipo->nome}}</option>
                                             @endforeach
