@@ -17,6 +17,8 @@ use App\Requerimento;
 use App\Inspecao;
 use App\InspecAgente;
 use App\InspecRequerimento;
+use App\InspecaoRelatorio;
+use App\InspecaoFoto;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
@@ -249,6 +251,7 @@ class CoordenadorController extends Controller
         $temp = [];
         
         foreach ($inspecoes as $key) {
+            $relatorio = InspecaoRelatorio::where('inspecao_id', $key->id)->first();
 
             if ($key->motivo == "Primeira Licenca" || $key->motivo == "Renovacao") {
 
@@ -263,7 +266,10 @@ class CoordenadorController extends Controller
                     'agente'        => $inspec_agente[0]->agente->user->name,
                     'agente'        => $inspec_agente[1]->agente->user->name,
                     'empresa'       => $requerimento->empresa->nome,
-                    'cnae'          => $requerimento->cnae->descricao,              
+                    'cnae'          => $requerimento->cnae->descricao,
+
+                    // 'relatorio_id'    => $relatorio->id,
+                    // 'relatorio_status'=> $relatorio->status, 
                 );
                 array_push($temp, $obj);
 
@@ -280,7 +286,10 @@ class CoordenadorController extends Controller
                     'agente'        => $inspec_agente[0]->agente->user->name,
                     'agente'        => $inspec_agente[1]->agente->user->name,
                     'empresa'       => $empresa->nome,
-                    'cnae'          => "Denúncia",              
+                    'cnae'          => "Denúncia",
+                    
+                    // 'relatorio_id'    => $relatorio->id,
+                    // 'relatorio_status'=> $relatorio->status,
                 );
                 array_push($temp, $obj);
             }
@@ -291,6 +300,60 @@ class CoordenadorController extends Controller
         ]);
 
     }
+
+    public function showRelatorio(Request $request)
+    {
+        $resultado = InspecaoFoto::where('inspecao_id','=', Crypt::decrypt($request->inspecao_id))->orderBy('created_at','ASC')->get();
+        $relatorio = InspecaoRelatorio::where('inspecao_id','=', Crypt::decrypt($request->inspecao_id))->first();
+
+        if($relatorio == null){
+            return view('coordenador/relatorio',['album' => $resultado, 'inspecao_id' => Crypt::decrypt($request->inspecao_id), 'relatorio' => $relatorio->relatorio, 'relatorio_id' => $relatorio->id]);
+        }else{
+            return view('coordenador/relatorio',['album' => $resultado, 'inspecao_id' => Crypt::decrypt($request->inspecao_id), 'relatorio' => $relatorio->relatorio, 'relatorio_id' => $relatorio->id]);
+        }
+    }
+
+    public function julgarRelatorio(Request $request)
+    {
+
+        $inspecao = Inspecao::find($request->inspecao_id);
+        $relatorio = InspecaoRelatorio::find($request->relatorio_id);
+
+        if ($relatorio->status == 'reprovado') {
+            return redirect()->route('historico.inspecoes')->with('message', 'Este relatório foi reprovado por outro agente!');
+        }
+
+        if ($request->decisao == true) {
+
+            // Incrementando o numero de avaliadores que aprovaram o relatorio
+            $relatorio->num_aprovacao = $relatorio->num_aprovacao + 1;
+            $relatorio->save();
+
+            // Todos aprovaram o relatorio, logo o relatorio e a inspeção são concluidos
+            if ($relatorio->num_aprovacao == $relatorio->num_avaliadores) {
+                $relatorio->status = 'concluido';
+                $relatorio->save();
+
+                $inspecao->status = 'concluido';
+                $inspecao->save();
+
+                return redirect()->route('historico.inspecoes')->with('message', 'Este relatório foi aprovado por todos os avaliadores!');
+            }
+
+            return redirect()->route('historico.inspecoes')->with('message', 'Relatório Aprovado!');
+
+        } else {
+
+            // Reprovando o relatorio
+            $relatorio->status = 'reprovado';
+            $relatorio->save();
+
+            return redirect()->route('show.programacao.agente')->with('message', 'Relatório Reprovado!');
+        }
+        
+    }
+
+
 
     public function deletarInspecao(Request $request)
     {

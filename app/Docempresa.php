@@ -22,6 +22,6 @@ class Docempresa extends Model
 
     // Tipo de documento da empresa
     public function tipodocemp() {
-        return $this->belongsTo("\App\Tipodocempresa");
+        return $this->belongsTo("\App\Tipodocempresa", 'tipodocemp_id');
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Inspetor;
 use App\User;
 use App\Inspecao;
+use App\InspecAgente;
 use App\Endereco;
 use App\InspecaoFoto;
 use App\InspecaoRelatorio;
@@ -31,12 +32,12 @@ class InspetorController extends Controller
         $token = User::where('id','=',Auth::user()->id)->first();
         $inspetor = Inspetor::where('user_id','=',Auth::user()->id)->first();
         $pendente = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->count();
-        $aprovado = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'aprovado')->orderBy('data', 'ASC')->count();
+        $concluido = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'concluido')->orderBy('data', 'ASC')->count();
         $aviso = $token->remember_token;
         if($aviso == null){
-            return view('inspetor.home_inspetor',['pendente' => $pendente, 'aprovado' => $aprovado, 'aviso' => 0]);
+            return view('inspetor.home_inspetor',['pendente' => $pendente, 'concluido' => $concluido, 'aviso' => 0]);
         }else{
-            return view('inspetor.home_inspetor',['pendente' => $pendente, 'aprovado' => $aprovado, 'aviso' => 1]);
+            return view('inspetor.home_inspetor',['pendente' => $pendente, 'concluido' => $concluido, 'aviso' => 1]);
         }
     }
 
@@ -217,7 +218,7 @@ class InspetorController extends Controller
     */
     public function showHistorico(){
         $inspetor = Inspetor::where('user_id','=',Auth::user()->id)->first();
-        $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'aprovado')->orderBy('data', 'ASC')->get();
+        $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'concluido')->orderBy('data', 'ASC')->get();
         return view('inspetor/historico_inspetor', ['inspecoes' => $inspecoes]);
     }
     /*
@@ -237,7 +238,10 @@ class InspetorController extends Controller
     * SAIDA:
     */
     public function saveRelatorio(Request $request){
+
         $verifica = InspecaoRelatorio::where('inspecao_id','=',$request->inspecao_id)->exists();
+        $numAgentes = InspecAgente::where('inspecoes_id',$request->inspecao_id)->count();
+
         if($verifica == true){ //atualizo
             $atualizar = InspecaoRelatorio::where('inspecao_id','=',$request->inspecao_id)->first();
             $atualizar->update(['relatorio'=>$request->relatorio]);
@@ -246,6 +250,9 @@ class InspetorController extends Controller
             $relatorio = new InspecaoRelatorio;
             $relatorio->inspecao_id = $request->inspecao_id;
             $relatorio->relatorio = $request->relatorio;
+            $relatorio->status = "avaliacao";
+            $relatorio->num_avaliadores = $numAgentes + 1;
+
             $relatorio->save();
             return redirect()->back()->with('success', "Relatório salvo com sucesso!");
         }

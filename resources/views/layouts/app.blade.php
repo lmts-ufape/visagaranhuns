@@ -240,7 +240,7 @@
                                     <a class="nav-link" href="{{ route('/') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Programação') }}</a>
+                                    <a class="nav-link" href="{{ route('show.programacao.agente') }}">{{ __('Programação') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}" style="margin-right:30px;">{{ __('Histórico') }}</a>

@@ -48,6 +48,12 @@
                                 <strong style="margin-right: 30px;">{{$message}}</strong>
                             </div>
                         @endif
+                        @if ($message = Session::get('message'))
+                            <div class="alert alert-warning alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong style="margin-right: 30px;">{{$message}}</strong>
+                            </div>
+                        @endif
                         <div class="form col-md-12" style="margin-top:-10px;">
                             <table class="table table-responsive-lg table-hover" style="width: 100%;">
                                 <thead>
@@ -59,6 +65,7 @@
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Agente</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Empresa</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Cnae</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Relatório</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Apagar</th>
                                   </tr>
                                 </thead>
@@ -72,6 +79,22 @@
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->agente}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->empresa}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->cnae}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                                <a href="{{ route('show.relatorio.coordenador') }}" type="button" class="btn btn-primary">Avaliar</a>
+                                            </th>
+                                            {{-- @if ($item->relatorio_status == "concluido")
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                                    <button type="button" class="btn btn-success">Concluido</button>
+                                                </th>
+                                            @elseif ($item->relatorio_status == "avaliacao")
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                                    <a href="{{ route('show.relatorio.coordenador', ['relatorio_id' => Crypt::encrypt($item->relatorio_id), 'inspecao_id' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-primary">Avaliar</a>
+                                                </th>
+                                            @elseif ($item->relatorio_status == "reprovado")
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                                    <button type="button" class="btn btn-warning">Reprovado</button>
+                                                </th>
+                                            @endif --}}
                                             <td class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                 <a href="{{ route('deletar.inspecao', ['inspecaoId' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-danger">
                                                     <img src="{{asset('imagens/logo_lixo.png')}}" style="width:15px">

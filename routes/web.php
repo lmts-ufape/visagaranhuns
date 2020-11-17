@@ -64,7 +64,7 @@ Route::get('/', function () {
             return redirect()->route('home.inspetor');
         }
         elseif (Auth::user()->tipo == "agente") {
-            return view('agente.home_agente');
+            return redirect()->route('home.agente');
         }
         elseif (Auth::user()->tipo == "rt") {
             return redirect()->route('home.rt');
@@ -191,6 +191,10 @@ Route::middleware(['IsCoordenador'])->group(function () {
     // Deletar inspecao
     Route::get("/deletar/inspecao",           "CoordenadorController@deletarInspecao")->name("deletar.inspecao");
 
+    // Pagina de relatorio
+    Route::get('/programacao/coordenador/inspecao/relatorio', 'CoordenadorController@showRelatorio')->name('show.relatorio.coordenador');
+    Route::post("/coordenador/julgar/relatorio",              "CoordenadorController@julgarRelatorio")->name("julgar.relatorio.coordenador");
+
 });
 
 // Grupo de rotas para empresa
@@ -271,6 +275,9 @@ Route::middleware(['IsInspetor'])->group(function () {
 Route::middleware(['IsAgente'])->group(function () {
     Route::get('/home/agente', 'AgenteController@home')->name('home.agente');
     Route::get('cadastrar/agente', function () {return view('agente/cadastrar_agente');})->name('cadastrar.agente');
+    Route::get('/programacao/agente', 'AgenteController@showProgramacao')->name('show.programacao.agente');
+    Route::get('/programacao/agente/inspecao/relatorio', 'AgenteController@showRelatorio')->name('show.relatorio.agente');
+    Route::post("/julgar/relatorio", "AgenteController@julgar")->name("julgar.relatorio");
     /*
         (WEB)
         * Cadastrar/Editar/Deletar relatórios (Próprios)

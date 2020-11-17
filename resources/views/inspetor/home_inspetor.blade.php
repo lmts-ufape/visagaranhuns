@@ -36,7 +36,7 @@
                         <label class="cardDashboard_titulo">Histórico</label>
                     </div>
                     <label style="margin-left:5px; font-family: 'Roboto', sans-serif;">Inspeções concluídas:</label>
-                    <div style="text-align:center; width:100%; margin-top:15%"><label style="font-size: 50px; color:#909090">{{$aprovado}}</label></div>
+                    <div style="text-align:center; width:100%; margin-top:15%"><label style="font-size: 50px; color:#909090">{{$concluido}}</label></div>
                 </div>
             </div>
         </div>
