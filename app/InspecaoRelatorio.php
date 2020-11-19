@@ -13,6 +13,10 @@ class InspecaoRelatorio extends Model
      * @var array
      */
     protected $fillable = [
-        'inspecao_id', 'relatorio', 'status', 'num_avaliadores', 'num_aprovacao', 'num_reprovacao',
+        'inspecao_id', 'relatorio', 'status', 'agente1', 'agente2', 'coordenador'  
     ];
+
+    public function inspecao() {
+        return $this->belongsTo("\App\Inspecao", 'inspecao_id');
+    }
 }

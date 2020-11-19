@@ -33,7 +33,7 @@
                             <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">INSPEÇÕES</label>
                         </div>
                         <div class="form-group col-md-6" style="align-content: right">
-                            <label style="font-size:19px;margin-top:5px;margin-bottom:5px; margin-left:435px; font-family: 'Roboto', sans-serif;"><a href="{{ route('gerar.pdf') }}">BAIXAR</a>
+                            <label style="font-size:19px;margin-top:5px;margin-bottom:5px; margin-left:435px; font-family: 'Roboto', sans-serif;"><a type="button" class="btn btn-primary" href="{{ route('gerar.pdf') }}">Baixar</a>
                             </label>
                         </div>
                         @if ($message = Session::get('error'))
@@ -75,26 +75,34 @@
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{date('d-m-Y', strtotime($item->data))}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->inspetor}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->agente}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->agente}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->agente1}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->agente2}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->empresa}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->cnae}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                            {{-- <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                 <a href="{{ route('show.relatorio.coordenador') }}" type="button" class="btn btn-primary">Avaliar</a>
-                                            </th>
-                                            {{-- @if ($item->relatorio_status == "concluido")
+                                            </th> --}}
+                                            @if ($item->relatorio_status == null)
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                                <button type="button" class="btn btn-warning">Não Finalizado</button>
+                                            </th>                                                
+                                            @else
+                                                @if ($item->relatorio_status == "reprovado")
                                                 <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
-                                                    <button type="button" class="btn btn-success">Concluido</button>
+                                                    <a href="{{ route('show.relatorio.coordenador.verificar', ['relatorio_id' => Crypt::encrypt($item->relatorio_id), 'inspecao_id' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-danger">Reprovado</a>
+                                                    {{-- <button type="button" class="btn btn-success">Reprovado</button> --}}
                                                 </th>
-                                            @elseif ($item->relatorio_status == "avaliacao")
-                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
-                                                    <a href="{{ route('show.relatorio.coordenador', ['relatorio_id' => Crypt::encrypt($item->relatorio_id), 'inspecao_id' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-primary">Avaliar</a>
-                                                </th>
-                                            @elseif ($item->relatorio_status == "reprovado")
-                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
-                                                    <button type="button" class="btn btn-warning">Reprovado</button>
-                                                </th>
-                                            @endif --}}
+                                                @elseif ($item->coordenador == "avaliacao")
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                                        <a href="{{ route('show.relatorio.coordenador', ['relatorio_id' => Crypt::encrypt($item->relatorio_id), 'inspecao_id' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-primary">Avaliar</a>
+                                                    </th>
+                                                @elseif ($item->coordenador == "aprovado")
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                                        <a href="{{ route('show.relatorio.coordenador.verificar', ['relatorio_id' => Crypt::encrypt($item->relatorio_id), 'inspecao_id' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-success">Aprovado</a>
+                                                        {{-- <button type="button" class="btn btn-success">Aprovado</button> --}}
+                                                    </th>
+                                                @endif
+                                            @endif
                                             <td class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                 <a href="{{ route('deletar.inspecao', ['inspecaoId' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-danger">
                                                     <img src="{{asset('imagens/logo_lixo.png')}}" style="width:15px">

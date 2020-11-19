@@ -204,6 +204,8 @@ class CoordenadorController extends Controller
                     'requerimento_id' => $indice,
                     'empresas_id'      => $requerimento->empresa->id,
                     'motivo'          => $requerimento->tipo,
+                    'agente1'         => $request->agente1,
+                    'agente2'         => $request->agente2,
                 ]);
     
                 $temp1 = InspecAgente::create([
@@ -226,6 +228,8 @@ class CoordenadorController extends Controller
                     'inspetor_id'     => $request->inspetor,
                     'empresas_id'      => $indice,
                     'motivo'          => "Denuncia",
+                    'agente1'         => $request->agente1,
+                    'agente2'         => $request->agente2,
                 ]);
     
                 $temp1 = InspecAgente::create([
@@ -257,41 +261,78 @@ class CoordenadorController extends Controller
 
                 $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
                 $requerimento  = Requerimento::where('id', $key->requerimento_id)->first();
-    
-                $obj = (object) array(
-                    'id'            => $key->id,
-                    'data'          => $key->data,
-                    'status'        => $key->status,
-                    'inspetor'      => $key->inspetor->user->name,
-                    'agente'        => $inspec_agente[0]->agente->user->name,
-                    'agente'        => $inspec_agente[1]->agente->user->name,
-                    'empresa'       => $requerimento->empresa->nome,
-                    'cnae'          => $requerimento->cnae->descricao,
 
-                    // 'relatorio_id'    => $relatorio->id,
-                    // 'relatorio_status'=> $relatorio->status, 
-                );
-                array_push($temp, $obj);
+                if ($relatorio == null) {
+                    $obj = (object) array(
+                        'id'            => $key->id,
+                        'data'          => $key->data,
+                        'status'        => $key->status,
+                        'inspetor'      => $key->inspetor->user->name,
+                        'agente1'        => $inspec_agente[0]->agente->user->name,
+                        'agente2'        => $inspec_agente[1]->agente->user->name,
+                        'empresa'       => $requerimento->empresa->nome,
+                        'cnae'          => $requerimento->cnae->descricao,
+    
+                        'relatorio_id'    => null,
+                        'relatorio_status'=> null, 
+                    );
+                    array_push($temp, $obj);
+                } else {
+                    $obj = (object) array(
+                        'id'              => $key->id,
+                        'data'            => $key->data,
+                        'status'          => $key->status,
+                        'inspetor'        => $key->inspetor->user->name,
+                        'agente1'         => $inspec_agente[0]->agente->user->name,
+                        'agente2'         => $inspec_agente[1]->agente->user->name,
+                        'empresa'         => $requerimento->empresa->nome,
+                        'cnae'            => $requerimento->cnae->descricao,
+    
+                        'relatorio_id'    => $relatorio->id,
+                        'relatorio_status'=> $relatorio->status,
+                        'coordenador'     => $relatorio->coordenador,
+                    );
+                    array_push($temp, $obj);
+                }
 
             } elseif ($key->motivo == "Denuncia") {
 
                 $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
                 $empresa = Empresa::find($key->empresas_id);
-                
-                $obj = (object) array(
-                    'id'            => $key->id,
-                    'data'          => $key->data,
-                    'status'        => $key->status,
-                    'inspetor'      => $key->inspetor->user->name,
-                    'agente'        => $inspec_agente[0]->agente->user->name,
-                    'agente'        => $inspec_agente[1]->agente->user->name,
-                    'empresa'       => $empresa->nome,
-                    'cnae'          => "Denúncia",
-                    
-                    // 'relatorio_id'    => $relatorio->id,
-                    // 'relatorio_status'=> $relatorio->status,
-                );
-                array_push($temp, $obj);
+
+                if ($relatorio == null) {
+                    $obj = (object) array(
+                        'id'            => $key->id,
+                        'data'          => $key->data,
+                        'status'        => $key->status,
+                        'inspetor'      => $key->inspetor->user->name,
+                        'agente1'        => $inspec_agente[0]->agente->user->name,
+                        'agente2'        => $inspec_agente[1]->agente->user->name,
+                        'empresa'       => $empresa->nome,
+                        'cnae'          => "Denúncia",
+                        
+                        'relatorio_id'    => null,
+                        'relatorio_status'=> null,
+                    );
+                    array_push($temp, $obj);
+                } else {
+
+                    $obj = (object) array(
+                        'id'            => $key->id,
+                        'data'          => $key->data,
+                        'status'        => $key->status,
+                        'inspetor'      => $key->inspetor->user->name,
+                        'agente1'        => $inspec_agente[0]->agente->user->name,
+                        'agente2'        => $inspec_agente[1]->agente->user->name,
+                        'empresa'       => $empresa->nome,
+                        'cnae'          => "Denúncia",
+                        
+                        'relatorio_id'    => $relatorio->id,
+                        'relatorio_status'=> $relatorio->status,
+                        'coordenador'     => $relatorio->coordenador,
+                    );
+                    array_push($temp, $obj);
+                }
             }
         }
         
@@ -313,6 +354,18 @@ class CoordenadorController extends Controller
         }
     }
 
+    public function showRelatorioVerificar(Request $request)
+    {
+        $resultado = InspecaoFoto::where('inspecao_id','=', Crypt::decrypt($request->inspecao_id))->orderBy('created_at','ASC')->get();
+        $relatorio = InspecaoRelatorio::where('inspecao_id','=', Crypt::decrypt($request->inspecao_id))->first();
+
+        if($relatorio == null){
+            return view('coordenador/relatorio_verificar',['album' => $resultado, 'inspecao_id' => Crypt::decrypt($request->inspecao_id), 'relatorio' => $relatorio->relatorio, 'relatorio_id' => $relatorio->id]);
+        }else{
+            return view('coordenador/relatorio_verificar',['album' => $resultado, 'inspecao_id' => Crypt::decrypt($request->inspecao_id), 'relatorio' => $relatorio->relatorio, 'relatorio_id' => $relatorio->id]);
+        }
+    }
+
     public function julgarRelatorio(Request $request)
     {
 
@@ -320,27 +373,25 @@ class CoordenadorController extends Controller
         $relatorio = InspecaoRelatorio::find($request->relatorio_id);
 
         if ($relatorio->status == 'reprovado') {
-            return redirect()->route('historico.inspecoes')->with('message', 'Este relatório foi reprovado por outro agente!');
+            return redirect()->route('historico.inspecoes')->with('message', 'Este relatório foi reprovado por outro agente ou coordenador!');
         }
 
         if ($request->decisao == true) {
 
-            // Incrementando o numero de avaliadores que aprovaram o relatorio
-            $relatorio->num_aprovacao = $relatorio->num_aprovacao + 1;
+            $relatorio->coordenador = "aprovado";
             $relatorio->save();
 
-            // Todos aprovaram o relatorio, logo o relatorio e a inspeção são concluidos
-            if ($relatorio->num_aprovacao == $relatorio->num_avaliadores) {
-                $relatorio->status = 'concluido';
+            if($relatorio->agente1 == "aprovado" && $relatorio->agente2 == "aprovado" && $relatorio->coordenador == "aprovado"){
+                $relatorio->status = "aprovado";
                 $relatorio->save();
 
-                $inspecao->status = 'concluido';
+                $inspecao->status = "aprovado";
                 $inspecao->save();
 
-                return redirect()->route('historico.inspecoes')->with('message', 'Este relatório foi aprovado por todos os avaliadores!');
+                return redirect()->route('historico.inspecoes')->with('message', 'Relatório aprovado com sucesso!');
             }
 
-            return redirect()->route('historico.inspecoes')->with('message', 'Relatório Aprovado!');
+            return redirect()->route('historico.inspecoes')->with('message', 'Relatório aprovado com sucesso!');
 
         } else {
 
@@ -348,7 +399,13 @@ class CoordenadorController extends Controller
             $relatorio->status = 'reprovado';
             $relatorio->save();
 
-            return redirect()->route('show.programacao.agente')->with('message', 'Relatório Reprovado!');
+            $relatorio->status = "reprovado";
+            $relatorio->agente1 = "reprovado";
+            $relatorio->agente2 = "reprovado";
+            $relatorio->coordenador = "reprovado";
+            $relatorio->save();
+
+            return redirect()->route('historico.inspecoes')->with('message', 'Relatório Reprovado!');
         }
         
     }
@@ -391,7 +448,9 @@ class CoordenadorController extends Controller
 
         foreach ($denuncia as $indice) {
             $inspecao = Inspecao::where('requerimento_id', null)
-            ->where('empresas_id', $indice->empresa_id)->first();
+            ->where('empresas_id', $indice->empresa_id)
+            ->where('status', 'pendente')
+            ->first();
             if ($inspecao == null) {
                 array_push($denuncias, $indice);
             }

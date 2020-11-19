@@ -171,7 +171,76 @@ class InspetorController extends Controller
     */
     public function showProgramacao(){
         $inspetor = Inspetor::where('user_id','=',Auth::user()->id)->first();
-        $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
+        $inspecao = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
+        $inspecoes = [];
+
+        foreach ($inspecao as $indice) {
+            $relatorio = InspecaoRelatorio::where('inspecao_id', $indice->id)
+            ->first();
+
+            if ($indice->requerimento_id == null) {
+                if ($relatorio != null) {
+                    $obj = (object) array(
+                        'data'             => $indice->data,
+                        'statusInspecao'   => $indice->status,
+                        'motivoInspecao'   => $indice->motivo,
+                        'inspetor_id'      => $indice->inspetor_id,
+                        'requerimento_id'  => null,
+                        'nomeEmpresa'      => $indice->empresa->nome,
+        
+                        'relatorio_id'     => $relatorio->id,
+                        'inspecao_id'      => $indice->id,
+                        'relatorio_status' => $relatorio->status,
+                    );
+                    array_push($inspecoes, $obj);
+                } else {
+                    $obj = (object) array(
+                        'data'             => $indice->data,
+                        'statusInspecao'   => $indice->status,
+                        'motivoInspecao'   => $indice->motivo,
+                        'inspetor_id'      => $indice->inspetor_id,
+                        'requerimento_id'  => null,
+                        'nomeEmpresa'      => $indice->empresa->nome,
+        
+                        'relatorio_id'     => null,
+                        'inspecao_id'      => $indice->id,
+                        'relatorio_status' => $relatorio->status,
+                    );
+                    array_push($inspecoes, $obj);
+                }
+            }else {
+                if ($relatorio != null) {
+                    $obj = (object) array(
+                        'data'             => $indice->data,
+                        'statusInspecao'   => $indice->status,
+                        'motivoInspecao'   => $indice->motivo,
+                        'inspetor_id'      => $indice->inspetor_id,
+                        'cnae'             => $indice->requerimento->cnae->descricao,
+                        'nomeEmpresa'      => $indice->empresa->nome,
+        
+                        'relatorio_id'     => $relatorio->id,
+                        'inspecao_id'      => $indice->id,
+                        'relatorio_status' => $relatorio->status,
+                    );
+                    array_push($inspecoes, $obj);
+                } else {
+                    $obj = (object) array(
+                        'data'             => $indice->data,
+                        'statusInspecao'   => $indice->status,
+                        'motivoInspecao'   => $indice->motivo,
+                        'inspetor_id'      => $indice->inspetor_id,
+                        'cnae'             => $indice->requerimento->cnae->descricao,
+                        'nomeEmpresa'      => $indice->empresa->nome,
+        
+                        'relatorio_id'     => null,
+                        'inspecao_id'      => $indice->id,
+                        'relatorio_status' => $relatorio->status,
+                    );
+                    array_push($inspecoes, $obj);
+                }
+            }
+        }
+
         return view('inspetor/programacao_inspetor', ['inspecoes' => $inspecoes]);
     }
 
@@ -251,7 +320,9 @@ class InspetorController extends Controller
             $relatorio->inspecao_id = $request->inspecao_id;
             $relatorio->relatorio = $request->relatorio;
             $relatorio->status = "avaliacao";
-            $relatorio->num_avaliadores = $numAgentes + 1;
+            $relatorio->agente1 = "avaliacao";
+            $relatorio->agente2 = "avaliacao";
+            $relatorio->coordenador = "avaliacao";
 
             $relatorio->save();
             return redirect()->back()->with('success', "Relatório salvo com sucesso!");

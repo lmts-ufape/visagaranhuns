@@ -193,6 +193,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
 
     // Pagina de relatorio
     Route::get('/programacao/coordenador/inspecao/relatorio', 'CoordenadorController@showRelatorio')->name('show.relatorio.coordenador');
+    Route::get('/programacao/coordenador/inspecao/relatorio/verificar', 'CoordenadorController@showRelatorioVerificar')->name('show.relatorio.coordenador.verificar');
     Route::post("/coordenador/julgar/relatorio",              "CoordenadorController@julgarRelatorio")->name("julgar.relatorio.coordenador");
 
 });
@@ -277,6 +278,7 @@ Route::middleware(['IsAgente'])->group(function () {
     Route::get('cadastrar/agente', function () {return view('agente/cadastrar_agente');})->name('cadastrar.agente');
     Route::get('/programacao/agente', 'AgenteController@showProgramacao')->name('show.programacao.agente');
     Route::get('/programacao/agente/inspecao/relatorio', 'AgenteController@showRelatorio')->name('show.relatorio.agente');
+    Route::get('/programacao/agente/inspecao/relatorio/verificar', 'AgenteController@showRelatorioVerificar')->name('show.relatorio.agente.verificar');
     Route::post("/julgar/relatorio", "AgenteController@julgar")->name("julgar.relatorio");
     /*
         (WEB)

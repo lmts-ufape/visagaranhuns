@@ -67,9 +67,6 @@
                             </div>
                            <div class="p-2">
                                 <div class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="filtroButtonRequerimento" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Filtro
-                                    </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         {{-- <a class="dropdown-item" onclick="selecionarFiltroRequerimento('aprovado')" style="text-decoration:none;cursor:pointer">Cadastro Aprovado</a> --}}
                                         {{-- <a class="dropdown-item" onclick="selecionarFiltroRequerimento('denuncia')" style="text-decoration:none;cursor:pointer">Denúncia</a> --}}

@@ -18,6 +18,8 @@ class CreateInspecoesTable extends Migration
             $table->date('data');
             $table->string('status');
             $table->string('motivo');
+            $table->string('agente1');
+            $table->string('agente2');
 
             $table->bigInteger("inspetor_id")->nullable();
             $table->foreign("inspetor_id")->references("id")->on("inspetor");

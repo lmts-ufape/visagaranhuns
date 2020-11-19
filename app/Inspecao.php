@@ -13,7 +13,7 @@ class Inspecao extends Model
      * @var array
      */
     protected $fillable = [
-        'data', 'status', 'motivo', 'inspetor_id', 'requerimento_id', 'empresas_id'
+        'data', 'status', 'motivo', 'agente1', 'agente2', 'inspetor_id', 'requerimento_id', 'empresas_id'
     ];
 
     public function agente() {

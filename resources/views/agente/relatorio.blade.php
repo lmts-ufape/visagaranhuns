@@ -142,8 +142,8 @@
             <div class="row" style="margin-top:2rem; margin-bottom:1rem">
                 <div class="col-auto mr-auto"></div>
                 <div class="col-auto">
-                        <button type="button" class="btn btn-danger" style="margin-right:5px;" data-toggle="modal" data-target="#exampleModal1" onclick="reprovar('{{$relatorio_id}}','{{$inspecao_id}}', 'false')">Reprovar Relatório</button>
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal2" onclick="aprovar('{{$relatorio_id}}','{{$inspecao_id}}', 'true')">Aprovar Relatório</button>
+                        <button type="button" class="btn btn-danger" style="margin-right:5px;" data-toggle="modal" data-target="#exampleModal1" onclick="reprovar('{{$relatorio_id}}','{{$inspecao_id}}', false)">Reprovar Relatório</button>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal2" onclick="aprovar('{{$relatorio_id}}','{{$inspecao_id}}', true)">Aprovar Relatório</button>
 
                 </div>
             </div>
@@ -220,7 +220,7 @@
 <script type="text/javascript">
     tinymce.activeEditor.getBody().setAttribute('textarea_relatorio_inspetor', false);
 
-    function reprovar($inspecao, $relatorio, $decisao) {
+    function reprovar($relatorio, $inspecao, $decisao) {
         console.log($inspecao);
         console.log($relatorio);
         console.log($decisao);
@@ -229,7 +229,7 @@
         document.getElementById("decisaoR").value = $decisao;
     }
 
-    function aprovar($inspecao, $relatorio, $decisao) {
+    function aprovar($relatorio, $inspecao, $decisao) {
         console.log($inspecao);
         console.log($relatorio);
         console.log($decisao);

@@ -51,7 +51,7 @@
                                         <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold; width:100%">Estabelecimento/Tipo/CNAE</th>
                                         <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold; margin-right:30px;">Data</th>
                                         <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
-                                        <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Ações</th>
+                                        <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Relatório</th>
 
                                     </tr>
                                     </thead>
@@ -59,24 +59,29 @@
                                         <tr>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                 <div class="btn-form">
-                                                    <div style="font-weight:bold;">{{$item->requerimento->empresa->nome}}</div>
-                                                    <div>{{$item->requerimento->tipo}}</div>
-                                                    <div>{{$item->requerimento->cnae->descricao}}</div>
+                                                    <div style="font-weight:bold;">{{$item->nomeEmpresa}}</div>
+                                                    <div>{{$item->motivoInspecao}}</div>
+                                                    @if ($item->motivoInspecao == "Denuncia")
+                                                    <div></div>
+                                                    @else
+                                                    <div>{{$item->cnae}}</div>
+                                                    @endif
                                                 </div>
                                             </th>
-                                            <?php
-                                                $data = explode("-",$item->data);
-                                                $ano = $data[0];
-                                                $mes = $data[1];
-                                                $dia = $data[2];
-                                            ?>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$dia}}/{{$mes}}/{{$ano}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{ date( 'd/m/Y' , strtotime($item->data))}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->statusInspecao}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                 <div class="btn-group">
-                                                    <div style="margin:5px;"><a href="{{ route('show.album', ['value' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-success" style="color:white;">Álbum</a></div>
-                                                    <div style="margin:5px;"><a href="{{ route('show.relatorio', ['value' => Crypt::encrypt($item->id)])}}" type="button" class="btn btn-primary">Relatório</a></div>
-
+                                                    <div style="margin:5px;"><a href="{{ route('show.album', ['value' => Crypt::encrypt($item->inspecao_id)]) }}" type="button" class="btn btn-success" style="color:white;">Álbum</a></div>
+                                                    @if ($item->relatorio_status == 'reprovado')
+                                                        <div style="margin:5px;"><a href="{{ route('show.relatorio', ['value' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-danger">Reprovado</a></div>
+                                                    @elseif ($item->relatorio_status == 'avaliacao')
+                                                        <div style="margin:5px;"><a type="button" class="btn btn-primary">Avaliação</a></div>
+                                                    @elseif ($item->relatorio_status == 'aprovado')
+                                                        <div style="margin:5px;"><a href="{{ route('show.relatorio', ['value' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-success">Aprovado</a></div>
+                                                    @else
+                                                        <div style="margin:5px;"><a href="{{ route('show.relatorio', ['value' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Criar</a></div>
+                                                    @endif
                                                 </div>
                                             </th>
                                         </tr>

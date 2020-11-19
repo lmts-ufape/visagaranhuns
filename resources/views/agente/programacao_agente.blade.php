@@ -81,7 +81,20 @@
                                                     @if ($item->relatorio_id == null)
                                                     <div style="margin:5px;"><a type="button" class="btn btn-warning">Não Finalizado</a></div>
                                                     @else
-                                                    <div style="margin:5px;"><a href="{{ route('show.relatorio.agente', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Avaliar</a></div>
+                                                        @if ($item->relatorio_status == "reprovado")
+                                                            <div style="margin:5px;"><a href="{{ route('show.relatorio.agente.verificar', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-danger">Reprovado</a></div>
+                                                            {{-- <div style="margin:5px;"><a type="button" class="btn btn-danger">Reprovado</a></div> --}}
+                                                        @elseif (isset($item->agente1) && $item->agente1 == "avaliacao")
+                                                            <div style="margin:5px;"><a href="{{ route('show.relatorio.agente', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Avaliar</a></div>
+                                                        @elseif (isset($item->agente1) && $item->agente1 == "aprovado")
+                                                            <div style="margin:5px;"><a href="{{ route('show.relatorio.agente.verificar', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-success">Aprovado</a></div>
+                                                            {{-- <div style="margin:5px;"><a type="button" class="btn btn-success">Aprovado</a></div> --}}
+                                                        @elseif (isset($item->agente2) && $item->agente2 == "avaliacao")
+                                                            <div style="margin:5px;"><a href="{{ route('show.relatorio.agente', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Avaliar</a></div>
+                                                        @elseif (isset($item->agente2) && $item->agente2 == "aprovado")
+                                                            <div style="margin:5px;"><a href="{{ route('show.relatorio.agente.verificar', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-success">Aprovado</a></div>                                                            
+                                                            {{-- <div style="margin:5px;"><a type="button" class="btn btn-success">Aprovado</a></div> --}}
+                                                        @endif
                                                     @endif
                                                 </div>
                                             </th>
