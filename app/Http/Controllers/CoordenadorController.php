@@ -59,7 +59,7 @@ class CoordenadorController extends Controller
         $reqPendente  = count($requerimentosPendente);
 
         $inspecoesPendente      = Inspecao::where('status', 'pendente')->get();
-        $inspecoesCompleta      = Inspecao::where('status', 'completo')->get();
+        $inspecoesCompleta      = Inspecao::where('status', 'aprovado')->get();
         $inspecPendente         = count($inspecoesPendente);
         $inspecCompleta         = count($inspecoesCompleta);
 

@@ -32,7 +32,8 @@ class InspetorController extends Controller
         $token = User::where('id','=',Auth::user()->id)->first();
         $inspetor = Inspetor::where('user_id','=',Auth::user()->id)->first();
         $pendente = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->count();
-        $concluido = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'concluido')->orderBy('data', 'ASC')->count();
+        $concluido = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'aprovado')->orderBy('data', 'ASC')->count();
+
         $aviso = $token->remember_token;
         if($aviso == null){
             return view('inspetor.home_inspetor',['pendente' => $pendente, 'concluido' => $concluido, 'aviso' => 0]);
@@ -204,7 +205,7 @@ class InspetorController extends Controller
         
                         'relatorio_id'     => null,
                         'inspecao_id'      => $indice->id,
-                        'relatorio_status' => $relatorio->status,
+                        'relatorio_status' => null,
                     );
                     array_push($inspecoes, $obj);
                 }
@@ -234,7 +235,7 @@ class InspetorController extends Controller
         
                         'relatorio_id'     => null,
                         'inspecao_id'      => $indice->id,
-                        'relatorio_status' => $relatorio->status,
+                        'relatorio_status' => null,
                     );
                     array_push($inspecoes, $obj);
                 }
@@ -314,8 +315,14 @@ class InspetorController extends Controller
         if($verifica == true){ //atualizo
             $atualizar = InspecaoRelatorio::where('inspecao_id','=',$request->inspecao_id)->first();
             $atualizar->update(['relatorio'=>$request->relatorio]);
+            $atualizar->status = "avaliacao";
+            $atualizar->agente1 = "avaliacao";
+            $atualizar->agente2 = "avaliacao";
+            $atualizar->coordenador = "avaliacao";
+            $atualizar->save();
             return redirect()->back()->with('success', "Relatório atualizado com sucesso!");
         }else{ //salvo
+            dd("Ou aqui?");
             $relatorio = new InspecaoRelatorio;
             $relatorio->inspecao_id = $request->inspecao_id;
             $relatorio->relatorio = $request->relatorio;

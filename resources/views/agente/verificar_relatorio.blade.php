@@ -143,3 +143,8 @@
     </div>
 </div>
 @endsection
+<script type="text/javascript">
+    window.onload= function() {
+        tinymce.get("textarea_relatorio_inspetor").setMode('readonly'); //desabilitar campo de texto
+    };
+</script>

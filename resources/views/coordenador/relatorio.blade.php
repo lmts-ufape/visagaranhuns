@@ -237,6 +237,10 @@
         document.getElementById("relatorio_idA").value = $relatorio;
         document.getElementById("decisaoA").value = $decisao;
     }
+
+    window.onload= function() {
+        tinymce.get("textarea_relatorio_inspetor").setMode('readonly'); //desabilitar campo de texto
+    };
     
  
 </script>

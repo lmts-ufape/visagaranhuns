@@ -145,10 +145,6 @@
 @endsection
 <script type="text/javascript">
     window.onload= function() {
-        window.denuncia = function($descricao){
-            console.log($descricao);
-            tinyMCE.get('textarea_relatorio_inspetor').setContent($descricao);
-            tinymce.get("textarea_relatorio_inspetor").setMode('readonly'); //desabilitar campo de texto
-        }  
+        tinymce.get("textarea_relatorio_inspetor").setMode('readonly'); //desabilitar campo de texto
     };
 </script>

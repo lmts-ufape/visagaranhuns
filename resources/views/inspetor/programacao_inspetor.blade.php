@@ -44,7 +44,6 @@
                         </div>
                         <div class="form col-md-12" style="margin-top:-10px;">
                             @if(count($inspecoes)>0)
-                                @foreach($inspecoes as $item)
                                 <table class="table table-responsive-lg table-hover" style="width: 100%;">
                                     <thead>
                                     <tr>
@@ -52,10 +51,12 @@
                                         <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold; margin-right:30px;">Data</th>
                                         <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
                                         <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Relatório</th>
+                                        <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Notificação</th>
 
                                     </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach($inspecoes as $item)
                                         <tr>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                 <div class="btn-form">
@@ -76,7 +77,7 @@
                                                     @if ($item->relatorio_status == 'reprovado')
                                                         <div style="margin:5px;"><a href="{{ route('show.relatorio', ['value' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-danger">Reprovado</a></div>
                                                     @elseif ($item->relatorio_status == 'avaliacao')
-                                                        <div style="margin:5px;"><a type="button" class="btn btn-primary">Avaliação</a></div>
+                                                        <div style="margin:5px;"><a type="button" class="btn btn-primary" disabled>Avaliação</a></div>
                                                     @elseif ($item->relatorio_status == 'aprovado')
                                                         <div style="margin:5px;"><a href="{{ route('show.relatorio', ['value' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-success">Aprovado</a></div>
                                                     @else
@@ -85,9 +86,9 @@
                                                 </div>
                                             </th>
                                         </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
-                                @endforeach
                             @else
                                 <div style="margin-bottom:5rem; text-align:center; font-size:19px;"> Nenhuma inspeção programada!</div>
                             @endif
