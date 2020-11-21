@@ -185,7 +185,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
 
     // Página de denúncia
     Route::get("/pagina/denuncia/coordenador", "CoordenadorController@paginaDenuncias")->name("pagina.denuncia.coordenador");
-    Route::post("/pagina/detalhes/denuncia", "CoordenadorController@paginaDetalhesDenuncia")->name("pagina.detalhes.denuncia");
+    Route::get("/pagina/detalhes/denuncia", "CoordenadorController@paginaDetalhesDenuncia")->name("pagina.detalhes.denuncia");
     Route::post("/avaliar/denuncia", "CoordenadorController@avaliarDenuncia")->name("avaliar.denuncia");
 
     // Deletar inspecao

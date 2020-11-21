@@ -607,7 +607,7 @@ class CoordenadorController extends Controller
 
     public function avaliarDenuncia(Request $request)
     {
-        // dd($request->decisao);
+
         if ($request->decisao == "true") {
 
             $denuncia = Denuncia::find($request->denunciaId);
@@ -615,7 +615,7 @@ class CoordenadorController extends Controller
             $denuncia->save();
 
             session()->flash('success', 'Denúncia acatada com sucesso!');
-            return redirect()->route('pagina.denuncia.coordenador');
+            return redirect()->route('pagina.detalhes.denuncia', ['empresa' => $request->empresa]);
 
         } elseif ($request->decisao == "false") {
 
@@ -624,7 +624,7 @@ class CoordenadorController extends Controller
             $denuncia->save();
 
             session()->flash('success', 'Denúncia arquivada com sucesso!');
-            return redirect()->route('pagina.denuncia.coordenador');
+            return redirect()->route('pagina.detalhes.denuncia', ['empresa' => $request->empresa]);
         }
         
     }

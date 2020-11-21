@@ -91,7 +91,7 @@
 
     </div>
 
-<form id="submeterIdDenuncia" method="POST" action="{{route('pagina.detalhes.denuncia')}}">
+<form id="submeterIdDenuncia" method="GET" action="{{route('pagina.detalhes.denuncia')}}">
     @csrf
     <input id="inputSubmeterIdDenuncia" type="hidden" name="empresa" value="">
 </form>
