@@ -63,13 +63,21 @@
                                         <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->telefone}}</th>
                                         @if ($item->status == "pendente")
                                         <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Pendente</th>
-                                        @elseif ($item->status == "Acatado")
-                                        <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Acatado</th>
-                                        @elseif ($item->status == "Arquivado")
-                                        <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Arquivado</th>
-                                        @endif
                                         <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denuncia('{{$item->denuncia}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
                                         <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denunciaId('{{$item->id}}')" data-toggle="modal" data-target="#exampleModalLabelB">Avaliar</button></th>
+                                        @elseif ($item->status == "Acatado")
+                                        <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Acatado</th>
+                                        <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denuncia('{{$item->denuncia}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
+                                        <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denunciaId('{{$item->id}}')" data-toggle="modal" data-target="#exampleModalLabelB" disabled>Avaliar</button></th>
+                                        @elseif ($item->status == "Arquivado")
+                                        <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Arquivado</th>
+                                        <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denuncia('{{$item->denuncia}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
+                                        <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denunciaId('{{$item->id}}')" data-toggle="modal" data-target="#exampleModalLabelB">Avaliar</button></th>
+                                        @elseif ($item->status == "Concluido")
+                                        <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Concluido</th>
+                                        <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denuncia('{{$item->denuncia}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
+                                        <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denunciaId('{{$item->id}}')" data-toggle="modal" data-target="#exampleModalLabelB" disabled>Avaliar</button></th>
+                                        @endif
                                     </tr>  
                                     @endforeach
                                 </tbody>

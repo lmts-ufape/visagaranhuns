@@ -388,6 +388,11 @@ class CoordenadorController extends Controller
                 $inspecao->status = "aprovado";
                 $inspecao->save();
 
+                $empresa = Empresa::find($relatorio->inspecao->empresas_id);
+                $denuncias = Denuncia::where('empresa_id', $empresa->id)
+                ->where('status', 'Acatado')
+                ->update(['status' => 'Concluido']);
+
                 return redirect()->route('historico.inspecoes')->with('message', 'Relatório aprovado com sucesso!');
             }
 

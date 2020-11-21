@@ -85,6 +85,10 @@
                                                     @endif
                                                 </div>
                                             </th>
+                                            <th>
+                                                <div style="margin:5px;"><a href="{{ route('criar.notificacao', ['value' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Notificar</a></div>
+                                                <div style="margin:5px;"><a href="{{ route('apagar.notificacao', ['value' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-danger">Apagar</a></div>
+                                            </th>
                                         </tr>
                                         @endforeach
                                     </tbody>

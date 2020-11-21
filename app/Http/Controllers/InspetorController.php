@@ -136,6 +136,12 @@ class InspetorController extends Controller
         //
     }
 
+    public function criarNotificacao(Request $request)
+    {
+        dd($request);
+        // $requerimento = Inspecao::
+    }
+
     public function inspecoes(Request $request)
     {
         $inspecoes = Inspecao::where('inspetor_id', 1)
@@ -322,7 +328,7 @@ class InspetorController extends Controller
             $atualizar->save();
             return redirect()->back()->with('success', "Relatório atualizado com sucesso!");
         }else{ //salvo
-            dd("Ou aqui?");
+
             $relatorio = new InspecaoRelatorio;
             $relatorio->inspecao_id = $request->inspecao_id;
             $relatorio->relatorio = $request->relatorio;

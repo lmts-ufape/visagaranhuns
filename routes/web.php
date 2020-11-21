@@ -269,6 +269,8 @@ Route::middleware(['IsInspetor'])->group(function () {
     Route::get('/programacao/inspecao/relatorio', 'InspetorController@showRelatorio')->name('show.relatorio');
     Route::post('/save/relatorio', 'InspetorController@saveRelatorio')->name('save.relatorio');
     Route::get('/historico/inspetor', 'InspetorController@showHistorico')->name('show.historico');
+    Route::get('/criar/notificacao', 'InspetorController@criarNotificacao')->name('criar.notificacao');
+    Route::post('/apagar/notificacao', 'InspetorController@apagarNotificacao')->name('apagar.notificacao');
 
 });
 

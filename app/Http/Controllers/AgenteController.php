@@ -10,6 +10,8 @@ use App\Inspecao;
 use App\InspecaoFoto;
 use App\InspecaoRelatorio;
 use App\Relatorio;
+use App\Empresa;
+use App\Denuncia;
 use Illuminate\Support\Facades\Crypt;
 use Auth;
 
@@ -100,6 +102,9 @@ class AgenteController extends Controller
                     $inspecao->status = "aprovado";
                     $inspecao->save();
 
+                    $empresa = Empresa::find($relatorio->inspecao->empresas_id);
+                    $denuncias = Denuncia::where('empresa_id', $empresa->id)->update(['status' => 'Concluido']);
+
                     return redirect()->route('show.programacao.agente')->with('message', 'Relatório aprovado com sucesso!');
                 }
 
@@ -116,6 +121,11 @@ class AgenteController extends Controller
 
                     $inspecao->status = "aprovado";
                     $inspecao->save();
+
+                    $empresa = Empresa::find($relatorio->inspecao->empresas_id);
+                    $denuncias = Denuncia::where('empresa_id', $empresa->id)
+                    ->where('status', 'Acatado')
+                    ->update(['status' => 'Concluido']);
 
                     return redirect()->route('show.programacao.agente')->with('message', 'Relatório aprovado com sucesso!');
                 }
