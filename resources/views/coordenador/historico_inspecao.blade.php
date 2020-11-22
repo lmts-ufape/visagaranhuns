@@ -66,6 +66,7 @@
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Empresa</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Cnae</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Relatório</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Notificação</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Apagar</th>
                                   </tr>
                                 </thead>
@@ -103,6 +104,26 @@
                                                     </th>
                                                 @endif
                                             @endif
+                                            <td class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+
+                                                @if ($item->notificacao_status == null)
+                                                    <button type="button" class="btn btn-primary" disabled>
+                                                        Notificação
+                                                    </button>
+                                                @elseif ($item->notificacao_status == 'pendente')
+                                                    <a href="{{ route('show.notificacao.coordenador', ['inspecaoId' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-primary">
+                                                        Avaliar
+                                                    </a>
+                                                @elseif ($item->notificacao_status == 'aprovado')
+                                                    <a href="{{ route('show.notificacao.coordenador.verificar', ['inspecaoId' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-success">
+                                                        Aprovado
+                                                    </a>
+                                                @elseif ($item->notificacao_status == 'reprovado')
+                                                    <a href="{{ route('show.notificacao.coordenador.verificar', ['inspecaoId' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-danger">
+                                                        Reprovado
+                                                    </a>
+                                                @endif
+                                            </td>
                                             <td class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                 <a href="{{ route('deletar.inspecao', ['inspecaoId' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-danger">
                                                     <img src="{{asset('imagens/logo_lixo.png')}}" style="width:15px">

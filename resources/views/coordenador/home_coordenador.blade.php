@@ -14,16 +14,24 @@
                     <div class="col-12" style="margin-top:rem;font-size:50px;text-align:center;font-weight:lighter;font-family:monospace;color:gray">85</div>
                     <div class="col-12">Denúncias não lidas:</div>
                     <div class="col-12" style="margin-top:rem;font-size:50px;text-align:center;font-weight:lighter;font-family:monospace;color:gray">25</div> --}}
-                    <div class="col-12">
+
+                    {{-- <div class="col-12">
                         <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Denúncias Acatadas</label>
                         <div class="form-group">
                             <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$denunciasAcatado}}</div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-12">
                         <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Denúncias Arquivadas</label>
                         <div class="form-group">
                             <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$denunciasArquivado}}</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Total de Denúncias</label>
+                        <div class="form-group">
+                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$denunciasTotal}}</div>
                         </div>
                     </div>
                 </div>

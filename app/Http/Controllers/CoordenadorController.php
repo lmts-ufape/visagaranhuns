@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Crypt;
 use PDF;
 use Illuminate\Support\Facades\Validator;
 use App\Denuncia;
+use App\Notificacao;
 
 class CoordenadorController extends Controller
 {
@@ -46,9 +47,10 @@ class CoordenadorController extends Controller
 
     public function home()
     {
-        $denunciasAcatado     = Denuncia::where('status', 'Acatado')->get();
+        // $denunciasAcatado     = Denuncia::where('status', 'Acatado')->get();
+        $denunciasTotal       = Denuncia::all()->count();
         $denunciasArquivado   = Denuncia::where('status', 'Arquivado')->get();
-        $denunAcatado         = count($denunciasAcatado);
+        // $denunAcatado         = count($denunciasAcatado);
         $denunArquivado       = count($denunciasArquivado);
 
         $requerimentosAprovado  = Requerimento::where('status', 'aprovado')->get();
@@ -69,7 +71,7 @@ class CoordenadorController extends Controller
         $empAprovada           = count($empresasAprovada);
               
         return view('coordenador.home_coordenador',
-        ['denunciasAcatado'      => $denunAcatado,
+        ['denunciasTotal'        => $denunciasTotal,
         'denunciasArquivado'     => $denunArquivado,
         'requerimentosAprovado'  => $reqAprovado,
         'requerimentosReprovado' => $reqReprovado,
@@ -256,6 +258,7 @@ class CoordenadorController extends Controller
         
         foreach ($inspecoes as $key) {
             $relatorio = InspecaoRelatorio::where('inspecao_id', $key->id)->first();
+            $notificacao = Notificacao::where('inspecoes_id', $key->id)->first();
 
             if ($key->motivo == "Primeira Licenca" || $key->motivo == "Renovacao") {
 
@@ -264,35 +267,59 @@ class CoordenadorController extends Controller
 
                 if ($relatorio == null) {
                     $obj = (object) array(
-                        'id'            => $key->id,
-                        'data'          => $key->data,
-                        'status'        => $key->status,
-                        'inspetor'      => $key->inspetor->user->name,
-                        'agente1'        => $inspec_agente[0]->agente->user->name,
-                        'agente2'        => $inspec_agente[1]->agente->user->name,
-                        'empresa'       => $requerimento->empresa->nome,
-                        'cnae'          => $requerimento->cnae->descricao,
+                        'id'                => $key->id,
+                        'data'              => $key->data,
+                        'status'            => $key->status,
+                        'inspetor'          => $key->inspetor->user->name,
+                        'agente1'           => $inspec_agente[0]->agente->user->name,
+                        'agente2'           => $inspec_agente[1]->agente->user->name,
+                        'empresa'           => $requerimento->empresa->nome,
+                        'cnae'              => $requerimento->cnae->descricao,
     
-                        'relatorio_id'    => null,
-                        'relatorio_status'=> null, 
+                        'relatorio_id'      => null,
+                        'relatorio_status'  => null,
+                        'notificacao_id'    => null,
+                        'notificacao_status'=> null,
                     );
                     array_push($temp, $obj);
                 } else {
-                    $obj = (object) array(
-                        'id'              => $key->id,
-                        'data'            => $key->data,
-                        'status'          => $key->status,
-                        'inspetor'        => $key->inspetor->user->name,
-                        'agente1'         => $inspec_agente[0]->agente->user->name,
-                        'agente2'         => $inspec_agente[1]->agente->user->name,
-                        'empresa'         => $requerimento->empresa->nome,
-                        'cnae'            => $requerimento->cnae->descricao,
-    
-                        'relatorio_id'    => $relatorio->id,
-                        'relatorio_status'=> $relatorio->status,
-                        'coordenador'     => $relatorio->coordenador,
-                    );
-                    array_push($temp, $obj);
+                    if ($notificacao != null) {
+                        $obj = (object) array(
+                            'id'                  => $key->id,
+                            'data'                => $key->data,
+                            'status'              => $key->status,
+                            'inspetor'            => $key->inspetor->user->name,
+                            'agente1'             => $inspec_agente[0]->agente->user->name,
+                            'agente2'             => $inspec_agente[1]->agente->user->name,
+                            'empresa'             => $requerimento->empresa->nome,
+                            'cnae'                => $requerimento->cnae->descricao,
+        
+                            'relatorio_id'        => $relatorio->id,
+                            'relatorio_status'    => $relatorio->status,
+                            'coordenador'         => $relatorio->coordenador,
+                            'notificacao_id'      => $notificacao->id,
+                            'notificacao_status'  => $notificacao->status,
+                        );
+                        array_push($temp, $obj);
+                    } else {
+                        $obj = (object) array(
+                            'id'              => $key->id,
+                            'data'            => $key->data,
+                            'status'          => $key->status,
+                            'inspetor'        => $key->inspetor->user->name,
+                            'agente1'         => $inspec_agente[0]->agente->user->name,
+                            'agente2'         => $inspec_agente[1]->agente->user->name,
+                            'empresa'         => $requerimento->empresa->nome,
+                            'cnae'            => $requerimento->cnae->descricao,
+        
+                            'relatorio_id'    => $relatorio->id,
+                            'relatorio_status'=> $relatorio->status,
+                            'coordenador'     => $relatorio->coordenador,
+                            'notificacao_id'      => null,
+                            'notificacao_status'  => null,
+                        );
+                        array_push($temp, $obj);
+                    }
                 }
 
             } elseif ($key->motivo == "Denuncia") {
@@ -302,36 +329,59 @@ class CoordenadorController extends Controller
 
                 if ($relatorio == null) {
                     $obj = (object) array(
-                        'id'            => $key->id,
-                        'data'          => $key->data,
-                        'status'        => $key->status,
-                        'inspetor'      => $key->inspetor->user->name,
-                        'agente1'        => $inspec_agente[0]->agente->user->name,
-                        'agente2'        => $inspec_agente[1]->agente->user->name,
-                        'empresa'       => $empresa->nome,
-                        'cnae'          => "Denúncia",
+                        'id'                => $key->id,
+                        'data'              => $key->data,
+                        'status'            => $key->status,
+                        'inspetor'          => $key->inspetor->user->name,
+                        'agente1'           => $inspec_agente[0]->agente->user->name,
+                        'agente2'           => $inspec_agente[1]->agente->user->name,
+                        'empresa'           => $empresa->nome,
+                        'cnae'              => "Denúncia",
                         
-                        'relatorio_id'    => null,
-                        'relatorio_status'=> null,
+                        'relatorio_id'      => null,
+                        'relatorio_status'  => null,
+                        'notificacao_id'    => null,
+                        'notificacao_status'=> null,
                     );
                     array_push($temp, $obj);
                 } else {
-
-                    $obj = (object) array(
-                        'id'            => $key->id,
-                        'data'          => $key->data,
-                        'status'        => $key->status,
-                        'inspetor'      => $key->inspetor->user->name,
-                        'agente1'        => $inspec_agente[0]->agente->user->name,
-                        'agente2'        => $inspec_agente[1]->agente->user->name,
-                        'empresa'       => $empresa->nome,
-                        'cnae'          => "Denúncia",
-                        
-                        'relatorio_id'    => $relatorio->id,
-                        'relatorio_status'=> $relatorio->status,
-                        'coordenador'     => $relatorio->coordenador,
-                    );
-                    array_push($temp, $obj);
+                    if ($notificacao != null) {
+                        $obj = (object) array(
+                            'id'                 => $key->id,
+                            'data'               => $key->data,
+                            'status'             => $key->status,
+                            'inspetor'           => $key->inspetor->user->name,
+                            'agente1'            => $inspec_agente[0]->agente->user->name,
+                            'agente2'            => $inspec_agente[1]->agente->user->name,
+                            'empresa'            => $empresa->nome,
+                            'cnae'               => "Denúncia",
+                            
+                            'relatorio_id'       => $relatorio->id,
+                            'relatorio_status'   => $relatorio->status,
+                            'coordenador'        => $relatorio->coordenador,
+                            'notificacao_id'     => $notificacao->id,
+                            'notificacao_status' => $notificacao->status,
+                        );
+                        array_push($temp, $obj);
+                    } else {
+                        $obj = (object) array(
+                            'id'                 => $key->id,
+                            'data'               => $key->data,
+                            'status'             => $key->status,
+                            'inspetor'           => $key->inspetor->user->name,
+                            'agente1'            => $inspec_agente[0]->agente->user->name,
+                            'agente2'            => $inspec_agente[1]->agente->user->name,
+                            'empresa'            => $empresa->nome,
+                            'cnae'               => "Denúncia",
+                            
+                            'relatorio_id'       => $relatorio->id,
+                            'relatorio_status'   => $relatorio->status,
+                            'coordenador'        => $relatorio->coordenador,
+                            'notificacao_id'     => null,
+                            'notificacao_status' => null,
+                        );
+                        array_push($temp, $obj);
+                    }
                 }
             }
         }
@@ -363,6 +413,50 @@ class CoordenadorController extends Controller
             return view('coordenador/relatorio_verificar',['album' => $resultado, 'inspecao_id' => Crypt::decrypt($request->inspecao_id), 'relatorio' => $relatorio->relatorio, 'relatorio_id' => $relatorio->id]);
         }else{
             return view('coordenador/relatorio_verificar',['album' => $resultado, 'inspecao_id' => Crypt::decrypt($request->inspecao_id), 'relatorio' => $relatorio->relatorio, 'relatorio_id' => $relatorio->id]);
+        }
+    }
+
+    public function showNotificacao(Request $request)
+    {
+        $notificacao = Notificacao::where('inspecoes_id','=', Crypt::decrypt($request->inspecaoId))->orderBy('created_at','ASC')->first();
+
+        if($notificacao == null){
+            return view('coordenador/notificacao',['inspecao_id' => Crypt::decrypt($request->inspecaoId), 'notificacao' => $notificacao->notificacao]);
+        }else{
+            return view('coordenador/notificacao',['inspecao_id' => Crypt::decrypt($request->inspecaoId), 'notificacao' => $notificacao->notificacao]);
+        }
+    }
+
+    public function showNotificacaoVerificar(Request $request)
+    {
+
+        $notificacao = Notificacao::where('inspecoes_id','=', Crypt::decrypt($request->inspecaoId))->first();
+
+        if($notificacao == null){
+            return view('coordenador/notificacao_verificar',['inspecao_id' => Crypt::decrypt($request->inspecaoId), 'notificacao' => $notificacao->notificacao]);
+        }else{
+            return view('coordenador/notificacao_verificar',['inspecao_id' => Crypt::decrypt($request->inspecaoId), 'notificacao' => $notificacao->notificacao]);
+        }
+    }
+
+    public function julgarNotificacao(Request $request)
+    {
+
+        $notificacao = Notificacao::where('inspecoes_id', $request->inspecao_id)->first();
+
+        if ($request->decisao == 'true') {
+
+            $notificacao->status = 'aprovado';
+            $notificacao->save();
+
+            return redirect()->route('historico.inspecoes')->with('message', 'Notificação aprovada com sucesso!');
+
+        } else {
+
+            $notificacao->status = 'reprovado';
+            $notificacao->save();
+
+            return redirect()->route('historico.inspecoes')->with('message', 'Notificação reprovada!');
         }
     }
 

@@ -23,9 +23,10 @@ Route::get('/', function () {
     if (Auth::check()) {
         if (Auth::user()->tipo == "coordenador") {
 
-        $denunciasAcatado     = Denuncia::where('status', 'Acatado')->get();
+        // $denunciasAcatado     = Denuncia::where('status', 'Acatado')->get();
+        $denunciasTotal       = Denuncia::all()->count();
         $denunciasArquivado   = Denuncia::where('status', 'Arquivado')->get();
-        $denunAcatado         = count($denunciasAcatado);
+        // $denunAcatado         = count($denunciasAcatado);
         $denunArquivado       = count($denunciasArquivado);
 
         $requerimentosAprovado  = Requerimento::where('status', 'aprovado')->get();
@@ -46,7 +47,7 @@ Route::get('/', function () {
         $empAprovada           = count($empresasAprovada);
               
         return view('coordenador.home_coordenador',
-        ['denunciasAcatado'      => $denunAcatado,
+        ['denunciasTotal'        => $denunciasTotal,
         'denunciasArquivado'     => $denunArquivado,
         'requerimentosAprovado'  => $reqAprovado,
         'requerimentosReprovado' => $reqReprovado,
@@ -196,6 +197,11 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get('/programacao/coordenador/inspecao/relatorio/verificar', 'CoordenadorController@showRelatorioVerificar')->name('show.relatorio.coordenador.verificar');
     Route::post("/coordenador/julgar/relatorio",              "CoordenadorController@julgarRelatorio")->name("julgar.relatorio.coordenador");
 
+    // Pagina de notificacao
+    Route::get('/programacao/coordenador/inspecao/notificacao', 'CoordenadorController@showNotificacao')->name('show.notificacao.coordenador');
+    Route::get('/programacao/coordenador/inspecao/notificacao/verificar', 'CoordenadorController@showNotificacaoVerificar')->name('show.notificacao.coordenador.verificar');
+    Route::post("/coordenador/julgar/notificacao",              "CoordenadorController@julgarNotificacao")->name("julgar.notificacao.coordenador");
+
 });
 
 // Grupo de rotas para empresa
@@ -270,7 +276,9 @@ Route::middleware(['IsInspetor'])->group(function () {
     Route::post('/save/relatorio', 'InspetorController@saveRelatorio')->name('save.relatorio');
     Route::get('/historico/inspetor', 'InspetorController@showHistorico')->name('show.historico');
     Route::get('/criar/notificacao', 'InspetorController@criarNotificacao')->name('criar.notificacao');
+    Route::get('/verificar/notificacao', 'InspetorController@verificarNotificacao')->name('verificar.notificacao');
     Route::post('/apagar/notificacao', 'InspetorController@apagarNotificacao')->name('apagar.notificacao');
+    Route::post('/save/notificacao', 'InspetorController@saveNotificacao')->name('save.notificacao');
 
 });
 

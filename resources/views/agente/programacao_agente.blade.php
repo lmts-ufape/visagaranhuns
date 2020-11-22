@@ -50,7 +50,6 @@
                                 </div>
                             @endif
                             @if(count($inspecoes)>0)
-                                @foreach($inspecoes as $item)
                                 <table class="table table-responsive-lg table-hover" style="width: 100%;">
                                     <thead>
                                     <tr>
@@ -62,46 +61,47 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
-                                                <div class="btn-form">
-                                                    <div style="font-weight:bold;">{{$item->nomeEmpresa}}</div>
-                                                    <div>{{$item->motivoInspecao}}</div>
-                                                    @if ($item->motivoInspecao == "Denuncia")
-                                                    <div></div>
-                                                    @else
-                                                    <div>{{$item->cnae}}</div>
-                                                    @endif
-                                                </div>
-                                            </th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{ date( 'd/m/Y' , strtotime($item->data))}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->statusInspecao}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
-                                                <div class="btn-group">
-                                                    @if ($item->relatorio_id == null)
-                                                    <div style="margin:5px;"><a type="button" class="btn btn-warning">Não Finalizado</a></div>
-                                                    @else
-                                                        @if ($item->relatorio_status == "reprovado")
-                                                            <div style="margin:5px;"><a href="{{ route('show.relatorio.agente.verificar', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-danger">Reprovado</a></div>
-                                                            {{-- <div style="margin:5px;"><a type="button" class="btn btn-danger">Reprovado</a></div> --}}
-                                                        @elseif (isset($item->agente1) && $item->agente1 == "avaliacao")
-                                                            <div style="margin:5px;"><a href="{{ route('show.relatorio.agente', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Avaliar</a></div>
-                                                        @elseif (isset($item->agente1) && $item->agente1 == "aprovado")
-                                                            <div style="margin:5px;"><a href="{{ route('show.relatorio.agente.verificar', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-success">Aprovado</a></div>
-                                                            {{-- <div style="margin:5px;"><a type="button" class="btn btn-success">Aprovado</a></div> --}}
-                                                        @elseif (isset($item->agente2) && $item->agente2 == "avaliacao")
-                                                            <div style="margin:5px;"><a href="{{ route('show.relatorio.agente', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Avaliar</a></div>
-                                                        @elseif (isset($item->agente2) && $item->agente2 == "aprovado")
-                                                            <div style="margin:5px;"><a href="{{ route('show.relatorio.agente.verificar', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-success">Aprovado</a></div>                                                            
-                                                            {{-- <div style="margin:5px;"><a type="button" class="btn btn-success">Aprovado</a></div> --}}
+                                        @foreach($inspecoes as $item)
+                                            <tr>
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                                    <div class="btn-form">
+                                                        <div style="font-weight:bold;">{{$item->nomeEmpresa}}</div>
+                                                        <div>{{$item->motivoInspecao}}</div>
+                                                        @if ($item->motivoInspecao == "Denuncia")
+                                                        <div></div>
+                                                        @else
+                                                        <div>{{$item->cnae}}</div>
                                                         @endif
-                                                    @endif
-                                                </div>
-                                            </th>
-                                        </tr>
+                                                    </div>
+                                                </th>
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{ date( 'd/m/Y' , strtotime($item->data))}}</th>
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->statusInspecao}}</th>
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                                    <div class="btn-group">
+                                                        @if ($item->relatorio_id == null)
+                                                        <div style="margin:5px;"><a type="button" class="btn btn-warning">Não Finalizado</a></div>
+                                                        @else
+                                                            @if ($item->relatorio_status == "reprovado")
+                                                                <div style="margin:5px;"><a href="{{ route('show.relatorio.agente.verificar', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-danger">Reprovado</a></div>
+                                                                {{-- <div style="margin:5px;"><a type="button" class="btn btn-danger">Reprovado</a></div> --}}
+                                                            @elseif (isset($item->agente1) && $item->agente1 == "avaliacao")
+                                                                <div style="margin:5px;"><a href="{{ route('show.relatorio.agente', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Avaliar</a></div>
+                                                            @elseif (isset($item->agente1) && $item->agente1 == "aprovado")
+                                                                <div style="margin:5px;"><a href="{{ route('show.relatorio.agente.verificar', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-success">Aprovado</a></div>
+                                                                {{-- <div style="margin:5px;"><a type="button" class="btn btn-success">Aprovado</a></div> --}}
+                                                            @elseif (isset($item->agente2) && $item->agente2 == "avaliacao")
+                                                                <div style="margin:5px;"><a href="{{ route('show.relatorio.agente', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Avaliar</a></div>
+                                                            @elseif (isset($item->agente2) && $item->agente2 == "aprovado")
+                                                                <div style="margin:5px;"><a href="{{ route('show.relatorio.agente.verificar', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-success">Aprovado</a></div>                                                            
+                                                                {{-- <div style="margin:5px;"><a type="button" class="btn btn-success">Aprovado</a></div> --}}
+                                                            @endif
+                                                        @endif
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
-                                @endforeach
                             @else
                                 <div style="margin-bottom:5rem; text-align:center; font-size:19px;"> Nenhuma inspeção programada!</div>
                             @endif

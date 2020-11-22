@@ -39,9 +39,15 @@
 
                 <div class="form-group col-md-12">
                     <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-12">
                             <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">INSPEÇÕES</label>
                         </div>
+                        @if ($message = Session::get('success'))
+                            <div class="alert alert-success alert-block fade show" style="margin-top:1rem;">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{$message}}</strong>
+                            </div>
+                        @endif
                         <div class="form col-md-12" style="margin-top:-10px;">
                             @if(count($inspecoes)>0)
                                 <table class="table table-responsive-lg table-hover" style="width: 100%;">
@@ -73,21 +79,57 @@
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->statusInspecao}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                 <div class="btn-group">
-                                                    <div style="margin:5px;"><a href="{{ route('show.album', ['value' => Crypt::encrypt($item->inspecao_id)]) }}" type="button" class="btn btn-success" style="color:white;">Álbum</a></div>
                                                     @if ($item->relatorio_status == 'reprovado')
+                                                        <div style="margin:5px;"><a href="{{ route('show.album', ['value' => Crypt::encrypt($item->inspecao_id)]) }}" type="button" class="btn btn-success" style="color:white;">Álbum</a></div>
                                                         <div style="margin:5px;"><a href="{{ route('show.relatorio', ['value' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-danger">Reprovado</a></div>
                                                     @elseif ($item->relatorio_status == 'avaliacao')
-                                                        <div style="margin:5px;"><a type="button" class="btn btn-primary" disabled>Avaliação</a></div>
+                                                        <div style="margin:5px;"><button type="button" class="btn btn-success" style="color:white;" disabled>Álbum</button></div>
+                                                        <div style="margin:5px;"><button type="button" class="btn btn-primary" disabled>Avaliação</button></div>
                                                     @elseif ($item->relatorio_status == 'aprovado')
+                                                    <div style="margin:5px;"><button type="button" class="btn btn-success" style="color:white;" disabled>Álbum</button></div>
                                                         <div style="margin:5px;"><a href="{{ route('show.relatorio', ['value' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-success">Aprovado</a></div>
                                                     @else
+                                                        <div style="margin:5px;"><a href="{{ route('show.album', ['value' => Crypt::encrypt($item->inspecao_id)]) }}" type="button" class="btn btn-success" style="color:white;">Álbum</a></div>
                                                         <div style="margin:5px;"><a href="{{ route('show.relatorio', ['value' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Criar</a></div>
                                                     @endif
                                                 </div>
                                             </th>
                                             <th>
-                                                <div style="margin:5px;"><a href="{{ route('criar.notificacao', ['value' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Notificar</a></div>
-                                                <div style="margin:5px;"><a href="{{ route('apagar.notificacao', ['value' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-danger">Apagar</a></div>
+                                                @if ($item->relatorio_status == 'aprovado')
+                                                    @if ($item->notificacao_status == null)
+                                                        <div class="btn-group">
+                                                            <div style="margin:5px;"><a href="{{ route('criar.notificacao', ['inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Notificar</a></div>
+                                                            <div style="margin:5px;"><button type="button" class="btn btn-danger" disabled>Apagar</button></div>
+                                                        </div>
+                                                    @elseif ($item->notificacao_status == 'pendente')
+                                                        <div class="btn-group">
+                                                            <div style="margin:5px;"><button type="button" class="btn btn-primary" disabled>Avaliação</button></div>
+                                                            <div style="margin:5px;"><button type="button" class="btn btn-danger" disabled>Apagar</button></div>
+                                                        </div>
+                                                    @elseif ($item->notificacao_status == 'aprovado')
+                                                        <div class="btn-group">
+                                                            <div style="margin:5px;"><a href="{{ route('verificar.notificacao', ['inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-success">Aprovado</a></div>
+                                                            <div style="margin:5px;"><button type="button" class="btn btn-danger">Apagar</button></div>
+                                                        </div>
+                                                    @elseif ($item->notificacao_status == 'reprovado')
+                                                        <div class="btn-group">
+                                                            <div style="margin:5px;"><a href="{{ route('criar.notificacao', ['inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-danger">Reprovado</a></div>
+                                                            <div style="margin:5px;"><button type="button" class="btn btn-danger" disabled>Apagar</button></div>
+                                                        </div>
+                                                    @endif
+
+                                                @elseif ($item->relatorio_status == 'avaliacao' || $item->relatorio_status == 'reprovado')
+                                                    <div class="btn-group">
+                                                        <div style="margin:5px;"><button type="button" class="btn btn-primary" disabled>Notificar</button></div>
+                                                        <div style="margin:5px;"><button type="button" class="btn btn-danger" disabled>Apagar</button></div>
+                                                    </div>
+                                                @else
+                                                    <div class="btn-group">
+                                                        <div style="margin:5px;"><button type="button" class="btn btn-primary" disabled>Notificar</button></div>
+                                                        <div style="margin:5px;"><button type="button" class="btn btn-danger" disabled>Apagar</button></div>
+                                                    </div>
+                                                @endif
+
                                             </th>
                                         </tr>
                                         @endforeach

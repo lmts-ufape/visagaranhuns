@@ -171,39 +171,3 @@
     </div>
 </div>
 @endsection
-
-{{-- <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color:#3ea81f;">
-                    <img src="{{ asset('/imagens/logo_atencao3.png') }}" alt="Logo" style=" margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Aprovar Requerimento</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-12" style="font-family: 'Roboto', sans-serif;">Tem certeza de que deseja aprovar o requerimento do estabelecimento <label id="nomeDoEstabelecimento" style="font-weight:bold; font-family: 'Roboto', sans-serif;">{{$empresa->nome}}</label>?</div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"style="width:100px;">Não</button>
-                <form method="POST" action="{{ route('julgar.requerimento') }}">
-                    @csrf
-
-                    <input  type="hidden" name="empresa"       value="{{$empresa->id}}">
-                    <input  type="hidden" name="decisao"       value="true">
-                    <input  type="hidden" name="requerimento"  value="{{$requerimento}}">
-
-                    <div class="col-md-12" style="padding-right:0">
-                        <button type="submit" class="btn btn-success botao-form" style="width:100%">
-                            Sim, aprovar requerimento
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-</div> --}}
