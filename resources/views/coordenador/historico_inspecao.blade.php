@@ -124,11 +124,19 @@
                                                     </a>
                                                 @endif
                                             </td>
+                                            @if ($item->relatorio_status == "aprovado")
+                                                <td class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                                    <button type="button" class="btn btn-danger" disabled>
+                                                        <img src="{{asset('imagens/logo_lixo.png')}}" style="width:15px">
+                                                    </button>
+                                                </td>
+                                            @else
                                             <td class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                 <a href="{{ route('deletar.inspecao', ['inspecaoId' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-danger">
                                                     <img src="{{asset('imagens/logo_lixo.png')}}" style="width:15px">
                                                 </a>
                                             </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>

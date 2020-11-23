@@ -143,9 +143,9 @@ class CoordenadorController extends Controller
 
             $obj = (object) array(
                 'nome'       => $emp->nome,
-                'email'      => $emp->nome,
-                'cnpjcpf'    => $emp->nome,
-                'tipo'       => $emp->nome,
+                'email'      => $emp->email,
+                'cnpjcpf'    => $emp->cnpjcpf,
+                'tipo'       => $emp->tipo,
                 'cep'        => $endereco->cep,
                 'rua'        => $endereco->rua,
                 'numero'     => $endereco->numero,
@@ -692,10 +692,12 @@ class CoordenadorController extends Controller
     {
         $empresa = Empresa::find($request->empresa);
         $denuncias = Denuncia::where('empresa_id', $request->empresa)->get();
+        $inspecoes = Inspecao::all();
 
         return view("coordenador/avaliar_denuncias")->with([
-            "empresa" => $empresa,
+            "empresa"   => $empresa,
             "denuncias" => $denuncias,
+            "inspecoes" => $inspecoes,
         ]);
     }
 

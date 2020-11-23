@@ -99,34 +99,34 @@
                                                     @if ($item->notificacao_status == null)
                                                         <div class="btn-group">
                                                             <div style="margin:5px;"><a href="{{ route('criar.notificacao', ['inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Notificar</a></div>
-                                                            <div style="margin:5px;"><button type="button" class="btn btn-danger" disabled>Apagar</button></div>
+                                                            {{-- <div style="margin:5px;"><button type="button" class="btn btn-danger" disabled>Apagar</button></div> --}}
                                                         </div>
                                                     @elseif ($item->notificacao_status == 'pendente')
                                                         <div class="btn-group">
                                                             <div style="margin:5px;"><button type="button" class="btn btn-primary" disabled>Avaliação</button></div>
-                                                            <div style="margin:5px;"><button type="button" class="btn btn-danger" disabled>Apagar</button></div>
+                                                            {{-- <div style="margin:5px;"><button type="button" class="btn btn-danger" disabled>Apagar</button></div> --}}
                                                         </div>
                                                     @elseif ($item->notificacao_status == 'aprovado')
                                                         <div class="btn-group">
                                                             <div style="margin:5px;"><a href="{{ route('verificar.notificacao', ['inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-success">Aprovado</a></div>
-                                                            <div style="margin:5px;"><button type="button" class="btn btn-danger">Apagar</button></div>
+                                                            {{-- <div style="margin:5px;"><button type="button" class="btn btn-danger">Apagar</button></div> --}}
                                                         </div>
                                                     @elseif ($item->notificacao_status == 'reprovado')
                                                         <div class="btn-group">
                                                             <div style="margin:5px;"><a href="{{ route('criar.notificacao', ['inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-danger">Reprovado</a></div>
-                                                            <div style="margin:5px;"><button type="button" class="btn btn-danger" disabled>Apagar</button></div>
+                                                            {{-- <div style="margin:5px;"><button type="button" class="btn btn-danger" disabled>Apagar</button></div> --}}
                                                         </div>
                                                     @endif
 
                                                 @elseif ($item->relatorio_status == 'avaliacao' || $item->relatorio_status == 'reprovado')
                                                     <div class="btn-group">
                                                         <div style="margin:5px;"><button type="button" class="btn btn-primary" disabled>Notificar</button></div>
-                                                        <div style="margin:5px;"><button type="button" class="btn btn-danger" disabled>Apagar</button></div>
+                                                        {{-- <div style="margin:5px;"><button type="button" class="btn btn-danger" disabled>Apagar</button></div> --}}
                                                     </div>
                                                 @else
                                                     <div class="btn-group">
                                                         <div style="margin:5px;"><button type="button" class="btn btn-primary" disabled>Notificar</button></div>
-                                                        <div style="margin:5px;"><button type="button" class="btn btn-danger" disabled>Apagar</button></div>
+                                                        {{-- <div style="margin:5px;"><button type="button" class="btn btn-danger" disabled>Apagar</button></div> --}}
                                                     </div>
                                                 @endif
 
