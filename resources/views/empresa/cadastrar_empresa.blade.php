@@ -47,6 +47,12 @@
                                         <strong>{{$message}}</strong>
                                     </div>
                                 @endif
+                                @if($errors->any())
+                                    <div class="alert alert-warning alert-block fade show">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        <strong>{{$errors->first()}}</strong>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <div class="form-row">
@@ -171,7 +177,6 @@
                                             <label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif"><span style="font-size:20px">*</span> campos obrigatórios</label>
                                         </div>
                                     <div class="p-2">
-                                            <input type="hidden" name="user" value="{{Auth::user()->id}}">
                                         <button type="submit" class="btn btn-success" style="width:340px;">Cadastrar</button>
                                     </div>
                                 </div>

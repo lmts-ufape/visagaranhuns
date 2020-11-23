@@ -38,6 +38,16 @@ window.deletar = function(obj){
     }
 }
 
+window.deletarDenuncia = function(obj){
+
+    var index = arrayTempDenuncia.findIndex(element => element == obj.value); //encontrar o indice no arrayTemp
+    if ( index > -1) {
+        arrayTempDenuncia.splice(index, 1); //remover o elemento do array
+        obj.closest('.form-gerado').remove();
+        return false;
+    }
+}
+
 window.montarLinhaInput = function(id,elemento){
 
     return " <div class='form-gerado cardMeuCnae'>\n"+
@@ -129,6 +139,20 @@ window.mostrarBotaoAdicionar = function(valor){
         tempIdCard.style.display = "none";
         document.getElementById("cardSelecionado"+valor).style.display = "block";
         this.tempIdCard=document.getElementById("cardSelecionado"+valor);
+
+    }
+
+}
+
+var tempIdCardDenuncia = -1;
+window.mostrarBotaoAdicionarDenuncia = function(valor){
+    if(tempIdCardDenuncia == -1){
+        document.getElementById("cardSelecionadoDenuncia"+valor).style.display = "block";
+        this.tempIdCardDenuncia=document.getElementById("cardSelecionadoDenuncia"+valor);
+    }else if(tempIdCardDenuncia != -1){
+        tempIdCardDenuncia.style.display = "none";
+        document.getElementById("cardSelecionadoDenuncia"+valor).style.display = "block";
+        this.tempIdCardDenuncia=document.getElementById("cardSelecionadoDenuncia"+valor);
 
     }
 

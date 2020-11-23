@@ -180,7 +180,7 @@
                                                 </div>
                                                 @else
                                                     @foreach ($docsempresa as $docempresa)
-                                                        @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id && $indice->areas_id == $item->area_id)
+                                                        @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id && $indice->areas_id == $docempresa->area)
                                                             <div class="form col-md-12">
                                                                 <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
                                                                     <a href="{{route('download.arquivo.empresa', ['file' => $docempresa->nome])}}"> Baixar arquivo</a>
@@ -211,16 +211,30 @@
                                 <div class="modal-body">
                                     <form id="editDocForm" method="POST" action="{{ route('editar.arquivos.empresa.rt') }}" enctype="multipart/form-data">
                                         @csrf
-                                        <div class="form-group">
+                                        <div class="form col-md-12" >
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Emissão</label>
+                                                    <input type="date" class="form-control" placeholder="" id="data_emissao_edit" name="data_emissao_editar">
+                                                </div>
+                                                <div class="col">
+                                                    <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Validade</label>
+                                                    <input type="date" class="form-control" placeholder="" id="data_validade_edit" name="data_validade_editar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form col-md-12">
                                             <label for="exampleFormControlFile1">Substituir arquivo</label>
                                             <input id="editarDoc" type="hidden" name="file" value="">
+                                            <input id="empresa_id" type="hidden" name="empresa_id" value="{{$empresaId}}">
                                             <input type="file" class="form-control-file" id="arquivoSelecionado_edit" name="arquivo" onchange="verificarArquivoAnexado_Empresa_Rt_Edit()">
                                         </div>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                                <button type="submit" form="editDocForm" class="btn btn-primary">Salvar</button>
+                                <button type="submit" form="editDocForm" class="btn btn-primary">Editar</button>
                                 </div>
                             </div>
                             </div>
@@ -344,13 +358,17 @@
 </div>
 <script type="text/javascript">
     window.findDocEmpRt = function($id){
+        console.log($id);
         $.ajax({
             url:'{{ config('prefixo.PREFIXO') }}encontrar/doc/empresa/rt',
             type:"get",
             dataType:'json',
             data: {"id": $id},
             success: function(response){
+                console.log(response.data_validade);
                 $('#editarDoc').val(response.nome);
+                $('#data_emissao_edit').val(response.data_emissao);
+                $('#data_validade_edit').val(response.data_validade);
             }
         });
     }

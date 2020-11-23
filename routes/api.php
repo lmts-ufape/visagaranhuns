@@ -17,3 +17,26 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//login
+Route::post("/login",  "ApiController@apiLogin")->name("api.login");
+
+//atualizar o token
+Route::post("/refresh",  "ApiController@apiRefresh")->name("api.refresh");
+
+//baixar inspecoes
+Route::post("/download/inspecoes",  "ApiController@apiDonwloadInspecoes")->name("api.download.inspecoes");
+
+//baixar dados da empresa
+
+//baixar documentos
+Route::post("/download/doc",  "ApiController@apiDownloadDoc")->name("api.download.doc");
+
+//baixar img da pdf
+Route::get("/donwload/img/pdf",  "ApiController@apiDownloadImagemPDF")->name("api.donwload.pdf");
+
+//salvar img da inspecao
+Route::post("/save/img",  "ApiController@apiSaveImg")->name("api.save.img");
+
+//baixar img da inspecao
+Route::post("/donwload/img",  "ApiController@apiDownloadImg")->name("api.donwload.img");

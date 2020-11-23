@@ -16,6 +16,7 @@ use App\RespTecnico;
 use App\RtEmpresa;
 use App\Tipodocempresa;
 use App\Inspecao;
+use App\Notificacao;
 use Illuminate\Support\Facades\Storage;
 use Auth;
 use DateTime;
@@ -53,15 +54,27 @@ class EmpresaController extends Controller
 
     public function home()
     {
-        // dd(Auth::user()->empresa);
+        $countPendente = 0;
+        $countAnexado  = 0;
+
         $empresa = Auth::user()->empresa;
-        // $id = Crypt::decrypt($request->value);
-        // $empresa = Empresa::where("id","=", $idEmpresa)->get();
-        // $endereco = Endereco::where('empresa_id', $empresa->id)->first();
-        // $telefone = Telefone::where('empresa_id', $empresa->id)->first();
-        // $cnae = CnaeEmpresa::where('empresa_id', $id)->get();
-        // $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->get();
-        return view('empresa.home_empresa',["empresas" => $empresa]);
+        foreach ($empresa as $indice) {
+            $checklistPendente = Checklistemp::where('empresa_id', $indice->id)
+            ->where('anexado', 'false')
+            ->get();
+            $countPendente = $countPendente + count($checklistPendente);
+
+            $checklistAnexado  = Checklistemp::where('empresa_id', $indice->id)
+            ->where('anexado', 'true')
+            ->get();
+            $countAnexado = $countAnexado + count($checklistAnexado);
+        }
+        // dd($countPendente);
+        
+        return view('empresa.home_empresa',
+        ["empresas" => $empresa,
+        'anexados' => $countAnexado,
+        'pendentes' => $countPendente]);
     }
 
     /**
@@ -91,14 +104,20 @@ class EmpresaController extends Controller
             return back();
         }
 
-        $validator = $request->validate([
+        $messages = [
+            'unique'   => 'Um campo igual a :attribute já está cadastrado no sistema!',
+            'required' => 'O campo :attribute não foi passado!',
+            'string'   => 'O campo :attribute deve ser texto!',
+        ];
+
+        $validator = Validator::make($request->all(), [
             'name'     => 'required|string',
-            'email'    => 'required|email',
+            'email'    => 'required|email|unique:users,email',
             'password' => 'required',
             'nome'     => 'required|string',
-            'cnpjcpf'  => 'required|string',
+            'cnpjcpf'  => 'required|string|unique:empresas,cnpjcpf',
             'tipo'     => 'required|string',
-            'emailEmpresa' => 'nullable|email',
+            'emailEmpresa' => 'nullable|email|unique:empresas,email',
             'telefone1' => 'required|string',
             'telefone2' => 'nullable|string',
             'rua'      => 'required|string',
@@ -108,7 +127,13 @@ class EmpresaController extends Controller
             'complemento' => 'nullable|string',
             'uf'       => 'required|string',
             'cep'      => 'required|string',
-        ]);
+        ], $messages);
+
+        
+        if ($validator->fails()) {
+            return back()
+                    ->withErrors($validator);
+        }
 
         if ($request['cnae'] == null) {
             session()->flash('error', 'Atenção! Uma empresa deve possuir pelo menos um CNAE. (Lista: CNAE Selecionado)');
@@ -252,12 +277,23 @@ class EmpresaController extends Controller
 
     public function adicionarEmpresa(Request $request)
     {
-        $user_id = $request->user;
+        
+        $user_id = Auth::user()->id;
+        $empRepetida = Empresa::where('nome', $request->nome)->first();
 
-        // Sujeito a mudanças
-        $validator = $request->validate([
+        if($empRepetida != null){
+            return redirect()->route('confirma.cadastro');
+        }
+
+        $messages = [
+            'unique'   => 'Um campo igual a :attribute já está cadastrado no sistema!',
+            'required' => 'O campo :attribute não foi passado!',
+            'string'   => 'O campo :attribute deve ser texto!',
+        ];
+
+        $validator = Validator::make($request->all(), [
             'nome'     => 'required|string',
-            'cnpjcpf'  => 'required|string',
+            'cnpjcpf'  => 'required|string|unique:empresas,cnpjcpf',
             'tipo'     => 'required|string',
             'email'    => 'nullable|email',
             'telefone1' => 'required|string',
@@ -269,7 +305,13 @@ class EmpresaController extends Controller
             'uf'       => 'required|string',
             'cep'      => 'required|string',
             'complemento' => 'nullable|string',
-        ]);
+        ], $messages);
+
+        
+        if ($validator->fails()) {
+            return back()
+                    ->withErrors($validator);
+        }
 
         $empresa = Empresa::create([
             'nome' => $request->nome,
@@ -513,6 +555,26 @@ class EmpresaController extends Controller
         ]);
     }
 
+    public function notificacoes(Request $request)
+    {
+        $empresa = Empresa::find(Crypt::decrypt($request->value));
+        $notificacao = Notificacao::all();
+        $notificacoes = [];
+
+        foreach ($notificacao as $indice) {
+            if ($indice->inspecao->empresas_id == $empresa->id) {
+                array_push($notificacoes, $indice);
+            }          
+        }
+        // dd($notificacoes);
+
+        return view('empresa/notificacao',[
+            'notificacoes' => $notificacoes,
+            'empresa'      => $empresa,
+        ]);
+
+    }
+
     /**
      * Listar empresas
      * View: empresa/listar_empresas.blade.php
@@ -530,6 +592,9 @@ class EmpresaController extends Controller
         }elseif($request->tipo == 'requerimento'){
             $empresa = Empresa::where('user_id', Crypt::decrypt($request->user))->paginate(20);
             return view('empresa/listar_empresas',['empresas' => $empresa, 'tipo' => 'requerimentos']);
+        }elseif($request->tipo == 'notificacao'){
+            $empresa = Empresa::where('user_id', Crypt::decrypt($request->user))->paginate(20);
+            return view('empresa/listar_empresas',['empresas' => $empresa, 'tipo' => 'notificacao']);
         }
     }
 
@@ -751,7 +816,9 @@ class EmpresaController extends Controller
         $docempresa = Docempresa::find($request->id);
 
         $data = array(
-            'nome'   => $docempresa->nome,
+            'nome'          => $docempresa->nome,
+            'data_emissao'  => $docempresa->data_emissao,
+            'data_validade' => $docempresa->data_validade,
         );
 
         echo json_encode($data);
@@ -773,22 +840,51 @@ class EmpresaController extends Controller
         $docempresa = Docempresa::where("nome", $request->file)
         ->where('empresa_id', $request->empresa_id)->first();
 
-        Storage::delete($docempresa->nome);
+        if ($docempresa == null) {
+            session()->flash('error', 'Erro ao procurar arquivo que será substituido!');
+            return back();
+        }
 
-        $fileDocemp = $request->arquivo;
+        if($request->arquivo != null) {
 
-        // $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/';
-        $pathDocemp = 'empresas/' . $request->empresa_id . '/' . $docempresa->area . '/' . $request->tipodocempresa . '/';
+            Storage::delete($docempresa->nome);
 
-        $nomeDocemp = $request->arquivo->getClientOriginalName();
+            $fileDocemp = $request->arquivo;
+    
+            // $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/';
+            $pathDocemp = 'empresas/' . $request->empresa_id . '/' . $docempresa->area . '/' . $request->tipodocempresa . '/';
+    
+            $nomeDocemp = $request->arquivo->getClientOriginalName();
+    
+            $docempresa->nome = $pathDocemp . $nomeDocemp;
+            if ($request->data_emissao_editar != null) {
+                $docempresa->data_emissao = $request->data_emissao_editar;
+            }
+            if ($request->data_validade_editar != null) {
+                $docempresa->data_validade = $request->data_validade_editar;
+            }
+            $docempresa->save();
+    
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+    
+            session()->flash('success', 'Arquivo salvo com sucesso!');
+            return back();
 
-        $docempresa->nome = $pathDocemp . $nomeDocemp;
-        $docempresa->save();
+        }else {
 
-        Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+            if ($request->data_emissao_editar != null) {
+                $docempresa->data_emissao = $request->data_emissao_editar;
+            }
+            if ($request->data_validade_editar != null) {
+                $docempresa->data_validade = $request->data_validade_editar;
+            }
+            $docempresa->save();
 
-        session()->flash('success', 'Arquivo salvo com sucesso!');
-        return back();
+            session()->flash('success', 'Datas atualizadas!');
+            return back();
+        }
+
+
     }
 
     public function anexarArquivos(Request $request)
@@ -1103,7 +1199,7 @@ class EmpresaController extends Controller
             echo json_encode($data);
 
         } elseif ($requerimento->status == "aprovado") {
-            $inspecao = Inspecao::where('requerimentos_id', $requerimento->id)->first();
+            $inspecao = Inspecao::where('requerimento_id', $requerimento->id)->first();
 
             if ($inspecao == null) {
                 $data = array(
@@ -1205,6 +1301,10 @@ class EmpresaController extends Controller
 
             // Remove o cnae da empresa
             $delete = CnaeEmpresa::destroy($request->idCnaeEmp);
+
+            // Removendo os documentos que foram anexados a essa área
+            $docsempresa = Docempresa::where('empresa_id', $request->empresaId)
+            ->where('area', $area)->delete();
 
             $data = array(
                 'valor'   => "Área Removida",

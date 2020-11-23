@@ -67,6 +67,7 @@
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Inspetor:<span style="color:red">*</span></label>
                                 <select class="form-control" name="inspetor" required>
+                                    <option value="" data-default disabled selected> -- Selecione -- </option>
                                     @foreach ($inspetores as $item)
                                         <option value="{{$item->id}}">{{$item->user->name}}</option>
                                     @endforeach
@@ -74,17 +75,19 @@
                             </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 1:<span style="color:red">*</span></label>
-                                <select class="form-control" name="agente1" required>
+                                <select class="form-control" name="agente1" id="agente1" onchange="agent1()" required>
+                                    <option value="" data-default disabled selected> -- Selecione -- </option>
                                     @foreach ($agentes as $item)
-                                        <option value="{{$item->id}}">{{$item->user->name}}</option>
+                                        <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 2:<span style="color:red">*</span></label>
-                                <select class="form-control" name="agente2" required>
+                                <select class="form-control" name="agente2" id="agente2" onchange="agent2()" required>
+                                    <option value="" data-default disabled selected> -- Selecione -- </option>
                                     @foreach ($agentes as $item)
-                                        <option value="{{$item->id}}">{{$item->user->name}}</option>
+                                        <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -104,7 +107,7 @@
                                 <div class="form-row">
                                     
                                     <div class="btn-group col-md-12">
-                                        <div class="col-md-6 styleTituloDoInputCadastro" style="margin-left:-15px;margin-right:30px;margin-bottom:10px;">Requerimentos Aprovados</div>
+                                        <div class="col-md-12 styleTituloDoInputCadastro" style="margin-left:-15px;margin-right:30px;margin-bottom:10px;">Requerimentos Aprovados ou Denúncias</div>
                                         <div class="col-md-12 input-group input-group-sm mb-2">
                                             {{-- <input type="text" class="form-control" placeholder="Nome ou código do CNAE"> --}}
                                         </div>
@@ -163,15 +166,17 @@
             dataType:'json',
             // data: {"filtro": "all" },
             success: function(response){
-                console.log("Trabalho");
+                console.log(response.table_data);
                 $('tbody').html(response.table_data);
             }
         });
     };
 
     var arrayTemp = [];
+    var arrayTempDenuncia = [];
 
     window.addRequerimento = function($id) {
+
         if(arrayTemp.findIndex(element => element == $id) == -1){ //condicao para add o requerimento na lista
 
             $.ajax({
@@ -191,8 +196,36 @@
         }
     }
 
+    window.addDenuncia = function($id) {
+        console.log('CAMINHOOOO');
+        if(arrayTempDenuncia.findIndex(element => element == $id) == -1){ //condicao para add o requerimento na lista
+
+            // innerText sempre pegará o primero texto da lista
+            var elemento = document.getElementById('empresa'+$id).innerText;
+            linha = montarLinhaInputDenuncia($id,elemento);
+            $('#adicionar').append(linha);
+            arrayTempDenuncia.push($id);
+
+            // $.ajax({
+            //     url:'{{ config('prefixo.PREFIXO') }}encontrar/requerimento',
+            //     type:"get",
+            //     dataType:'json',
+            //     data: {"requerimentoId": $id},
+            //     success: function(response){
+
+            //         // innerText sempre pegará o primero texto da lista
+            //         var elemento = document.getElementById($id).innerText;
+            //         linha = montarLinhaInputRequerimento($id,elemento, response.tipo, response.cnae);
+            //         $('#adicionar').append(linha);
+            //         arrayTemp.push($id);     
+            //     }
+            // });
+        }
+    }
+
+    // Montar linha para requerimento
     window.montarLinhaInputRequerimento = function(id,elemento, tipo, cnae){
-        console.log(elemento);
+        console.log("AQUUUUUUUUUUUUUEEEEEEEEEEEEEEEEEEEEEEE");
         return " <div class='d-flex justify-content-center form-gerado cardMeuCnae'>\n"+
             "            <div class='mr-auto p-2'>\n"+
             "                <div class='btn-group' style='margin-bottom:-15px;'>\n"+
@@ -210,5 +243,48 @@
             "                </div>\n"+
             "            </div>\n"+
             "    </div>\n";
+    }
+
+    // Montar linha para denuncia
+    window.montarLinhaInputDenuncia = function(id,elemento){
+        console.log("AQUI MERMO");
+        return " <div class='d-flex justify-content-center form-gerado cardMeuCnae'>\n"+
+            "            <div class='mr-auto p-2'>\n"+
+            "                <div class='btn-group' style='margin-bottom:-15px;'>\n"+
+            "                    <div class='form-group' style='font-size:15px;'>\n"+
+            "                        <div class='textoCampo' id='"+id+"'>"+elemento+"</div>\n"+
+            "                        <div>Tipo: <span class='textoCampo'>Denúncia</span></div>\n"+
+            "                    </div>\n"+
+            "                </div>\n"+
+            "               <input type='hidden' name='empresas[]' value='"+id+"' required>\n"+
+            "            </div>\n"+
+            "            <div style='width:140px; height:25px; text-align:right;'>\n"+
+            "                <div id='cardSelecionado' class='btn-group'>\n"+
+            "                    <button type='button' class='btn btn-danger' value='"+id+"' onclick='deletarDenuncia(this)'>X</button>\n"+
+            "                </div>\n"+
+            "            </div>\n"+
+            "    </div>\n";
+    }
+
+    agente1 = null;
+    agente2 = null;
+
+    function agent1() {
+
+        $('#agente2 option[id=y'+ this.agente1 +']').prop('disabled', false);
+
+        var x = $("#agente1 option:selected").val();
+        $('#agente2 option[id=y'+ x +']').prop('disabled', true);
+        agente1 = x;
+
+    }
+
+    function agent2() {
+
+        $('#agente1 option[id=y'+ this.agente2 +']').prop('disabled', false);
+
+        var y = $("#agente2 option:selected").val();
+        $('#agente1 option[id=y'+ y +']').prop('disabled', true);
+        agente2 = y;
     }
 </script>

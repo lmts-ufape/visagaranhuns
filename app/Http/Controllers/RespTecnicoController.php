@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
 use App\RtEmpresa;
 use App\CnaeEmpresa;
 use App\Cnae;
+use App\Notificacao;
 use App\Checklistresp;
 use App\Checklistemp;
 use Illuminate\Support\Facades\Storage;
@@ -51,7 +52,30 @@ class RespTecnicoController extends Controller
         }
         $empresas = array_unique($temp);
 
-        return view('responsavel_tec/home_rt',['empresas' => $empresas]);
+
+        $countPendente = 0;
+        $countAnexado  = 0;
+
+        // $empresa = Auth::user()->empresa;
+        foreach ($empresas as $indice) {
+
+            $checklistPendente = Checklistemp::where('empresa_id', $indice->empresa_id)
+            ->where('anexado', 'false')
+            ->where('areas_id', $indice->area_id)
+            ->get();
+            $countPendente = $countPendente + count($checklistPendente);
+
+            $checklistAnexado  = Checklistemp::where('empresa_id', $indice->empresa_id)
+            ->where('anexado', 'true')
+            ->where('areas_id', $indice->area_id)
+            ->get();
+            $countAnexado = $countAnexado + count($checklistAnexado);
+        }
+        
+        return view('responsavel_tec/home_rt',
+        ['empresas' => $empresas,
+        'anexados' => $countAnexado,
+        'pendentes' => $countPendente]);
     }
 
     public function listarEmpresas(Request $request)
@@ -125,6 +149,7 @@ class RespTecnicoController extends Controller
         $cnaesEmpresa = CnaeEmpresa::where("empresa_id", $id)->get(); //Cnaes especificos da empresa
         $requerimentos = Requerimento::where('empresas_id', $empresa->id) 
         ->where('resptecnicos_id', $rt->id)->orderBy('created_at', 'desc')->get(); // Requerimentos da empresa
+        $notificacoes = Notificacao::all();
         $check = [];
         $temp0 = [];
         $temp = [];
@@ -181,6 +206,33 @@ class RespTecnicoController extends Controller
             'requerimentos'     => $requerimentos,
             // 'resultados'        => $arrayResultado,
             'check'             => $check,
+            'notificacoes'      => $notificacoes,
+        ]);
+    }
+
+    public function notificacaoEmpresa(Request $request)
+    {
+        $rt = RespTecnico::where('user_id', Auth::user()->id)->first();
+        $empresa = Empresa::find(Crypt::decrypt($request->empresa));
+        $notificacao = Notificacao::all();
+        $notificacoes = [];
+
+        foreach ($notificacao as $indice) {
+            if ($indice->inspecao->empresas_id == $empresa->id) {
+                if ($indice->inspecao->motivo == 'Denuncia') {
+                    array_push($notificacoes, $indice);
+                } else {
+                    if($indice->inspecao->requerimento->resptecnicos_id == $rt->id){
+                        array_push($notificacoes, $indice);
+                    }  
+                }
+            }          
+        }
+        // dd($notificacoes);
+
+        return view('responsavel_tec/notificacao',[
+            'notificacoes' => $notificacoes,
+            'empresa'      => $empresa,
         ]);
     }
 
@@ -262,7 +314,7 @@ class RespTecnicoController extends Controller
     }
 
     public function downloadArquivo(Request $request){
-        dd($request->file);
+
         return response()->download(storage_path('app/' . $request->file));
     }
 
@@ -271,27 +323,58 @@ class RespTecnicoController extends Controller
 
         $validatedData = $request->validate([
 
-            'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000000'],
+            'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000'],
 
         ]);
 
-        $docempresa = Docempresa::where("nome", $request->file)->first();
+        $docempresa = Docempresa::where("nome", $request->file)
+        ->where('empresa_id', $request->empresa_id)
+        ->first();
 
-        Storage::delete($docempresa->nome);
+        if ($docempresa == null) {
+            session()->flash('error', 'Erro ao procurar arquivo que será substituido!');
+            return back();
+        }
 
-        $fileDocemp = $request->arquivo;
+        if ($request->arquivo != null) {
 
-        $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/';
+            Storage::delete($docempresa->nome);
 
-        $nomeDocemp = $request->arquivo->getClientOriginalName();
+            $fileDocemp = $request->arquivo;
+    
+            $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/';
+    
+            $nomeDocemp = $request->arquivo->getClientOriginalName();
+    
+            $docempresa->nome = $pathDocemp . $nomeDocemp;
+            
+            if ($request->data_emissao_editar != null) {
+                $docempresa->data_emissao = $request->data_emissao_editar;
+            }
+            if ($request->data_validade_editar != null) {
+                $docempresa->data_validade = $request->data_validade_editar;
+            }
+            
+            $docempresa->save();
+    
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+    
+            session()->flash('success', 'Arquivo salvo com sucesso!');
+            return back();
 
-        $docempresa->nome = $pathDocemp . $nomeDocemp;
-        $docempresa->save();
+        } else {
+            if ($request->data_emissao_editar != null) {
+                $docempresa->data_emissao = $request->data_emissao_editar;
+            }
+            if ($request->data_validade_editar != null) {
+                $docempresa->data_validade = $request->data_validade_editar;
+            }
+            $docempresa->save();
 
-        Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
-
-        session()->flash('success', 'Arquivo salvo com sucesso!');
-        return back();
+            session()->flash('success', 'Datas atualizadas!');
+            return back();
+        }
+        
     }
 
     public function findDoc(Request $request)
@@ -300,7 +383,9 @@ class RespTecnicoController extends Controller
         $docempresa = Docempresa::find($request->id);
 
         $data = array(
-            'nome'   => $docempresa->nome,
+            'nome'            => $docempresa->nome,
+            'data_emissao'    => $docempresa->data_emissao,
+            'data_validade'   => $docempresa->data_validade,
         );
 
         echo json_encode($data);
@@ -337,7 +422,7 @@ class RespTecnicoController extends Controller
         $checklist = Checklistemp::where('tipodocemp_id', $request->tipodocempresa)
         ->where('empresa_id', $request->empresaId)
         ->where('areas_id', $request->area)->first();
-
+        // dd($request->arquivo);
         if ($checklist == null) {
             session()->flash('error', 'O tipo de documento específico não consta em sua checklist!');
             return back();

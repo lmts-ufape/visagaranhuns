@@ -38,6 +38,12 @@
                 <strong>{{$message}}</strong>
             </div>
         @endif
+        @if ($message = Session::get('success'))
+        <div class="alert alert-success alert-block fade show">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{$message}}</strong>
+        </div>
+        @endif
         @if(!empty($aprovado))
         <div class="alert alert-warning alert-block fade show">
             <button type="button" class="close" data-dismiss="alert">×</button>
@@ -61,9 +67,6 @@
                             </div>
                            <div class="p-2">
                                 <div class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="filtroButtonRequerimento" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Filtro
-                                    </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         {{-- <a class="dropdown-item" onclick="selecionarFiltroRequerimento('aprovado')" style="text-decoration:none;cursor:pointer">Cadastro Aprovado</a> --}}
                                         {{-- <a class="dropdown-item" onclick="selecionarFiltroRequerimento('denuncia')" style="text-decoration:none;cursor:pointer">Denúncia</a> --}}
@@ -88,9 +91,9 @@
 
     </div>
 
-<form id="submeterId" method="POST" action="{{route('pagina.detalhes')}}">
+<form id="submeterIdDenuncia" method="GET" action="{{route('pagina.detalhes.denuncia')}}">
     @csrf
-    <input id="inputSubmeterId" type="hidden" name="empresa" value="">
+    <input id="inputSubmeterIdDenuncia" type="hidden" name="empresa" value="">
 </form>
 
 <form id="licenca" method="POST" action="{{route('licenca')}}">

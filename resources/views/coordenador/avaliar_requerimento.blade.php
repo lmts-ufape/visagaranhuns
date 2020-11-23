@@ -90,7 +90,7 @@
                                         </div>
                                         @else
                                             @foreach ($docsempresa as $docempresa)
-                                                @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id)
+                                                @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id && $docempresa->area == $indice->areas_id)
                                                     <div class="form col-md-12">
                                                         <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
                                                             <a href="{{route('download.arquivo.avaliar.requerimento', ['file' => $docempresa->nome])}}"> Baixar arquivo</a>

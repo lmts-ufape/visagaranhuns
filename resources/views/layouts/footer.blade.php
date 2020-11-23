@@ -35,14 +35,14 @@
                             @endif
                         <li style="float: left; margin-right:30px;font-family:arial"></li>
                     @elseif(Auth::user()->tipo == "agente")
-                        <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('/') }}">Início</a></li>
+                        <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('/') }}" style="text-decoration: none; color:#fff;cursor:pointer">Início</a></li>
                         <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('emconstrucao') }}" style="text-decoration: none; color:#fff;cursor:pointer">Programação</a></li>
                         <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('emconstrucao') }}" style="text-decoration: none; color:#fff;cursor:pointer">Histórico</a></li>
                         <li style="float: left; margin-right:30px;font-family:arial"></li>
                     @elseif(Auth::user()->tipo == "inspetor")
-                        <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('/') }}">Início</a></li>
-                        <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('emconstrucao') }}" style="text-decoration: none; color:#fff;cursor:pointer">Programação</a></li>
-                        <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('emconstrucao') }}" style="text-decoration: none; color:#fff;cursor:pointer">Histórico</a></li>
+                        <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('/') }}" style="text-decoration: none; color:#fff;cursor:pointer">Início</a></li>
+                        <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('show.programacao') }}" style="text-decoration: none; color:#fff;cursor:pointer">Programação</a></li>
+                        <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('show.historico') }}" style="text-decoration: none; color:#fff;cursor:pointer">Histórico</a></li>
                         <li style="float: left; margin-right:30px;font-family:arial"></li>
                     @elseif(Auth::user()->tipo == "rt")
                         <li style="float: left; margin-right:30px;font-family:arial"><a href="{{ route('/') }}" style="text-decoration: none; color:#fff;">Início</a></li>

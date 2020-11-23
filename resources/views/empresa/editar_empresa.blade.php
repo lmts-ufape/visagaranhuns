@@ -69,8 +69,7 @@
                                     <label class="styleTituloDoInputCadastro" for="inputPassword4">TIPO:<span style="color:red">*</span></label>
                                     {{-- <input type="text" class="form-control"  name="tipo" placeholder="" required> --}}
                                     <select class="form-control" name="tipo" required>
-                                        {{-- <option value="" disable="" selected="" hidden="">-- Selecionar o Tipo --</option> --}}
-
+                                        <option value="" data-default disabled selected>-- Selecionar o Tipo --</option>
                                         <option @if($empresa->tipo == "Sociedade Empresária Limitada (LTDA)") selected @endif value="Sociedade Empresária Limitada (LTDA)">Sociedade Empresária Limitada (LTDA)</option>
                                         <option @if($empresa->tipo == "Empresa Individual de Responsabilidade Limitada (Eireli)") selected @endif value="Empresa Individual de Responsabilidade Limitada (Eireli)">Empresa Individual de Responsabilidade Limitada (Eireli)</option>
                                         <option @if($empresa->tipo == "Empresa Individual") selected @endif value="Empresa Individual">Empresa Individual</option>

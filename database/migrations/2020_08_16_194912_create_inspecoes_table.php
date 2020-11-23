@@ -17,12 +17,18 @@ class CreateInspecoesTable extends Migration
             $table->id();
             $table->date('data');
             $table->string('status');
+            $table->string('motivo');
+            $table->string('agente1');
+            $table->string('agente2');
 
             $table->bigInteger("inspetor_id")->nullable();
             $table->foreign("inspetor_id")->references("id")->on("inspetor");
 
             $table->bigInteger("requerimento_id")->nullable();
             $table->foreign("requerimento_id")->references("id")->on("requerimentos");
+
+            $table->bigInteger("empresas_id")->nullable();
+            $table->foreign("empresas_id")->references("id")->on("empresas");
 
             $table->timestamps();
         });

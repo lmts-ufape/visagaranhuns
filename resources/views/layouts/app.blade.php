@@ -24,6 +24,11 @@
     <script type="text/javascript" src="{{URL::asset('js/documentacao_empresa.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/documentacao_empresa_rt.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/documentacao_rt.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/denuncia_coordenador.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/album_inspetor.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/relatorio_inspetor.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/notificacao_inspetor.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/notificacao_rt.js')}}" defer></script>
 
     <!-- load jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -169,6 +174,9 @@
                                         <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'requerimento']) }}">{{ __('Requerimentos') }}</a>
                                     </li>
                                     <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'notificacao']) }}">{{ __('Notificações') }}</a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a class="nav-link" href="{{ route('emconstrucao') }}">{{ __('Licenças') }}</a>
                                     </li>
                                     {{-- <li class="nav-item">
@@ -176,9 +184,6 @@
                                     </li> --}}
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'documentacao']) }}">{{ __('Documentação') }}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('emconstrucao') }}" style="margin-right:30px;">{{ __('Notificação') }}</a>
                                     </li>
                                 @endif
                                 <li class="nav-item dropdown">
@@ -210,10 +215,10 @@
                                     <a class="nav-link" href="{{ route('/') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Programação') }}</a>
+                                    <a class="nav-link" href="{{ route('show.programacao') }}">{{ __('Programação') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}" style="margin-right:30px;">{{ __('Histórico') }}</a>
+                                    <a class="nav-link" href="{{ route('show.historico') }}" style="margin-right:30px;">{{ __('Histórico') }}</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -237,7 +242,7 @@
                                     <a class="nav-link" href="{{ route('/') }}">{{ __('Início') }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Programação') }}</a>
+                                    <a class="nav-link" href="{{ route('show.programacao.agente') }}">{{ __('Programação') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}" style="margin-right:30px;">{{ __('Histórico') }}</a>
@@ -268,6 +273,9 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('listar.empresa.rt',['flag'=>"requerimento"]) }}">{{ __('Requerimentos') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('listar.empresa.rt',['flag'=>"notificacao"]) }}">{{ __('Notificações') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('listar.empresa.rt',['flag'=>"documentos"]) }}">{{ __('Documentação') }}</a>

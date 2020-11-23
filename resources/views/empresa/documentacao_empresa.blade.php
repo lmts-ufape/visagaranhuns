@@ -187,7 +187,7 @@
                                             </div>
                                             @else
                                                 @foreach ($docsempresa as $docempresa)
-                                                    @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id && $docempresa->area == $item->id)
+                                                    @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id && $docempresa->area == $indice->areas_id)
                                                         <div class="form col-md-12">
                                                             <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
                                                                 <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}"> Baixar arquivo</a>
@@ -216,7 +216,20 @@
                                 <div class="modal-body">
                                     <form id="editDocForm" method="POST" action="{{ route('editar.arquivos') }}" enctype="multipart/form-data">
                                         @csrf
-                                        <div class="form-group">
+                                        <div class="form col-md-12" >
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Emissão</label>
+                                                    <input type="date" class="form-control" placeholder="" id="data_emissao_edit" name="data_emissao_editar">
+                                                </div>
+                                                <div class="col">
+                                                    <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Validade</label>
+                                                    <input type="date" class="form-control" placeholder="" id="data_validade_edit" name="data_validade_editar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form col-md-12">
                                           <label for="exampleFormControlFile1">Substituir arquivo</label>
                                           <input id="editarDoc" type="hidden" name="file" value="">
                                           <input id="empresa_id" type="hidden" name="empresa_id" value="{{$empresaId}}">
@@ -226,7 +239,7 @@
                                 </div>
                                 <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                                <button type="submit" form="editDocForm" class="btn btn-primary">Salvar</button>
+                                <button type="submit" form="editDocForm" class="btn btn-primary">Editar</button>
                                 </div>
                             </div>
                             </div>
@@ -245,13 +258,13 @@
                                     <div class="form col-md-12" style="margin-top:1px;margin-bottom:10px;">
                                         <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Tipo de documento <span style="font-size:20px;color:red">*</span></label>
                                         <select class="form-control" id="exampleFormControlSelect1" name="tipodocempresa" required>
-                                            <option disabled selected>Tipos de documentos</option>
+                                            <option value="" data-default disabled selected> -- Selecione -- </option>
                                             @foreach ($tipos as $tipo)
                                             <option value="{{$tipo->id}}">{{$tipo->nome}}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="form col-md-6" >
+                                    <div class="form col-md-12" >
                                         <div class="row">
                                             <div class="col">
                                                 <label for="data_emissao" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Áreas <span style="font-size:20px;color:red">*</span></label>
@@ -361,8 +374,10 @@
             dataType:'json',
             data: {"id": $id},
             success: function(response){
-                console.log(response.nome);
+                console.log(response.data_emissao);
                 $('#editarDoc').val(response.nome);
+                $('#data_emissao_edit').val(response.data_emissao);
+                $('#data_validade_edit').val(response.data_validade);
             }
         });
     }

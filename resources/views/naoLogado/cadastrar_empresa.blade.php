@@ -47,6 +47,12 @@
                                 <strong>{{$message}}</strong>
                             </div>
                         @endif
+                        @if($errors->any())
+                            <div class="alert alert-warning alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong>{{$errors->first()}}</strong>
+                            </div>
+                        @endif
                         <div class="form-row">
                             <div class="form-group col-md-4" style="padding-right:15px;">
                                 <label class="styleTituloDoInputCadastro" for="nome">Nome/Razão Social:<span style="color:red">*</span></label>
