@@ -42,8 +42,11 @@ class RespTecnicoController extends Controller
     public function home(){
         $user = User::find(Auth::user()->id);
         $rt = RespTecnico::where('user_id', $user->id)->first();
+        $notificacao = Notificacao::all();
         $temp = [];
         $empresas = [];
+        $notificacoes = [];
+        $notificacoesFinal = [];
 
         $empresa = RtEmpresa::where('resptec_id', $rt->id)->pluck('empresa_id');
 
@@ -71,11 +74,31 @@ class RespTecnicoController extends Controller
             ->get();
             $countAnexado = $countAnexado + count($checklistAnexado);
         }
-        
+
+        foreach ($empresas as $key) {
+            foreach ($notificacao as $indice) {
+                if ($indice->inspecao->empresas_id == $key->empresa_id) {
+                    array_push($notificacoes, $indice);
+                }
+            }
+        }
+
+        foreach ($notificacoes as $indice) {
+            if ($indice->inspecao->motivo == 'Denuncia') {
+                array_push($notificacoesFinal, $indice);
+            } else {
+                if($indice->inspecao->requerimento->resptecnicos_id == $rt->id){
+                    array_push($notificacoesFinal, $indice);
+                }  
+            }
+        }
+
         return view('responsavel_tec/home_rt',
         ['empresas' => $empresas,
         'anexados' => $countAnexado,
-        'pendentes' => $countPendente]);
+        'pendentes' => $countPendente,
+        'totalNotificacao' => count($notificacoesFinal),
+        ]);
     }
 
     public function listarEmpresas(Request $request)
@@ -664,6 +687,8 @@ class RespTecnicoController extends Controller
 
         $data = array(
             'nome'   => $docrt->nome,
+            'data_emissao'    => $docrt->data_emissao,
+            'data_validade'   => $docrt->data_validade,
         );
 
         echo json_encode($data);
@@ -680,21 +705,50 @@ class RespTecnicoController extends Controller
 
         $docrt = Docresptec::where("nome", $request->file)->first();
 
-        Storage::delete($docrt->nome);
+        if ($docrt == null) {
+            session()->flash('error', 'Erro ao procurar arquivo que será substituido!');
+            return back();
+        }
 
-        $fileDocemp = $request->arquivo;
+        if ($request->arquivo != null) {
 
-        $pathDocemp = 'empresas/' . $docrt->empresa_id . '/' . $docrt->tipodocemp_id . '/';
+            Storage::delete($docrt->nome);
 
-        $nomeDocemp = $request->arquivo->getClientOriginalName();
+            $fileDocemp = $request->arquivo;
 
-        $docrt->nome = $pathDocemp . $nomeDocemp;
-        $docrt->save();
+            $pathDocemp = 'empresas/' . $docrt->empresa_id . '/' . $docrt->tipodocemp_id . '/';
 
-        Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+            $nomeDocemp = $request->arquivo->getClientOriginalName();
 
-        session()->flash('success', 'Arquivo salvo com sucesso!');
-        return back();
+            $docrt->nome = $pathDocemp . $nomeDocemp;
+            $docrt->save();
+
+            if ($request->data_emissao_editar != null) {
+                $docrt->data_emissao = $request->data_emissao_editar;
+            }
+            if ($request->data_validade_editar != null) {
+                $docrt->data_validade = $request->data_validade_editar;
+            }
+            $docrt->save();
+
+            Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
+
+            session()->flash('success', 'Arquivo salvo com sucesso!');
+            return back();
+
+        } else {
+
+            if ($request->data_emissao_editar != null) {
+                $docrt->data_emissao = $request->data_emissao_editar;
+            }
+            if ($request->data_validade_editar != null) {
+                $docrt->data_validade = $request->data_validade_editar;
+            }
+            $docrt->save();
+
+            session()->flash('success', 'Arquivo salvo com sucesso!');
+            return back();
+        }
     }
 
     public function showDocumentacao(Request $request)

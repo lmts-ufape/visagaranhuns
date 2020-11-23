@@ -69,6 +69,9 @@ class CoordenadorController extends Controller
         $empresasAprovada      = Empresa::where('status_cadastro', 'aprovado')->get();
         $empPendente           = count($empresasPendente);
         $empAprovada           = count($empresasAprovada);
+
+        $notificacoesPendentes = Notificacao::where('status', 'pendente')->count();
+        $notificacoesAprovadas = Notificacao::where('status', 'aprovado')->count();
               
         return view('coordenador.home_coordenador',
         ['denunciasTotal'        => $denunciasTotal,
@@ -80,6 +83,8 @@ class CoordenadorController extends Controller
         'inspecoesCompleta'      => $inspecCompleta,
         'empresasPendente'       => $empPendente,
         'empresasAprovada'       => $empAprovada,
+        'notificacoesPendentes'  => $notificacoesPendentes,
+        'notificacoesAprovadas'  => $notificacoesAprovadas,
         ]);
     }
 

@@ -217,9 +217,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('show.programacao') }}">{{ __('Programação') }}</a>
                                 </li>
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a class="nav-link" href="{{ route('show.historico') }}" style="margin-right:30px;">{{ __('Histórico') }}</a>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         Olá, <span style="font-weight:bold; color:black;">{{ Auth::user()->name }}</span> <span class="caret"></span>
@@ -244,9 +244,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('show.programacao.agente') }}">{{ __('Programação') }}</a>
                                 </li>
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}" style="margin-right:30px;">{{ __('Histórico') }}</a>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         Olá, <span style="font-weight:bold; color:black;">{{ Auth::user()->name }}</span> <span class="caret"></span>
