@@ -17,6 +17,6 @@ class Notificacao extends Model
     ];
 
     public function inspecao() {
-        return $this->hasMany("\App\Inspecao");
+        return $this->belongsTo("\App\Inspecao", 'inspecoes_id');
     }
 }

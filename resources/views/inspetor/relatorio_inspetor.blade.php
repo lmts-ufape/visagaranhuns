@@ -160,7 +160,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-row">
-                    <div class="col-12" ><label id="modalTextoRelatorio_InspetorTexto" style="font-family: 'Roboto', sans-serif;font-weight:bold; margin-bottom:1rem;">Tem certeza que deseja salvar o relatório</label>?</div>
+                    <div class="col-12" ><label id="modalTextoRelatorio_InspetorTexto" style="font-family: 'Roboto', sans-serif;font-weight:bold; margin-bottom:1rem;">Tem certeza que deseja salvar o relatório</label></div>
                 </div>
             </div>
             <div class="modal-footer">

@@ -27,6 +27,13 @@
                             <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Requerimentos</div>
                         </div>
                     </div>
+                @elseif($tipo == "notificacao")
+                    <div class="form-group">
+                        <div class="tituloBarraPrincipal">Notificações</div>
+                        <div>
+                            <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Notificações</div>
+                        </div>
+                    </div>
                 @else
                     <div class="form-group">
                         <div class="tituloBarraPrincipal">Documentação</div>
@@ -107,6 +114,14 @@
                                 </a>
                             @elseif($tipo == "requerimentos")
                                 <a href="{{ route('mostrar.requerimentos',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;">
+                                    @if ($item->status_cadastro == "aprovado")
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    @else
+                                    <div style="margin-top:2.4px;margin-right:10px;font-size:15px; width:35px;"></div>
+                                    @endif
+                                </a>
+                            @elseif($tipo == "notificacao")
+                                <a href="{{ route('mostrar.notificacoes',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;">
                                     @if ($item->status_cadastro == "aprovado")
                                         <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
                                     @else

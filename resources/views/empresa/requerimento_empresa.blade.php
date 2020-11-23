@@ -32,6 +32,18 @@
                         <div class="form-group col-md-12">
                             <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">REQUERIMENTOS</label>
                         </div>
+                        @if ($message = Session::get('error'))
+                        <div class="alert alert-warning alert-block fade show">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <strong style="margin-right: 30px;">{{$message}}</strong>
+                        </div>
+                        @endif
+                        @if ($message = Session::get('success'))
+                            <div class="alert alert-warning alert-block fade show">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <strong style="margin-right: 30px;">{{$message}}</strong>
+                            </div>
+                        @endif
                         <div class="form col-md-12" style="margin-top:-10px;">
                             <table class="table table-hover">
                                 <thead>

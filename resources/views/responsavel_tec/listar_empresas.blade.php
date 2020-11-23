@@ -91,6 +91,10 @@
                                     <a href="{{ route('rt.documentacao.empresa', ['empresa' => Crypt::encrypt($item->empresa_id)]) }}" style="text-decoration:none;">
                                         <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
                                     </a>
+                                @elseif($flag == "notificacao")
+                                    <a href="{{ route('rt.notificacao.empresa', ['empresa' => Crypt::encrypt($item->empresa_id)]) }}" style="text-decoration:none;">
+                                        <div style="margin-top:2.4px;margin-right:10px;font-size:15px;">Abrir</div>
+                                    </a>
                                 @endif
                             </div>
                         @endif

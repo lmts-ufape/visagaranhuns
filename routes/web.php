@@ -257,6 +257,8 @@ Route::middleware(['IsEmpresa'])->group(function () {
 
 
     Route::get('/verificar/requerimento/inspecao',     'EmpresaController@verificarRequerimentoInspecao')->name('varificar.requerimento.inspecao');
+
+    Route::get('/notificacoes/representante',          'EmpresaController@notificacoes')->name('mostrar.notificacoes');
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
     * Editar/Anexar dados da empresa
@@ -344,7 +346,8 @@ Route::middleware(['IsRespTecnico'])->group(function () {
     //tela de editar senha de acesso do rt
     Route::get('/editar/rt/senha',function () {return view('responsavel_tec/editar_senha_de_acesso');})->name('editar.senha.rt');
     Route::post('/atualizar/rt/senha',              "RespTecnicoController@atualizarSenhaDeAcesso")->name('atualizar.rt');
-    //Empresa - Responsável Técnico
+    
+    Route::get('/empresa/notificacao',              'RespTecnicoController@notificacaoEmpresa')->name('rt.notificacao.empresa');
 /*
     * Consultar notificações
 */

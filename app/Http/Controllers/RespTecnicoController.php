@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
 use App\RtEmpresa;
 use App\CnaeEmpresa;
 use App\Cnae;
+use App\Notificacao;
 use App\Checklistresp;
 use App\Checklistemp;
 use Illuminate\Support\Facades\Storage;
@@ -148,6 +149,7 @@ class RespTecnicoController extends Controller
         $cnaesEmpresa = CnaeEmpresa::where("empresa_id", $id)->get(); //Cnaes especificos da empresa
         $requerimentos = Requerimento::where('empresas_id', $empresa->id) 
         ->where('resptecnicos_id', $rt->id)->orderBy('created_at', 'desc')->get(); // Requerimentos da empresa
+        $notificacoes = Notificacao::all();
         $check = [];
         $temp0 = [];
         $temp = [];
@@ -204,6 +206,33 @@ class RespTecnicoController extends Controller
             'requerimentos'     => $requerimentos,
             // 'resultados'        => $arrayResultado,
             'check'             => $check,
+            'notificacoes'      => $notificacoes,
+        ]);
+    }
+
+    public function notificacaoEmpresa(Request $request)
+    {
+        $rt = RespTecnico::where('user_id', Auth::user()->id)->first();
+        $empresa = Empresa::find(Crypt::decrypt($request->empresa));
+        $notificacao = Notificacao::all();
+        $notificacoes = [];
+
+        foreach ($notificacao as $indice) {
+            if ($indice->inspecao->empresas_id == $empresa->id) {
+                if ($indice->inspecao->motivo == 'Denuncia') {
+                    array_push($notificacoes, $indice);
+                } else {
+                    if($indice->inspecao->requerimento->resptecnicos_id == $rt->id){
+                        array_push($notificacoes, $indice);
+                    }  
+                }
+            }          
+        }
+        // dd($notificacoes);
+
+        return view('responsavel_tec/notificacao',[
+            'notificacoes' => $notificacoes,
+            'empresa'      => $empresa,
         ]);
     }
 

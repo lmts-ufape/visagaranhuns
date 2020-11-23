@@ -16,6 +16,7 @@ use App\RespTecnico;
 use App\RtEmpresa;
 use App\Tipodocempresa;
 use App\Inspecao;
+use App\Notificacao;
 use Illuminate\Support\Facades\Storage;
 use Auth;
 use DateTime;
@@ -554,6 +555,26 @@ class EmpresaController extends Controller
         ]);
     }
 
+    public function notificacoes(Request $request)
+    {
+        $empresa = Empresa::find(Crypt::decrypt($request->value));
+        $notificacao = Notificacao::all();
+        $notificacoes = [];
+
+        foreach ($notificacao as $indice) {
+            if ($indice->inspecao->empresas_id == $empresa->id) {
+                array_push($notificacoes, $indice);
+            }          
+        }
+        // dd($notificacoes);
+
+        return view('empresa/notificacao',[
+            'notificacoes' => $notificacoes,
+            'empresa'      => $empresa,
+        ]);
+
+    }
+
     /**
      * Listar empresas
      * View: empresa/listar_empresas.blade.php
@@ -571,6 +592,9 @@ class EmpresaController extends Controller
         }elseif($request->tipo == 'requerimento'){
             $empresa = Empresa::where('user_id', Crypt::decrypt($request->user))->paginate(20);
             return view('empresa/listar_empresas',['empresas' => $empresa, 'tipo' => 'requerimentos']);
+        }elseif($request->tipo == 'notificacao'){
+            $empresa = Empresa::where('user_id', Crypt::decrypt($request->user))->paginate(20);
+            return view('empresa/listar_empresas',['empresas' => $empresa, 'tipo' => 'notificacao']);
         }
     }
 
