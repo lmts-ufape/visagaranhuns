@@ -65,10 +65,10 @@
                                     @foreach ($album as $item)
                                         @if($item->orientation == 6 || $item->orientation == 8)
                                         <tr style="text-align: center;border: 1.5px solid #f5f5f5;">
-                                            <td style="width: 100%;" type="button" data-toggle="modal" data-target="#modaTipo1"><img src="/imagens/inspecoes/{{$item->imagemInspecao}}" alt="Logo" height="90px"/></td>
+                                            <td style="width: 100%;" type="button" data-toggle="modal" data-target="#modaTipo1{{$item->id}}"><img src="/imagens/inspecoes/{{$item->imagemInspecao}}" alt="Logo" height="90px"/></td>
                                         </tr>
                                         <!-- Modal TIPO 1-->
-                                        <div class="modal fade" id="modaTipo1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="modaTipo1{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -98,10 +98,10 @@
                                         <!--x Modal x-->
                                         @else
                                         <tr style="text-align: center;border: 1.5px solid #f5f5f5;">
-                                            <td style="width: 100%;"  type="button" data-toggle="modal" data-target="#modaTipo2"><img src="/imagens/inspecoes/{{$item->imagemInspecao}}" alt="Logo" height="90px"/></td>
+                                            <td style="width: 100%;"  type="button" data-toggle="modal" data-target="#modaTipo2{{$item->id}}"><img src="/imagens/inspecoes/{{$item->imagemInspecao}}" alt="Logo" height="90px"/></td>
                                         </tr>
                                         <!-- Modal TIPO 2-->
-                                        <div class="modal fade" id="modaTipo2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="modaTipo2{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
                                                 <div class="modal-header">

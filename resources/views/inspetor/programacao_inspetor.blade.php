@@ -44,18 +44,19 @@
                         </div>
                         <div class="form col-md-12" style="margin-top:-10px;">
                             @if(count($inspecoes)>0)
-                                @foreach($inspecoes as $item)
-                                <table class="table table-responsive-lg table-hover" style="width: 100%;">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold; width:100%">Estabelecimento/Tipo/CNAE</th>
-                                        <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold; margin-right:30px;">Data</th>
-                                        <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
-                                        <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Ações</th>
+                            <table class="table table-responsive-lg table-hover" style="width: 100%;">
+                                <thead>
+                                <tr>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold; width:100%">Estabelecimento/Tipo/CNAE</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold; margin-right:30px;">Data</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Ações</th>
 
-                                    </tr>
-                                    </thead>
-                                    <tbody>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($inspecoes as $item)
+
                                         <tr>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                 <div class="btn-form">
@@ -80,9 +81,10 @@
                                                 </div>
                                             </th>
                                         </tr>
-                                    </tbody>
-                                </table>
+
                                 @endforeach
+                                </tbody>
+                            </table>
                             @else
                                 <div style="margin-bottom:5rem; text-align:center; font-size:19px;"> Nenhuma inspeção programada!</div>
                             @endif
