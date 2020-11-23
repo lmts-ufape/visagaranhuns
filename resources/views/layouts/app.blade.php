@@ -96,13 +96,13 @@
                             <a class="nav-link" href="{{ route('emconstrucao') }}">{{ __('A vigilância') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('emconstrucao') }}">{{ __('Orientações') }}</a>
+                            <a class="nav-link" href="{{ route('emconstrucao2') }}">{{ __('Orientações') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('emconstrucao') }}">{{ __('Contato') }}</a>
+                            <a class="nav-link" href="{{ route('emconstrucao3') }}">{{ __('Contato') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('emconstrucao') }}" style="margin-right:30px;">{{ __('Legislação') }}</a>
+                            <a class="nav-link" href="{{ route('emconstrucao4') }}" style="margin-right:30px;">{{ __('Legislação') }}</a>
                         </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}" style="font-weight:bold; color:black;"><span>Entrar</span></a>

@@ -4,6 +4,7 @@
 <div class="container">
     <div class="form-row justify-content-center" style="margin-bottom:3rem; margin-top:1.5rem">
         <div class="cardDashboard">
+            <a href="{{ route('show.album') }}">
             <div class="container">
                 <div class="form-row">
                     <div class="col-12" style="margin-bottom:0.5rem;">
@@ -36,6 +37,7 @@
                     </div>
                 </div>
             </div>
+            </a>
         </div>
         <div class="cardDashboard">
             <div class="container">
