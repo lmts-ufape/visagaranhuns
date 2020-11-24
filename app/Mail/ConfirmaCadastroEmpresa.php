@@ -37,7 +37,7 @@ class ConfirmaCadastroEmpresa extends Mailable
     public function build()
     {
         if ($this->decisao == "true") {
-            $subject = 'Visa - Aprovação de cadastro de empresa';
+            $subject = 'Visa Garanhuns - Aprovação de cadastro de empresa';
             return $this->to($this->user->email, $this->user->name)
                     ->subject($subject)
                     ->view('email.ConfirmaCadastroEmpresa', [
@@ -46,7 +46,7 @@ class ConfirmaCadastroEmpresa extends Mailable
                     ]);
         }
         else {
-            $subject = 'Visa - Reprovação de cadastro de empresa';
+            $subject = 'Visa Garanhuns - Reprovação de cadastro de empresa';
             return $this->to($this->user->email, $this->user->name)
                     ->subject($subject)
                     ->view('email.ReprovaCadastroEmpresa', [

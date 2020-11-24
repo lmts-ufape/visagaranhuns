@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <div class="tituloBarraPrincipal">Cadastrar responsável técnico</div>
                     <div>
-                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Estabelecimentos > xxxx > Cadastrar responsável técnico</div>
+                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Estabelecimentos > {{$empresaNome}} > Cadastrar responsável técnico</div>
                     </div>
                 </div>
             </div>
@@ -127,7 +127,7 @@
                         <div class="form-group col-md-12">
                             <div class="form-row">
                                 <div class="form-group col-md-12">
-                                    <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">E-MAIL PARA ENVIAR O CONVITE</label>
+                                    <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">E-MAIL PARA ENVIAR DADOS DE LOGIN</label>
                                 </div>
                             </div>
                         </div>

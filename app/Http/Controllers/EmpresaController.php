@@ -70,11 +70,27 @@ class EmpresaController extends Controller
             $countAnexado = $countAnexado + count($checklistAnexado);
         }
         // dd($countPendente);
+
+        $notificacao = Notificacao::all();
+        $notificacoes = [];
+
+        foreach ($empresa as $key) {
+            foreach ($notificacao as $indice) {
+                if ($indice->inspecao->empresas_id == $key->id) {
+                    array_push($notificacoes, $indice);
+                }
+            }
+        }
+
+        $totalNotificacao = count($notificacoes);
         
         return view('empresa.home_empresa',
-        ["empresas" => $empresa,
-        'anexados' => $countAnexado,
-        'pendentes' => $countPendente]);
+        [
+            "empresas"         => $empresa,
+            'anexados'         => $countAnexado,
+            'pendentes'        => $countPendente,
+            'totalNotificacao' => $totalNotificacao,
+        ]);
     }
 
     /**
@@ -1028,11 +1044,12 @@ class EmpresaController extends Controller
         $temp = array_unique($resptecnicos);
 
         return view('empresa/show_empresa',['empresa' => $empresa,
-         'endereco' => $endereco,
-         'telefone' =>$telefone,
-         'cnae' => $cnaeEmpresa,
-         'respTecnico' => $temp,
-         'empresaId'     => $empresa->id,
+         'endereco'         => $endereco,
+         'telefone'         => $telefone,
+         'cnae'             => $cnaeEmpresa,
+         'respTecnico'      => $temp,
+         'empresaId'        => $empresa->id,
+         'empresa_status'   => $empresa->status_cadastro,
          ]);
     }
 

@@ -174,15 +174,15 @@
                                 </div> --}}
                                 @foreach ($areas as $item)
                                     <div class="form-group col-md-12">
-                                        <label style="font-size:14px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">{{$item->nome}}</label>
+                                        <label style="font-size:16px;margin-top:16px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">{{$item->nome}}</label>
                                     </div>
                                     @foreach ($checklist as $indice)
                                         @if ($indice->areas_id == $item->id)
                                             @if($indice->anexado == "false")
                                             <div class="form col-md-12">
-                                                <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/> {{$indice->nomeDoc}} -
+                                                <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/> {{$indice->nomeDoc}}
 
-                                                    <span style="color:#e1ad01">Pendente</span>
+                                                    {{-- <span style="color:#e1ad01">Pendente</span> --}}
                                                 </label>
                                             </div>
                                             @else
@@ -190,9 +190,9 @@
                                                     @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id && $docempresa->area == $indice->areas_id)
                                                         <div class="form col-md-12">
                                                             <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
-                                                                <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}"> Baixar arquivo</a>
+                                                                <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}"> Baixar Anexo</a>
                                                             </label>
-                                                            <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDoc({{$docempresa->id}})" style="cursor:pointer; color:#249BE3">- Substituir arquivo</a>
+                                                            <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDoc({{$docempresa->id}})" style="cursor:pointer; color:#249BE3">- Editar Anexo</a>
                                                         </div>
                                                     @endif
                                                 @endforeach
@@ -298,7 +298,15 @@
                                     </div>
                                     <hr style="margin-top: 40px; margin-bottom:10px">
                                     <div class="col-md-12">
-                                        <label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif"><span style="font-size:20px">*</span> campos obrigatórios</label>
+                                        <div class="form-group">
+                                            <label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif"><span style="font-size:20px">*</span> campos obrigatórios</label>
+                                            <div>
+                                                <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/><label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif">Arquivos Pendente</label>
+                                            </div>
+                                            <div>
+                                                <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:10px;"/><label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif">Arquivos Anexados</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </form>
                             </div>

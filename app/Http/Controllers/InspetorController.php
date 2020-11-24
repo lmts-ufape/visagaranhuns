@@ -33,13 +33,13 @@ class InspetorController extends Controller
         $token = User::where('id','=',Auth::user()->id)->first();
         $inspetor = Inspetor::where('user_id','=',Auth::user()->id)->first();
         $pendente = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->count();
-        $concluido = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'aprovado')->orderBy('data', 'ASC')->count();
+        $aprovado = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'aprovado')->orderBy('data', 'ASC')->count();
 
         $aviso = $token->remember_token;
         if($aviso == null){
-            return view('inspetor.home_inspetor',['pendente' => $pendente, 'concluido' => $concluido, 'aviso' => 0]);
+            return view('inspetor.home_inspetor',['pendente' => $pendente, 'aprovado' => $aprovado, 'aviso' => 0]);
         }else{
-            return view('inspetor.home_inspetor',['pendente' => $pendente, 'concluido' => $concluido, 'aviso' => 1]);
+            return view('inspetor.home_inspetor',['pendente' => $pendente, 'aprovado' => $aprovado, 'aviso' => 1]);
         }
     }
 

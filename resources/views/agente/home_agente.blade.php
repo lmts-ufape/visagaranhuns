@@ -10,25 +10,24 @@
                         <img src="{{ asset('/imagens/logo_papel.png') }}" alt="Logo" style="width:17px; height:20px; margin-top:-5px; margin-right:5px;"/>
                         <label class="cardDashboard_titulo">Programação</label>
                     </div>
-                    <label style="margin-left:5px; font-family: 'Roboto', sans-serif;">Inspeções pendentes:</label>
-                    <div style="text-align:center; width:100%; margin-top:15%"><label style="font-size: 50px; color:#909090">{{$pendente}}</label></div>
-
-                    <div class="col-12" style="font-size:13.5px; margin-bottom:-0.4rem">
-                        <ul style="margin-left:-5px; height:175px; width:175px;overflow: auto;">
-
-                        </ul>
+                    {{-- <label style="margin-left:5px; font-family: 'Roboto', sans-serif;">Inspeções pendentes:</label> --}}
+                    <div class="col-12">
+                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.7px">Inspeções pendentes</label>
+                        <div class="form-group">
+                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$pendente}}</div>
+                        </div>
                     </div>
-                    <div class="col-12" style="height:20px; text-align:right;">
-
-                    </div>
-                    <div class="col-12" style=" text-align:right;">
-
+                    <div class="col-12">
+                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Inspeções completas</label>
+                        <div class="form-group">
+                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$aprovado}}</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="cardDashboard">
+        {{-- <div class="cardDashboard">
             <div class="container">
                 <div class="form-row">
                     <div class="col-12" style="margin-bottom:0.5rem;">
@@ -39,14 +38,14 @@
                     <div style="text-align:center; width:100%; margin-top:15%"><label style="font-size: 50px; color:#909090">{{$concluido}}</label></div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <div class="cardDashboard">
             <div class="container">
                 <div class="form-row">
                     <div class="col-12" style="margin-bottom:0.5rem;">
                         <img src="{{ asset('/imagens/logo_megafone.png') }}" alt="Logo" style="width:17px; height:20px; margin-top:-5px; margin-right:5px;"/>
-                        <label class="cardDashboard_titulo">Avisos</label>
+                        <label class="cardDashboard_titulo">Aplicativo</label>
                     </div>
                     @if($aviso == 1)
                         <label style="margin-left:5px; font-family: 'Roboto', sans-serif;">Dispositivo:</label>

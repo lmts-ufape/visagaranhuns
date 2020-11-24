@@ -5,9 +5,9 @@
         <div class="barraMenu" style="margin-top:1rem; margin-bottom:-2.5rem;padding:2px;">
             <div class="mr-auto p-2 styleBarraPrincipalPC">
                 <div class="form-group">
-                    <div class="tituloBarraPrincipal">A Vigilância</div>
+                    <div class="tituloBarraPrincipal">Legislação</div>
                     <div>
-                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > A Vigilância</div>
+                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Legislação</div>
                     </div>
                 </div>
             </div>

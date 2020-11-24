@@ -24,7 +24,7 @@
                             <a href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'estabelecimentos']) }}" style="text-decoration:none;">Ver todos</a>
                         @endif
                     </div>
-                    <div class="col-12" style=" text-align:right;">
+                    <div class="col-12" style=" text-align:center;">
                         @if($empresas[0]->user->status_cadastro != "pendente")
                             <a href="{{ route('pagina.adicionar.empresa') }}" style="text-decoration:none;">Criar estabelecimento</a>
                         @endif
@@ -38,12 +38,19 @@
                 <div class="form-row">
                     <div class="col-12" style="margin-bottom:0.5rem;">
                         <img src="{{ asset('/imagens/logo_papel.png') }}" alt="Logo" style="width:17px; height:20px; margin-top:-5px; margin-right:5px;"/>
-                        <label class="cardDashboard_titulo">Licenças</label>
+                        <label class="cardDashboard_titulo">Notificações</label>
                     </div>
-                    <div class="cardDashboard_titulo" style="text-align:center; width:100%; margin-top:30%; font-size:60px">0</div>                    {{-- <div class="col-12" style="font-size:13.5px">Inspeções para <span style="font-weight:bold">setembro:</span></div>
+                    {{-- <div class="cardDashboard_titulo" style="text-align:center; width:100%; margin-top:30%; font-size:60px">0</div>                    
+                    <div class="col-12" style="font-size:13.5px">Inspeções para <span style="font-weight:bold">setembro:</span></div>
                     <div class="col-12" style="margin-top:rem;font-size:50px;text-align:center;font-weight:lighter;font-family:monospace;color:gray">09</div>
                     <div class="col-12" style="font-size:13.5px">Inspeções para <span style="font-weight:bold">outubro:</span></div>
                     <div class="col-12" style="margin-top:rem;font-size:50px;text-align:center;font-weight:lighter;font-family:monospace;color:gray">02</div> --}}
+                    <div class="col-12">
+                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Total de Notificações</label>
+                        <div class="form-group">
+                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$totalNotificacao}}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -72,7 +79,7 @@
             </div>
         </div>
 
-        <div class="cardDashboard">
+        {{-- <div class="cardDashboard">
             <div class="container">
                 <div class="form-row">
                     <div class="col-12" style="margin-bottom:0.5rem;">
@@ -82,7 +89,7 @@
                     <div class="cardDashboard_titulo" style="text-align:center; width:100%; margin-top:30%; font-size:60px">0</div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
     </div>
 </div>

@@ -51,9 +51,9 @@ class AgenteController extends Controller
         
         if($aviso == null){
             // dd($inspecoesConcluidas);
-            return view('agente.home_agente',['pendente' => count($inspecoesPendentes), 'concluido' => count($inspecoesConcluidas), 'aviso' => 0]);
+            return view('agente.home_agente',['pendente' => count($inspecoesPendentes), 'aprovado' => count($inspecoesConcluidas), 'aviso' => 0]);
         }else{
-            return view('agente.home_agente',['pendente' => count($inspecoesPendentes), 'concluido' => count($inspecoesConcluidas), 'aviso' => 1]);
+            return view('agente.home_agente',['pendente' => count($inspecoesPendentes), 'aprovado' => count($inspecoesConcluidas), 'aviso' => 1]);
         }
     }
 

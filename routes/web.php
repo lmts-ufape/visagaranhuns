@@ -7,6 +7,7 @@ use App\Empresa;
 use App\Denuncia;
 use App\Requerimento;
 use App\Inspecao;
+use App\Notificacao;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,9 @@ Route::get('/', function () {
         $empresasAprovada      = Empresa::where('status_cadastro', 'aprovado')->get();
         $empPendente           = count($empresasPendente);
         $empAprovada           = count($empresasAprovada);
+
+        $notificacoesPendentes = Notificacao::where('status', 'pendente')->count();
+        $notificacoesAprovadas = Notificacao::where('status', 'aprovado')->count();
               
         return view('coordenador.home_coordenador',
         ['denunciasTotal'        => $denunciasTotal,
@@ -56,6 +60,8 @@ Route::get('/', function () {
         'inspecoesCompleta'      => $inspecCompleta,
         'empresasPendente'       => $empPendente,
         'empresasAprovada'       => $empAprovada,
+        'notificacoesPendentes'  => $notificacoesPendentes,
+        'notificacoesAprovadas'  => $notificacoesAprovadas,
         ]);
         }
         elseif (Auth::user()->tipo == "empresa") {
@@ -113,6 +119,9 @@ Route::middleware(['OnlyAdmin'])->group(function () {
 
 Route::get("/empresa/lista/cnae",  "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes.comum");
 Route::get("/emcostrucao",  function () {return view('em_construcao');})->name("emconstrucao");
+Route::get("/emcostrucao2",  function () {return view('em_construcao2');})->name("emconstrucao2");
+Route::get("/emcostrucao3",  function () {return view('em_construcao3');})->name("emconstrucao3");
+Route::get("/emcostrucao4",  function () {return view('em_construcao4');})->name("emconstrucao4");
 Route::get("/servicos",  "ServicoController@homeInformacoes")->name("home.informacao");
 Route::get("/servicos/outros",  "ServicoController@homeOutrasInformacoes")->name("home.outras.informacoes");
 

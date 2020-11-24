@@ -35,7 +35,7 @@ class CadastroRTEmail extends Mailable
      */
     public function build()
     {
-      $subject = 'Visa - Dados de login';
+      $subject = 'Visa Garanhuns - Dados de login';
       return $this->to($this->email)
                   ->subject($subject)
                   ->view('email.conviteRespTecnico', [

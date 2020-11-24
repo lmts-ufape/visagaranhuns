@@ -32,7 +32,7 @@ class CadastroRTcadastrado extends Mailable
      */
     public function build()
     {
-      $subject = 'Visa - Cadastro';
+      $subject = 'Visa Garanhuns - Cadastro';
       return $this->to($this->email)
                   ->subject($subject)
                   ->view('email.respTecCadastrado', [

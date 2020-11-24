@@ -14,9 +14,9 @@
                     </div>
                     <div class="mr-auto p-2 styleBarraPrincipalPC">
                         <div class="form-group">
-                            <div class="tituloBarraPrincipal">Meus documentos</div>
+                            <div class="tituloBarraPrincipal">Meus Documentos</div>
                             <div>
-                                <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Meus documentos</div>
+                                <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Meus Documentos</div>
                             </div>
                         </div>
                     </div>
@@ -74,9 +74,9 @@
                                     {{-- @if ($indice->areas_id == $item->id) --}}
                                         @if($indice->anexado == "false")
                                         <div class="form col-md-12">
-                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/> {{$indice->nomeDoc}} -
+                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/> {{$indice->nomeDoc}}
 
-                                                <span style="color:#e1ad01">Pendente</span>
+                                                {{-- <span style="color:#e1ad01">Pendente</span> --}}
                                             </label>
                                         </div>
                                         @else
@@ -87,9 +87,9 @@
                                                 @if ($docrt->resptecnicos_id == $indice->resptecnicos_id && $docrt->tipodocresp_id == $indice->tipodocres_id)
                                                     <div class="form col-md-12">
                                                         <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
-                                                            <a href="{{route('download.arquivo.rt', ['file' => $docrt->nome])}}"> Baixar arquivo</a>
+                                                            <a href="{{route('download.arquivo.rt', ['file' => $docrt->nome])}}"> Baixar Anexo</a>
                                                         </label>
-                                                        <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDocRt({{$docrt->id}})" style="cursor:pointer; color:#249BE3">- Substituir arquivo</a>
+                                                        <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDocRt({{$docrt->id}})" style="cursor:pointer; color:#249BE3">- Editar Anexo</a>
                                                     </div>
                                                 @endif
                                             @endforeach
@@ -114,7 +114,20 @@
                                 <div class="modal-body">
                                     <form id="editDocForm" method="POST" action="{{route('editar.arquivos.rt')}}" enctype="multipart/form-data">
                                         @csrf
-                                        <div class="form-group">
+                                        <div class="form col-md-12" >
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Emissão</label>
+                                                    <input type="date" class="form-control" placeholder="" id="data_emissao_edit" name="data_emissao_editar">
+                                                </div>
+                                                <div class="col">
+                                                    <label for="exampleFormControlSelect1" style="font-weight:normal;font-family: 'Roboto', sans-serif;">Validade</label>
+                                                    <input type="date" class="form-control" placeholder="" id="data_validade_edit" name="data_validade_editar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form col-md-12">
                                           <label for="exampleFormControlFile1">Substituir arquivo</label>
                                           <input id="editarDocRt" type="hidden" name="file" value="">
                                           <input type="file" class="form-control-file" id="arquivoSelecionado_edit" name="arquivo" onchange="verificarArquivoAnexado_Rt_Edit()">
@@ -169,7 +182,15 @@
                                     </div>
                                     <hr style="margin-top: 40px; margin-bottom:10px">
                                     <div class="col-md-12">
-                                        <label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif"><span style="font-size:20px">*</span> Campo obrigatório</label>
+                                        <div class="form-group">
+                                            <label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif"><span style="font-size:20px">*</span> campos obrigatórios</label>
+                                            <div>
+                                                <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/><label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif">Arquivos Pendente</label>
+                                            </div>
+                                            <div>
+                                                <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:10px;"/><label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif">Arquivos Anexados</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -246,6 +267,8 @@
             data: {"id": $id},
             success: function(response){
                 $('#editarDocRt').val(response.nome);
+                $('#data_emissao_edit').val(response.data_emissao);
+                $('#data_validade_edit').val(response.data_validade);
             }
         });
     }
