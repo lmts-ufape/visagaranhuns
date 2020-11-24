@@ -3,5 +3,5 @@
 <p>Você também foi cadastrado como responsável técnico na empresa {{$empresaNome}}.</p>
 
 <p>Atenciosamente,<br>
-Visa G.
+Visa Garanhuns.
 </p>

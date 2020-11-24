@@ -32,7 +32,7 @@
                 <div class="form-row">
                     <div class="col-12" style="margin-bottom:0.5rem;">
                         <img src="{{ asset('/imagens/logo_megafone.png') }}" alt="Logo" style="width:17px; height:20px; margin-top:-5px; margin-right:5px;"/>
-                        <label class="cardDashboard_titulo">Avisos</label>
+                        <label class="cardDashboard_titulo">Applicativo</label>
                     </div>
                     @if($aviso == 1)
                         <label style="margin-left:5px; font-family: 'Roboto', sans-serif;">Dispositivo:</label>

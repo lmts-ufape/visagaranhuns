@@ -1044,11 +1044,12 @@ class EmpresaController extends Controller
         $temp = array_unique($resptecnicos);
 
         return view('empresa/show_empresa',['empresa' => $empresa,
-         'endereco' => $endereco,
-         'telefone' =>$telefone,
-         'cnae' => $cnaeEmpresa,
-         'respTecnico' => $temp,
-         'empresaId'     => $empresa->id,
+         'endereco'         => $endereco,
+         'telefone'         => $telefone,
+         'cnae'             => $cnaeEmpresa,
+         'respTecnico'      => $temp,
+         'empresaId'        => $empresa->id,
+         'empresa_status'   => $empresa->status_cadastro,
          ]);
     }
 

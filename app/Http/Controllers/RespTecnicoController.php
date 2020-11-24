@@ -503,6 +503,7 @@ class RespTecnicoController extends Controller
      */
     public function create(Request $request)
     {
+        $empresa = Empresa::find($request->empresaId);
         $user = User::find(Auth::user()->id);
         $cnaeEmpresa = CnaeEmpresa::where('empresa_id', $request->empresaId)->get();
         $rtempresa = RtEmpresa::where('empresa_id', $request->empresaId)->get();
@@ -537,10 +538,12 @@ class RespTecnicoController extends Controller
         }
 
         return view('responsavel_tec.cadastrar_responsavel_tec')->with(["user" => $user,
-        "empresaId" => $request->empresaId,
-        'areas' => $areasOrdenado,
-        'respTecnicos' => $temp,
-        'rtempresa' => $rtempresa]);
+            "empresaId"     => $request->empresaId,
+            'areas'         => $areasOrdenado,
+            'respTecnicos'  => $temp,
+            'rtempresa'     => $rtempresa,
+            'empresaNome'   => $empresa->nome,
+        ]);
     }
 
     /**
@@ -670,7 +673,7 @@ class RespTecnicoController extends Controller
                 }
             }
 
-            session()->flash('success', 'O responsável Técnico foi cadastrado com sucesso!');
+            session()->flash('success', 'O responsável técnico foi cadastrado com sucesso!');
             return back();
         }
     }
