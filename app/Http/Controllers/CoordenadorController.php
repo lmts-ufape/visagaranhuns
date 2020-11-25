@@ -813,8 +813,9 @@ class CoordenadorController extends Controller
                 $empresa->save();
                 $useremail->save();
 
-                session()->flash('success', 'Cadastros aprovados com sucesso');
-                return redirect()->route('/');
+                // session()->flash('success', 'Cadastros aprovados com sucesso');
+                return view('coordenador/requerimento_coordenador')->with('aprovado', 'Este cadastro foi aprovado com sucesso!');
+                // return redirect()->route('/');
             }
             else{
 
@@ -831,13 +832,21 @@ class CoordenadorController extends Controller
                 \Illuminate\Support\Facades\Mail::send(new \App\Mail\ConfirmaCadastroUser($user,$emp,$decisao));
                 // *************************************
 
-                $empresa->status_cadastro = "reprovado";
-                $useremail->status_cadastro = "reprovado";
-                $empresa->save();
-                $useremail->save();
+                // $empresa->status_cadastro = "reprovado";
+                // $useremail->status_cadastro = "reprovado";
+                // $empresa->save();
+                // $useremail->save();
 
-              session()->flash('success', 'Cadastros reprovados com sucesso');
-              return redirect()->route('/');
+                $cnaeEmpresas = CnaeEmpresa::where('empresa_id', $empresa->id)->delete();
+                $checklistemp = Checklistemp::where('empresa_id', $empresa->id)->delete();
+                $telefones = Telefone::where('empresa_id', $empresa->id)->delete();
+                $enderecos = Endereco::where('empresa_id', $empresa->id)->delete();
+                $empresa->delete();
+                $useremail->delete();
+
+                // session()->flash('success', 'Cadastros reprovados com sucesso');
+                return view('coordenador/requerimento_coordenador')->with('reprovado', 'Este cadastro foi reprovado com sucesso!');
+                // return redirect()->route('/');
             }
 
         }
@@ -862,8 +871,7 @@ class CoordenadorController extends Controller
                 $empresa->status_cadastro = "aprovado";
                 $empresa->save();
 
-                session()->flash('success', 'Cadastro aprovado com sucesso');
-                return redirect()->route('/');
+                return view('coordenador/requerimento_coordenador')->with('aprovado', 'Este cadastro foi aprovado com sucesso!');
             }
             else{
 
@@ -883,41 +891,16 @@ class CoordenadorController extends Controller
                 $empresa->status_cadastro = "reprovado";
                 $empresa->save();
 
-                session()->flash('success', 'Cadastro reprovado com sucesso');
-                return redirect()->route('/');
+                $cnaeEmpresas = CnaeEmpresa::where('empresa_id', $empresa->id)->delete();
+                $checklistemp = Checklistemp::where('empresa_id', $empresa->id)->delete();
+                $telefones = Telefone::where('empresa_id', $empresa->id)->delete();
+                $enderecos = Endereco::where('empresa_id', $empresa->id)->delete();
+                $empresa->delete();
+
+                return view('coordenador/requerimento_coordenador')->with('reprovado', 'Este cadastro foi reprovado com sucesso!');
             }
 
         }
-
-        // Trecho para o caso de coordenador precisar reavaliar cadastro de empresa
-        // elseif ($estabelecimento->status == "Aprovado" || $estabelecimento->status == "Reprovado") {
-
-        //     if($request->decisao == 'true'){
-
-        //         // Enviar e-mai de comprovação de cadastro
-        //         //************************************** */
-
-        //         $user = new \stdClass();
-        //         $user->name = $userfound[0]->name;
-        //         $user->email = $userfound[0]->email;
-
-        //         \Illuminate\Support\Facades\Mail::send(new \App\Mail\SendMailUser($user));
-        //         // *************************************
-
-        //         $estabelecimento->status = "Aprovado";
-        //         $estabelecimento->save();
-
-        //         session()->flash('success', 'Estabelecimento aprovado com sucesso');
-        //         return redirect()->route('estabelecimentoAdmin.revisar');
-        //     }
-        //     else{
-        //       $estabelecimento->status = "Reprovado";
-        //       $estabelecimento->save();
-
-        //       session()->flash('success', 'Estabelecimento reprovado com sucesso');
-        //       return redirect()->route('estabelecimentoAdmin.revisar');
-        //     }
-        // }
     }
 
     public function convidarEmail(Request $request)
@@ -1086,7 +1069,7 @@ class CoordenadorController extends Controller
         foreach($empresas as $item){
             if($item->status_cadastro == "pendente" && ($filtro == "pendente" || $filtro == "all")){
                 $output .='
-                    <div class="container cardListagem" id="primeiralicenca">
+                    <div class="container cardListagem" id="primeiralicenca" style="margin-bottom:30px;">
                     <div class="d-flex">
                         <div class="mr-auto p-2">
                             <div class="btn-group" style="margin-bottom:-15px;">
@@ -1131,7 +1114,7 @@ class CoordenadorController extends Controller
         foreach($requerimentos as $item){
                 if($item->tipo == "Primeira Licenca" && ($item->resptecnicos_id != null) && ($filtro == "primeira_licenca" || $filtro == "all") && ($item->status == "pendente")){
                     $output .='
-                        <div class="container cardListagem" id="primeiralicenca">
+                        <div class="container cardListagem" id="primeiralicenca" style="margin-bottom:20px;">
                             <div class="d-flex">
                                 <div class="mr-auto p-2">
                                     <div class="btn-group" style="margin-bottom:-15px;">
@@ -1174,7 +1157,7 @@ class CoordenadorController extends Controller
 
                 }elseif($item->tipo == "Primeira Licenca" && ($item->resptecnicos_id == null) && ($filtro == "primeira_licenca" || $filtro == "all") && ($item->status == "pendente")){
                     $output .='
-                        <div class="container cardListagem" id="primeiralicenca">
+                        <div class="container cardListagem" id="primeiralicenca" style="margin-bottom:31px;">
                             <div class="d-flex">
                                 <div class="mr-auto p-2">
                                     <div class="btn-group" style="margin-bottom:-15px;">
@@ -1202,7 +1185,7 @@ class CoordenadorController extends Controller
                                 <div class="d-flex">
                                     <div class="mr-auto p-2">
                                         <div class="btn-group" style="margin-bottom:-15px;">
-                                            <div class="form-group" style="font-size:15px;">
+                                            <div class="form-group" style="font-size:15px; margin-top: 10px;">
                                                 <div>CNAE: <span class="textoCampo">'.$item->cnae->descricao.'</span></div>
                                                 <div>Representante Legal:<span class="textoCampo"> '.$item->empresa->user->name.'</span></div>
                                                 <div>Status:<span class="textoCampo"> '.$item->status.'</span></div>
@@ -1217,13 +1200,13 @@ class CoordenadorController extends Controller
 
                 }elseif($item->tipo == "Renovacao"  && ($item->resptecnicos_id != null) && ($filtro == "renovacao_de_licenca" || $filtro == "all") && ($item->status == "pendente")){
                     $output .='
-                    <div class="container cardListagem">
+                    <div class="container cardListagem" style="margin-bottom:30px;">
                         <div class="d-flex">
                             <div class="mr-auto p-2">
                                 <div class="btn-group" style="margin-bottom:-15px;">
                                     <div class="form-group" style="font-size:15px;">
                                         <div class="textoCampo">'.$item->empresa->nome.'</div>
-                                        <span>Renovacao de Licenca</span>
+                                        <span>Renovação de Licença</span>
                                     </div>
                                 </div>
                             </div>
@@ -1259,13 +1242,13 @@ class CoordenadorController extends Controller
                 ';
                 }elseif($item->tipo == "Renovacao"  && ($item->resptecnicos_id == null) && ($filtro == "renovacao_de_licenca" || $filtro == "all") && ($item->status == "pendente")){
                     $output .='
-                    <div class="container cardListagem">
+                    <div class="container cardListagem" style="margin-bottom:30px;">
                         <div class="d-flex">
                             <div class="mr-auto p-2">
                                 <div class="btn-group" style="margin-bottom:-15px;">
                                     <div class="form-group" style="font-size:15px;">
                                         <div class="textoCampo">'.$item->empresa->nome.'</div>
-                                        <span>Renovacao de Licenca</span>
+                                        <span>Renovação de Licença</span>
                                     </div>
                                 </div>
                             </div>

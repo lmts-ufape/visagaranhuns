@@ -53,28 +53,28 @@
     <div class="container" style="margin-top:2rem;margin-left:10px;">
         <div class="form-row">
             <div class="form-group col-md-8">
-                    <div class="d-flex">
-                            <div class="mr-auto p-2">
-                                    <div class="btn-group">
-                                        <div style="font-size:20px; font-weight:bold; color:#707070; margin-left:0px;">Estabelecimentos</div>
-                                    </div>
+                <div class="d-flex">
+                    <div class="mr-auto p-2" id="nomeEstabelecimento">
+                            <div class="btn-group">
+                                <div style="font-size:20px; font-weight:bold; color:#707070; margin-left:0px;">Estabelecimentos</div>
                             </div>
-                           <div class="p-2">
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="filtroButtonRequerimento" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Filtro
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        {{-- <a class="dropdown-item" onclick="selecionarFiltroRequerimento('aprovado')" style="text-decoration:none;cursor:pointer">Cadastro Aprovado</a> --}}
-                                        {{-- <a class="dropdown-item" onclick="selecionarFiltroRequerimento('denuncia')" style="text-decoration:none;cursor:pointer">Denúncia</a> --}}
-                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('pendente')" style="text-decoration:none;cursor:pointer">Cadastro Pendente</a>
-                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('primeira_licenca')" style="text-decoration:none;cursor:pointer">Primeira Licença</a>
-                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('renovacao_de_licenca')" style="text-decoration:none;cursor:pointer">Renovação de Licença</a>
-                                        <a class="dropdown-item" onclick="selecionarFiltroRequerimento('all')" style="text-decoration:none;cursor:pointer">Mostrar Tudo</a>
-                                    </div>
-                                </div>
+                    </div>
+                    <div class="p-2" id="filtro">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="filtroButtonRequerimento" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Filtro
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                {{-- <a class="dropdown-item" onclick="selecionarFiltroRequerimento('aprovado')" style="text-decoration:none;cursor:pointer">Cadastro Aprovado</a> --}}
+                                {{-- <a class="dropdown-item" onclick="selecionarFiltroRequerimento('denuncia')" style="text-decoration:none;cursor:pointer">Denúncia</a> --}}
+                                <a class="dropdown-item" onclick="selecionarFiltroRequerimento('pendente')" style="text-decoration:none;cursor:pointer">Cadastro Pendente</a>
+                                <a class="dropdown-item" onclick="selecionarFiltroRequerimento('primeira_licenca')" style="text-decoration:none;cursor:pointer">Primeira Licença</a>
+                                <a class="dropdown-item" onclick="selecionarFiltroRequerimento('renovacao_de_licenca')" style="text-decoration:none;cursor:pointer">Renovação de Licença</a>
+                                <a class="dropdown-item" onclick="selecionarFiltroRequerimento('all')" style="text-decoration:none;cursor:pointer">Mostrar Tudo</a>
                             </div>
                         </div>
+                    </div>
+                </div>
                 <div id="idTabela">
                     <table style="width:100%">
                         <tbody_>
@@ -84,7 +84,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
 <form id="submeterId" method="POST" action="{{route('pagina.detalhes')}}">
@@ -108,8 +107,15 @@
             dataType:'json',
             data: {"filtro": "all" },
             success: function(response){
-                console.log("AQUI!!!!!");
-                $('tbody_').html(response.table_data);
+                if (response.table_data == "") {
+                    $('#filtro').hide();
+                    $('#nomeEstabelecimento').hide();
+                    $('tbody_').html("<div style='margin-bottom:8rem; text-align:right; font-size:25px;'> Lista de requerimentos vazia!</div>");
+                }
+                else {
+                    console.log(response.table_data);
+                    $('tbody_').html(response.table_data);
+                }
             }
         });
     };
