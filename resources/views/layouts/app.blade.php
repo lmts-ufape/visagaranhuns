@@ -127,18 +127,27 @@
                                     <a class="nav-link" href="{{ route('criar.inspecao') }}">{{ __('Programação') }}</a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                            Membros<span class="caret"></span>
-                                        </a>
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        Membros<span class="caret"></span>
+                                    </a>
 
-                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item" href="{{ route('listar.agentes') }}">Agentes</a>
-                                            <a class="dropdown-item" href="{{ route('listar.inspetores') }}">Inspetores</a>
-                                        </div>
-                                    </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('listagem.area') }}">{{ __('Estabelecimentos') }}</a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('listar.agentes') }}">Agentes</a>
+                                        <a class="dropdown-item" href="{{ route('listar.inspetores') }}">Inspetores</a>
+                                    </div>
                                 </li>
+                                <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        Estabelecimentos<span class="caret"></span>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('listagem.area') }}">Estabelecimentos</a>
+                                        <a class="dropdown-item" href="{{ route('listar.rts') }}">Responsáveis Técnicos</a>
+                                    </div>
+                                </li>
+                                {{-- <li class="nav-item">
+                                    <a class="nav-link" >{{ __('Estabelecimentos') }}</a>
+                                </li> --}}
                                 <li class="nav-item">
                                     <button type="button" class="btn" data-toggle="modal" data-target="#exampleModalLocalizar"><img src="{{asset('imagens/logo_lupa_1.png')}}" style="width:25px; margin-top:-4px; margin-left:10px; margin-right:30px;"></button>
                                 </li>

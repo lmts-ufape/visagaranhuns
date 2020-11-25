@@ -14,6 +14,8 @@ use App\Endereco;
 use App\Telefone;
 use App\CnaeEmpresa;
 use App\Requerimento;
+use App\RespTecnico;
+use App\RtEmpresa;
 use App\Inspecao;
 use App\InspecAgente;
 use App\InspecRequerimento;
@@ -1033,6 +1035,33 @@ class CoordenadorController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function listarRts()
+    {
+        $rtempresa = RtEmpresa::orderBy('empresa_id', 'ASC')->get();
+        $respTecnico = RespTecnico::orderBy('id', 'ASC')->paginate(50);
+        $respTecnicos = [];
+
+        foreach ($rtempresa as $key) {
+            foreach ($respTecnico as $indice) {
+                if ($indice->id == $key->resptec_id) {
+                    $obj = (object) array(
+                        'nome'           => $indice->user->name,
+                        'formacao'       => $indice->formacao,
+                        'especializacao' => $indice->especializacao,
+                        'cpf'            => $indice->cpf,
+                        'telefone'       => $indice->telefone,
+                        'nomeEmpresa'    => $key->empresa->nome,
+                    );
+                    array_push($respTecnicos, $obj);
+                }
+            }
+        }
+
+        // dd($respTecnicos);
+        
+        return view('coordenador/rts_coordenador', ['rts' => $respTecnicos]);
     }
 
     /**
