@@ -126,53 +126,47 @@
                     </div>
 
                     <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label style="font-size:19px;margin-top:10px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">INFORMAÇÕES DO RESPONSÁVEL TÉCNICO</label>
-                            </div>
-                            @if(count($rt)>0)
-                                <div class="cardRT">
-                                    @foreach ($rt as $rt)
-
-                                        <div class="form col-md-12" style="margin-top:5px;">
-                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nome: </label>
-                                        <span style="color:#707070">{{$rt->user->name}}</span>
-                                        </div>
-                                        <div class="form col-md-12" style="margin-top:-10px;">
-                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CPF: </label>
-                                            <span style="color:#707070">{{$rt->cpf}}</span>
-                                        </div>
-                                        <div class="form col-md-12" style="margin-top:-10px;">
-                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Formação: </label>
-                                            <span style="color:#707070">{{$rt->formacao}}</span>
-                                        </div>
-                                        <div class="form col-md-12" style="margin-top:-10px;">
-                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Especialização: </label>
-                                            <span style="color:#707070">{{$rt->especializacao}}</span>
-                                        </div>
-                                        <div class="form col-md-12" style="margin-top:-10px;">
-                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
-                                            <span style="color:#707070">{{$rt->telefone}}</span>
-                                        </div>
-                                        <div class="form col-md-12" style="margin-top:-10px;">
-                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">E-mail: </label>
-                                            <span style="color:#707070">{{$rt->user->email}}</span>
-                                        </div>
-
-                                    @endforeach
-                                @else
-                                    <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nenhum responsável técnico cadastrado</label>
-                                    </div>
-                                @endif
-                            </div>
-                            {{-- <div class="form-row col-md-12" style="margin-top:10px; text-align:right; margin-left:10px">
-                                <div class="col">
-                                    <img src="{{ asset('/imagens/logo_esquerda_azul.png') }}" alt="Logo" style="width:15px; margin-top:-5px; margin-right:10px;"/>
-                                    <label style="font-family: 'Roboto', sans-serif;">1/2</label>
-                                    <img src="{{ asset('/imagens/logo_direita_azul.png') }}" alt="Logo" style="width:15px; margin-top:-5px; margin-left:10px;"/>
-                                </div>
-                            </div> --}}
+                        <div class="form-group col-md-12">
+                            <label style="font-size:19px;margin-top:10px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">INFORMAÇÕES DO RESPONSÁVEL TÉCNICO</label>
                         </div>
+                        @if(count($rt)>0)
+                            @foreach ($rt as $rt)
+                                <div class="cardRT" style="margin-bottom:8px;">
+                                    <div class="form col-md-12" style="margin-top:5px;">
+                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nome: </label>
+                                    <span style="color:#707070">{{$rt->user->name}}</span>
+                                    </div>
+                                    <div class="form col-md-12" style="margin-top:-10px;">
+                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CPF: </label>
+                                        <span style="color:#707070">{{$rt->cpf}}</span>
+                                    </div>
+                                    <div class="form col-md-12" style="margin-top:-10px;">
+                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Formação: </label>
+                                        <span style="color:#707070">{{$rt->formacao}}</span>
+                                    </div>
+                                    <div class="form col-md-12" style="margin-top:-10px;">
+                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Especialização: </label>
+                                        <span style="color:#707070">{{$rt->especializacao}}</span>
+                                    </div>
+                                    <div class="form col-md-12" style="margin-top:-10px;">
+                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
+                                        <span style="color:#707070">{{$rt->telefone}}</span>
+                                    </div>
+                                    <div class="form col-md-12" style="margin-top:-10px;">
+                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">E-mail: </label>
+                                        <span style="color:#707070">{{$rt->user->email}}</span>
+                                    </div>
+                                    <div class="form col-md-12" style="margin-top:-5px;">
+                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;"><a type="button" class="btn btn-primary" href="{{ route('documentos.rt') }}">Visualizar Documentos</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="form col-md-12" style="margin-top:-10px;">
+                                <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nenhum responsável técnico cadastrado</label>
+                            </div>
+                        @endif
+                    </div>
                 </div>
 
 

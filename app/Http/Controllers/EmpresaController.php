@@ -36,7 +36,6 @@ class EmpresaController extends Controller
     public function index(Request $request)
     {
 
-        //Escolher a página qem que as empresas serão listadas
         $cnaeEmp = CnaeEmpresa::where("cnae_id", Crypt::decrypt($request->value))->get();
         $empresas = array();
         foreach($cnaeEmp as $indice){
@@ -460,18 +459,26 @@ class EmpresaController extends Controller
         $rtempresa = RtEmpresa::where('empresa_id', $empresa->id)->get();
 
         $resptecnicos = [];
-        for ($i=0; $i < count($rtempresa); $i++) {
-            if (count($resptecnicos) == 0) {
-                array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
-            }
-            else {
-                for ($j=0; $j < count($resptecnicos); $j++) {
-                    if($rtempresa[$i]->resptec_id != $resptecnicos[$j]->id) {
-                        array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
-                    }
-                }
-            }
+
+
+        foreach ($rtempresa as $indice) {
+            array_push($resptecnicos, RespTecnico::find($indice->resptec_id));
         }
+
+        $temp = array_unique($resptecnicos);
+
+        // for ($i=0; $i < count($rtempresa); $i++) {
+        //     if (count($resptecnicos) == 0) {
+        //         array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
+        //     }
+        //     else {
+        //         for ($j=0; $j < count($resptecnicos); $j++) {
+        //             if($rtempresa[$i]->resptec_id != $resptecnicos[$j]->id) {
+        //                 array_push($resptecnicos, RespTecnico::find($rtempresa[$i]->resptec_id));
+        //             }
+        //         }
+        //     }
+        // }
 
         return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnaeEmpresa, 'rt' => $resptecnicos]);
     }
@@ -1040,7 +1047,7 @@ class EmpresaController extends Controller
         foreach ($rtempresa as $indice) {
             array_push($resptecnicos, RespTecnico::find($indice->resptec_id));
         }
-
+ 
         $temp = array_unique($resptecnicos);
 
         return view('empresa/show_empresa',['empresa' => $empresa,
