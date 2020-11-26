@@ -157,7 +157,7 @@
                                         <span style="color:#707070">{{$rt->user->email}}</span>
                                     </div>
                                     <div class="form col-md-12" style="margin-top:-5px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;"><a type="button" class="btn btn-primary" href="{{ route('documentos.rt') }}">Visualizar Documentos</a>
+                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;"><a type="button" class="btn btn-primary" href="{{ route('documentos.rt', ['rt_id' => Crypt::encrypt($rt->id)]) }}">Visualizar Documentos</a>
                                     </div>
                                 </div>
                             @endforeach

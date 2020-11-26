@@ -9,7 +9,10 @@ use App\Agente;
 use App\Inspetor;
 use App\Empresa;
 use App\Docempresa;
+use App\Docresptec;
 use App\Checklistemp;
+use App\Checklistresp;
+use App\Tipodocresp;
 use App\Endereco;
 use App\Telefone;
 use App\CnaeEmpresa;
@@ -256,6 +259,63 @@ class CoordenadorController extends Controller
         session()->flash('success', 'A inspeção foi cadastrada com sucesso e agora consta para a visualização dos agentes e inspetores.');
         return back();
 
+    }
+
+    public function documentosRt(Request $request)
+    {
+        // $rtId = Crypt::decrypt($request->rt_id);
+        $rtId = Crypt::decrypt($request->rt_id);
+
+        $rt = RespTecnico::find($rtId);
+        $docsrt = Docresptec::where('resptecnicos_id', $rt->id)->get();
+        $temp = [];
+        $checkrespt = [];
+        // $docsRt = [];
+
+        $checklistresp = Checklistresp::where('resptecnicos_id', $rt->id)->orderBy('nomeDoc','ASC')->pluck('tipodocres_id');
+        for ($i=0; $i < count($checklistresp); $i++) {
+            array_push($temp, $checklistresp[$i]);
+        }
+
+        $array = array_unique($temp);
+
+        foreach ($array as $indice) {
+            array_push($checkrespt, Checklistresp::where('tipodocres_id', $indice)
+            ->where('resptecnicos_id', $rt->id)->first());
+        }
+
+        $tipodocresp = Tipodocresp::all();
+
+        // foreach ($checkrespt as $key) {
+        //     foreach ($docsrt as $indice) {
+        //         if ($key->tipodocres_id == $indice->tipodocresp_id && $key->resptecnicos_id == $indice->resptecnicos_id) {
+        //             $obj = (object) array(
+        //                 'nomeDoc'    => $key->nomeDoc,
+        //                 'anexado'    => $key->anexado,
+        //                 'caminho'    => $key->nome,
+        //             );
+        //             array_push($docsRt, $obj);
+        //         }else {
+        //             $obj = (object) array(
+        //                 'nomeDoc'    => $key->nomeDoc,
+        //                 'anexado'    => $key->anexado,
+        //                 'caminho'    => null,
+        //             );
+        //             array_push($docsRt, $obj);
+        //         }
+        //     }
+        // }
+
+        return view('coordenador/documentos_rt',[
+            'checklist' => $checkrespt,
+            'tipodocs'  => $tipodocresp,
+            'docsrt'    => $docsrt,
+        ]);
+    }
+
+    public function baixarArquivosRt(Request $request)
+    {
+        return response()->file(storage_path('app/'.$request->file));
     }
 
     public function historico()

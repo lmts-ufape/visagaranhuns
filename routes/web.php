@@ -214,6 +214,8 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get("/listar/rts", "CoordenadorController@listarRts")->name("listar.rts"); //Listagem de responsáveis técnicos para o coordenadaor
     Route::get("/documentos/rt", "CoordenadorController@documentosRt")->name("documentos.rt");
 
+    Route::get('/coordenador/download/arquivo/rt',              'CoordenadorController@baixarArquivosRt')->name('coordenador.download.arquivo.rt');
+
 });
 
 // Grupo de rotas para empresa

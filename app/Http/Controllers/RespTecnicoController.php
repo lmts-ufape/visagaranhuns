@@ -559,6 +559,7 @@ class RespTecnicoController extends Controller
         $user    = User::where("email", $request->email)->first();
 
         if ($user != null) {
+
             for ($i=0; $i < count($request->area); $i++) {
                 $rtempresa = RtEmpresa::where('area_id', $request->area[$i])
                 ->where('empresa_id', $request->empresaId)->first();
@@ -657,7 +658,7 @@ class RespTecnicoController extends Controller
             foreach ($rtempresatemp as $indice) {
                 array_push($areastemp, $indice->area_id);
             }
-
+            
             for ($i=0; $i < count($areastemp); $i++) {
                 $areatipodocresp = AreaTipodocresp::where('area_id', $areastemp[$i])->get();
 
@@ -670,6 +671,7 @@ class RespTecnicoController extends Controller
                         'tipodocres_id' => $indice->tipodocresp->id,
                         'resptecnicos_id' => $respTec->id,
                     ]);
+                    // dd($checklistresp);
                 }
             }
 
