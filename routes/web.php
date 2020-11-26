@@ -273,6 +273,8 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get('/verificar/requerimento/inspecao',     'EmpresaController@verificarRequerimentoInspecao')->name('varificar.requerimento.inspecao');
 
     Route::get('/notificacoes/representante',          'EmpresaController@notificacoes')->name('mostrar.notificacoes');
+
+    Route::get("/empresa/documentos/rt",               "EmpresaController@documentosRt")->name("empresa.documentos.rt");
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
     * Editar/Anexar dados da empresa

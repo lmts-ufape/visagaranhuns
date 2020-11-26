@@ -158,44 +158,43 @@
                                 </div>
                             </div> --}}
                             @if(count($respTecnico)>0)
-                            <div class="cardRT">
                                 @foreach ($respTecnico as $item)
-                                    <div class="form col-md-12" style="margin-top:5px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nome: </label>
-                                    <span style="color:#707070">{{$item->user->name}}</span>
-                                    </div>
-                                    <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CPF: </label>
-                                        <span style="color:#707070">{{$item->cpf}}</span>
-                                    </div>
-                                    <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Formação: </label>
-                                        <span style="color:#707070">{{$item->formacao}}</span>
-                                    </div>
-                                    <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Especialização: </label>
-                                        <span style="color:#707070">{{$item->especializacao}}</span>
-                                    </div>
-                                    <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
-                                        <span style="color:#707070">{{$item->telefone}}</span>
-                                    </div>
-                                    <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">E-mail: </label>
-                                        <span style="color:#707070">{{$item->user->email}}</span>
+                                    <div class="cardRT" style="margin-bottom:8px;">
+                                        <div class="form col-md-12" style="margin-top:5px;">
+                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nome: </label>
+                                            <span style="color:#707070">{{$item->user->name}}</span>
+                                        </div>
+                                        <div class="form col-md-12" style="margin-top:-10px;">
+                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">CPF: </label>
+                                            <span style="color:#707070">{{$item->cpf}}</span>
+                                        </div>
+                                        <div class="form col-md-12" style="margin-top:-10px;">
+                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Formação: </label>
+                                            <span style="color:#707070">{{$item->formacao}}</span>
+                                        </div>
+                                        <div class="form col-md-12" style="margin-top:-10px;">
+                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Especialização: </label>
+                                            <span style="color:#707070">{{$item->especializacao}}</span>
+                                        </div>
+                                        <div class="form col-md-12" style="margin-top:-10px;">
+                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
+                                            <span style="color:#707070">{{$item->telefone}}</span>
+                                        </div>
+                                        <div class="form col-md-12" style="margin-top:-10px;">
+                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">E-mail: </label>
+                                            <span style="color:#707070">{{$item->user->email}}</span>
+                                        </div>
+                                        <div class="form col-md-12" style="margin-top:-5px;">
+                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif;"><a type="button" class="btn btn-primary" href="{{ route('empresa.documentos.rt', ['respTecnico' => Crypt::encrypt($item->id)]) }}">Visualizar Documentos</a>
+                                        </div>
                                     </div>
                                 @endforeach
-                                    {{-- <div class="form col-md-12" style="margin-top:-10px;">
-                                        <label style="font-weight:normal;font-family: 'Roboto', sans-serif;">Telefone: </label>
-                                        <span style="color:#707070">(00) 0000-0000</span>
-                                    </div> --}}
+                            @else
+                                <div class="form col-md-12" style="margin-top:-10px; margin-top:10px;">
+                                    <div style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nenhum responsável técnico cadastrado</div>
+                                    {{-- <a href="{{ route('cadastrar.rt.pagina', ['empresaId' => $empresaId]) }}">Clique aqui para convidar um Responsável Técnico</a> --}}
                                 </div>
-                                @else
-                                    <div class="form col-md-12" style="margin-top:-10px; margin-top:10px;">
-                                        <div style="font-weight:normal;font-family: 'Roboto', sans-serif;">Nenhum responsável técnico cadastrado</div>
-                                        {{-- <a href="{{ route('cadastrar.rt.pagina', ['empresaId' => $empresaId]) }}">Clique aqui para convidar um Responsável Técnico</a> --}}
-                                    </div>
-                                @endif
+                            @endif
                     </div>
                 </div>
 

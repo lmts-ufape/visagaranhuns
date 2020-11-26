@@ -8,6 +8,7 @@ use App\User;
 use App\Telefone;
 use App\Endereco;
 use App\Docempresa;
+use App\Docresptec;
 use App\Requerimento;
 use App\Area;
 use App\Cnae;
@@ -15,6 +16,7 @@ use App\CnaeEmpresa;
 use App\RespTecnico;
 use App\RtEmpresa;
 use App\Tipodocempresa;
+use App\Tipodocresp;
 use App\Inspecao;
 use App\Notificacao;
 use Illuminate\Support\Facades\Storage;
@@ -22,6 +24,7 @@ use Auth;
 use DateTime;
 use App\AreaTipodocemp;
 use App\Checklistemp;
+use App\Checklistresp;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
@@ -1058,6 +1061,58 @@ class EmpresaController extends Controller
          'empresaId'        => $empresa->id,
          'empresa_status'   => $empresa->status_cadastro,
          ]);
+    }
+
+    public function documentosRt(Request $request)
+    {
+        // $rtId = Crypt::decrypt($request->rt_id);
+        $rtId = Crypt::decrypt($request->respTecnico);
+
+        $rt = RespTecnico::find($rtId);
+        $docsrt = Docresptec::where('resptecnicos_id', $rt->id)->get();
+        $temp = [];
+        $checkrespt = [];
+        // $docsRt = [];
+
+        $checklistresp = Checklistresp::where('resptecnicos_id', $rt->id)->orderBy('nomeDoc','ASC')->pluck('tipodocres_id');
+        for ($i=0; $i < count($checklistresp); $i++) {
+            array_push($temp, $checklistresp[$i]);
+        }
+
+        $array = array_unique($temp);
+
+        foreach ($array as $indice) {
+            array_push($checkrespt, Checklistresp::where('tipodocres_id', $indice)
+            ->where('resptecnicos_id', $rt->id)->first());
+        }
+
+        $tipodocresp = Tipodocresp::all();
+
+        // foreach ($checkrespt as $key) {
+        //     foreach ($docsrt as $indice) {
+        //         if ($key->tipodocres_id == $indice->tipodocresp_id && $key->resptecnicos_id == $indice->resptecnicos_id) {
+        //             $obj = (object) array(
+        //                 'nomeDoc'    => $key->nomeDoc,
+        //                 'anexado'    => $key->anexado,
+        //                 'caminho'    => $key->nome,
+        //             );
+        //             array_push($docsRt, $obj);
+        //         }else {
+        //             $obj = (object) array(
+        //                 'nomeDoc'    => $key->nomeDoc,
+        //                 'anexado'    => $key->anexado,
+        //                 'caminho'    => null,
+        //             );
+        //             array_push($docsRt, $obj);
+        //         }
+        //     }
+        // }
+
+        return view('empresa/documentos_rt',[
+            'checklist' => $checkrespt,
+            'tipodocs'  => $tipodocresp,
+            'docsrt'    => $docsrt,
+        ]);
     }
 
     public function showDocumentacao(Request $request){
