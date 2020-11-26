@@ -144,11 +144,11 @@
                             <span style="color:#707070">(00) 0000-0000</span>
                         </div> --}}
                     </div>
+                    <div class="form-group col-md-12">
+                        <label style="font-size:19px;margin-top:10px;margin-bottom:-5px; font-family: 'Roboto', sans-serif; margin-left: -15px;">INFORMAÇÕES DO RESPONSÁVEL TÉCNICO</label>
+                    </div>
 
-                    <div class="form-row">
-                            <div class="form-group col-md-12">
-                                <label style="font-size:19px;margin-top:10px;margin-bottom:-5px; font-family: 'Roboto', sans-serif;">INFORMAÇÕES DO RESPONSÁVEL TÉCNICO</label>
-                            </div>
+                    <div id="idTabela" class="form-row overflow-auto" style="height: 205px;">
 
                             {{-- <div class="form-row col-md-12" style="margin-top:10px; text-align:right; margin-left:10px">
                                 <div class="col">
