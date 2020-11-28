@@ -12,6 +12,7 @@ use App\Docresptec;
 use App\Requerimento;
 use App\Area;
 use App\Cnae;
+use Illuminate\Support\Str;
 use App\CnaeEmpresa;
 use App\RespTecnico;
 use App\RtEmpresa;
@@ -442,6 +443,35 @@ class EmpresaController extends Controller
         }
 
         return redirect()->route('confirma.cadastro');
+    }
+
+    public function baixarArquivosRt(Request $request)
+    {
+        return response()->download(storage_path('app/'.$request->file));
+    }
+
+    public function deletarRespTecnico(Request $request)
+    {
+        // $docs         = Docresptec::where('resptecnicos_id', $request->idRespTecnico)->delete();
+        // $checklist    = Checklistresp::where('resptecnicos_id', $request->idRespTecnico)->delete();
+        
+        $rtempresa       = RtEmpresa::where('empresa_id', $request->idEmpresa)
+        ->where('resptec_id', $request->idRespTecnico)
+        ->where('area_id', $request->idArea)
+        ->delete();
+        
+        // $respTecnico  = RespTecnico::find($request->idRespTecnico);
+        // $user         = User::find($respTecnico->user_id);
+
+        // $caminho          = Str::random(8);
+        // $respTecnico->cpf = Str::random(11);
+        // $user->email      = $caminho."@gmail.com";
+        // $respTecnico->save();
+        // $user->save();
+
+        session()->flash('success', 'Responsável Técnico Removido!');
+        return back();
+
     }
 
     /**

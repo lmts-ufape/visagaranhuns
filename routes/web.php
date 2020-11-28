@@ -275,6 +275,10 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get('/notificacoes/representante',          'EmpresaController@notificacoes')->name('mostrar.notificacoes');
 
     Route::get("/empresa/documentos/rt",               "EmpresaController@documentosRt")->name("empresa.documentos.rt");
+
+    Route::post("/empresa/rt/deletar",                 "EmpresaController@deletarRespTecnico")->name("deletar.respTecnico");
+
+    Route::get('/empresa/download/arquivo/rt',         'EmpresaController@baixarArquivosRt')->name('empresa.download.arquivo.rt');
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
     * Editar/Anexar dados da empresa

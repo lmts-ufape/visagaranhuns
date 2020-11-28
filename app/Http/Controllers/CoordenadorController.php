@@ -315,7 +315,7 @@ class CoordenadorController extends Controller
 
     public function baixarArquivosRt(Request $request)
     {
-        return response()->file(storage_path('app/'.$request->file));
+        return response()->download(storage_path('app/'.$request->file));
     }
 
     public function historico()

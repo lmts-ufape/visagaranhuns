@@ -92,7 +92,7 @@
                                                 @if ($docrt->resptecnicos_id == $indice->resptecnicos_id && $docrt->tipodocresp_id == $indice->tipodocres_id)
                                                 <div class="form col-md-12">
                                                     <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
-                                                        <a href="{{route('coordenador.download.arquivo.rt', ['file' => $docrt->nome])}}" target="_blank"> Baixar Anexo</a>
+                                                        <a href="{{route('empresa.download.arquivo.rt', ['file' => $docrt->nome])}}" target="_blank"> Baixar Anexo</a>
                                                     </label>
                                                     {{-- <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDocRt({{$docrt->id}})" style="cursor:pointer; color:#249BE3">- Editar Anexo</a> --}}
                                                 </div>

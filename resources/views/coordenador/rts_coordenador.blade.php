@@ -54,23 +54,23 @@
                             <table class="table table-responsive-lg table-hover" style="width: 100%;">
                                 <thead>
                                   <tr>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Empresa</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold; margin-right:30px;">Nome</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Formação</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Especialização</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Cpf</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Telefone</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Empresa</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($rts as $item)
                                         <tr>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->nomeEmpresa}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->nome}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->formacao}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->especializacao}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->cpf}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->telefone}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->nomeEmpresa}}</th>
                                         </tr>
                                     @endforeach
                                 </tbody>
