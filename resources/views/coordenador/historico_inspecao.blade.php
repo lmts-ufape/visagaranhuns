@@ -85,7 +85,7 @@
                                             </th> --}}
                                             @if ($item->relatorio_status == null)
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
-                                                <button type="button" class="btn btn-warning">Não Finalizado</button>
+                                                <button type="button" class="btn btn-warning" disabled>Não Finalizado</button>
                                             </th>                                                
                                             @else
                                                 @if ($item->relatorio_status == "reprovado")
@@ -124,7 +124,7 @@
                                                     </a>
                                                 @endif
                                             </td>
-                                            @if ($item->relatorio_status == "aprovado")
+                                            @if ($item->relatorio_status == "aprovado" || $item->relatorio_status == "avaliacao")
                                                 <td class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                     <button type="button" class="btn btn-danger" disabled>
                                                         <img src="{{asset('imagens/logo_lixo.png')}}" style="width:15px">

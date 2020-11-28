@@ -79,7 +79,7 @@
                                                 <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                     <div class="btn-group">
                                                         @if ($item->relatorio_id == null)
-                                                        <div style="margin:5px;"><a type="button" class="btn btn-warning">Não Finalizado</a></div>
+                                                        <div style="margin:5px;"><button type="button" class="btn btn-warning" disabled>Não Finalizado</button></div>
                                                         @else
                                                             @if ($item->relatorio_status == "reprovado")
                                                                 <div style="margin:5px;"><a href="{{ route('show.relatorio.agente.verificar', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-danger">Reprovado</a></div>

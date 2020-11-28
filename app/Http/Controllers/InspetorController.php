@@ -362,9 +362,9 @@ class InspetorController extends Controller
         $resultado = InspecaoFoto::where('inspecao_id','=', Crypt::decrypt($request->value))->orderBy('created_at','ASC')->get();
         $relatorio = InspecaoRelatorio::where('inspecao_id','=', Crypt::decrypt($request->value))->first();
         if($relatorio == null){
-            return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => ""]);
+            return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => "", 'relatorio_status' => $request->relatorio_status]);
         }else{
-            return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => $relatorio->relatorio]);
+            return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => $relatorio->relatorio, 'relatorio_status' => $request->relatorio_status]);
         }
     }
     /*

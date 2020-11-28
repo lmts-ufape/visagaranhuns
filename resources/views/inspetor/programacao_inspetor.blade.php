@@ -86,8 +86,8 @@
                                                         <div style="margin:5px;"><button type="button" class="btn btn-success" style="color:white;" disabled>Álbum</button></div>
                                                         <div style="margin:5px;"><button type="button" class="btn btn-primary" disabled>Avaliação</button></div>
                                                     @elseif ($item->relatorio_status == 'aprovado')
-                                                    <div style="margin:5px;"><button type="button" class="btn btn-success" style="color:white;" disabled>Álbum</button></div>
-                                                        <div style="margin:5px;"><a href="{{ route('show.relatorio', ['value' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-success">Aprovado</a></div>
+                                                        <div style="margin:5px;"><button type="button" class="btn btn-success" style="color:white;" disabled>Álbum</button></div>
+                                                        <div style="margin:5px;"><a href="{{ route('show.relatorio', ['value' => Crypt::encrypt($item->inspecao_id), 'relatorio_status' => $item->relatorio_status])}}" type="button" class="btn btn-success">Aprovado</a></div>
                                                     @else
                                                         <div style="margin:5px;"><a href="{{ route('show.album', ['value' => Crypt::encrypt($item->inspecao_id)]) }}" type="button" class="btn btn-success" style="color:white;">Álbum</a></div>
                                                         <div style="margin:5px;"><a href="{{ route('show.relatorio', ['value' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Criar</a></div>

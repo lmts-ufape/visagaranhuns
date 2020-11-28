@@ -22,7 +22,16 @@
                                 <a class="dropdown-item" style="cursor:pointer;font-family:arial" href="{{ route('listar.inspetores') }}" style="text-decoration: none; color:#fff;cursor:pointer">Inspetores</a>
                             </div>
                         </li>
-                        <li style="float: left; margin-right:30px;font-family:arial"><a href="{{ route('listagem.area') }}" style="text-decoration: none; color:#fff;">Estabelecimentos</a></li>
+                        <li style="float: left; margin-right:30px;font-family:arial">
+                            <label class="-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor:pointer; margin-bottom: 0rem;">
+                                Estabelecimentos<span class="caret"></span>
+                            </label>
+                            <div class="dropdown-menu"style="margin-bottom:-2rem;">
+                                <a class="dropdown-item" style="cursor:pointer;font-family:arial" href="{{ route('listagem.area') }}" style="text-decoration: none; color:#fff;cursor:pointer">Estabelecimentos</a>
+                                <a class="dropdown-item" style="cursor:pointer;font-family:arial" href="{{ route('listar.rts') }}" style="text-decoration: none; color:#fff;cursor:pointer">Responsáveis Técnicos</a>
+                            </div>
+                            {{-- <a href="{{ route('listagem.area') }}" style="text-decoration: none; color:#fff;">Estabelecimentos</a> --}}
+                        </li>
                         <li style="float: left; margin-right:30px;font-family:arial"></li>
                     @elseif(Auth::user()->tipo == "empresa")
                         <li style="float: left; margin-right:30px; font-family:arial"><a href="" style="text-decoration: none; color:#fff;">Início</a></li>
