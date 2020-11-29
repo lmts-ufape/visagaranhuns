@@ -44,7 +44,7 @@
         </div>
     </div>
 
-    <div class="container" style="margin-top:2rem;margin-left:10px; margin-bottom:17%;">
+    <div class="container" style="margin-top:2rem;margin-left:10px; margin-bottom:22%;">
         <div class="form-row">
             <div class="form-group col-md-12">
 

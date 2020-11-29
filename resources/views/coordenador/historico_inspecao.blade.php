@@ -58,53 +58,55 @@
                             <table class="table table-responsive-lg table-hover" style="width: 100%;">
                                 <thead>
                                   <tr>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold; margin-right:30px;">Data</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Inspetor</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Agente</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Agente</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Empresa</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Cnae</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Relatório</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Notificação</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Apagar</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold; margin-right:30px;">Data</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Status</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Inspetor</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Agente</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Agente</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Empresa</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Motivo</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Cnae</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Relatório</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Notificação</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Apagar</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($inspecoes as $item)
                                         <tr>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{date('d-m-Y', strtotime($item->data))}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->inspetor}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->agente1}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->agente2}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->empresa}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->cnae}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{date('d-m-Y', strtotime($item->data))}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{$item->status}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{$item->inspetor}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{$item->agente1}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{$item->agente2}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{$item->empresa}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{$item->motivo}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:left; vertical-align:middle; color:black">{{$item->cnae}}</th>
                                             {{-- <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                 <a href="{{ route('show.relatorio.coordenador') }}" type="button" class="btn btn-primary">Avaliar</a>
                                             </th> --}}
                                             @if ($item->relatorio_status == null)
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">
                                                 <button type="button" class="btn btn-warning" disabled>Não Finalizado</button>
                                             </th>                                                
                                             @else
                                                 @if ($item->relatorio_status == "reprovado")
-                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">
                                                     <a href="{{ route('show.relatorio.coordenador.verificar', ['relatorio_id' => Crypt::encrypt($item->relatorio_id), 'inspecao_id' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-danger">Reprovado</a>
                                                     {{-- <button type="button" class="btn btn-success">Reprovado</button> --}}
                                                 </th>
                                                 @elseif ($item->coordenador == "avaliacao")
-                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">
                                                         <a href="{{ route('show.relatorio.coordenador', ['relatorio_id' => Crypt::encrypt($item->relatorio_id), 'inspecao_id' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-primary">Avaliar</a>
                                                     </th>
                                                 @elseif ($item->coordenador == "aprovado")
-                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                                    <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">
                                                         <a href="{{ route('show.relatorio.coordenador.verificar', ['relatorio_id' => Crypt::encrypt($item->relatorio_id), 'inspecao_id' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-success">Aprovado</a>
                                                         {{-- <button type="button" class="btn btn-success">Aprovado</button> --}}
                                                     </th>
                                                 @endif
                                             @endif
-                                            <td class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                            <td class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">
 
                                                 @if ($item->notificacao_status == null)
                                                     <button type="button" class="btn btn-primary" disabled>
@@ -125,13 +127,13 @@
                                                 @endif
                                             </td>
                                             @if ($item->relatorio_status == "aprovado" || $item->relatorio_status == "avaliacao")
-                                                <td class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                                <td class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">
                                                     <button type="button" class="btn btn-danger" disabled>
                                                         <img src="{{asset('imagens/logo_lixo.png')}}" style="width:15px">
                                                     </button>
                                                 </td>
                                             @else
-                                            <td class="subtituloBarraPrincipal" style="font-size:15px; color:black">
+                                            <td class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">
                                                 <a href="{{ route('deletar.inspecao', ['inspecaoId' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-danger">
                                                     <img src="{{asset('imagens/logo_lixo.png')}}" style="width:15px">
                                                 </a>

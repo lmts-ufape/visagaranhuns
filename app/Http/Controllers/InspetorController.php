@@ -229,7 +229,7 @@ class InspetorController extends Controller
                             'motivoInspecao'   => $indice->motivo,
                             'inspetor_id'      => $indice->inspetor_id,
                             'requerimento_id'  => null,
-                            'nomeEmpresa'      => $indice->empresa->nome,
+                            'nomeEmpresa'      => $indice->denuncia->empresa,
             
                             'relatorio_id'     => $relatorio->id,
                             'inspecao_id'      => $indice->id,
@@ -244,7 +244,7 @@ class InspetorController extends Controller
                             'motivoInspecao'   => $indice->motivo,
                             'inspetor_id'      => $indice->inspetor_id,
                             'requerimento_id'  => null,
-                            'nomeEmpresa'      => $indice->empresa->nome,
+                            'nomeEmpresa'      => $indice->denuncia->empresa,
             
                             'relatorio_id'     => $relatorio->id,
                             'inspecao_id'      => $indice->id,
@@ -260,7 +260,7 @@ class InspetorController extends Controller
                         'motivoInspecao'   => $indice->motivo,
                         'inspetor_id'      => $indice->inspetor_id,
                         'requerimento_id'  => null,
-                        'nomeEmpresa'      => $indice->empresa->nome,
+                        'nomeEmpresa'      => $indice->denuncia->empresa,
         
                         'relatorio_id'     => null,
                         'inspecao_id'      => $indice->id,

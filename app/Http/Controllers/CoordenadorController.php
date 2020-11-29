@@ -199,9 +199,15 @@ class CoordenadorController extends Controller
 
     public function paginaDenuncias()
     {
-        
+        $denunciasPendentes = Denuncia::where('status', 'pendente')->orderBy('empresa', 'ASC')->get();
+        $denunciasAceito    = Denuncia::where('status', 'aceito')->orderBy('empresa', 'ASC')->get();
+        $denunciasArquivado = Denuncia::where('status', 'arquivado')->orderBy('empresa', 'ASC')->get();
 
-        return view('coordenador/denuncias');
+        return view('coordenador/denuncias', [
+            'pendente' => $denunciasPendentes,
+            'aceito'   => $denunciasAceito,
+            'arquivado'=> $denunciasArquivado
+        ]);
     }
 
     public function cadastrarInspecao(Request $request)
@@ -214,7 +220,8 @@ class CoordenadorController extends Controller
                     'status'          => 'pendente',
                     'inspetor_id'     => $request->inspetor,
                     'requerimento_id' => $indice,
-                    'empresas_id'      => $requerimento->empresa->id,
+                    'empresas_id'     => $requerimento->empresa->id,
+                    'denuncias_id'    => null,
                     'motivo'          => $requerimento->tipo,
                     'agente1'         => $request->agente1,
                     'agente2'         => $request->agente2,
@@ -232,13 +239,14 @@ class CoordenadorController extends Controller
             }
         }
 
-        if (isset($request->empresas)) {
-            foreach ($request->empresas as $indice) {
+        if (isset($request->denuncias)) {
+            foreach ($request->denuncias as $indice) {
                 $inspecao = Inspecao::create([
                     'data'            => $request->data,
                     'status'          => 'pendente',
                     'inspetor_id'     => $request->inspetor,
-                    'empresas_id'      => $indice,
+                    'empresas_id'     => null,
+                    'denuncias_id'    => $indice,
                     'motivo'          => "Denuncia",
                     'agente1'         => $request->agente1,
                     'agente2'         => $request->agente2,
@@ -342,6 +350,7 @@ class CoordenadorController extends Controller
                         'agente2'           => $inspec_agente[1]->agente->user->name,
                         'empresa'           => $requerimento->empresa->nome,
                         'cnae'              => $requerimento->cnae->descricao,
+                        'motivo'            => $key->motivo,
     
                         'relatorio_id'      => null,
                         'relatorio_status'  => null,
@@ -360,6 +369,7 @@ class CoordenadorController extends Controller
                             'agente2'             => $inspec_agente[1]->agente->user->name,
                             'empresa'             => $requerimento->empresa->nome,
                             'cnae'                => $requerimento->cnae->descricao,
+                            'motivo'              => $key->motivo,
         
                             'relatorio_id'        => $relatorio->id,
                             'relatorio_status'    => $relatorio->status,
@@ -378,6 +388,7 @@ class CoordenadorController extends Controller
                             'agente2'         => $inspec_agente[1]->agente->user->name,
                             'empresa'         => $requerimento->empresa->nome,
                             'cnae'            => $requerimento->cnae->descricao,
+                            'motivo'          => $key->motivo,
         
                             'relatorio_id'    => $relatorio->id,
                             'relatorio_status'=> $relatorio->status,
@@ -392,7 +403,8 @@ class CoordenadorController extends Controller
             } elseif ($key->motivo == "Denuncia") {
 
                 $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
-                $empresa = Empresa::find($key->empresas_id);
+                // Sem identificação de empresa no sistema
+                // $empresa = Empresa::find($key->empresas_id);
 
                 if ($relatorio == null) {
                     $obj = (object) array(
@@ -402,8 +414,9 @@ class CoordenadorController extends Controller
                         'inspetor'          => $key->inspetor->user->name,
                         'agente1'           => $inspec_agente[0]->agente->user->name,
                         'agente2'           => $inspec_agente[1]->agente->user->name,
-                        'empresa'           => $empresa->nome,
-                        'cnae'              => "Denúncia",
+                        'empresa'           => $key->denuncia->empresa,
+                        'cnae'              => "",
+                        'motivo'            => $key->motivo,
                         
                         'relatorio_id'      => null,
                         'relatorio_status'  => null,
@@ -420,8 +433,9 @@ class CoordenadorController extends Controller
                             'inspetor'           => $key->inspetor->user->name,
                             'agente1'            => $inspec_agente[0]->agente->user->name,
                             'agente2'            => $inspec_agente[1]->agente->user->name,
-                            'empresa'            => $empresa->nome,
-                            'cnae'               => "Denúncia",
+                            'empresa'            => $key->denuncia->empresa,
+                            'cnae'               => "",
+                            'motivo'             => $key->motivo,
                             
                             'relatorio_id'       => $relatorio->id,
                             'relatorio_status'   => $relatorio->status,
@@ -438,8 +452,9 @@ class CoordenadorController extends Controller
                             'inspetor'           => $key->inspetor->user->name,
                             'agente1'            => $inspec_agente[0]->agente->user->name,
                             'agente2'            => $inspec_agente[1]->agente->user->name,
-                            'empresa'            => $empresa->nome,
-                            'cnae'               => "Denúncia",
+                            'empresa'            => $key->denuncia->empresa,
+                            'cnae'               => "",
+                            'motivo'             => $key->motivo,
                             
                             'relatorio_id'       => $relatorio->id,
                             'relatorio_status'   => $relatorio->status,
@@ -599,7 +614,7 @@ class CoordenadorController extends Controller
     public function requerimentosAprovados()
     {
         $resultados = Requerimento::where('status', 'aprovado')->get();
-        $denuncia = Denuncia::where('status', 'Acatado')->get();
+        $denuncia = Denuncia::where('status', 'aceito')->get();
         $temp = [];
         $empresas = [];
         $denuncias = [];
@@ -613,46 +628,53 @@ class CoordenadorController extends Controller
         }
 
         foreach ($denuncia as $indice) {
-            $inspecao = Inspecao::where('requerimento_id', null)
-            ->where('empresas_id', $indice->empresa_id)
-            ->where('status', 'pendente')
-            ->first();
+            $inspecao = Inspecao::where('denuncias_id', $indice->id)->first();
             if ($inspecao == null) {
                 array_push($denuncias, $indice);
             }
         }
 
-        foreach ($denuncias as $indice) {
+        // foreach ($denuncia as $indice) {
+        //     $inspecao = Inspecao::where('requerimento_id', null)
+        //     ->where('empresas_id', $indice->empresa_id)
+        //     ->where('status', 'pendente')
+        //     ->first();
+        //     if ($inspecao == null) {
+        //         array_push($denuncias, $indice);
+        //     }
+        // }
 
-            if (count($temp) == 0) {
-                $obj = (object) array(
-                    'nome'  => $indice->empresa->nome,
-                    'id'    => $indice->empresa->id,
-                );
-                array_push($temp, $obj);   
-            }
-            else {
-                $found = false;
-                foreach ($temp as $indice2) {
-                    if ($indice->empresa->nome == $indice2->nome) {
-                        $found = true;
-                        break;
-                    }
-                }
-                if ($found == false) {
-                    $obj = (object) array(
-                        'nome'  => $indice->empresa->nome,
-                        'id'    => $indice->empresa->id,
-                    );
-                    array_push($temp, $obj);
-                }
-            }
-        }
+        // foreach ($denuncias as $indice) {
 
-        foreach ($temp as $key) {
-            $empresa = Empresa::find($key->id);
-            array_push($empresas,$empresa);
-        }
+        //     if (count($temp) == 0) {
+        //         $obj = (object) array(
+        //             'nome'  => $indice->empresa->nome,
+        //             'id'    => $indice->empresa->id,
+        //         );
+        //         array_push($temp, $obj);   
+        //     }
+        //     else {
+        //         $found = false;
+        //         foreach ($temp as $indice2) {
+        //             if ($indice->empresa->nome == $indice2->nome) {
+        //                 $found = true;
+        //                 break;
+        //             }
+        //         }
+        //         if ($found == false) {
+        //             $obj = (object) array(
+        //                 'nome'  => $indice->empresa->nome,
+        //                 'id'    => $indice->empresa->id,
+        //             );
+        //             array_push($temp, $obj);
+        //         }
+        //     }
+        // }
+
+        // foreach ($temp as $key) {
+        //     $empresa = Empresa::find($key->id);
+        //     array_push($empresas,$empresa);
+        // }
 
         $output = '';
             if(count($resultado) > 0){
@@ -680,15 +702,15 @@ class CoordenadorController extends Controller
                     ';
                 }
             }
-            if(isset($empresas)){
-                foreach($empresas as $indice){
+            if(isset($denuncias)){
+                foreach($denuncias as $indice){
                     $output .= '
                     <div class="d-flex justify-content-center cardMeuCnae" onmouseenter="mostrarBotaoAdicionarDenuncia('.$indice->id.')">
                         <div class="mr-auto p-2>OPA</div>
                             <div class="mr-auto p-2">
                                 <div class="btn-group" style="margin-bottom:-15px;">
                                     <div class="form-group" style="font-size:15px;">
-                                        <div class="textoCampo" id="empresa'.$indice->id.'">'.$indice->nome.'</div>
+                                        <div class="textoCampo" id="empresa'.$indice->id.'">'.$indice->empresa.'</div>
                                         <div>Tipo: <span class="textoCampo">Denúncia</span></div>
                                     </div>
                                 </div>
@@ -774,20 +796,22 @@ class CoordenadorController extends Controller
         if ($request->decisao == "true") {
 
             $denuncia = Denuncia::find($request->denunciaId);
-            $denuncia->status = "Acatado";
+            $denuncia->status = "aceito";
             $denuncia->save();
 
             session()->flash('success', 'Denúncia acatada com sucesso!');
-            return redirect()->route('pagina.detalhes.denuncia', ['empresa' => $request->empresa]);
+            return back();
+            // return redirect()->route('pagina.detalhes.denuncia', ['empresa' => $request->empresa]);
 
         } elseif ($request->decisao == "false") {
 
             $denuncia = Denuncia::find($request->denunciaId);
-            $denuncia->status = "Arquivado";
+            $denuncia->status = "arquivado";
             $denuncia->save();
 
             session()->flash('success', 'Denúncia arquivada com sucesso!');
-            return redirect()->route('pagina.detalhes.denuncia', ['empresa' => $request->empresa]);
+            return back();
+            // return redirect()->route('pagina.detalhes.denuncia', ['empresa' => $request->empresa]);
         }
         
     }

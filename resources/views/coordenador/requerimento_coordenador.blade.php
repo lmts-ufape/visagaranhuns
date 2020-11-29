@@ -75,7 +75,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="idTabela" class="overflow-auto" style=" height: 190px;">
+                <div id="idTabela" class="overflow-auto" style=" height: 190px; margin-bottom: 85px;">
                     <table style="width:100%">
                         <tbody_>
 

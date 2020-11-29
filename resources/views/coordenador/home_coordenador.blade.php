@@ -68,7 +68,7 @@
                 </div>
             </div>
         </div>
-        <div class="cardDashboard">
+        <div class="cardDashboard" style="margin-bottom: 45px;">
             <div class="container">
                 <div class="form-row">
                     <div class="col-12" style="margin-bottom:0.5rem;">

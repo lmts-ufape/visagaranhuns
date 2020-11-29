@@ -13,13 +13,16 @@ class DenunciaController extends Controller
 
         $messages = [
             'required'  => 'O campo de :attribute deve ser preenchido!',
-            'email'     => 'E-mail está incorreto!',
+            // 'email'     => 'E-mail está incorreto!',
+            'string'    => 'O campo :attribute deve conter apenas texto!',
         ];
 
         $validator = Validator::make($request->all(), [
-            'nome'      => 'string',
-            'email'     => 'nullable|email',
-            'telefone'  => 'nullable|string',
+            // 'nome'      => 'string',
+            // 'email'     => 'nullable|email',
+            // 'telefone'  => 'nullable|string',
+            'empresa'   => 'required|string',
+            'endereco'  => 'required|string',
             'denuncia'  => 'required|string',
         ], $messages);
 
@@ -29,11 +32,13 @@ class DenunciaController extends Controller
         }
 
         $denuncia = Denuncia::create([
-            'nome'            => $request->nome,
-            'email'           => $request->email,
-            'telefone'        => $request->telefone,
+            // 'nome'            => $request->nome,
+            // 'email'           => $request->email,
+            // 'telefone'        => $request->telefone,
+            'empresa'         => $request->empresa,
+            'endereco'        => $request->endereco,
             'denuncia'        => $request->denuncia,
-            'empresa_id'      => $request->empresa,
+            // 'empresa_id'      => $request->empresa,
             'status'          => "pendente",
         ]);
 

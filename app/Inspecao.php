@@ -13,7 +13,7 @@ class Inspecao extends Model
      * @var array
      */
     protected $fillable = [
-        'data', 'status', 'motivo', 'agente1', 'agente2', 'inspetor_id', 'requerimento_id', 'empresas_id'
+        'data', 'status', 'motivo', 'agente1', 'agente2', 'inspetor_id', 'requerimento_id', 'empresas_id', 'denuncias_id'
     ];
 
     public function agente() {
@@ -30,5 +30,9 @@ class Inspecao extends Model
 
     public function empresa() {
         return $this->belongsTo("\App\Empresa", 'empresas_id');
+    }
+
+    public function denuncia() {
+        return $this->belongsTo("\App\Denuncia", 'denuncias_id');
     }
 }

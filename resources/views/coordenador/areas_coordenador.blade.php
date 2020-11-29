@@ -68,7 +68,7 @@
         </div>
     </div>
     <!-- Paginacao -->
-    <div class="col-md-12" style="margin-bottom:2rem;">
+    <div class="col-md-12" style="margin-bottom:4rem;">
         <div class="row justify-content-center">
             <span>{{$areas->links()}}</span>
         </div>

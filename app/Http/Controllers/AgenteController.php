@@ -166,7 +166,7 @@ class AgenteController extends Controller
                             'motivoInspecao'   => $inspecao->motivo,
                             'inspetor_id'      => $inspecao->inspetor_id,
                             'requerimento_id'  => null,
-                            'nomeEmpresa'      => $inspecao->empresa->nome,
+                            'nomeEmpresa'      => $inspecao->denuncia->empresa,
             
                             'relatorio_id'     => $relatorio->id,
                             'inspecao_id'      => $inspecao->id,
@@ -181,7 +181,7 @@ class AgenteController extends Controller
                             'motivoInspecao'   => $inspecao->motivo,
                             'inspetor_id'      => $inspecao->inspetor_id,
                             'requerimento_id'  => null,
-                            'nomeEmpresa'      => $inspecao->empresa->nome,
+                            'nomeEmpresa'      => $inspecao->denuncia->empresa,
             
                             'relatorio_id'     => $relatorio->id,
                             'inspecao_id'      => $inspecao->id,
@@ -197,7 +197,7 @@ class AgenteController extends Controller
                         'motivoInspecao'   => $inspecao->motivo,
                         'inspetor_id'      => $inspecao->inspetor_id,
                         'requerimento_id'  => null,
-                        'nomeEmpresa'      => $inspecao->empresa->nome,
+                        'nomeEmpresa'      => $inspecao->denuncia->empresa,
         
                         'relatorio_id'     => null,
                         'inspecao_id'      => $inspecao->id,

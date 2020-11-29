@@ -38,7 +38,7 @@
                     <div class="form-group col-md-12">
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                                <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">DADOS DO DENUNCIANTE</label>
+                                <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">INFORMAÇÕES</label>
                             </div>
                         </div>
                         @if($errors->any())
@@ -60,14 +60,14 @@
                         @endif
                         <div class="form-row">
                             <div class="form-group col-md-4" style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="nome">Nome:<span style="color:red">*</span></label>
-                                <input class="styleInputCadastro" type="text" id="nome" name="nome" placeholder="" required>
+                                <label class="styleTituloDoInputCadastro" for="nome">Empresa:<span style="color:red">*</span></label>
+                                <input class="styleInputCadastro" id="empresa" name="empresa" placeholder="" required>
                             </div>
                             <div class="form-group col-md-4" style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="email">Email:</label>
-                                <input class="styleInputCadastro" type="email" id="email" class="form-control" name="email" placeholder="">
+                                <label class="styleTituloDoInputCadastro" for="email">Endereço:<span style="color:red">*</span></label>
+                                <input class="styleInputCadastro" id="endereco" class="form-control" name="endereco" placeholder="">
                             </div>
-                            <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
+                            {{-- <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="empresa">Empresa:<span style="color:red">*</span></label>
                                 <select class="form-control" name="empresa" required>
                                     @foreach ($empresas as $item)
@@ -75,16 +75,16 @@
                                         <option value="{{$item->id}}">{{$item->nome}}</option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div> --}}
                         </div>
-                        <div class="form-row">
+                        {{-- <div class="form-row">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label class="styleTituloDoInputCadastro" for="telefone1">Telefone:</label>
                                     <input class="styleInputCadastro" type="text" id="telefone1" class="form-control" name="telefone" maxlength="11" id="inputEmail4" placeholder="">
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="form col-md-12">
