@@ -118,6 +118,7 @@ Route::middleware(['OnlyAdmin'])->group(function () {
 });
 
 Route::get("/empresa/lista/cnae",  "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes.comum");
+Route::get("/empresa/dados",       "EmpresaController@dadosEmpresa")->name("ajax.dados.empresa");
 Route::get("/emcostrucao",  function () {return view('em_construcao');})->name("emconstrucao");
 Route::get("/emcostrucao2",  function () {return view('em_construcao2');})->name("emconstrucao2");
 Route::get("/emcostrucao3",  function () {return view('em_construcao3');})->name("emconstrucao3");
@@ -215,6 +216,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get("/documentos/rt", "CoordenadorController@documentosRt")->name("documentos.rt");
 
     Route::get('/coordenador/download/arquivo/rt',              'CoordenadorController@baixarArquivosRt')->name('coordenador.download.arquivo.rt');
+    Route::get('/denuncia/inspecao',                            'CoordenadorController@denunciaInspecao')->name('denuncia.inspecao');
 
 });
 

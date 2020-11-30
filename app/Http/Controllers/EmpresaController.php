@@ -618,9 +618,16 @@ class EmpresaController extends Controller
         $notificacoes = [];
 
         foreach ($notificacao as $indice) {
-            if ($indice->inspecao->empresas_id == $empresa->id) {
-                array_push($notificacoes, $indice);
-            }          
+            if($indice->inspecao->requerimento_id != null) {
+                if ($indice->inspecao->requerimento->empresas_id == $empresa->id) {
+                    array_push($notificacoes, $indice);
+                }
+            }
+            elseif ($indice->inspecao->denuncias_id != null) {
+                if ($indice->inspecao->denuncia->empresa_id == $empresa->id) {
+                    array_push($notificacoes, $indice);
+                }
+            }       
         }
         // dd($notificacoes);
 
@@ -1457,5 +1464,19 @@ class EmpresaController extends Controller
 
     public function downloadArquivo(Request $request){
         return response()->download(storage_path('app/' . $request->file));
+    }
+
+    public function dadosEmpresa(Request $request)
+    {
+        $empresa = Empresa::find($request->id_empresa);
+        $endereco = Endereco::where('empresa_id', $empresa->id)->first();
+
+        $data = array(
+            'nome'       => $empresa->nome,
+            'endereco'   => $endereco->rua . ' ' . $endereco->numero . ' ' . $endereco->bairro,
+        );
+
+        echo json_encode($data);
+
     }
 }

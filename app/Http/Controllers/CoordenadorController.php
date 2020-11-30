@@ -202,11 +202,13 @@ class CoordenadorController extends Controller
         $denunciasPendentes = Denuncia::where('status', 'pendente')->orderBy('empresa', 'ASC')->get();
         $denunciasAceito    = Denuncia::where('status', 'aceito')->orderBy('empresa', 'ASC')->get();
         $denunciasArquivado = Denuncia::where('status', 'arquivado')->orderBy('empresa', 'ASC')->get();
+        $denunciasConcluido = Denuncia::where('status', 'concluido')->orderBy('empresa', 'ASC')->get();
 
         return view('coordenador/denuncias', [
             'pendente' => $denunciasPendentes,
             'aceito'   => $denunciasAceito,
-            'arquivado'=> $denunciasArquivado
+            'arquivado'=> $denunciasArquivado,
+            'concluido'=> $denunciasConcluido,
         ]);
     }
 
@@ -565,9 +567,9 @@ class CoordenadorController extends Controller
                 $inspecao->save();
 
                 $empresa = Empresa::find($relatorio->inspecao->empresas_id);
-                $denuncias = Denuncia::where('empresa_id', $empresa->id)
-                ->where('status', 'Acatado')
-                ->update(['status' => 'Concluido']);
+                
+                $denuncias = Denuncia::find($inspecao->denuncias_id)
+                ->update(['status' => 'concluido']);
 
                 return redirect()->route('historico.inspecoes')->with('message', 'Relatório aprovado com sucesso!');
             }
@@ -799,7 +801,7 @@ class CoordenadorController extends Controller
             $denuncia->status = "aceito";
             $denuncia->save();
 
-            session()->flash('success', 'Denúncia acatada com sucesso!');
+            session()->flash('success', 'Denúncia aceita com sucesso!');
             return back();
             // return redirect()->route('pagina.detalhes.denuncia', ['empresa' => $request->empresa]);
 
@@ -812,6 +814,28 @@ class CoordenadorController extends Controller
             session()->flash('success', 'Denúncia arquivada com sucesso!');
             return back();
             // return redirect()->route('pagina.detalhes.denuncia', ['empresa' => $request->empresa]);
+        }
+        
+    }
+
+    public function denunciaInspecao(Request $request)
+    {
+        $inspecao = Inspecao::where('denuncias_id', $request->denunciaId)->first();
+
+        if ($inspecao == null) {
+
+            $data = array(
+                'resultado'   => false,
+            );
+            echo json_encode($data);
+
+        } else {
+
+            $data = array(
+                'resultado'   => true,
+            );
+            echo json_encode($data);
+
         }
         
     }

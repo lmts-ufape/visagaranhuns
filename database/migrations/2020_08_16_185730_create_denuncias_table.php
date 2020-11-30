@@ -23,8 +23,9 @@ class CreateDenunciasTable extends Migration
             $table->longText('denuncia');
             $table->string('status');
             
-            // $table->bigInteger("empresa_id")->nullable();
-            // $table->foreign("empresa_id")->references("id")->on("empresas");
+            $table->bigInteger("empresa_id")->nullable();
+            $table->foreign("empresa_id")->references("id")->on("empresas");
+
             $table->timestamps();
         });
     }

@@ -31,18 +31,35 @@ class DenunciaController extends Controller
                     ->withErrors($validator);
         }
 
-        $denuncia = Denuncia::create([
-            // 'nome'            => $request->nome,
-            // 'email'           => $request->email,
-            // 'telefone'        => $request->telefone,
-            'empresa'         => $request->empresa,
-            'endereco'        => $request->endereco,
-            'denuncia'        => $request->denuncia,
-            // 'empresa_id'      => $request->empresa,
-            'status'          => "pendente",
-        ]);
+        if ($request->select_empresa == 'nenhum' || $request->select_empresa == null) {
+            $denuncia = Denuncia::create([
+                // 'nome'            => $request->nome,
+                // 'email'           => $request->email,
+                // 'telefone'        => $request->telefone,
+                'empresa'         => $request->empresa,
+                'endereco'        => $request->endereco,
+                'denuncia'        => $request->denuncia,
+                'empresa_id'      => null,
+                'status'          => "pendente",
+            ]);
 
-        session()->flash('success', 'Sua denúncia foi cadastrada com sucesso!');
-        return back();
+            session()->flash('success', 'Sua denúncia foi cadastrada!');
+            return back();
+        }
+        else {
+            $denuncia = Denuncia::create([
+                // 'nome'            => $request->nome,
+                // 'email'           => $request->email,
+                // 'telefone'        => $request->telefone,
+                'empresa'         => $request->empresa,
+                'endereco'        => $request->endereco,
+                'denuncia'        => $request->denuncia,
+                'empresa_id'      => $request->select_empresa,
+                'status'          => "pendente",
+            ]);
+
+            session()->flash('success', 'Sua denúncia foi cadastrada!');
+            return back();
+        }
     }
 }

@@ -67,6 +67,9 @@
             <li class="nav-item">
               <a data-toggle="tab" class="nav-link" href="#arquivado">Arquivadas</a>
             </li>
+            <li class="nav-item">
+                <a data-toggle="tab" class="nav-link" href="#arquivado">Concluidas</a>
+              </li>
         </ul>
 
         <div class="tab-content">
@@ -123,7 +126,7 @@
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">{{$item->endereco}}</th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Aceito</th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denuncia('{{$item->denuncia}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
-                                <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denunciaId('{{$item->id}}')" data-toggle="modal" data-target="#exampleModalLabelB">Avaliar</button></th>
+                                <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="avaliarDenuncia('{{$item->id}}')">Avaliar</button></th>
                                 {{-- <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th> --}}
                             </tr>
@@ -155,6 +158,37 @@
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Arquivado</th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denuncia('{{$item->denuncia}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denunciaId('{{$item->id}}')" data-toggle="modal" data-target="#exampleModalLabelB">Avaliar</button></th>
+                                {{-- <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th>
+                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th> --}}
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="concluido" class="tab-pane">
+                <div class="form col-md-12" style="margin-top:10px; margin-bottom: 210px;">
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            {{-- <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Nome</th>
+                            <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">E-mail</th>
+                            <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Telefone</th> --}}
+                            <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Empresa</th>
+                            <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Endereço</th>
+                            <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Status</th>
+                            <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Descrição</th>
+                            <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Avaliar</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($concluido as $item)
+                            <tr>
+                                <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">{{$item->empresa}}</th>
+                                <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">{{$item->endereco}}</th>
+                                <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Concluido</th>
+                                <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denuncia('{{$item->denuncia}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
+                                <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" data-toggle="modal" data-target="#exampleModalLabelB" disabled>Avaliar</button></th>
                                 {{-- <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th> --}}
                             </tr>
@@ -298,6 +332,35 @@
             success: function(response){
                 console.log(response.table_data);
                 $('tbody_').html(response.table_data);
+            }
+        });
+    }
+
+    window.avaliarDenuncia = function($id){
+        console.log($id);
+        // document.getElementById("denunciaIdArquivar").value = $id;
+        // document.getElementById("denunciaIdAcatar").value = $id;
+
+        $.ajax({
+            url:'{{ config('prefixo.PREFIXO') }}denuncia/inspecao',
+            type:"get",
+            dataType:'json',
+            data: {"denunciaId": $id },
+            success: function(response){
+                console.log(response.resultado);
+                if (response.resultado == true) {
+                    console.log("AQUI MERMO");
+                    alert("Está denúncia já possui uma inspeção relacionada a ela! Por isso não pode ser avaliada.");
+                }
+                else {
+                    console.log('ALI MERMO');
+                    $("#exampleModalLabelB").modal({
+                        show: true
+                    });
+
+                    document.getElementById("denunciaIdArquivar").value = $id;
+                    document.getElementById("denunciaIdAcatar").value = $id;
+                }
             }
         });
     }

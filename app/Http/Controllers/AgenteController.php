@@ -103,7 +103,7 @@ class AgenteController extends Controller
                     $inspecao->save();
 
                     $empresa = Empresa::find($relatorio->inspecao->empresas_id);
-                    $denuncias = Denuncia::where('empresa_id', $empresa->id)->update(['status' => 'Concluido']);
+                    $denuncias = Denuncia::find($inspecao->denuncias_id)->update(['status' => 'concluido']);
 
                     return redirect()->route('show.programacao.agente')->with('message', 'Relatório aprovado com sucesso!');
                 }
@@ -123,9 +123,8 @@ class AgenteController extends Controller
                     $inspecao->save();
 
                     $empresa = Empresa::find($relatorio->inspecao->empresas_id);
-                    $denuncias = Denuncia::where('empresa_id', $empresa->id)
-                    ->where('status', 'Acatado')
-                    ->update(['status' => 'Concluido']);
+                    $denuncias = Denuncia::find($inspecao->denuncias_id)
+                    ->update(['status' => 'concluido']);
 
                     return redirect()->route('show.programacao.agente')->with('message', 'Relatório aprovado com sucesso!');
                 }

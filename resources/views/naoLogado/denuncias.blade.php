@@ -61,21 +61,22 @@
                         <div class="form-row">
                             <div class="form-group col-md-4" style="padding-right:15px;">
                                 <label class="styleTituloDoInputCadastro" for="nome">Empresa:<span style="color:red">*</span></label>
-                                <input class="styleInputCadastro" id="empresa" name="empresa" placeholder="" required>
+                                <input class="styleInputCadastro" id="empresa" name="empresa" placeholder="" value="" required>
                             </div>
                             <div class="form-group col-md-4" style="padding-right:15px;">
                                 <label class="styleTituloDoInputCadastro" for="email">Endereço:<span style="color:red">*</span></label>
-                                <input class="styleInputCadastro" id="endereco" class="form-control" name="endereco" placeholder="">
+                                <input class="styleInputCadastro" id="endereco" name="endereco" placeholder="" value="" required>
                             </div>
-                            {{-- <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
-                                <label class="styleTituloDoInputCadastro" for="empresa">Empresa:<span style="color:red">*</span></label>
-                                <select class="form-control" name="empresa" required>
+                            <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
+                                <label class="styleTituloDoInputCadastro" for="empresa">Empresas já mapeadas:<span style="color:red">*</span></label>
+                                <select class="form-control" name="select_empresa" id="idSelecionarEmpresa" onChange="selecionarArea1(this)">
                                     @foreach ($empresas as $item)
                                         <option value="" disable="" selected="" hidden="">-- Selecionar Empresa --</option>
                                         <option value="{{$item->id}}">{{$item->nome}}</option>
                                     @endforeach
+                                    <option value="nenhum">Não Listado</option>
                                 </select>
-                            </div> --}}
+                            </div>
                         </div>
                         {{-- <div class="form-row">
                             <div class="form-row">
@@ -129,18 +130,31 @@
 <script type="text/javascript">
     window.selecionarArea1 = function(){
         //area
-        var historySelectList = $('select#idSelecionarArea');
-        var $id_area = $('option:selected', historySelectList).val();
-        $.ajax({
-            url:'{{ config('prefixo.PREFIXO') }}empresa/lista/cnae',
-            type:"get",
-            dataType:'json',
-            data: {"id_area": $id_area},
-            success: function(response){
-                $('tbody').html(response.table_data);
-                // document.getElementById('idArea');
-            }
-        });
+        var historySelectList = $('select#idSelecionarEmpresa');
+        var $id_empresa = $('option:selected', historySelectList).val();
+
+        if ($id_empresa == 'nenhum') {
+                $('#empresa').val('');
+                $('#endereco').val('');
+                $("#empresa").prop("disabled", false);
+                $("#endereco").prop("disabled", false);            
+        } else {
+            $.ajax({
+                url:'{{ config('prefixo.PREFIXO') }}empresa/dados',
+                type:"get",
+                dataType:'json',
+                data: {"id_empresa": $id_empresa},
+                success: function(response){
+                    console.log(response.endereco);
+                    $('#empresa').val(response.nome);
+                    $('#endereco').val(response.endereco);
+                    // $("#empresa").attr("disabled", true);
+                    // $("#endereco").attr("disabled", true);
+                    // $('tbody').html(response.table_data);
+                    // document.getElementById('idArea');
+                }
+            });   
+        }
     }
 </script>
 @endsection
