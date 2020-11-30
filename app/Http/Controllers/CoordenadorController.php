@@ -1029,7 +1029,7 @@ class CoordenadorController extends Controller
             if($user == null){
 
               $passwordTemporario = Str::random(8);
-              Mail::to($request->email)->send(new \App\Mail\CadastroUsuarioPorEmail($passwordTemporario, $request->tipo));
+              \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroUsuarioPorEmail($passwordTemporario, $request->tipo, $request->email));
               $user = User::create([
                 'name'            => "Inspetor",
                 'email'           => $request->email,
@@ -1054,7 +1054,7 @@ class CoordenadorController extends Controller
             if($user == null){
 
               $passwordTemporario = Str::random(8);
-              Mail::to($request->email)->send(new \App\Mail\CadastroUsuarioPorEmail($passwordTemporario, $request->tipo));
+              \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroUsuarioPorEmail($passwordTemporario, $request->tipo, $request->email));
               $user = User::create([
                 'name'            => "Agente",
                 'email'           => $request->email,
