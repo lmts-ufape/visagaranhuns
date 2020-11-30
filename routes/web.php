@@ -200,7 +200,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::post("/avaliar/denuncia", "CoordenadorController@avaliarDenuncia")->name("avaliar.denuncia");
 
     // Deletar inspecao
-    Route::get("/deletar/inspecao",           "CoordenadorController@deletarInspecao")->name("deletar.inspecao");
+    Route::post("/deletar/inspecao",           "CoordenadorController@deletarInspecao")->name("deletar.inspecao");
 
     // Pagina de relatorio
     Route::get('/programacao/coordenador/inspecao/relatorio', 'CoordenadorController@showRelatorio')->name('show.relatorio.coordenador');

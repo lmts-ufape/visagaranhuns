@@ -597,7 +597,9 @@ class CoordenadorController extends Controller
 
     public function deletarInspecao(Request $request)
     {
-        $id = Crypt::decrypt($request->inspecaoId);
+
+        // $id = Crypt::decrypt($request->inspecaoId);
+        $id = $request->inspecaoId;
         $inspecao = Inspecao::find($id);
 
         $inspAgente = InspecAgente::where('inspecoes_id', $inspecao->id)->delete();
@@ -609,7 +611,7 @@ class CoordenadorController extends Controller
 
         $inspecao->delete();
 
-        session()->flash('success', 'A inspeção foi apagada com sucesso.');
+        session()->flash('success', 'A inspeção foi deletada com sucesso.');
         return back();
     }
 
