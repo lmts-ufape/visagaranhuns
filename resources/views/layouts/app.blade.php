@@ -268,6 +268,12 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('editar.dados.agente', ['user' => Auth::user()->id]) }}">
+                                            {{ __('Editar meus dados') }}
+                                        </a>    
+                                        <a class="dropdown-item" href="{{ route('editar.senha.agente', ['user' => Auth::user()->id]) }}">
+                                            {{ __('Editar senha de acesso') }}
+                                        </a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">

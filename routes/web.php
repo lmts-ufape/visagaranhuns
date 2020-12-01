@@ -320,6 +320,8 @@ Route::middleware(['IsAgente'])->group(function () {
     Route::post("/julgar/relatorio",                               "AgenteController@julgar")->name("julgar.relatorio");
     Route::get('/editar/agente/dados',                             'AgenteController@alterarDados')->name('editar.dados.agente');
     Route::get('/editar/agente/senha',                             'AgenteController@alterarSenha')->name('editar.senha.agente');
+    Route::post('/atualizar/dados/agente',                         'AgenteController@atualizarDados')->name('atualizar.dados.agente');
+    Route::post('/atualizar/senha/agente',                         'AgenteController@atualizarSenha')->name('atualizar.senha.agente');
 });
 
 // Grupo de rotas para responsável técnico

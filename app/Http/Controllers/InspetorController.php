@@ -68,22 +68,17 @@ class InspetorController extends Controller
         }
 
         $inspetor = Inspetor::where("user_id", Auth::user()->id)->first();
+        $user     = User::find($inspetor->user_id);
         // dd($inspetor);
 
-        $inspetor->user->name = $request->name;
-        $inspetor->cpf        = $request->cpf;
-        $inspetor->telefone   = $request->telefone;
-        $inspetor->formacao = $request->formacao;
+        $user->name               = $request->name;
+        $inspetor->cpf            = $request->cpf;
+        $inspetor->telefone       = $request->telefone;
+        $inspetor->formacao       = $request->formacao;
         $inspetor->especializacao = $request->especializacao;
 
-        // if (isset($request->formacao)) {
-            
-        // }
-        // if (isset($request->especializacao)) {
-            
-        // }
-
         $inspetor->save();
+        $user->save();
 
         session()->flash('success', 'Dados atualizados!');
         return back();

@@ -13,6 +13,8 @@ use App\Relatorio;
 use App\Empresa;
 use App\Denuncia;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 use Auth;
 
 class AgenteController extends Controller
@@ -55,6 +57,76 @@ class AgenteController extends Controller
         }else{
             return view('agente.home_agente',['pendente' => count($inspecoesPendentes), 'aprovado' => count($inspecoesConcluidas), 'aviso' => 1]);
         }
+    }
+
+    public function alterarDados(Request $request)
+    {
+        $agente = Agente::where('user_id', $request->user)->first();
+
+        return view('agente/editar_dados', [ 
+            'nome'            => $agente->user->name,
+            'cpf'             => $agente->cpf,
+            'formacao'        => $agente->formacao,
+            'especializacao'  => $agente->especializacao,
+            'telefone'        => $agente->telefone,
+        ]);
+    }
+
+    public function alterarSenha(Request $request)
+    {
+
+        return view('agente/editar_senha');
+    }
+
+    public function atualizarSenha(Request $request) 
+    {
+        if(Hash::check($request->senhaAtual ,Auth::user()->password) == true && $request->novaSenha1 == $request->novaSenha2 ){
+            $user = Auth::user();
+            $user->password = Hash::make($request->novaSenha1);
+            $user->save();
+            return redirect()->back()->with('success', "Senha alterada com sucesso!");
+        }else{
+            return redirect()->back()->with('error', "Verifique suas senhas e tente novamente!");
+        }
+    }
+
+    public function atualizarDados(Request $request)
+    {
+        $messages = [
+            'required' => 'O campo :attribute não foi passado!',
+            'string'   => 'O campo :attribute deve ser do tipo texto!',
+        ];
+
+        $validator = Validator::make($request->all(), [
+
+            'name'           => 'required|string',
+            'cpf'            => 'required|string',
+            'formacao'       => 'nullable|string',
+            'especializacao' => 'nullable|string',
+            'telefone'       => 'required|string',
+
+        ], $messages);
+
+        
+        if ($validator->fails()) {
+            return back()
+                    ->withErrors($validator);
+        }
+
+        $agente = Agente::where("user_id", Auth::user()->id)->first();
+        $user   = User::find($agente->user_id); 
+
+        $user->name             = $request->name;
+        $agente->cpf            = $request->cpf;
+        $agente->telefone       = $request->telefone;
+        $agente->formacao       = $request->formacao;
+        $agente->especializacao = $request->especializacao;
+
+        $agente->save();
+        $user->save();
+
+        session()->flash('success', 'Dados atualizados!');
+        return back();
     }
 
     public function showRelatorio(Request $request){
