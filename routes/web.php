@@ -291,40 +291,35 @@ Route::middleware(['IsEmpresa'])->group(function () {
 
 // Grupo de rotas para inspetor
 Route::middleware(['IsInspetor'])->group(function () {
-    Route::get('/home/inspetor', 'InspetorController@home')->name('home.inspetor');
-    Route::get('/programacao/inspetor', 'InspetorController@showProgramacao')->name('show.programacao');
-    Route::get('/programacao/inspecao/album', 'InspetorController@showAlbum')->name('show.album');
-    Route::post('/delete/foto', 'InspetorController@deleteFoto')->name('delete.foto');
-    Route::post('/save/descricao', 'InspetorController@saveDescricao')->name('save.descricao');
+    Route::get('/home/inspetor',                'InspetorController@home')->name('home.inspetor');
+    Route::get('/programacao/inspetor',         'InspetorController@showProgramacao')->name('show.programacao');
+    Route::get('/programacao/inspecao/album',   'InspetorController@showAlbum')->name('show.album');
+    Route::post('/delete/foto',                 'InspetorController@deleteFoto')->name('delete.foto');
+    Route::post('/save/descricao',              'InspetorController@saveDescricao')->name('save.descricao');
     Route::get('/programacao/inspecao/relatorio', 'InspetorController@showRelatorio')->name('show.relatorio');
-    Route::post('/save/relatorio', 'InspetorController@saveRelatorio')->name('save.relatorio');
-    Route::get('/historico/inspetor', 'InspetorController@showHistorico')->name('show.historico');
-    Route::get('/criar/notificacao', 'InspetorController@criarNotificacao')->name('criar.notificacao');
-    Route::get('/verificar/notificacao', 'InspetorController@verificarNotificacao')->name('verificar.notificacao');
-    Route::post('/apagar/notificacao', 'InspetorController@apagarNotificacao')->name('apagar.notificacao');
-    Route::post('/save/notificacao', 'InspetorController@saveNotificacao')->name('save.notificacao');
+    Route::post('/save/relatorio',              'InspetorController@saveRelatorio')->name('save.relatorio');
+    Route::get('/historico/inspetor',           'InspetorController@showHistorico')->name('show.historico');
+    Route::get('/criar/notificacao',            'InspetorController@criarNotificacao')->name('criar.notificacao');
+    Route::get('/verificar/notificacao',        'InspetorController@verificarNotificacao')->name('verificar.notificacao');
+    Route::post('/apagar/notificacao',          'InspetorController@apagarNotificacao')->name('apagar.notificacao');
+    Route::post('/save/notificacao',            'InspetorController@saveNotificacao')->name('save.notificacao');
+    Route::get('/editar/inspetor/dados',        'InspetorController@alterarDados')->name('editar.dados.inspetor');
+    Route::get('/editar/inspetor/senha',        'InspetorController@alterarSenha')->name('editar.senha.inspetor');
+    Route::post('/atualizar/dados/inspetor',    'InspetorController@atualizarDados')->name('atualizar.dados.inspetor');
+    Route::post('/atualizar/senha/inspetor',    'InspetorController@atualizarSenha')->name('atualizar.senha.inspetor');
 
 });
 
 // Grupo de rotas para Agente
 Route::middleware(['IsAgente'])->group(function () {
-    Route::get('/home/agente', 'AgenteController@home')->name('home.agente');
+    Route::get('/home/agente',                                     'AgenteController@home')->name('home.agente');
     Route::get('cadastrar/agente', function () {return view('agente/cadastrar_agente');})->name('cadastrar.agente');
-    Route::get('/programacao/agente', 'AgenteController@showProgramacao')->name('show.programacao.agente');
-    Route::get('/programacao/agente/inspecao/relatorio', 'AgenteController@showRelatorio')->name('show.relatorio.agente');
+    Route::get('/programacao/agente',                              'AgenteController@showProgramacao')->name('show.programacao.agente');
+    Route::get('/programacao/agente/inspecao/relatorio',           'AgenteController@showRelatorio')->name('show.relatorio.agente');
     Route::get('/programacao/agente/inspecao/relatorio/verificar', 'AgenteController@showRelatorioVerificar')->name('show.relatorio.agente.verificar');
-    Route::post("/julgar/relatorio", "AgenteController@julgar")->name("julgar.relatorio");
-    /*
-        (WEB)
-        * Cadastrar/Editar/Deletar relatórios (Próprios)
-        * Consultar suas inspeções
-        * Cadastrar/Editar/Deletar notificações de empresas
-        (APP)
-        * Concluir inspeção (Mudar status de inspeção)
-        * Cadastrar imagens
-        * Cadastrar áudio
-        * Listar documentos anexados por empresa
-    */
+    Route::post("/julgar/relatorio",                               "AgenteController@julgar")->name("julgar.relatorio");
+    Route::get('/editar/agente/dados',                             'AgenteController@alterarDados')->name('editar.dados.agente');
+    Route::get('/editar/agente/senha',                             'AgenteController@alterarSenha')->name('editar.senha.agente');
 });
 
 // Grupo de rotas para responsável técnico
