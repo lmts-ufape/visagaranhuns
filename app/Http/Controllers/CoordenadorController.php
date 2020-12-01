@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Coordenador;
 use App\User;
 use App\Agente;
+use App\Area;
 use App\Inspetor;
 use App\Empresa;
 use App\Docempresa;
@@ -1547,6 +1548,17 @@ class CoordenadorController extends Controller
 
 
         echo json_encode($data);
+    }
+
+    public function criarArea()
+    {
+        return view('coordenador/criar_area');
+    }
+
+    public function criarCnae()
+    {
+        $area = Area::orderBy('nome')->get();
+        return view('coordenador/criar_cnae', ['areas' => $area]);
     }
 }
 

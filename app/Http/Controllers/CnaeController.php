@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Cnae;
 use App\Area;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Validator;
 
 class CnaeController extends Controller
 {
@@ -80,19 +81,38 @@ class CnaeController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $request->validate([
-            'codigo'    => 'required|string',
-            'descricao' => 'required|string',
-            'areas_id'  => 'required|integer',
-        ]);
+
+        if (strlen($request->codigo) < 7) {
+            session()->flash('error', 'O tamanho do código é menor que 8 dígitos!');
+            return back();
+        }
+
+        $messages = [
+            'unique'   => 'Um campo igual a :attribute já está cadastrado no sistema!',
+            'required' => 'O campo :attribute não foi passado!',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'codigo'    => 'required|string|unique:cnaes,codigo',
+            'descricao' => 'required|string|unique:cnaes,descricao',
+            'area'      => 'required|integer',
+
+        ], $messages);
+
+        
+        if ($validator->fails()) {
+            return back()
+                    ->withErrors($validator);
+        }
 
         $cnae = Cnae::create([
             'codigo'    => $request->codigo,
-            'descricao' => $request->codigo,
-            'areas_id'  => $request->codigo,
+            'descricao' => $request->descricao,
+            'areas_id'  => $request->area,
         ]);
 
-        return view('coordenador.home_coordenador');
+        session()->flash('success', 'Cnae cadastrado!');
+        return back();
     }
 
     /**

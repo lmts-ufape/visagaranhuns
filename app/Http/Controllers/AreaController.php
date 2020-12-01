@@ -39,14 +39,15 @@ class AreaController extends Controller
     public function store(Request $request)
     {
         $validator = $request->validate([
-            'nome' => 'required|string',
+            'nomeArea' => 'required|string',
         ]);
 
         $area = Area::create([
-            'nome' => $request->nome,
+            'nome' => $request->nomeArea,
         ]);
 
-        return view('coordenador.home_coordenador');
+        session()->flash('success', 'Área foi cadastrada!');
+        return back();
     }
 
     /**

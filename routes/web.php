@@ -217,6 +217,8 @@ Route::middleware(['IsCoordenador'])->group(function () {
 
     Route::get('/coordenador/download/arquivo/rt',              'CoordenadorController@baixarArquivosRt')->name('coordenador.download.arquivo.rt');
     Route::get('/denuncia/inspecao',                            'CoordenadorController@denunciaInspecao')->name('denuncia.inspecao');
+    Route::get('/criar/area',                                   'CoordenadorController@criarArea')->name('criar.area');
+    Route::get('/criar/cnae',                                   'CoordenadorController@criarCnae')->name('criar.cnae');
 
 });
 
