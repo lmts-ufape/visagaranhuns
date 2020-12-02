@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Denuncia;
+use App\ImagemDenuncia;
+use App\Empresa;
+use App\Endereco;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class DenunciaController extends Controller
 {
@@ -18,11 +22,8 @@ class DenunciaController extends Controller
         ];
 
         $validator = Validator::make($request->all(), [
-            // 'nome'      => 'string',
-            // 'email'     => 'nullable|email',
-            // 'telefone'  => 'nullable|string',
-            'empresa'   => 'required|string',
-            'endereco'  => 'required|string',
+            'empresa'   => 'nullable|string',
+            'endereco'  => 'nullable|string',
             'denuncia'  => 'required|string',
         ], $messages);
 
@@ -31,35 +32,93 @@ class DenunciaController extends Controller
                     ->withErrors($validator);
         }
 
-        if ($request->select_empresa == 'nenhum' || $request->select_empresa == null) {
-            $denuncia = Denuncia::create([
-                // 'nome'            => $request->nome,
-                // 'email'           => $request->email,
-                // 'telefone'        => $request->telefone,
-                'empresa'         => $request->empresa,
-                'endereco'        => $request->endereco,
-                'denuncia'        => $request->denuncia,
-                'empresa_id'      => null,
-                'status'          => "pendente",
-            ]);
+        if ($request->select_empresa != 'nenhum') {
 
-            session()->flash('success', 'Sua denúncia foi cadastrada!');
-            return back();
+            $empresa = Empresa::find($request->select_empresa);
+            $endereco = Endereco::where('empresa_id', $request->select_empresa)->first();
+
+            if($request->imagens == null){
+
+                $denuncia = Denuncia::create([
+                    'empresa'         => $empresa->nome,
+                    'endereco'        => $endereco->rua . ',' . $endereco->numero . ',' . $endereco->bairro,
+                    'denuncia'        => $request->denuncia,
+                    'empresa_id'      => $empresa->id,
+                    'status'          => "pendente",
+                ]);
+    
+                session()->flash('success', 'Sua denúncia foi cadastrada!');
+                return back();
+
+            }else {
+
+                $denuncia = Denuncia::create([
+                    'empresa'         => $empresa->nome,
+                    'endereco'        => $endereco->rua . ',' . $endereco->numero . ',' . $endereco->bairro,
+                    'denuncia'        => $request->denuncia,
+                    'empresa_id'      => $empresa->id,
+                    'status'          => "pendente",
+                ]);
+                
+                foreach ($request->imagens as $key) {
+
+                    $fileImg = $key;
+                    $pathImg = 'denuncias/' . $denuncia->id . '/';
+                    $nomeImg = $key->getClientOriginalName();
+            
+                    Storage::putFileAs($pathImg, $fileImg, $nomeImg);
+
+                    $imagemDenuncia = ImagemDenuncia::create([
+                        'nome'         => $pathImg . $nomeImg,
+                        'denuncias_id' => $denuncia->id,
+                    ]);
+                }
+
+                session()->flash('success', 'Sua denúncia foi cadastrada!');
+                return back();
+            }
         }
         else {
-            $denuncia = Denuncia::create([
-                // 'nome'            => $request->nome,
-                // 'email'           => $request->email,
-                // 'telefone'        => $request->telefone,
-                'empresa'         => $request->empresa,
-                'endereco'        => $request->endereco,
-                'denuncia'        => $request->denuncia,
-                'empresa_id'      => $request->select_empresa,
-                'status'          => "pendente",
-            ]);
 
-            session()->flash('success', 'Sua denúncia foi cadastrada!');
-            return back();
+            if($request->imagens == null){
+
+                $denuncia = Denuncia::create([
+                    'empresa'         => $request->empresa,
+                    'endereco'        => $request->endereco,
+                    'denuncia'        => $request->denuncia,
+                    'empresa_id'      => null,
+                    'status'          => "pendente",
+                ]);
+    
+                session()->flash('success', 'Sua denúncia foi cadastrada!');
+                return back();
+
+            }else {
+
+                $denuncia = Denuncia::create([
+                    'empresa'         => $request->empresa,
+                    'endereco'        => $request->endereco,
+                    'denuncia'        => $request->denuncia,
+                    'empresa_id'      => null,
+                    'status'          => "pendente",
+                ]);
+                
+                foreach ($request->imagens as $key) {
+
+                    $fileImg = $key;
+                    $pathImg = 'denuncias/' . $denuncia->id . '/';
+                    $nomeImg = $key->getClientOriginalName();
+            
+                    Storage::putFileAs($pathImg, $fileImg, $nomeImg);
+
+                    $imagemDenuncia = ImagemDenuncia::create([
+                        'nome'         => $pathImg . $nomeImg,
+                        'denuncias_id' => $denuncia->id,
+                    ]);
+                }
+                session()->flash('success', 'Sua denúncia foi cadastrada!');
+                return back();
+            }
         }
     }
 }

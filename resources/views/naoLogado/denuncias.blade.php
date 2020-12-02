@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    <form id="teste" method="POST" action="{{ route('cadastrar.denuncia') }}">
+    <form id="teste" method="POST" action="{{ route('cadastrar.denuncia') }}" enctype="multipart/form-data">
         @csrf
 
         <div class="barraMenu" style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
@@ -59,23 +59,33 @@
                             </div>
                         @endif
                         <div class="form-row">
-                            <div class="form-group col-md-4" style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="nome">Empresa:<span style="color:red">*</span></label>
-                                <input class="styleInputCadastro" id="empresa" name="empresa" placeholder="" value="" required>
-                            </div>
-                            <div class="form-group col-md-4" style="padding-right:15px;">
-                                <label class="styleTituloDoInputCadastro" for="email">Endereço:<span style="color:red">*</span></label>
-                                <input class="styleInputCadastro" id="endereco" name="endereco" placeholder="" value="" required>
-                            </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
-                                <label class="styleTituloDoInputCadastro" for="empresa">Empresas já mapeadas:<span style="color:red">*</span></label>
+                                <label class="styleTituloDoInputCadastro" for="empresa">Empresas já mapeadas:</label>
                                 <select class="form-control" name="select_empresa" id="idSelecionarEmpresa" onChange="selecionarArea1(this)">
                                     @foreach ($empresas as $item)
                                         <option value="" disable="" selected="" hidden="">-- Selecionar Empresa --</option>
                                         <option value="{{$item->id}}">{{$item->nome}}</option>
                                     @endforeach
-                                    <option value="nenhum">Não Listado</option>
+                                    <option value="nenhum">Outro</option>
                                 </select>
+                            </div>
+                            <div class="form-group col-md-4" style="padding-right:15px;">
+                                {{-- <label class="styleTituloDoInputCadastro" for="nome">Empresa:<span style="color:red">*</span></label>
+                                <input class="styleInputCadastro" id="empresa" name="empresa" placeholder="" value="" required> --}}
+                            </div>
+                            <div class="form-group col-md-4" style="padding-right:15px;">
+                                {{-- <label class="styleTituloDoInputCadastro" for="email">Endereço:<span style="color:red">*</span></label>
+                                <input class="styleInputCadastro" id="endereco" name="endereco" placeholder="" value="" required> --}}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4" id="infos1" style="padding-right:15px; display: none; opacity:1;">
+                                <label class="styleTituloDoInputCadastro" for="nome">Nome:</label>
+                                <input class="styleInputCadastro" id="empresa" name="empresa" placeholder="" value="">
+                            </div>
+                            <div class="form-group col-md-4" id="infos2" style="padding-right:15px; display: none; opacity:1;">
+                                <label class="styleTituloDoInputCadastro" for="email">Endereço:</label>
+                                <input class="styleInputCadastro" id="endereco" name="endereco" placeholder="" value="">
                             </div>
                         </div>
                         {{-- <div class="form-row">
@@ -100,6 +110,20 @@
                                     <div class="form-group">
                                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="denuncia"></textarea>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label style="font-size:19px;margin-top:-10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">ANEXAR IMAGENS</label>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <div class="form-row">
+                                    <input type="file" name="imagens[]" multiple="multiple" class="filestyle">
                                 </div>
                             </div>
                         </div>
@@ -132,29 +156,44 @@
         //area
         var historySelectList = $('select#idSelecionarEmpresa');
         var $id_empresa = $('option:selected', historySelectList).val();
-
+        
         if ($id_empresa == 'nenhum') {
-                $('#empresa').val('');
-                $('#endereco').val('');
-                $("#empresa").prop("disabled", false);
-                $("#endereco").prop("disabled", false);            
-        } else {
-            $.ajax({
-                url:'{{ config('prefixo.PREFIXO') }}empresa/dados',
-                type:"get",
-                dataType:'json',
-                data: {"id_empresa": $id_empresa},
-                success: function(response){
-                    console.log(response.endereco);
-                    $('#empresa').val(response.nome);
-                    $('#endereco').val(response.endereco);
-                    // $("#empresa").attr("disabled", true);
-                    // $("#endereco").attr("disabled", true);
-                    // $('tbody').html(response.table_data);
-                    // document.getElementById('idArea');
-                }
-            });   
+            console.log('Entrou aqui!');
+            document.getElementById('empresa').value         = '';
+            document.getElementById('endereco').value         = '';
+            document.getElementById('infos1').style.display = 'block';
+            document.getElementById('infos2').style.display = 'block';
         }
+        else{
+            console.log('Agora foi aqui!');
+            document.getElementById('empresa').value         = '';
+            document.getElementById('endereco').value         = '';
+            document.getElementById('infos1').style.display = 'none';
+            document.getElementById('infos2').style.display = 'none';
+        }
+
+        // if ($id_empresa == 'nenhum') {
+        //         $('#empresa').val('');
+        //         $('#endereco').val('');
+        //         $("#empresa").prop("disabled", false);
+        //         $("#endereco").prop("disabled", false);            
+        // } else {
+        //     $.ajax({
+        //         url:'{{ config('prefixo.PREFIXO') }}empresa/dados',
+        //         type:"get",
+        //         dataType:'json',
+        //         data: {"id_empresa": $id_empresa},
+        //         success: function(response){
+        //             console.log(response.endereco);
+        //             $('#empresa').val(response.nome);
+        //             $('#endereco').val(response.endereco);
+        //             // $("#empresa").attr("disabled", true);
+        //             // $("#endereco").attr("disabled", true);
+        //             // $('tbody').html(response.table_data);
+        //             // document.getElementById('idArea');
+        //         }
+        //     });   
+        // }
     }
 </script>
 @endsection
