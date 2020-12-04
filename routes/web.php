@@ -219,6 +219,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get('/denuncia/inspecao',                            'CoordenadorController@denunciaInspecao')->name('denuncia.inspecao');
     Route::get('/criar/area',                                   'CoordenadorController@criarArea')->name('criar.area');
     Route::get('/criar/cnae',                                   'CoordenadorController@criarCnae')->name('criar.cnae');
+    Route::get('/denuncia/imagens',                             'CoordenadorController@imagensDenuncia')->name('denuncia.imagens');
 
 });
 

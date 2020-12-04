@@ -60,7 +60,7 @@
                         @endif
                         <div class="form-row">
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
-                                <label class="styleTituloDoInputCadastro" for="empresa">Empresas já mapeadas:</label>
+                                <label class="styleTituloDoInputCadastro" for="empresa">Empresas:</label>
                                 <select class="form-control" name="select_empresa" id="idSelecionarEmpresa" onChange="selecionarArea1(this)">
                                     @foreach ($empresas as $item)
                                         <option value="" disable="" selected="" hidden="">-- Selecionar Empresa --</option>
@@ -123,7 +123,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <div class="form-row">
-                                    <input type="file" name="imagens[]" multiple="multiple" class="filestyle">
+                                    <input type="file" name="imagens[]" id="arquivoSelecionado_denuncia" multiple="multiple" class="filestyle">
                                 </div>
                             </div>
                         </div>

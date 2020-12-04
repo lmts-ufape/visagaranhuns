@@ -17,6 +17,6 @@ class ImagemDenuncia extends Model
     ];
 
     public function denuncia() {
-        return $this->belongsTo("\App\Denuncia");
+        return $this->belongsTo("\App\Denuncia", 'denuncias_id');
     }
 }

@@ -86,6 +86,7 @@
                             <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Status</th>
                             <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Descrição</th>
                             <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Avaliar</th>
+                            <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Imagens</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -96,6 +97,7 @@
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Pendente</th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denuncia('{{$item->denuncia}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denunciaId('{{$item->id}}')" data-toggle="modal" data-target="#exampleModalLabelB">Avaliar</button></th>
+                                <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="abrirImagens('{{$item->id}}')" data-toggle="modal" data-target="#exampleModalLabelC">Abrir</button></th>
                                 {{-- <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">{{$item->status}}</th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">{{$item->status}}</th> --}}
                             </tr>
@@ -117,6 +119,7 @@
                             <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Status</th>
                             <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Descrição</th>
                             <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Avaliar</th>
+                            <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Imagens</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -127,6 +130,7 @@
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Aceito</th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denuncia('{{$item->denuncia}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="avaliarDenuncia('{{$item->id}}')">Avaliar</button></th>
+                                <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="abrirImagens('{{$item->id}}')" data-toggle="modal" data-target="#exampleModalLabelC">Abrir</button></th>
                                 {{-- <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th> --}}
                             </tr>
@@ -148,6 +152,7 @@
                             <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Status</th>
                             <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Descrição</th>
                             <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Avaliar</th>
+                            <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Imagens</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -158,6 +163,7 @@
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Arquivado</th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denuncia('{{$item->denuncia}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denunciaId('{{$item->id}}')" data-toggle="modal" data-target="#exampleModalLabelB">Avaliar</button></th>
+                                <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="abrirImagens('{{$item->id}}')" data-toggle="modal" data-target="#exampleModalLabelC">Abrir</button></th>
                                 {{-- <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th> --}}
                             </tr>
@@ -179,6 +185,7 @@
                             <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Status</th>
                             <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Descrição</th>
                             <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Avaliar</th>
+                            <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Imagens</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -189,6 +196,7 @@
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">Concluido</th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="denuncia('{{$item->denuncia}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" data-toggle="modal" data-target="#exampleModalLabelB" disabled>Avaliar</button></th>
+                                <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="abrirImagens('{{$item->id}}')" data-toggle="modal" data-target="#exampleModalLabelC">Abrir</button></th>
                                 {{-- <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th>
                                 <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th> --}}
                             </tr>
@@ -281,6 +289,32 @@
     </div>
 </div>
 
+<!-- Modal - Imagens da Denúncia -->
+<div class="modal fade" id="exampleModalLabelC" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelC" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#2a9df4;">
+                    <img src="{{ asset('/imagens/logo_atencao3.png') }}" alt="Logo" style=" margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabelB" style="font-size:20px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Imagens da Denúncia</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12" style="font-family: 'Roboto', sans-serif;">Imagens anexadas junto a denúncia:</div>
+                </div>
+                <div id="tbody_imagens">
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
 </div>
 <script type="text/javascript">
     window.onload= function() {
@@ -335,6 +369,38 @@
             }
         });
     }
+
+    window.abrirImagens = function($id){
+        $.ajax({
+            url:'{{ config('prefixo.PREFIXO') }}denuncia/imagens',
+            type:"get",
+            dataType:'json',
+            data: {"Id": $id },
+            success: function(response){
+                // console.log(response.table_data);
+                // $('#tbody_imagens').html(response.table_data);
+                caminho = '<img style="margin-left: 80px; margin-top: 10px; margin-bottom: 10px;" src="{{asset("storage/$")}}">';
+                var element = document.getElementById('tbody_imagens');
+                for (let index = 0; index < response.table_data.length; index++) {
+                    // document.getElementById("resultado-repeticao").innerHTML += "Repetição";
+                    resultado = caminho.replace("$", response.table_data[index]);
+                    element.innerHTML += resultado;   
+                }
+            }
+        });        
+    }
+
+    // window.limparModal = function(params) {
+    //     console.log("FECHANDO");
+    //     var element = document.getElementById('tbody_imagens');
+    //     element.innerHTML = "";
+    // }
+
+    var modal = document.getElementById('exampleModalLabelC');
+    modal.addEventListener('click', function(e) {
+        var element = document.getElementById('tbody_imagens');
+        element.innerHTML = "";
+    });
 
     window.avaliarDenuncia = function($id){
         console.log($id);

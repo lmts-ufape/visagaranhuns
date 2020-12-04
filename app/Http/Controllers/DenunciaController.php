@@ -9,6 +9,7 @@ use App\Empresa;
 use App\Endereco;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class DenunciaController extends Controller
 {
@@ -62,11 +63,24 @@ class DenunciaController extends Controller
                 
                 foreach ($request->imagens as $key) {
 
+                    $ext = strtolower($key->getClientOriginalExtension());
+                    if(!in_array($ext, array("jpg", "png", "jpeg", "bmp"))){
+                        session()->flash('error', 'Formato de imagem inválido, utilize imagem jpg ou png!');
+                        return back();
+                    }
+
                     $fileImg = $key;
                     $pathImg = 'denuncias/' . $denuncia->id . '/';
                     $nomeImg = $key->getClientOriginalName();
+
+                    Image::configure(array('driver' => 'imagick'));
+                    $img = Image::make($fileImg)->resize(300, 200);
+                    // $imgNome = $img->getClientOriginalName();
+
+                    Storage::put('denuncias/' . $denuncia->id . '/' . $nomeImg, $img->encode());
+
             
-                    Storage::putFileAs($pathImg, $fileImg, $nomeImg);
+                    // Storage::putFileAs($pathImg, $img, $nomeImg);
 
                     $imagemDenuncia = ImagemDenuncia::create([
                         'nome'         => $pathImg . $nomeImg,
@@ -82,6 +96,11 @@ class DenunciaController extends Controller
 
             if($request->imagens == null){
 
+                if ($request->empresa == null || $request->endereco == null) {
+                    session()->flash('error', 'O campo "Empresa" ou "Endereco" não foi passado!');
+                    return back();
+                }
+
                 $denuncia = Denuncia::create([
                     'empresa'         => $request->empresa,
                     'endereco'        => $request->endereco,
@@ -95,6 +114,11 @@ class DenunciaController extends Controller
 
             }else {
 
+                if ($request->empresa == null || $request->endereco == null) {
+                    session()->flash('error', 'O campo "Empresa" ou "Endereco" não foi passado!');
+                    return back();
+                }
+
                 $denuncia = Denuncia::create([
                     'empresa'         => $request->empresa,
                     'endereco'        => $request->endereco,
@@ -105,11 +129,21 @@ class DenunciaController extends Controller
                 
                 foreach ($request->imagens as $key) {
 
+                    $ext = strtolower($key->getClientOriginalExtension());
+                    if(!in_array($ext, array("jpg", "png", "jpeg", "bmp"))){
+                        session()->flash('error', 'Formato de imagem inválido, utilize imagem jpg ou png!');
+                        return back();
+                    }
+
                     $fileImg = $key;
                     $pathImg = 'denuncias/' . $denuncia->id . '/';
                     $nomeImg = $key->getClientOriginalName();
-            
-                    Storage::putFileAs($pathImg, $fileImg, $nomeImg);
+
+                    Image::configure(array('driver' => 'imagick'));
+                    $img = Image::make($fileImg)->resize(300, 200);
+                    // $imgNome = $img->getClientOriginalName();
+
+                    Storage::put('denuncias/' . $denuncia->id . '/' . $nomeImg, $img->encode());
 
                     $imagemDenuncia = ImagemDenuncia::create([
                         'nome'         => $pathImg . $nomeImg,

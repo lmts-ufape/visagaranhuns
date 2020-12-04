@@ -32,6 +32,7 @@ use PDF;
 use Illuminate\Support\Facades\Validator;
 use App\Denuncia;
 use App\Notificacao;
+use App\ImagemDenuncia;
 
 class CoordenadorController extends Controller
 {
@@ -743,6 +744,36 @@ class CoordenadorController extends Controller
                 'table_data' => $output,
             );
             echo json_encode($data);
+    }
+
+    public function imagensDenuncia(Request $request)
+    {
+        $imagens = ImagemDenuncia::where('denuncias_id', $request->Id)->get();
+        $caminhos = [];
+
+        foreach ($imagens as $key) {
+            array_push($caminhos, $key->nome);
+        }
+
+        // $output = '';
+        // if($imagens != null){
+        //     foreach($imagens as $item){
+        //         $output .= '
+        //             <img src="{{asset("storage/'.$item->nome.'")}}">
+        //         ';
+        //     }
+        // }
+        // else{
+        //     $output .= '
+        //         <label></label>
+        //     ';
+        // }
+
+        $data = array(
+            'success'   => true,
+            'table_data' => $caminhos,
+        );
+        echo json_encode($data);
     }
 
     /* Função para listar em tela todas empresas que se cadastraram
