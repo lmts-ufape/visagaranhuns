@@ -220,7 +220,10 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get('/criar/area',                                   'CoordenadorController@criarArea')->name('criar.area');
     Route::get('/criar/cnae',                                   'CoordenadorController@criarCnae')->name('criar.cnae');
     Route::get('/denuncia/imagens',                             'CoordenadorController@imagensDenuncia')->name('denuncia.imagens');
-
+    Route::get('/editar/tipodocumentos',                        'CoordenadorController@tipodocumentos')->name('editar.tipodocumentos');
+    Route::post('/editar/tipodoc',                              'CoordenadorController@editartipodoc')->name('editar.tipodoc');
+    Route::post('/criar/tipodoc',                               'CoordenadorController@criartipodoc')->name('criar.tipodoc');
+    
 });
 
 // Grupo de rotas para empresa

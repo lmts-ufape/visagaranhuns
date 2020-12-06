@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Area;
+use App\AreaTipodocemp;
 
 class AreaController extends Controller
 {
@@ -38,6 +39,7 @@ class AreaController extends Controller
      */
     public function store(Request $request)
     {
+
         $validator = $request->validate([
             'nomeArea' => 'required|string',
         ]);
@@ -45,6 +47,13 @@ class AreaController extends Controller
         $area = Area::create([
             'nome' => $request->nomeArea,
         ]);
+
+        foreach ($request->tipos as $key) {
+            $areaTipoDocEmp = AreaTipodocemp::create([
+                'area_id'       => $area->id,
+                'tipodocemp_id' => $key,
+            ]);
+        }
 
         session()->flash('success', 'Área foi cadastrada!');
         return back();

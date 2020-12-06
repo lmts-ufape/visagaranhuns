@@ -65,16 +65,34 @@
                             <div class="form-row">
                                 <div class="form-group col-md-4"  style="padding-right:15px;">
                                     <label class="styleTituloDoInputCadastro" for="inputEmail4">Nome da nova área:<span style="color:red">*</span></label>
-                                    <input type="text" class="styleInputCadastro" name="nomeArea" id="nomeArea" placeholder="" required="required">
+                                    <input type="text" class="styleInputCadastro" name="nomeArea" id="nomeArea" placeholder="">
                                 </div>
                             </div>
-                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-4"  style="padding-right:15px; margin-top: 20px;">
+                                    <label class="styleTituloDoInputCadastro" for="inputEmail4">Tipos de documentos:<span style="color:red">*</span></label>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                @foreach ($tipos as $item)
+                                    <div class="form-group col-md-6">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" name="tipos[]" value="{{$item->id}}">
+                                            <label class="form-check-label" for="exampleCheck1" onclick="atualizarTipoDoc({{$item->id}})" style="cursor: pointer">{{$item->nome}}</label>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </form>
                         <hr size = 7>
                         <div style="margin-bottom:0.2rem;">
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-4">
                                         <label style="font-weight:bold; color:red; font-family:Arial, Helvetica, sans-serif"><span style="font-size:20px">*</span> campos obrigatórios</label>
-                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-secondary" style="width:100%;" data-toggle="modal" data-target="#exampleModalLabelCriar">Cadastrar Tipos</button>
+                                </div>
                                 <div class="col-md-4">
                                     <button type="button" class="btn btn-success" style="width:100%;" data-toggle="modal" data-target="#exampleModal1">Cadastrar</button>
                                 </div>
@@ -86,11 +104,12 @@
         </div>
     </div>
 </div>
-<!-- Modal - alterar dados -->
+
+<!-- Modal - Cadastrar Área -->
 <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header" style="background-color:#2a9df4;">
+            <div class="modal-header" style="background-color:#3FB059;">
                     <img src="{{ asset('/imagens/logo_atencao3.png') }}" alt="Logo" style=" margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabel" style="font-size:20px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Cadastrar Área</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -113,11 +132,81 @@
         </div>
     </div>
 </div>
+
+<!-- Modal para editar tipos de documentos -->
+<div class="modal fade" id="exampleModalLabelB" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelB" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#2a9df4;">
+                    <img src="{{ asset('/imagens/logo_atencao3.png') }}" alt="Logo" style=" margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabelB" style="font-size:20px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Editar tipo de documento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editForm" method="POST" action="{{ route('editar.tipodoc') }}">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12" style="font-family: 'Roboto', sans-serif;">Editar nome do tipo de documento a ser cadastrado<label id="nomeDoEstabelecimento" style="font-weight:bold; font-family: 'Roboto', sans-serif;">:</label></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Nome:</label>
+                        <input type="text" class="form-control" id="exampleEditarNome" name="nomeTipoDoc" aria-describedby="emailHelp">
+                        <input type="hidden" class="form-control" id="exampleEditarId" name="idTipoDoc" aria-describedby="emailHelp">
+                        {{-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <div>
+                    <button type="submit" class="btn btn-outline-secondary botao-form" style="width:100px;" form="editForm">Editar</button>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Modal para criar tipos de documentos -->
+<div class="modal fade" id="exampleModalLabelCriar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelCriar" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#5A6268;">
+                    <img src="{{ asset('/imagens/logo_atencao3.png') }}" alt="Logo" style=" margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabelCriar" style="font-size:20px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Criar tipos de documentos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="CriarForm" method="POST" action="{{ route('criar.tipodoc') }}">
+                @csrf
+                <div class="modal-body">
+                    {{-- <div class="row">
+                        <div class="col-12" style="font-family: 'Roboto', sans-serif;">Editar nome do tipo de documento a ser cadastrado<label id="nomeDoEstabelecimento" style="font-weight:bold; font-family: 'Roboto', sans-serif;">:</label></div>
+                    </div> --}}
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Nome:</label>
+                        <input type="text" class="form-control" id="exampleEditarNome" name="Nome" aria-describedby="emailHelp">
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <div>
+                    <button type="submit" class="btn btn-outline-secondary botao-form" style="width:100px;" form="CriarForm">Criar</button>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 @endsection
 
 <script type="text/javascript">
     function myFunction(){
         document.getElementById("formCadastrarArea").submit();
+    }
+
+    function myFunction2() {
+        document.getElementById("editForm").submit();
     }
 
     var password = document.getElementById("password")
@@ -133,4 +222,23 @@
 
     password.onchange = validatePassword;
     confirm_password.onkeyup = validatePassword;
+
+    function atualizarTipoDoc($id) {
+
+        $("#exampleModalLabelB").modal({
+            show: true
+        });
+
+        $.ajax({
+            url:'{{ config('prefixo.PREFIXO') }}editar/tipodocumentos',
+            type:"get",
+            dataType:'json',
+            data: {"id": $id},
+            success: function(response){
+                $('tbody').html(response.table_data);
+                document.getElementById('exampleEditarNome').value = response.table_data;
+                document.getElementById('exampleEditarId').value = $id;
+            }
+        });
+    }
 </script>

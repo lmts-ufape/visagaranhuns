@@ -68,7 +68,7 @@
               <a data-toggle="tab" class="nav-link" href="#arquivado">Arquivadas</a>
             </li>
             <li class="nav-item">
-                <a data-toggle="tab" class="nav-link" href="#arquivado">Concluidas</a>
+                <a data-toggle="tab" class="nav-link" href="#concluido">Concluidas</a>
               </li>
         </ul>
 
@@ -290,8 +290,8 @@
 </div>
 
 <!-- Modal - Imagens da Denúncia -->
-<div class="modal fade" id="exampleModalLabelC" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelC" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade bd-example-modal-lg" id="exampleModalLabelC" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelC" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color:#2a9df4;">
                     <img src="{{ asset('/imagens/logo_atencao3.png') }}" alt="Logo" style=" margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabelB" style="font-size:20px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Imagens da Denúncia</h5>

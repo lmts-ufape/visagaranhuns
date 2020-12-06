@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Denuncia;
 use App\Notificacao;
 use App\ImagemDenuncia;
+use App\Tipodocempresa;
 
 class CoordenadorController extends Controller
 {
@@ -774,6 +775,27 @@ class CoordenadorController extends Controller
             'table_data' => $caminhos,
         );
         echo json_encode($data);
+    }
+
+    public function tipodocumentos(Request $request)
+    {
+        $tipodocemp = Tipodocempresa::find($request->id);
+
+        $data = array(
+            'table_data' => $tipodocemp->nome,
+        );
+
+        echo json_encode($data);
+    }
+
+    public function editartipodoc(Request $request)
+    {
+        $tipoDocemp = Tipodocempresa::find($request->idTipoDoc);
+        $tipoDocemp->nome = $request->nomeTipoDoc;
+        $tipoDocemp->save();
+
+        session()->flash('success', 'Nome do documento alterado!');
+        return back();
     }
 
     /* Função para listar em tela todas empresas que se cadastraram
@@ -1583,7 +1605,35 @@ class CoordenadorController extends Controller
 
     public function criarArea()
     {
-        return view('coordenador/criar_area');
+        $tipos = Tipodocempresa::orderBy('nome')->get();
+        return view('coordenador/criar_area', ['tipos' => $tipos]);
+    }
+
+    public function criartipodoc(Request $request)
+    {
+
+        $messages = [
+            'required' => 'O campo :attribute não foi passado!',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'Nome' => 'required|string',
+        ], $messages);
+
+        
+        if ($validator->fails()) {
+            return back()
+                    ->withErrors($validator);
+        }
+
+        $tipodoc = Tipodocempresa::create([
+            'nome' => $request->Nome,
+        ]);
+
+        session()->flash('success', 'Novo tipo de documento cadastrado!');
+        return back();
+
+
     }
 
     public function criarCnae()

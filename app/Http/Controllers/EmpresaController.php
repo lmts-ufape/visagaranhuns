@@ -1463,7 +1463,7 @@ class EmpresaController extends Controller
     }
 
     public function downloadArquivo(Request $request){
-        return response()->download(storage_path('app/' . $request->file));
+        return response()->download(storage_path('app/public/' . $request->file));
     }
 
     public function dadosEmpresa(Request $request)

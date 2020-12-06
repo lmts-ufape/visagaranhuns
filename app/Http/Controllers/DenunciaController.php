@@ -18,7 +18,6 @@ class DenunciaController extends Controller
 
         $messages = [
             'required'  => 'O campo de :attribute deve ser preenchido!',
-            // 'email'     => 'E-mail está incorreto!',
             'string'    => 'O campo :attribute deve conter apenas texto!',
         ];
 
@@ -31,6 +30,11 @@ class DenunciaController extends Controller
         if ($validator->fails()) {
             return back()
                     ->withErrors($validator);
+        }
+
+        if ($request->select_empresa == null) {
+            session()->flash('error', 'A empresa não foi informada!');
+            return back();            
         }
 
         if ($request->select_empresa != 'nenhum') {
@@ -65,7 +69,7 @@ class DenunciaController extends Controller
 
                     $ext = strtolower($key->getClientOriginalExtension());
                     if(!in_array($ext, array("jpg", "png", "jpeg", "bmp"))){
-                        session()->flash('error', 'Formato de imagem inválido, utilize imagem jpg ou png!');
+                        session()->flash('error', 'O arquivo ou um dos arquivos anexados não é uma imagem. Utilize imagens no formato: jpg, png, jpeg, bmp.');
                         return back();
                     }
 
@@ -74,7 +78,7 @@ class DenunciaController extends Controller
                     $nomeImg = $key->getClientOriginalName();
 
                     Image::configure(array('driver' => 'imagick'));
-                    $img = Image::make($fileImg)->resize(300, 200);
+                    $img = Image::make($fileImg)->resize(640, 480);
                     // $imgNome = $img->getClientOriginalName();
 
                     Storage::put('denuncias/' . $denuncia->id . '/' . $nomeImg, $img->encode());
@@ -131,7 +135,7 @@ class DenunciaController extends Controller
 
                     $ext = strtolower($key->getClientOriginalExtension());
                     if(!in_array($ext, array("jpg", "png", "jpeg", "bmp"))){
-                        session()->flash('error', 'Formato de imagem inválido, utilize imagem jpg ou png!');
+                        session()->flash('error', 'O arquivo ou um dos arquivos anexados não é uma imagem. Utilize imagens no formato: jpg, png, jpeg, bmp.');
                         return back();
                     }
 
@@ -140,7 +144,7 @@ class DenunciaController extends Controller
                     $nomeImg = $key->getClientOriginalName();
 
                     Image::configure(array('driver' => 'imagick'));
-                    $img = Image::make($fileImg)->resize(300, 200);
+                    $img = Image::make($fileImg)->resize(640, 480);
                     // $imgNome = $img->getClientOriginalName();
 
                     Storage::put('denuncias/' . $denuncia->id . '/' . $nomeImg, $img->encode());
