@@ -35,8 +35,14 @@ Route::post("/download/doc",  "ApiController@apiDownloadDoc")->name("api.downloa
 //baixar img da pdf
 Route::get("/donwload/img/pdf",  "ApiController@apiDownloadImagemPDF")->name("api.donwload.pdf");
 
+//verifica img da inspecao
+Route::post("/verifica/img",  "ApiController@apiVerifica")->name("api.verifica.img");
+
 //salvar img da inspecao
 Route::post("/save/img",  "ApiController@apiSaveImg")->name("api.save.img");
 
+//salvar comentario da inspecao
+Route::post("/save/comentario",  "ApiController@apiSaveComentario")->name("api.save.comentario");
+
 //baixar img da inspecao
-Route::post("/donwload/img",  "ApiController@apiDownloadImg")->name("api.donwload.img");
+Route::post("/download/img",  "ApiController@apiDownloadImg")->name("api.download.img");

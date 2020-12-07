@@ -18,6 +18,7 @@ class CreateInspecaoFotosTable extends Migration
             $table->timestamps();
             $table->string("descricao");
             $table->string("imagemInspecao");
+            $table->string("nome");
             $table->bigInteger("orientation");
 
             $table->bigInteger("inspecao_id")->nullable();

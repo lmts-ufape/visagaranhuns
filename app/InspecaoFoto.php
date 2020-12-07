@@ -13,6 +13,6 @@ class InspecaoFoto extends Model
      * @var array
      */
     protected $fillable = [
-        'inspecao_id', 'descricao', 'imagemInspecao',
+        'inspecao_id', 'descricao', 'imagemInspecao', 'nome',
     ];
 }
