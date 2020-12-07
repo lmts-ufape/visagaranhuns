@@ -47,20 +47,38 @@
             @endforeach --}}
             @if(count($areas)>0)
                 @foreach ($areas as $item)
-                    <a href="{{ route('listagem.cnae',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;cursor:pointer;color:black;">
-                        <div class="cardArea">
-                            <div class="col-12">
+                    <div class="cardArea">
+                        <div class="form-row"> 
+                            <div class="col-sm-8">
                                 @if(strlen($item->nome) > 56)
                                     @php
                                         $str = substr($item->nome, 0, 56) . '...';
                                     @endphp
-                                    <label style="width:100%; margin-top:10px;margin-left:-5px;margin-right:-20px;text-decoration:none;cursor:pointer;color:black;">{{$str}}</label>
+                                    <a href="{{ route('listagem.cnae',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;cursor:pointer;color:black;">
+                                        <label style="margin-top:10px;margin-left:10px;margin-right:-20px;text-decoration:none;cursor:pointer;color:black;">{{$str}}</label>
+                                    </a>
                                 @else
-                                    <label style="width:100%; margin-top:10px;margin-left:-5px;margin-right:-20px;text-decoration:none;cursor:pointer;color:black;">{{$item->nome}}</label>
+                                    <a href="{{ route('listagem.cnae',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;cursor:pointer;color:black;">
+                                        <label style="margin-top:10px;margin-left:10px;margin-right:-20px;text-decoration:none;cursor:pointer;color:black;">{{$item->nome}}</label>
+                                    </a>
+                                @endif
+                            </div> 
+                            <div class="col-sm-4">
+                                @if(strlen($item->nome) > 56)
+                                    @php
+                                        $str = substr($item->nome, 0, 56) . '...';
+                                    @endphp
+                                    <a href="{{ route('editar.area', ['areaId' => $item->id]) }}">
+                                        <img src="{{ asset('/imagens/edit.png') }}" alt="Logo" style="width:17px; height:20px;"/>
+                                    </a>
+                                @else
+                                    <a href="{{ route('editar.area', ['areaId' => $item->id]) }}">
+                                        <img src="{{ asset('/imagens/edit.png') }}" alt="Logo" style="width:17px; height:20px;margin-top:10px; margin-left:30px;"/>
+                                    </a>
                                 @endif
                             </div>
                         </div>
-                    </a>
+                    </div>
                 @endforeach
             @else
                 <div class="col-12" style="text-align:center;color:gray;font-weight:bold;margin-top:4rem; margin-bottom:5rem;font-size:20px;font-family:Arial, Helvetica, sans-serif;">Nenhuma área cadastrada!</div>

@@ -7,6 +7,7 @@ use App\Coordenador;
 use App\User;
 use App\Agente;
 use App\Area;
+use App\AreaTipodocemp;
 use App\Inspetor;
 use App\Empresa;
 use App\Docempresa;
@@ -1640,6 +1641,52 @@ class CoordenadorController extends Controller
     {
         $area = Area::orderBy('nome')->get();
         return view('coordenador/criar_cnae', ['areas' => $area]);
+    }
+
+    public function editarArea(Request $request)
+    {
+        $area = Area::find($request->areaId);
+        $areatipodocemps = AreaTipodocemp::where('area_id', $area->id)->get();
+        $tiposdocs = Tipodocempresa::orderBy('nome', 'ASC')->get();
+        
+        return view('coordenador/editar_area', ['area' => $area, 'tipos' => $tiposdocs, 'areatipodocemps' => $areatipodocemps]);
+    }
+
+    public function buscarTiposDocs(Request $request)
+    {
+        $area = Area::find($request->id);
+        $areatipodocemps = AreaTipodocemp::where('area_id', $area->id)->get();
+        $idsTiposDocs = [];
+
+        foreach ($areatipodocemps as $key) {
+            array_push($idsTiposDocs, $key->tipodocemp_id);
+        }
+
+        $data = array(
+            'nomes' => $idsTiposDocs,
+        );
+        echo json_encode($data);
+
+
+    }
+
+    public function areaEditar(Request $request)
+    {
+        $areatipodocemps = AreaTipodocemp::where('area_id', $request->idArea)->delete();
+
+        $area = Area::find($request->idArea);
+        $area->nome = $request->nomeArea;
+        $area->save();
+
+        foreach ($request->tipos as $key) {
+            $areatipodoc = AreaTipodocemp::create([
+                'area_id'       => $request->idArea,
+                'tipodocemp_id' => $key,
+            ]);
+        }
+
+        session()->flash('success', 'Edição concluída!');
+        return back();
     }
 }
 
