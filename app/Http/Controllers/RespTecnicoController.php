@@ -251,7 +251,7 @@ class RespTecnicoController extends Controller
                 }
             }          
         }
-        // dd($notificacoes);
+        dd($notificacoes);
 
         return view('responsavel_tec/notificacao',[
             'notificacoes' => $notificacoes,
@@ -338,7 +338,7 @@ class RespTecnicoController extends Controller
 
     public function downloadArquivo(Request $request){
 
-        return response()->download(storage_path('app/' . $request->file));
+        return response()->download(storage_path('app/public/' . $request->file));
     }
 
     public function editarArquivosEmpRt(Request $request)
@@ -682,7 +682,7 @@ class RespTecnicoController extends Controller
 
     public function baixarArquivos(Request $request)
     {
-        return response()->download(storage_path('app/'.$request->file));
+        return response()->download(storage_path('app/public/'.$request->file));
     }
 
     public function findDocRt(Request $request)

@@ -108,7 +108,7 @@
                             <div class="form-group col-md-6">
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="denuncia"></textarea>
+                                        <textarea class="form-control" id="summary-ckeditor" rows="3" name="denuncia"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -195,6 +195,11 @@
         //     });   
         // }
     }
+</script>
+
+<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+<script>
+CKEDITOR.replace( 'summary-ckeditor' );
 </script>
 @endsection
 

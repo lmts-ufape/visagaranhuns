@@ -135,7 +135,7 @@
                                                 <div class="col-12" style="font-family: 'Roboto', sans-serif;">Tem certeza de que deseja reprovar o requerimento do estabelecimento <label id="nomeDoEstabelecimento" style="font-weight:bold; font-family: 'Roboto', sans-serif;">{{$empresa->nome}}</label>?</div>
                                                 <div class="col-12" style="font-family: 'Roboto', sans-serif;">
                                                     <label for="exampleFormControlTextarea1">Informe o motivo da reprovação do requerimento: <span style="color:red">*</span></label>
-                                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="avisos"></textarea>
+                                                    <textarea class="form-control" id="summary-ckeditor" rows="3" name="avisos"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -199,6 +199,11 @@
                 </div>
     </div>
 </div>
+
+<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+<script>
+CKEDITOR.replace( 'summary-ckeditor' );
+</script>
 @endsection
 
 

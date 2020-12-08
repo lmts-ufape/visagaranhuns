@@ -52,7 +52,7 @@
                             <form id="form_relatorio_inspetor" method="POST" action="{{ route('save.relatorio') }}">
                                 @csrf
                                 <input type="hidden" name="inspecao_id" value="{{$inspecao_id}}">
-                                <textarea id="textarea_relatorio_inspetor" rows="40" name="relatorio">{{$relatorio}}</textarea>
+                                <textarea id="summary-ckeditor" rows="40" name="relatorio" disabled>{{$relatorio}}</textarea>
                             </form>
                         </div>
                         <div class="form col-md-3">
@@ -155,7 +155,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color:red;">
-                    <img src="{{ asset('/imagens/logo_atencao3.png') }}" alt="Logo" style=" margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabel" style="font-size:20px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Reprovar cadastro</h5>
+                    <img src="{{ asset('/imagens/logo_atencao3.png') }}" alt="Logo" style=" margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabel" style="font-size:20px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Reprovar Relatório</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -188,7 +188,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color:#3ea81f;">
-                        <img src="{{ asset('/imagens/logo_atencao3.png') }}" alt="Logo" style=" margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Aprovar cadastro</h5>
+                        <img src="{{ asset('/imagens/logo_atencao3.png') }}" alt="Logo" style=" margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Aprovar Relatório</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -215,6 +215,11 @@
             </div>
         </div>
     </div>
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script>
+    CKEDITOR.replace( 'summary-ckeditor' );
+    </script>
 @endsection
 
 <script type="text/javascript">
@@ -238,9 +243,9 @@
         document.getElementById("decisaoA").value = $decisao;
     }
 
-    window.onload= function() {
-        tinymce.get("textarea_relatorio_inspetor").setMode('readonly'); //desabilitar campo de texto
-    };
+    // window.onload= function() {
+    //     tinymce.get("textarea_relatorio_inspetor").setMode('readonly'); //desabilitar campo de texto
+    // };
     
  
 </script>

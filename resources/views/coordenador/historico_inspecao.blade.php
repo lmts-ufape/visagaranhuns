@@ -126,7 +126,7 @@
                                                     </a>
                                                 @endif
                                             </td>
-                                            @if ($item->relatorio_status == "aprovado" || $item->relatorio_status == "avaliacao")
+                                            @if ($item->relatorio_status == "aprovado" || $item->relatorio_status == "avaliacao" || $item->relatorio_status == "reprovado")
                                                 <td class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">
                                                     <button type="button" class="btn btn-danger" disabled>
                                                         <img src="{{asset('imagens/logo_lixo.png')}}" style="width:15px">

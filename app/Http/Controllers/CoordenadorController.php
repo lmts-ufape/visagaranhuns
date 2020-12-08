@@ -127,19 +127,35 @@ class CoordenadorController extends Controller
 
             } elseif ($key->motivo == "Denuncia") {
 
-                $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
-                $empresa = Empresa::find($key->empresas_id);
-                
-                $obj = (object) array(
-                    'data'          => $key->data,
-                    'status'        => $key->status,
-                    'inspetor'      => $key->inspetor->user->name,
-                    'agente1'        => $inspec_agente[0]->agente->user->name,
-                    'agente2'        => $inspec_agente[1]->agente->user->name,
-                    'empresa'       => $empresa->nome,
-                    'cnae'          => "Denúncia",              
-                );
-                array_push($inspecao, $obj);
+                if ($key->empresas_id == null) {
+                    $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+                    $empresa = Empresa::find($key->empresas_id);
+                    
+                    $obj = (object) array(
+                        'data'          => $key->data,
+                        'status'        => $key->status,
+                        'inspetor'      => $key->inspetor->user->name,
+                        'agente1'       => $inspec_agente[0]->agente->user->name,
+                        'agente2'       => $inspec_agente[1]->agente->user->name,
+                        'empresa'       => $key->denuncia->empresa,
+                        'cnae'          => "Denúncia",              
+                    );
+                    array_push($inspecao, $obj);
+                } else {
+                    $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+                    $empresa = Empresa::find($key->empresas_id);
+                    
+                    $obj = (object) array(
+                        'data'          => $key->data,
+                        'status'        => $key->status,
+                        'inspetor'      => $key->inspetor->user->name,
+                        'agente1'       => $inspec_agente[0]->agente->user->name,
+                        'agente2'       => $inspec_agente[1]->agente->user->name,
+                        'empresa'       => $empresa->nome,
+                        'cnae'          => "Denúncia",              
+                    );
+                    array_push($inspecao, $obj);
+                }
             }
 
         }
@@ -329,7 +345,7 @@ class CoordenadorController extends Controller
 
     public function baixarArquivosRt(Request $request)
     {
-        return response()->download(storage_path('app/'.$request->file));
+        return response()->download(storage_path('app/public/'.$request->file));
     }
 
     public function historico()
@@ -558,7 +574,7 @@ class CoordenadorController extends Controller
             return redirect()->route('historico.inspecoes')->with('message', 'Este relatório foi reprovado por outro agente ou coordenador!');
         }
 
-        if ($request->decisao == true) {
+        if ($request->decisao == 'true') {
 
             $relatorio->coordenador = "aprovado";
             $relatorio->save();
@@ -572,8 +588,9 @@ class CoordenadorController extends Controller
 
                 $empresa = Empresa::find($relatorio->inspecao->empresas_id);
                 
-                $denuncias = Denuncia::find($inspecao->denuncias_id)
-                ->update(['status' => 'concluido']);
+                if ($inspecao->denuncias_id != null) {
+                    $denuncias = Denuncia::find($inspecao->denuncias_id)->update(['status' => 'concluido']);
+                }
 
                 return redirect()->route('historico.inspecoes')->with('message', 'Relatório aprovado com sucesso!');
             }
@@ -810,7 +827,7 @@ class CoordenadorController extends Controller
 
     public function downloadArquivo(Request $request)
     {
-        return response()->download(storage_path('app/' . $request->file));
+        return response()->download(storage_path('app/public/' . $request->file));
     }
 
     /* Função para selecionar e exibir na página a empresa que será

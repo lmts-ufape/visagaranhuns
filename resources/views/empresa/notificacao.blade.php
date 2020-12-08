@@ -90,13 +90,18 @@
                 <div class="modal-body">
                     <div class="row">
                         <div id="avisoReq" class="col-12" style="font-family: 'Roboto', sans-serif; margin-bottom:10px;">Descrição da notificação:</div>
-                        <div class="col-12"><textarea name="avisoRequerimentoRt" id="avisoRequerimentoRt" cols="30" rows="10"></textarea></div>
+                        <div class="col-12"><textarea name="avisoRequerimentoRt" id="summary-ckeditor" cols="30" rows="10" disabled></textarea></div>
                     </div>
                 </div>
         </form>
         </div>
     </div>
 </div>
+
+<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+<script>
+CKEDITOR.replace( 'summary-ckeditor' );
+</script>
 
 @endsection
 

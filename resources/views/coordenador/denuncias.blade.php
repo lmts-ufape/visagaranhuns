@@ -235,7 +235,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div id="avisoReq" class="col-12" style="font-family: 'Roboto', sans-serif; margin-bottom:10px;">Relato descrito pelo denunciante:</div>
-                        <div class="col-12"><textarea name="modalDenuncia" id="modalDenuncia"></textarea></div>
+                        <div class="col-12"><textarea name="modalDenuncia" id="summary-ckeditor" value="" disabled></textarea></div>
                     </div>
                 </div>
             </form>
@@ -430,6 +430,15 @@
             }
         });
     }
+
+    // window.denuncia = function(descricao){
+    //     CKEDITOR.instances["summary-ckeditor"].setData(descricao)
+    // }
+</script>
+
+<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+<script>
+CKEDITOR.replace( 'summary-ckeditor' );
 </script>
 @endsection
 

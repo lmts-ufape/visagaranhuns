@@ -447,7 +447,7 @@ class EmpresaController extends Controller
 
     public function baixarArquivosRt(Request $request)
     {
-        return response()->download(storage_path('app/'.$request->file));
+        return response()->download(storage_path('app/public/'.$request->file));
     }
 
     public function deletarRespTecnico(Request $request)
@@ -690,6 +690,14 @@ class EmpresaController extends Controller
             'complemento'  => 'nullable|string',
         ]);
 
+        $verificarCnaes = array_count_values($request->cnae);
+        foreach($verificarCnaes as $key => $value){
+            if($value > 1){
+                session()->flash('error', 'Atenção! Há um cnae repetido na sua lista de cnaes.');
+                return back();
+            }
+        }
+
         if ($request['cnae'] == null) {
             session()->flash('error', 'Atenção! Uma empresa deve possuir pelo menos um CNAE. (Lista: CNAE Selecionado)');
             return back();
@@ -889,7 +897,7 @@ class EmpresaController extends Controller
 
     public function baixarArquivos(Request $request)
     {
-        return response()->download(storage_path('app/'.$request->arquivo));
+        return response()->download(storage_path('app/public/'.$request->arquivo));
     }
 
     public function editarArquivos(Request $request)
