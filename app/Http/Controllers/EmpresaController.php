@@ -690,17 +690,17 @@ class EmpresaController extends Controller
             'complemento'  => 'nullable|string',
         ]);
 
+        if ($request['cnae'] == null) {
+            session()->flash('error', 'Atenção! Uma empresa deve possuir pelo menos um CNAE. (Lista: CNAE Selecionado)');
+            return back();
+        }
+
         $verificarCnaes = array_count_values($request->cnae);
         foreach($verificarCnaes as $key => $value){
             if($value > 1){
                 session()->flash('error', 'Atenção! Há um cnae repetido na sua lista de cnaes.');
                 return back();
             }
-        }
-
-        if ($request['cnae'] == null) {
-            session()->flash('error', 'Atenção! Uma empresa deve possuir pelo menos um CNAE. (Lista: CNAE Selecionado)');
-            return back();
         }
 
         $empresa->cnpjcpf = $request->cnpjcpf;

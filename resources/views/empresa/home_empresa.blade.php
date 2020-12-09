@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container" style="margin-bottom:30%">
+<div class="container" style="margin-bottom:10%">
     <div class="form-row justify-content-center" style="margin-bottom:3rem; margin-top:1.5rem">
         <div class="cardDashboard">
             <div class="container">
@@ -32,7 +32,7 @@
                 </div>
             </div>
         </div>
-
+        <a href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'notificacao']) }}" style="text-decoration:none;cursor:pointer;color:black;">
         <div class="cardDashboard">
             <div class="container">
                 <div class="form-row">
@@ -54,30 +54,32 @@
                 </div>
             </div>
         </div>
-
-        <div class="cardDashboard">
-            <div class="container">
-                <div class="form-row">
-                    <div class="col-12" style="margin-bottom:0.5rem;">
-                        <img src="{{ asset('/imagens/logo_papel.png') }}" alt="Logo" style="width:17px; height:20px; margin-top:-5px; margin-right:5px;"/>
-                        <label class="cardDashboard_titulo">Documentação</label>
-                    </div>
-                    {{-- <div style="text-align:center; width:100%; margin-top:40%"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="width:17px; height:20px; margin-top:-5px;"/> Em construção</div> --}}
-                    <div class="col-12">
-                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Documentos Pendentes</label>
-                        <div class="form-group">
-                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$pendentes}}</div>
+        </a>
+        <a href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'documentacao']) }}" style="text-decoration:none;cursor:pointer;color:black;">
+            <div class="cardDashboard">
+                <div class="container">
+                    <div class="form-row">
+                        <div class="col-12" style="margin-bottom:0.5rem;">
+                            <img src="{{ asset('/imagens/logo_papel.png') }}" alt="Logo" style="width:17px; height:20px; margin-top:-5px; margin-right:5px;"/>
+                            <label class="cardDashboard_titulo">Documentação</label>
                         </div>
-                    </div>
-                    <div class="col-12">
-                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Documentos Anexados</label>
-                        <div class="form-group">
-                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$anexados}}</div>
+                        {{-- <div style="text-align:center; width:100%; margin-top:40%"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="width:17px; height:20px; margin-top:-5px;"/> Em construção</div> --}}
+                        <div class="col-12">
+                            <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Documentos Pendentes</label>
+                            <div class="form-group">
+                                <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$pendentes}}</div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Documentos Anexados</label>
+                            <div class="form-group">
+                                <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$anexados}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
 
         {{-- <div class="cardDashboard">
             <div class="container">

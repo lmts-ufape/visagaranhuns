@@ -11,11 +11,23 @@
                             <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Voltar</div>
                         </div>
                     </a>
-                </div>
+                </div> 
                 <div class="mr-auto p-2 styleBarraPrincipalPC">
                     <div class="btn-group">
                         <div style="font-size:20px; font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;margin-bottom:-5px">Cadastrar Agente</div>
                     </div>
+                    @if ($message = Session::get('error'))
+                    <div class="alert alert-warning alert-block fade show">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>{{$message}}</strong>
+                    </div>
+                    @endif
+                    @if($errors->any())
+                        <div class="alert alert-warning alert-block fade show">
+                            <button type="button" class="close" data-dismiss="alert" style="margin-left: 10px">×</button>
+                            <strong>{{$errors->first()}}</strong>
+                        </div>
+                    @endif
                 </div>
                 <div class="p-2">
                     <div style="width:70px">

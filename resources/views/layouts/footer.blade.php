@@ -37,10 +37,11 @@
                         <li style="float: left; margin-right:30px; font-family:arial"><a href="" style="text-decoration: none; color:#fff;">Início</a></li>
                         <li style="float: left; margin-right:30px; font-family:arial"><a style="text-decoration: none; color:#fff;" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'estabelecimentos']) }}">Estabelecimentos</a></li>
                             @if(Auth::user()->status_cadastro == "aprovado")
-                                <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('emconstrucao') }}" style="text-decoration: none; color:#fff;cursor:pointer">Licenças</a></li>
-                                <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('listar.responsavelTec') }}" style="text-decoration: none; color:#fff;cursor:pointer">Responsável Técnico</a></li>
-                                <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'documentacao']) }}" style="text-decoration: none; color:#fff;cursor:pointer">Documentação</a></li>
+                                {{-- <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('emconstrucao') }}" style="text-decoration: none; color:#fff;cursor:pointer">Licenças</a></li> --}}
+                                {{-- <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('listar.responsavelTec') }}" style="text-decoration: none; color:#fff;cursor:pointer">Responsável Técnico</a></li> --}}
+                                <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'requerimento']) }}" style="text-decoration: none; color:#fff;cursor:pointer">Requerimentos</a></li>
                                 <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('emconstrucao') }}" style="text-decoration: none; color:#fff;cursor:pointer">Notificação</a></li>
+                                <li style="float: left; margin-right:30px;  font-family:arial"><a href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'documentacao']) }}" style="text-decoration: none; color:#fff;cursor:pointer">Documentação</a></li>
                             @endif
                         <li style="float: left; margin-right:30px;font-family:arial"></li>
                     @elseif(Auth::user()->tipo == "agente")

@@ -185,9 +185,9 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'notificacao']) }}">{{ __('Notificações') }}</a>
                                     </li>
-                                    <li class="nav-item">
+                                    {{-- <li class="nav-item">
                                         <a class="nav-link" href="{{ route('emconstrucao') }}">{{ __('Licenças') }}</a>
-                                    </li>
+                                    </li> --}}
                                     {{-- <li class="nav-item">
                                         <a class="nav-link" href="{{ route('listar.responsavelTec') }}">{{ __('Responsável Técnico') }}</a>
                                     </li> --}}

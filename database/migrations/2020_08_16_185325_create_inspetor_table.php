@@ -17,7 +17,7 @@ class CreateInspetorTable extends Migration
             $table->id();
             $table->string('formacao')->nullable();
             $table->string('especializacao')->nullable();
-            $table->string('cpf');
+            $table->string('cpf')->unique();
             $table->string('telefone');
 
             $table->bigInteger("user_id")->nullable();

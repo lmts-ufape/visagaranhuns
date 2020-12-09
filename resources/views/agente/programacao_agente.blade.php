@@ -33,7 +33,7 @@
         </div>
     </div>
 
-    <div class="barraMenu" style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
+    <div class="barraMenu" style="margin-top:2rem; margin-bottom:6rem;padding:15px;">
         <div class="container" style="margin-top:1rem;">
             <div class="form-row">
 

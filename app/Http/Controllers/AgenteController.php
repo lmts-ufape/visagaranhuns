@@ -356,13 +356,31 @@ class AgenteController extends Controller
         $user = User::find(Auth::user()->id);
         
         $validator = $request->validate([
+
+        ]);
+
+        $messages = [
+            'unique'   => 'Um campo igual a :attribute já está cadastrado no sistema!',
+            'required' => 'O campo :attribute não foi passado!',
+            'string'   => 'O campo :attribute deve ser texto!',
+        ];
+
+        $validator = Validator::make($request->all(), [
+
             'nome'           => 'required|string',
             'formacao'       => 'nullable|string',
             'especializacao' => 'nullable|string',
-            'cpf'            => 'required|string',
+            'cpf'            => 'required|string|unique:agente,cpf',
             'telefone'       => 'required|string',
             'password'       => 'required',
-        ]);
+
+        ], $messages);
+
+        
+        if ($validator->fails()) {
+            return back()
+                    ->withErrors($validator);
+        }
 
         // Atualiza dados de user para agente
         $user->name = $request->nome;
