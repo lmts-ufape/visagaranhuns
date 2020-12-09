@@ -46,3 +46,6 @@ Route::post("/save/comentario",  "ApiController@apiSaveComentario")->name("api.s
 
 //baixar img da inspecao
 Route::post("/download/img",  "ApiController@apiDownloadImg")->name("api.download.img");
+
+//atualizar dados
+Route::post("/atualizar/aplicativo",  "ApiController@apiAtualizarApp")->name("api.atualizar.app");
