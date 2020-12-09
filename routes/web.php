@@ -26,9 +26,11 @@ Route::get('/', function () {
 
         // $denunciasAcatado     = Denuncia::where('status', 'Acatado')->get();
         $denunciasTotal       = Denuncia::all()->count();
-        $denunciasArquivado   = Denuncia::where('status', 'Arquivado')->get();
+        $denunciasArquivado   = Denuncia::where('status', 'arquivado')->get();
+        $denunciasAceito      = Denuncia::where('status', 'aceito')->get();
         // $denunAcatado         = count($denunciasAcatado);
         $denunArquivado       = count($denunciasArquivado);
+        $denunAceito          = count($denunciasAceito);
 
         $requerimentosAprovado  = Requerimento::where('status', 'aprovado')->get();
         $requerimentosReprovado = Requerimento::where('status', 'reprovado')->get();
@@ -44,15 +46,19 @@ Route::get('/', function () {
 
         $empresasPendente      = Empresa::where('status_cadastro', 'pendente')->get();
         $empresasAprovada      = Empresa::where('status_cadastro', 'aprovado')->get();
+        $empresasTotal         = Empresa::all();
         $empPendente           = count($empresasPendente);
         $empAprovada           = count($empresasAprovada);
+        $empTotal              = count($empresasTotal);
 
         $notificacoesPendentes = Notificacao::where('status', 'pendente')->count();
         $notificacoesAprovadas = Notificacao::where('status', 'aprovado')->count();
+        $notificacoesTotal     = Notificacao::all()->count();
               
         return view('coordenador.home_coordenador',
         ['denunciasTotal'        => $denunciasTotal,
         'denunciasArquivado'     => $denunArquivado,
+        'denunciasAceito'        => $denunAceito,
         'requerimentosAprovado'  => $reqAprovado,
         'requerimentosReprovado' => $reqReprovado,
         'requerimentosPendente'  => $reqPendente,
@@ -60,8 +66,10 @@ Route::get('/', function () {
         'inspecoesCompleta'      => $inspecCompleta,
         'empresasPendente'       => $empPendente,
         'empresasAprovada'       => $empAprovada,
+        'empresasTotal'          => $empTotal,
         'notificacoesPendentes'  => $notificacoesPendentes,
         'notificacoesAprovadas'  => $notificacoesAprovadas,
+        'notificacoesTotal'      => $notificacoesTotal,
         ]);
         }
         elseif (Auth::user()->tipo == "empresa") {
@@ -226,6 +234,8 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get('/editar/areas',                                 'CoordenadorController@editarArea')->name('editar.area');
     Route::get('/buscar/tiposDocs',                             'CoordenadorController@buscarTiposDocs')->name('marcar.checkbox.tiposDocs');
     Route::post('/area/editar',                                 'CoordenadorController@areaEditar')->name('area.editar');
+    Route::get('/encontrar/agente',                             'CoordenadorController@encontrarAgente')->name('encontrar.agente');
+    Route::get('/encontrar/inspetor',                           'CoordenadorController@encontrarInspetor')->name('encontrar.inspetor');
     
 });
 

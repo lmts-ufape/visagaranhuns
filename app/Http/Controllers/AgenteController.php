@@ -356,8 +356,8 @@ class AgenteController extends Controller
         $user = User::find(Auth::user()->id);
         
         $validator = $request->validate([
-            'nome'     => 'required|string',
-            'formacao' => 'required|string',
+            'nome'           => 'required|string',
+            'formacao'       => 'nullable|string',
             'especializacao' => 'nullable|string',
             'cpf'            => 'required|string',
             'telefone'       => 'required|string',

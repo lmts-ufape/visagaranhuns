@@ -58,9 +58,11 @@ class CoordenadorController extends Controller
     {
         // $denunciasAcatado     = Denuncia::where('status', 'Acatado')->get();
         $denunciasTotal       = Denuncia::all()->count();
-        $denunciasArquivado   = Denuncia::where('status', 'Arquivado')->get();
+        $denunciasArquivado   = Denuncia::where('status', 'arquivado')->get();
+        $denunciasAceito      = Denuncia::where('status', 'aceito')->get();
         // $denunAcatado         = count($denunciasAcatado);
         $denunArquivado       = count($denunciasArquivado);
+        $denunAceito          = count($denunciasAceito);
 
         $requerimentosAprovado  = Requerimento::where('status', 'aprovado')->get();
         $requerimentosReprovado = Requerimento::where('status', 'reprovado')->get();
@@ -76,15 +78,19 @@ class CoordenadorController extends Controller
 
         $empresasPendente      = Empresa::where('status_cadastro', 'pendente')->get();
         $empresasAprovada      = Empresa::where('status_cadastro', 'aprovado')->get();
+        $empresasTotal         = Empresa::all();
         $empPendente           = count($empresasPendente);
         $empAprovada           = count($empresasAprovada);
+        $empTotal              = count($empresasTotal);
 
         $notificacoesPendentes = Notificacao::where('status', 'pendente')->count();
         $notificacoesAprovadas = Notificacao::where('status', 'aprovado')->count();
+        $notificacoesTotal     = Notificacao::all()->count();
               
         return view('coordenador.home_coordenador',
         ['denunciasTotal'        => $denunciasTotal,
         'denunciasArquivado'     => $denunArquivado,
+        'denunciasAceito'        => $denunAceito,
         'requerimentosAprovado'  => $reqAprovado,
         'requerimentosReprovado' => $reqReprovado,
         'requerimentosPendente'  => $reqPendente,
@@ -92,8 +98,10 @@ class CoordenadorController extends Controller
         'inspecoesCompleta'      => $inspecCompleta,
         'empresasPendente'       => $empPendente,
         'empresasAprovada'       => $empAprovada,
+        'empresasTotal'          => $empTotal,
         'notificacoesPendentes'  => $notificacoesPendentes,
         'notificacoesAprovadas'  => $notificacoesAprovadas,
+        'notificacoesTotal'      => $notificacoesTotal,
         ]);
     }
 
@@ -229,6 +237,34 @@ class CoordenadorController extends Controller
             "agentes"       => $agentes,
             "requerimentos" => $requerimentos,
         ]);
+    }
+
+    public function encontrarAgente(Request $request)
+    {
+        $agente = Agente::where('user_id', $request->id)->first();
+
+        $data = array(
+            'nome'           => $agente->user->name,
+            'cpf'            => $agente->cpf,
+            'formacao'       => $agente->formacao,
+            'especializacao' => $agente->especializacao,
+            'telefone'       => $agente->telefone,
+        );
+        echo json_encode($data);        
+    }
+
+    public function encontrarInspetor(Request $request)
+    {
+        $inspetor = Inspetor::where('user_id', $request->id)->first();
+
+        $data = array(
+            'nome'           => $inspetor->user->name,
+            'cpf'            => $inspetor->cpf,
+            'formacao'       => $inspetor->formacao,
+            'especializacao' => $inspetor->especializacao,
+            'telefone'       => $inspetor->telefone,
+        );
+        echo json_encode($data);        
     }
 
     public function encontrarRequerimento(Request $request)

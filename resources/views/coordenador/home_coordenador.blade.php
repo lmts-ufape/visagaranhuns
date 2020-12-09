@@ -3,40 +3,49 @@
 @section('content')
 <div class="container">
     <div class="form-row justify-content-center" style="margin-bottom:3rem; margin-top:1.5rem">
-        <div class="cardDashboard">
-            <div class="container">
-                <div class="form-row">
-                    <div class="col-12" style="margin-bottom:0.5rem;">
-                        <img src="{{ asset('/imagens/logo_megafone.png') }}" alt="Logo" style="width:19px; margin-right:5px;"/>
-                        <label class="cardDashboard_titulo">Denúncias</label>
-                    </div>
-                    {{-- <div class="col-12">Denúncias em <span style="font-weight:bold">2020:</span></div>
-                    <div class="col-12" style="margin-top:rem;font-size:50px;text-align:center;font-weight:lighter;font-family:monospace;color:gray">85</div>
-                    <div class="col-12">Denúncias não lidas:</div>
-                    <div class="col-12" style="margin-top:rem;font-size:50px;text-align:center;font-weight:lighter;font-family:monospace;color:gray">25</div> --}}
-
-                    {{-- <div class="col-12">
-                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Denúncias Acatadas</label>
-                        <div class="form-group">
-                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$denunciasAcatado}}</div>
+        <a href="{{ route('pagina.denuncia.coordenador') }}" style="text-decoration:none;cursor:pointer;color:black;">
+            <div class="cardDashboard">
+                <div class="container">
+                    <div class="form-row">
+                        <div class="col-12" style="margin-bottom:0.5rem;">
+                            <img src="{{ asset('/imagens/logo_megafone.png') }}" alt="Logo" style="width:19px; margin-right:5px;"/>
+                            <label class="cardDashboard_titulo">Denúncias</label>
                         </div>
-                    </div> --}}
-                    <div class="col-12">
-                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Denúncias Arquivadas</label>
-                        <div class="form-group">
-                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$denunciasArquivado}}</div>
-                        </div>
-                    </div>
+                        {{-- <div class="col-12">Denúncias em <span style="font-weight:bold">2020:</span></div>
+                        <div class="col-12" style="margin-top:rem;font-size:50px;text-align:center;font-weight:lighter;font-family:monospace;color:gray">85</div>
+                        <div class="col-12">Denúncias não lidas:</div>
+                        <div class="col-12" style="margin-top:rem;font-size:50px;text-align:center;font-weight:lighter;font-family:monospace;color:gray">25</div> --}}
 
-                    <div class="col-12">
-                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Total de Denúncias</label>
-                        <div class="form-group">
-                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$denunciasTotal}}</div>
+                        {{-- <div class="col-12">
+                            <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Denúncias Acatadas</label>
+                            <div class="form-group">
+                                <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$denunciasAcatado}}</div>
+                            </div>
+                        </div> --}}
+                        <div class="col-12">
+                            <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Denúncias Arquivadas</label>
+                            <div class="form-group">
+                                <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$denunciasArquivado}}</div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Denúncias Aceitas</label>
+                            <div class="form-group">
+                                <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$denunciasAceito}}</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Total de Denúncias</label>
+                            <div class="form-group">
+                                <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$denunciasTotal}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
+        <a href="{{ route('pagina.requerimento') }}" style="text-decoration:none;cursor:pointer;color:black;">
         <div class="cardDashboard">
             <div class="container">
                 <div class="form-row">
@@ -68,6 +77,8 @@
                 </div>
             </div>
         </div>
+        </a>
+        <a href="{{ route('historico.inspecoes') }}" style="text-decoration:none;cursor:pointer;color:black;">
         <div class="cardDashboard" style="margin-bottom: 45px;">
             <div class="container">
                 <div class="form-row">
@@ -96,6 +107,8 @@
                 </div>
             </div>
         </div>
+        </a>
+        <a href="{{ route('listagem.area') }}" style="text-decoration:none;cursor:pointer;color:black;">
         <div class="cardDashboard">
             <div class="container">
                 <div class="form-row">
@@ -116,6 +129,12 @@
                             <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$empresasAprovada}}</div>
                         </div>
                     </div>
+                    <div class="col-12">
+                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Total de Cadastros</label>
+                        <div class="form-group">
+                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$empresasTotal}}</div>
+                        </div>
+                    </div>
 
                     {{-- <div class="col-12" style="font-size:13.5px">Pendentes</div>
                     <div class="col-12" style="font-size:13.5px">
@@ -133,6 +152,7 @@
                 </div>
             </div>
         </div>
+        </a>
         <div class="cardDashboard">
             <div class="container">
                 <div class="form-row">
@@ -151,6 +171,12 @@
                         <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Notificações aprovadas</label>
                         <div class="form-group">
                             <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$notificacoesAprovadas}}</div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Total de Notificações</label>
+                        <div class="form-group">
+                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$notificacoesTotal}}</div>
                         </div>
                     </div>
                     {{-- <div class="col-12">

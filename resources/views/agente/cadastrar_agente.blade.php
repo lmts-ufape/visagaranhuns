@@ -14,7 +14,7 @@
                 </div>
                 <div class="mr-auto p-2 styleBarraPrincipalPC">
                     <div class="btn-group">
-                        <div style="font-size:20px; font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;margin-bottom:-5px">Cadastrar agente</div>
+                        <div style="font-size:20px; font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;margin-bottom:-5px">Cadastrar Agente</div>
                     </div>
                 </div>
                 <div class="p-2">
@@ -30,31 +30,51 @@
         <div class="container" style="margin-top:1rem;margin-left:10px;">
             <div class="form-row">
                 <div class="form-group col-md-4">
+                    <label class="styleTituloDoInputCadastro" for="inputNome4">Nome do Usuário:<span style="color:red">*</span></label>
+                    <input id="nomeAgente" type="text" class="styleInputCadastro" name="nome" placeholder="" value="" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="styleTituloDoInputCadastro" for="inputNome4">CPF:<span style="color:red">*</span></label>
+                    <input id="nomeAgente" type="text" class="styleInputCadastro" name="cpf" placeholder="" value="" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="styleTituloDoInputCadastro" for="inputNome4">Formação:<span style="color:red"></span></label>
+                    <input id="nomeAgente" type="text" class="styleInputCadastro" name="formacao" placeholder="" value="">
+                </div>
+                {{-- <div class="form-group col-md-4">
                     <label for="inputEmail4">Nome Completo<span style="color:red">*</span></label>
                     <input type="text" class="form-control" name="nome" placeholder="" required>
-                </div>
-                <div class="form-group col-md-4">
+                </div> --}}
+                {{-- <div class="form-group col-md-4">
                     <label for="inputPassword4">CPF:<span style="color:red">*</span></label>
                     <input type="text" class="form-control" name="cpf" placeholder="" required>
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="inputPassword4">Formação:<span style="color:red">*</span></label>
+                </div> --}}
+                {{-- <div class="form-group col-md-4">
+                    <label for="inputPassword4">Formação:<span style="color:red"></span></label>
                     <input type="text" class="form-control" name="formacao" placeholder="" required>
-                </div>
+                </div> --}}
             </div>
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label for="inputEmail4">Especialização:<span style="color:red">*</span></label>
-                    <input type="text" class="form-control" name="especializacao" placeholder="" required>
+                    <label class="styleTituloDoInputCadastro" for="inputNome4">Especialização:<span style="color:red"></span></label>
+                    <input id="nomeAgente" type="text" class="styleInputCadastro" name="especializacao" placeholder="" value="">
                 </div>
-                <div class="form-grtextoup col-md-4">
+                <div class="form-group col-md-4">
+                    <label class="styleTituloDoInputCadastro" for="inputNome4">Telefone:<span style="color:red">*</span></label>
+                    <input id="nomeAgente" type="text" class="styleInputCadastro" name="telefone" placeholder="" value="" required>
+                </div>
+                {{-- <div class="form-group col-md-4">
+                    <label for="inputEmail4">Especialização:<span style="color:red"></span></label>
+                    <input type="text" class="form-control" name="especializacao" placeholder="" required>
+                </div> --}}
+                {{-- <div class="form-grtextoup col-md-4">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputEmail4">Telefone:<span style="color:red">*</span></label>
                             <input type="text" class="form-control" name="telefone" id="inputTelefone1" placeholder="" required>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
             </div>
         </div>
@@ -70,14 +90,23 @@
             <div class="container" style="margin-top:1rem;margin-left:1px;">
                 <div class="container" style="margin-top:1rem;margin-left:10px;">
                     <div class="form-row">
+
                         <div class="form-group col-md-4">
+                            <label class="styleTituloDoInputCadastro" for="inputNome4">E-mail:<span style="color:red"></span></label>
+                            <input id="nomeAgente" type="text" class="styleInputCadastro" name="" placeholder="{{$user}}" disabled>
+                        </div>
+                        {{-- <div class="form-group col-md-4">
                             <label for="inputEmail4">E-mail:<span style="color:red">*</span></label>
                             <input type="text" class="form-control" name="" placeholder="{{$user}}" disabled>
-                        </div>
+                        </div> --}}
                         <div class="form-group col-md-4">
+                            <label class="styleTituloDoInputCadastro" for="inputNome4">Alterar senha:<span style="color:red">*</span></label>
+                            <input id="nomeAgente" type="password" class="styleInputCadastro" name="password" placeholder="" required>
+                        </div>
+                        {{-- <div class="form-group col-md-4">
                             <label for="inputPassword4">Alterar senha:<span style="color:red">*</span></label>
                             <input type="password" class="form-control" name="password" placeholder="" required>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
