@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <div class="form-row justify-content-center" style="margin-bottom:3.5rem; margin-top:1.5rem">
+    <div class="form-row justify-content-center" style="margin-bottom:6.0rem; margin-top:1.5rem">
         <div class="cardDashboard">
             <div class="container">
                 <div class="form-row">

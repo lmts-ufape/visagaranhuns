@@ -43,6 +43,59 @@
   <hr class="line-title"> 
 
   @foreach ($emps as $indice)
+    @if ($indice->email == "Empresa não cadastrada")
+    <p align="left">
+      {{$indice->nome}} <br>
+    </p>
+    <div class="row">
+      <div class="col-5" style="line-height: 15px">
+        <b>Endereço: {{$indice->endereco}}</b>
+      </div>
+      <div class="col-7" style="margin-left: 300px; line-height: 10px;">
+        <b>CAA: cAMPI</b>
+      </div>      
+    </div>
+    <div class="row">
+      <div class="col-6" style="line-height: 10px">
+        <b>CNPJ/CPF: {{$indice->cnpjcpf}}</b>
+      </div>
+      <div class="col-6" style="margin-left: 300px; line-height: 10px;">
+        <b>CEP: {{$indice->cep}}</b>
+      </div>      
+    </div>
+    <div class="row">
+      <div class="col-6" style="line-height: 10px">
+        <b>Tipo: {{$indice->tipo}}</b>
+      </div>
+      <div class="col-6" style="margin-left: 300px; line-height: 10px;">
+        <b>Bairro: {{$indice->bairro}}</b>
+      </div>      
+    </div>
+    <div class="row">
+      <div class="col-6" style="line-height: 10px">
+        <b>Email: {{$indice->email}}</b>
+      </div>
+      <div class="col-6" style="margin-left: 300px; line-height: 10px;">
+        <b>Rua: {{$indice->rua}}</b>
+      </div>      
+    </div>
+    <div class="row">
+      <div class="col-6" style="line-height: 10px">
+        <b>Telefone 1: {{$indice->telefone1}}</b>
+      </div>
+      <div class="col-6" style="margin-left: 300px; line-height: 10px;">
+        <b>Complemento: {{$indice->complemento}}</b>
+      </div>      
+    </div>
+    <div class="row">
+      <div class="col-6" style="line-height: 10px">
+        <b>Telefone 2: {{$indice->telefone2}}</b>
+      </div>
+      <div class="col-6" style="margin-left: 300px; line-height: 10px;">
+        <b></b>
+      </div>      
+    </div>
+    @else
     <p align="left">
       {{$indice->nome}} <br>
     </p>
@@ -86,6 +139,7 @@
         <b></b>
       </div>      
     </div>
+    @endif
 
     <hr class="line-title-2">
     

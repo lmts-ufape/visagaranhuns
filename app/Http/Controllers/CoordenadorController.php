@@ -99,14 +99,16 @@ class CoordenadorController extends Controller
 
     public function nameMethod()
     {
-        $date = date('Y-m-d');
+        $date = new \DateTime();
+        // $date = date('Y-m-d');
+        $hoje = $date->format('Y/m/d');
 
-        $inspecoes = Inspecao::where('status', 'pendente')->where('data', $date)->get();
+        $inspecoes = Inspecao::where('status', 'pendente')->where('data', $hoje)->get();
         // $inspecoes = Inspecao::where('status', 'pendente')->get();
         $inspecao = [];
         $empNome = [];
         $emps = [];
-
+        
         foreach ($inspecoes as $key) {
 
             if ($key->motivo == "Primeira Licenca" || $key->motivo == "Renovacao") {
@@ -168,26 +170,50 @@ class CoordenadorController extends Controller
 
         foreach ($empresas as $indice) {
             $emp = Empresa::where('nome', $indice)->first();
-            $endereco = Endereco::where('empresa_id', $emp->id)->first();
-            $telefone = Telefone::where('empresa_id', $emp->id)->first();
+            if ($emp != null) {
+                $endereco = Endereco::where('empresa_id', $emp->id)->first();
+                $telefone = Telefone::where('empresa_id', $emp->id)->first();
+    
+                $obj = (object) array(
+                    'nome'       => $emp->nome,
+                    'email'      => $emp->email,
+                    'cnpjcpf'    => $emp->cnpjcpf,
+                    'tipo'       => $emp->tipo,
+                    'cep'        => $endereco->cep,
+                    'rua'        => $endereco->rua,
+                    'numero'     => $endereco->numero,
+                    'bairro'     => $endereco->bairro,
+                    'complemento'=> $endereco->complemento,
+                    'telefone1'  => $telefone->telefone1,
+                    'telefone2'  => $telefone->telefone2,                
+                );
+    
+                array_push($emps, $obj);
+            } else {
 
-            $obj = (object) array(
-                'nome'       => $emp->nome,
-                'email'      => $emp->email,
-                'cnpjcpf'    => $emp->cnpjcpf,
-                'tipo'       => $emp->tipo,
-                'cep'        => $endereco->cep,
-                'rua'        => $endereco->rua,
-                'numero'     => $endereco->numero,
-                'bairro'     => $endereco->bairro,
-                'complemento'=> $endereco->complemento,
-                'telefone1'  => $telefone->telefone1,
-                'telefone2'  => $telefone->telefone2,                
-            );
-
-            array_push($emps, $obj);
+                $denuncia = Denuncia::where('empresa', $indice)->first();
+                // $endereco = Endereco::where('empresa_id', $emp->id)->first();
+                // $telefone = Telefone::where('empresa_id', $emp->id)->first();
+    
+                $obj = (object) array(
+                    'nome'       => $denuncia->empresa,
+                    'email'      => "Empresa não cadastrada",
+                    'cnpjcpf'    => "Empresa não cadastrada",
+                    'tipo'       => "Empresa não cadastrada",
+                    'endereco'   => $denuncia->endereco,
+                    'cep'        => "Empresa não cadastrada",
+                    'rua'        => "Empresa não cadastrada",
+                    'numero'     => "Empresa não cadastrada",
+                    'bairro'     => "Empresa não cadastrada",
+                    'complemento'=> "Empresa não cadastrada",
+                    'telefone1'  => "Empresa não cadastrada",
+                    'telefone2'  => "Empresa não cadastrada",                
+                );
+    
+                array_push($emps, $obj);
+            }
         }
-        
+
         $pdf = PDF::loadView('coordenador/inspecoes', compact('inspecao', 'emps'));
         return $pdf->setPaper('a4')->stream('inspecoes.pdf');
     }

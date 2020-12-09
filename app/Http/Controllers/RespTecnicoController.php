@@ -241,17 +241,29 @@ class RespTecnicoController extends Controller
         $notificacoes = [];
 
         foreach ($notificacao as $indice) {
-            if ($indice->inspecao->empresas_id == $empresa->id) {
-                if ($indice->inspecao->motivo == 'Denuncia') {
-                    array_push($notificacoes, $indice);
-                } else {
-                    if($indice->inspecao->requerimento->resptecnicos_id == $rt->id){
+
+            if ($indice->inspecao->empresas_id == null) {
+                if ($indice->inspecao->denuncia->empresa_id != null) {
+                    if ($indice->inspecao->denuncia->empresa_id == $empresa->id) {
                         array_push($notificacoes, $indice);
-                    }  
+                    }
                 }
-            }          
+            } else {
+                if($indice->inspecao->requerimento->resptecnicos_id == $rt->id){
+                    array_push($notificacoes, $indice);
+                }
+            }            
+            // if ($indice->inspecao->empresas_id == $empresa->id) {
+            //     if ($indice->inspecao->motivo == 'Denuncia') {
+            //         array_push($notificacoes, $indice);
+            //     } else {
+            //         if($indice->inspecao->requerimento->resptecnicos_id == $rt->id){
+            //             array_push($notificacoes, $indice);
+            //         }  
+            //     }
+            // }
         }
-        dd($notificacoes);
+        // dd($notificacoes);
 
         return view('responsavel_tec/notificacao',[
             'notificacoes' => $notificacoes,

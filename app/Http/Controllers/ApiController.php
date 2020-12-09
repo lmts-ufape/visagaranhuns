@@ -46,29 +46,87 @@ class ApiController extends Controller
         $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
         $listaDeInspecoes = [];
         foreach ($inspecoes as $indice) {
-            $endereco = Endereco::where('empresa_id', $indice->requerimento->empresa->id)
-            ->first();
-            $telefone = Telefone::where('empresa_id', $indice->requerimento->empresa->id)
-            ->first();
 
-            $obj = array(
-                'empresa_nome'  => $indice->requerimento->empresa->nome,
-                'rua'           => $endereco->rua,
-                'numero'        => $endereco->numero,
-                'bairro'        => $endereco->bairro,
-                'cep'           => $endereco->cep,
-                'cnpjcpf'          => $indice->requerimento->empresa->cnpjcpf,
-                'representante_legal' => $indice->requerimento->empresa->user->name,
-                'telefone1'     => $telefone->telefone1,
-                'telefone2'     => $telefone->telefone2,
-                'email'         => $indice->requerimento->empresa->email,
-                'data'          => $indice->data,
-                'status'        => $indice->status,
-                'tipo'          => $indice->requerimento->tipo,
-                'descricao'     => $indice->requerimento->cnae->descricao,
-                'inspecao_id'   => $indice->id,
-            );
-            array_push($listaDeInspecoes, $obj);
+            if ($indice->denuncias_id == null) {
+
+                $endereco = Endereco::where('empresa_id', $indice->requerimento->empresa->id)
+                ->first();
+                $telefone = Telefone::where('empresa_id', $indice->requerimento->empresa->id)
+                ->first();
+
+                $obj = array(
+                    'empresa_nome'  => $indice->requerimento->empresa->nome,
+                    'rua'           => $endereco->rua,
+                    'numero'        => $endereco->numero,
+                    'bairro'        => $endereco->bairro,
+                    'cep'           => $endereco->cep,
+                    'cnpjcpf'          => $indice->requerimento->empresa->cnpjcpf,
+                    'representante_legal' => $indice->requerimento->empresa->user->name,
+                    'telefone1'     => $telefone->telefone1,
+                    'telefone2'     => $telefone->telefone2,
+                    'email'         => $indice->requerimento->empresa->email,
+                    'data'          => $indice->data,
+                    'status'        => $indice->status,
+                    'tipo'          => $indice->requerimento->tipo,
+                    'descricao'     => $indice->requerimento->cnae->descricao,
+                    'inspecao_id'   => $indice->id,
+                    'motivo'        => $indice->motivo,
+                );
+                array_push($listaDeInspecoes, $obj);
+            } else {
+
+                if ($indice->denuncia->empresa_id != null) {
+
+                    $endereco = Endereco::where('empresa_id', $indice->denuncia->empresa_id)
+                    ->first();
+                    $telefone = Telefone::where('empresa_id', $indice->denuncia->empresa_id)
+                    ->first();
+
+                    $obj = array(
+                        'empresa_nome'  => $indice->denuncia->empresa,
+                        'rua'           => $endereco->rua,
+                        'numero'        => $endereco->numero,
+                        'bairro'        => $endereco->bairro,
+                        'cep'           => $endereco->cep, 
+                        'cnpjcpf'       => $indice->denuncia->empresa->cnpjcpf,
+                        'representante_legal' => $indice->denuncia->empresa->user->name,
+                        'telefone1'     => $telefone->telefone1,
+                        'telefone2'     => $telefone->telefone2,
+                        'email'         => $indice->denuncia->empresa->email,
+                        'data'          => $indice->data,
+                        'status'        => $indice->status,
+                        'tipo'          => null,
+                        'descricao'     => null,
+                        'inspecao_id'   => $indice->id,
+                        'motivo'        => $indice->motivo,
+                        'relato'        => $indice->denuncia->denuncia,
+                    );
+                    array_push($listaDeInspecoes, $obj);
+                } else {
+
+                    $obj = array(
+                        'empresa_nome'  => $indice->denuncia->empresa,
+                        // 'rua'           => $endereco->rua,
+                        // 'numero'        => $endereco->numero,
+                        // 'bairro'        => $endereco->bairro,
+                        // 'cep'           => $endereco->cep, 
+                        // 'cnpjcpf'       => $indice->denuncia->empresa->cnpjcpf,
+                        // 'representante_legal' => $indice->denuncia->empresa->user->name,
+                        // 'telefone1'     => $telefone->telefone1,
+                        // 'telefone2'     => $telefone->telefone2,
+                        // 'email'         => $indice->denuncia->empresa->email,
+                        'endereco'      => $indice->denuncia->endereco,
+                        'data'          => $indice->data,
+                        'status'        => $indice->status,
+                        'tipo'          => null,
+                        'descricao'     => null,
+                        'inspecao_id'   => $indice->id,
+                        'motivo'        => $indice->motivo,
+                        'relato'        => $indice->denuncia->denuncia,
+                    );
+                    array_push($listaDeInspecoes, $obj);
+                }
+            }
         }
         //  documentos
         //$user = User::where('remember_token','=',$request->token)->first();
