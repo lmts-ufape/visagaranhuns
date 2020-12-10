@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container" style="margin-bottom: 160px">
     <div class="barraMenu">
         <div class="d-flex justify-content-center">
             <div class="mr-auto p-2 styleBarraPrincipalMOBILE">
@@ -130,7 +130,7 @@
                     <div class="col-12"><input type="text" class="form-control" id="nomeDaSecaoDeletar" disabled></div>
 
                     <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px">Descrição</div>
-                    <div class="col-12"><textarea type="text" class="form-control" id="descricaoSecaoDeletar"></textarea></div>
+                    <div class="col-12"><textarea type="text" class="form-control" id="descricaoSecaoDeletar" disabled></textarea></div>
                     <input type="hidden" id="idSecaoDeletar">
                 </div>
             </div>
@@ -168,7 +168,12 @@
         </div>
     </div>
 
-
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script>
+    CKEDITOR.replace( 'descricaoSecao' );
+    CKEDITOR.replace( 'descricaoSecaoDeletar' );
+    CKEDITOR.replace( 'descricaoSecaoEditar' );
+    </script>
 @endsection
 
 
