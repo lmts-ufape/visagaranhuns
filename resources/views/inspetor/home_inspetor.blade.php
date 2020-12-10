@@ -2,30 +2,33 @@
 
 @section('content')
 <div class="container" style="margin-bottom:5%">
-    <div class="form-row justify-content-center" style="margin-bottom:3rem; margin-top:1.5em">
-        <div class="cardDashboard">
-            <div class="container">
-                <div class="form-row">
-                    <div class="col-12" style="margin-bottom:0.5rem;">
-                        <img src="{{ asset('/imagens/logo_papel.png') }}" alt="Logo" style="width:17px; height:20px; margin-top:-5px; margin-right:5px;"/>
-                        <label class="cardDashboard_titulo">Programação</label>
-                    </div>
-                    {{-- <label style="margin-left:5px; font-family: 'Roboto', sans-serif;">Inspeções pendentes:</label> --}}
-                    <div class="col-12">
-                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.7px">Inspeções pendentes</label>
-                        <div class="form-group">
-                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$pendente}}</div>
+    <div class="form-row justify-content-center" style="margin-bottom:6rem; margin-top:1.5em">
+
+        <a href="{{ route('show.programacao') }}" style="text-decoration:none;cursor:pointer;color:black;">
+            <div class="cardDashboard">
+                <div class="container">
+                    <div class="form-row">
+                        <div class="col-12" style="margin-bottom:0.5rem;">
+                            <img src="{{ asset('/imagens/logo_papel.png') }}" alt="Logo" style="width:17px; height:20px; margin-top:-5px; margin-right:5px;"/>
+                            <label class="cardDashboard_titulo">Programação</label>
                         </div>
-                    </div>
-                    <div class="col-12">
-                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Inspeções completas</label>
-                        <div class="form-group">
-                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$aprovado}}</div>
+                        {{-- <label style="margin-left:5px; font-family: 'Roboto', sans-serif;">Inspeções pendentes:</label> --}}
+                        <div class="col-12">
+                            <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.7px">Inspeções pendentes</label>
+                            <div class="form-group">
+                                <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$pendente}}</div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Inspeções completas</label>
+                            <div class="form-group">
+                                <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$aprovado}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
 
         <div class="cardDashboard">
             <div class="container">

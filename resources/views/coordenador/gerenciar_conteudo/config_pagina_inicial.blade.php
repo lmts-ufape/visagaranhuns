@@ -35,7 +35,7 @@
             </div>
         </div>
     </div>
-    <div class="barraMenu" style="margin-top:2rem; margin-bottom:5rem;padding:15px; background-color:white">
+    <div class="barraMenu" style="margin-top:2rem; margin-bottom:10rem;padding:15px; background-color:white">
         <div class="d-flex justify-content-center">
             <div class="mr-auto p-2 ">
                 <label style="font-size:19px;margin-top:-10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">Serviços cadastrados</label>

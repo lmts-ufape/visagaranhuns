@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <div class="barraMenu" style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
+    <div class="barraMenu" style="margin-top:2rem; margin-bottom:5rem;padding:15px;">
         <div class="container" style="margin-top:1rem;">
             <div class="form-row">
                 <div class="form-group col-md-12">
@@ -92,13 +92,18 @@
                 <div class="modal-body">
                     <div class="row">
                         <div id="avisoReq" class="col-12" style="font-family: 'Roboto', sans-serif; margin-bottom:10px;">Descrição da notificação:</div>
-                        <div class="col-12"><textarea name="avisoRequerimentoRt" id="avisoRequerimentoRt" cols="30" rows="10"></textarea></div>
+                        <div class="col-12"><textarea name="avisoRequerimentoRt" id="summary-ckeditor" cols="30" rows="10" disabled></textarea></div>
                     </div>
                 </div>
         </form>
         </div>
     </div>
 </div>
+
+<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+<script>
+CKEDITOR.replace( 'summary-ckeditor' );
+</script>
 
 @endsection
 

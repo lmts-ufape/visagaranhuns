@@ -143,7 +143,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div id="avisoReq" class="col-12" style="font-family: 'Roboto', sans-serif; margin-bottom:10px;">Motivo da reprovação do requerimento:</div>
-                        <div class="col-12"><textarea name="avisoRequerimentoEmpresa" id="avisoRequerimentoEmpresa" cols="30" rows="10"></textarea></div>
+                        <div class="col-12"><textarea name="avisoRequerimentoEmpresa" id="summary-ckeditor" cols="30" rows="10" disabled></textarea></div>
                     </div>
                 </div>
             </form>
@@ -231,6 +231,11 @@
             </div>
         </div>
     </div>
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script>
+    CKEDITOR.replace( 'summary-ckeditor' );
+    </script>
 @endsection
 
 <script type="text/javascript">

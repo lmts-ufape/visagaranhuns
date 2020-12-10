@@ -173,9 +173,9 @@
                                             @if ($indice->areas_id == $item->area_id)
                                                 @if($indice->anexado == "false")
                                                 <div class="form col-md-12">
-                                                    <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/> {{$indice->nomeDoc}} -
+                                                    <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/> {{$indice->nomeDoc}}
 
-                                                        <span style="color:#e1ad01">Pendente</span>
+                                                        <span style="color:#e1ad01"></span>
                                                     </label>
                                                 </div>
                                                 @else

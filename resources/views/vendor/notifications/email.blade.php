@@ -43,8 +43,8 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-@lang('Regards'),<br>
-{{ config('app.name') }}
+@lang('Atenciosamente '),<br>
+Visa Garanhuns
 @endif
 
 {{-- Subcopy --}}

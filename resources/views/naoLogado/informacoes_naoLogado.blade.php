@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container" style="margin-bottom: 130px">
     <div class="barraMenu">
         <div class="d-flex justify-content-center">
             <div class="mr-auto p-2 styleBarraPrincipalMOBILE">

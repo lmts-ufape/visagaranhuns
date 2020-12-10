@@ -8,13 +8,16 @@ use App\User;
 use App\Telefone;
 use App\Endereco;
 use App\Docempresa;
+use App\Docresptec;
 use App\Requerimento;
 use App\Area;
 use App\Cnae;
+use Illuminate\Support\Str;
 use App\CnaeEmpresa;
 use App\RespTecnico;
 use App\RtEmpresa;
 use App\Tipodocempresa;
+use App\Tipodocresp;
 use App\Inspecao;
 use App\Notificacao;
 use Illuminate\Support\Facades\Storage;
@@ -22,6 +25,7 @@ use Auth;
 use DateTime;
 use App\AreaTipodocemp;
 use App\Checklistemp;
+use App\Checklistresp;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
@@ -441,6 +445,35 @@ class EmpresaController extends Controller
         return redirect()->route('confirma.cadastro');
     }
 
+    public function baixarArquivosRt(Request $request)
+    {
+        return response()->download(storage_path('app/public/'.$request->file));
+    }
+
+    public function deletarRespTecnico(Request $request)
+    {
+        // $docs         = Docresptec::where('resptecnicos_id', $request->idRespTecnico)->delete();
+        // $checklist    = Checklistresp::where('resptecnicos_id', $request->idRespTecnico)->delete();
+        
+        $rtempresa       = RtEmpresa::where('empresa_id', $request->idEmpresa)
+        ->where('resptec_id', $request->idRespTecnico)
+        ->where('area_id', $request->idArea)
+        ->delete();
+        
+        // $respTecnico  = RespTecnico::find($request->idRespTecnico);
+        // $user         = User::find($respTecnico->user_id);
+
+        // $caminho          = Str::random(8);
+        // $respTecnico->cpf = Str::random(11);
+        // $user->email      = $caminho."@gmail.com";
+        // $respTecnico->save();
+        // $user->save();
+
+        session()->flash('success', 'Responsável Técnico Removido!');
+        return back();
+
+    }
+
     /**
      * Display the specified resource.
      *
@@ -585,9 +618,16 @@ class EmpresaController extends Controller
         $notificacoes = [];
 
         foreach ($notificacao as $indice) {
-            if ($indice->inspecao->empresas_id == $empresa->id) {
-                array_push($notificacoes, $indice);
-            }          
+            if($indice->inspecao->requerimento_id != null) {
+                if ($indice->inspecao->requerimento->empresas_id == $empresa->id) {
+                    array_push($notificacoes, $indice);
+                }
+            }
+            elseif ($indice->inspecao->denuncias_id != null) {
+                if ($indice->inspecao->denuncia->empresa_id == $empresa->id) {
+                    array_push($notificacoes, $indice);
+                }
+            }       
         }
         // dd($notificacoes);
 
@@ -653,6 +693,14 @@ class EmpresaController extends Controller
         if ($request['cnae'] == null) {
             session()->flash('error', 'Atenção! Uma empresa deve possuir pelo menos um CNAE. (Lista: CNAE Selecionado)');
             return back();
+        }
+
+        $verificarCnaes = array_count_values($request->cnae);
+        foreach($verificarCnaes as $key => $value){
+            if($value > 1){
+                session()->flash('error', 'Atenção! Há um cnae repetido na sua lista de cnaes.');
+                return back();
+            }
         }
 
         $empresa->cnpjcpf = $request->cnpjcpf;
@@ -849,7 +897,7 @@ class EmpresaController extends Controller
 
     public function baixarArquivos(Request $request)
     {
-        return response()->download(storage_path('app/'.$request->arquivo));
+        return response()->download(storage_path('app/public/'.$request->arquivo));
     }
 
     public function editarArquivos(Request $request)
@@ -1058,6 +1106,58 @@ class EmpresaController extends Controller
          'empresaId'        => $empresa->id,
          'empresa_status'   => $empresa->status_cadastro,
          ]);
+    }
+
+    public function documentosRt(Request $request)
+    {
+        // $rtId = Crypt::decrypt($request->rt_id);
+        $rtId = Crypt::decrypt($request->respTecnico);
+
+        $rt = RespTecnico::find($rtId);
+        $docsrt = Docresptec::where('resptecnicos_id', $rt->id)->get();
+        $temp = [];
+        $checkrespt = [];
+        // $docsRt = [];
+
+        $checklistresp = Checklistresp::where('resptecnicos_id', $rt->id)->orderBy('nomeDoc','ASC')->pluck('tipodocres_id');
+        for ($i=0; $i < count($checklistresp); $i++) {
+            array_push($temp, $checklistresp[$i]);
+        }
+
+        $array = array_unique($temp);
+
+        foreach ($array as $indice) {
+            array_push($checkrespt, Checklistresp::where('tipodocres_id', $indice)
+            ->where('resptecnicos_id', $rt->id)->first());
+        }
+
+        $tipodocresp = Tipodocresp::all();
+
+        // foreach ($checkrespt as $key) {
+        //     foreach ($docsrt as $indice) {
+        //         if ($key->tipodocres_id == $indice->tipodocresp_id && $key->resptecnicos_id == $indice->resptecnicos_id) {
+        //             $obj = (object) array(
+        //                 'nomeDoc'    => $key->nomeDoc,
+        //                 'anexado'    => $key->anexado,
+        //                 'caminho'    => $key->nome,
+        //             );
+        //             array_push($docsRt, $obj);
+        //         }else {
+        //             $obj = (object) array(
+        //                 'nomeDoc'    => $key->nomeDoc,
+        //                 'anexado'    => $key->anexado,
+        //                 'caminho'    => null,
+        //             );
+        //             array_push($docsRt, $obj);
+        //         }
+        //     }
+        // }
+
+        return view('empresa/documentos_rt',[
+            'checklist' => $checkrespt,
+            'tipodocs'  => $tipodocresp,
+            'docsrt'    => $docsrt,
+        ]);
     }
 
     public function showDocumentacao(Request $request){
@@ -1371,6 +1471,20 @@ class EmpresaController extends Controller
     }
 
     public function downloadArquivo(Request $request){
-        return response()->download(storage_path('app/' . $request->file));
+        return response()->download(storage_path('app/public/' . $request->file));
+    }
+
+    public function dadosEmpresa(Request $request)
+    {
+        $empresa = Empresa::find($request->id_empresa);
+        $endereco = Endereco::where('empresa_id', $empresa->id)->first();
+
+        $data = array(
+            'nome'       => $empresa->nome,
+            'endereco'   => $endereco->rua . ' ' . $endereco->numero . ' ' . $endereco->bairro,
+        );
+
+        echo json_encode($data);
+
     }
 }

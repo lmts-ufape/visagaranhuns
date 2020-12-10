@@ -26,7 +26,7 @@
                         Ações
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Criar cnae</a>
+                        <a class="dropdown-item" href="{{ route('criar.cnae') }}">Criar cnae</a>
                         {{-- <a class="dropdown-item" href="#">Editar área</a>
                         <a class="dropdown-item" href="#">Deletar área</a> --}}
                     </div>

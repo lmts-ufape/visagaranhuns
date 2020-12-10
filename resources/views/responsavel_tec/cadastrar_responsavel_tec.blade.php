@@ -102,9 +102,9 @@
                                         {{-- <option value="{{$item->id}}">{{$item->nome}}</option> --}}
                                     @endforeach
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-3">
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-5">
                                     <h5>Responsáveis técnicos já cadastrados:</h5>
                                     @if (count($respTecnicos) == 0)
                                         <h6>Ainda não há responsáveis técnicos cadastrados</h6>
@@ -113,7 +113,7 @@
                                             @foreach ($rtempresa as $rtemp)
                                                 @foreach ($respTecnicos as $rt)
                                                     @if ($rtemp->resptec_id == $rt->id)
-                                                        <li class="list-group-item">{{$rt->user->name}}: {{$rtemp->area->nome}}</li>
+                                                        <li class="list-group-item">{{$rt->user->name}}: {{$rtemp->area->nome}}<button type="button" class="close" style="margin-left: 2px" data-toggle="modal" data-target="#exampleModal1" onclick="myFunction({{$rtemp->resptec_id}}, {{$rtemp->empresa_id}}, {{$rtemp->area_id}})">×</button></li>
                                                     @endif
                                                 @endforeach
                                             @endforeach
@@ -159,6 +159,53 @@
         </div>
     </form>
 </div>
+
+<!-- Modal - deletar rt -->
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:red;">
+                    <img src="{{ asset('/imagens/logo_atencao3.png') }}" alt="Logo" style=" margin-right:15px;"/><h5 class="modal-title" id="exampleModalLabel" style="font-size:20px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Deletar Responsável Técnico</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12" style="font-family: 'Roboto', sans-serif;">Tem certeza de que deseja deletar este responsável técnico <label id="nomeDoEstabelecimento" style="font-weight:bold; font-family: 'Roboto', sans-serif;"></label>?</div>
+                    {{-- <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px;"><img src="{{ asset('/imagens/logo_bloqueado.png') }}" alt="Logo" style="width:15px; margin-right:5px;"/> Essa ação não poderá ser desfeita</div> --}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"style="width:100px;">Não</button>
+                <form method="POST" action="{{ route('deletar.respTecnico') }}">
+                    @csrf
+                    <input type="hidden" id="idRespTecnicoDelete" name="idRespTecnico" value="">
+                    <input type="hidden" id="idEmpresa"           name="idEmpresa" value="">
+                    <input type="hidden" id="idArea"              name="idArea" value="">
+                    <div class="col-md-12" style="padding-left:0">
+                        <button type="submit" class="btn btn-success botao-form" style="width:100%">
+                                Sim, deletar responsável técnico
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
+<script type="text/javascript">
 
+    function myFunction($resptecId, $empresaId, $areaId) {
+        // console.log($resptecId);
+        // console.log($empresaId);
+        // console.log($areaId);
+        document.getElementById('idRespTecnicoDelete').value = $resptecId;
+        document.getElementById('idEmpresa').value = $empresaId;
+        document.getElementById('idArea').value = $areaId; 
+
+    }
+    
+</script>

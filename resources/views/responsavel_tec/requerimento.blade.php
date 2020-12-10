@@ -138,10 +138,9 @@
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->descricao}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->tipo}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->data}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{date('d-m-Y', strtotime($indice->data))}}</th>
                                             <input type="hidden" id="avisoTempRequerimentoRt{{$indice->id}}" value="{{ $indice->aviso }}">
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="avisoReqRt('{{$indice->id}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="avisoReqRt('{{$indice->id}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="avisoRequerimentoRt('{{$indice->id}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
                                             </tr>
                                         @else
                                             <tr>
@@ -149,7 +148,7 @@
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->descricao}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->tipo}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->data}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{date('d-m-Y', strtotime($indice->data))}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">{{$indice->aviso}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">{{$indice->aviso}}</th>
                                             </tr>
@@ -180,7 +179,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div id="avisoReq" class="col-12" style="font-family: 'Roboto', sans-serif; margin-bottom:10px;">Motivo da reprovação do requerimento:</div>
-                        <div class="col-12"><textarea name="avisoRequerimentoRt" id="avisoRequerimentoRt" cols="30" rows="10"></textarea></div>
+                        <div class="col-12"><textarea name="avisoRequerimentoRt" id="summary-ckeditor" cols="30" rows="10" disabled></textarea></div>
                     </div>
                 </div>
         </form>
@@ -268,6 +267,11 @@
             </div>
         </div>
     </div>
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script>
+    CKEDITOR.replace( 'summary-ckeditor' );
+    </script>
 @endsection
 
 <script type="text/javascript">
@@ -282,9 +286,7 @@
                'empresa': $empresa,
         },
         success: function(response){
-            console.log(response.tipo);
             if (response.tipo == "Primeira Licenca") {
-                console.log("Primeira Licenca");
                 if (response.valor == "pendente") {
                     $("option[value='Primeira Licenca']").prop("disabled", true);
                     $("option[value='Renovacao']").prop("disabled", true);
@@ -296,7 +298,6 @@
                     $("option[value='Renovacao']").prop("disabled", true);
                 }
             }else if (response.tipo == "Renovacao"){
-                console.log("Renovacao");
                 if (response.valor == "pendente") {
                     $("option[value='Primeira Licenca']").prop("disabled", true);
                     $("option[value='Renovacao']").prop("disabled", true);
@@ -308,7 +309,6 @@
                     $("option[value='Renovacao']").prop("disabled", false);
                 }
             }else if (response.tipo == "nenhum") {
-                console.log("Né");
                 $("option[value='Primeira Licenca']").prop("disabled", false);
                 $("option[value='Renovacao']").prop("disabled", true);
             }
@@ -329,6 +329,6 @@
         document.getElementById('criarRequerimentoCNAERT').innerHTML = $descricao;
         document.getElementById('idCnaeRequerimentoRT').value = $idCnae;
     }
-}
+    }
 
 </script>

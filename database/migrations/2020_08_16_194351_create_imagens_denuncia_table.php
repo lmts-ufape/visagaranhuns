@@ -15,7 +15,13 @@ class CreateImagensDenunciaTable extends Migration
     {
         Schema::create('imagens_denuncia', function (Blueprint $table) {
             $table->id();
+            $table->string('nome');
+
+            $table->bigInteger("denuncias_id");
+            $table->foreign("denuncias_id")->references("id")->on("denuncias");
+            
             $table->timestamps();
+
         });
     }
 

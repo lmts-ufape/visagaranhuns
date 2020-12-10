@@ -57,14 +57,14 @@
 
 
     <!-- editor de texto -->
-    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-    <script>
+    {{-- <script src="//cdn.tinymce.com/4/tinymce.min.js"></script> --}}
+    {{-- <script>
         tinymce.init({
             selector:'textarea',
             plugins: 'link image lists',
             menubar: false,
         });
-    </script>
+    </script> --}}
 
 </head>
 <body>
@@ -185,9 +185,9 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('listar.empresas', ['user' => Crypt::encrypt(Auth::user()->id), 'tipo' => 'notificacao']) }}">{{ __('Notificações') }}</a>
                                     </li>
-                                    <li class="nav-item">
+                                    {{-- <li class="nav-item">
                                         <a class="nav-link" href="{{ route('emconstrucao') }}">{{ __('Licenças') }}</a>
-                                    </li>
+                                    </li> --}}
                                     {{-- <li class="nav-item">
                                         <a class="nav-link" href="{{ route('listar.responsavelTec') }}">{{ __('Responsável Técnico') }}</a>
                                     </li> --}}
@@ -235,6 +235,12 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('editar.dados.inspetor', ['user' => Auth::user()->id]) }}">
+                                            {{ __('Editar meus dados') }}
+                                        </a>    
+                                        <a class="dropdown-item" href="{{ route('editar.senha.inspetor', ['user' => Auth::user()->id]) }}">
+                                            {{ __('Editar senha de acesso') }}
+                                        </a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">
@@ -262,6 +268,12 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('editar.dados.agente', ['user' => Auth::user()->id]) }}">
+                                            {{ __('Editar meus dados') }}
+                                        </a>    
+                                        <a class="dropdown-item" href="{{ route('editar.senha.agente', ['user' => Auth::user()->id]) }}">
+                                            {{ __('Editar senha de acesso') }}
+                                        </a>
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">

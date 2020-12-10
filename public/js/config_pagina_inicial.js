@@ -102,8 +102,12 @@ window.deletarServicoModal = function($id,$titulo){
 // ############# seção
 
 window.criarSecao = function($id){
+
+    // console.log("Dante");
+
     let $titulo = document.getElementById('idTituloSecao').value;
-    let $descricao = tinyMCE.get('descricaoSecao').getContent();
+    let $descricao = CKEDITOR.instances["descricaoSecao"].getData();
+    // let $descricao = tinyMCE.get('descricaoSecao').getContent();
     let $servico_id = $id;
     $.ajax({
         url:'/coordenador/gerenciarconteudo/criar/secao',
@@ -120,14 +124,16 @@ window.criarSecao = function($id){
         }
     });
     // limpar campos
-    tinyMCE.get('descricaoSecao').setContent("");
+    CKEDITOR.instances["descricaoSecao"].setData("");
+    // tinyMCE.get('descricaoSecao').setContent("");
     document.getElementById('idTituloSecao').value="";
 }
 window.editarSecao = function($id, $titulo){
 
     let $id_secao = $id.value;
     let $titulo_secao = $titulo.value;
-    let $descricao_secao = tinyMCE.get('descricaoSecaoEditar').getContent();
+    let $descricao_secao = CKEDITOR.instances["descricaoSecaoEditar"].getData();
+    // let $descricao_secao = tinyMCE.get('descricaoSecaoEditar').getContent();
     // console.log($id_secao,$titulo_secao,$descricao_secao);
     $.ajax({
         url:'/coordenador/gerenciarconteudo/editar/secao',
@@ -166,7 +172,8 @@ window.deletarSecao = function($id, $titulo){
 window.editarSecaoModal = function($id, $titulo){
     let descricao = document.getElementById('descricaoConfigSecao'+$id).value;
     document.getElementById("nomeDaSecaoEditar").value = $titulo;
-    tinyMCE.get('descricaoSecaoEditar').setContent(descricao);
+    CKEDITOR.instances["descricaoSecaoEditar"].setData(descricao);
+    // tinyMCE.get('descricaoSecaoEditar').setContent(descricao);
     document.getElementById("idSecaoEditar").value = $id;
 }
 //atualizar modal - deletar secao
@@ -174,7 +181,8 @@ window.deletarSecaoModal = function($id,$titulo){
     let descricao = document.getElementById('descricaoConfigSecao'+$id).value;
     // console.log(descricao);
     document.getElementById("nomeDaSecaoDeletar").value = $titulo;
-    tinyMCE.get('descricaoSecaoDeletar').setContent(descricao);
-    tinymce.get("descricaoSecaoDeletar").setMode('readonly'); //desabilitar campo de texto
+    CKEDITOR.instances["descricaoSecaoDeletar"].setData(descricao);
+    // tinyMCE.get('descricaoSecaoDeletar').setContent(descricao);
+    // tinymce.get("descricaoSecaoDeletar").setMode('readonly'); //desabilitar campo de texto
     document.getElementById("idSecaoDeletar").value = $id;
 }

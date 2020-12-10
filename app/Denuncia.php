@@ -13,10 +13,11 @@ class Denuncia extends Model
      * @var array
      */
     protected $fillable = [
-        'nome', 'email', 'telefone', 'denuncia', 'status', 'empresa_id'
+        // 'nome', 'email', 'telefone', 'denuncia', 'status', 'empresa_id'
+        'empresa', 'endereco', 'status', 'denuncia', 'empresa_id',
     ];
 
     public function empresa() {
-        return $this->belongsTo("\App\Empresa");
+        return $this->belongsTo("\App\Empresa", 'empresa_id');
     }
 }

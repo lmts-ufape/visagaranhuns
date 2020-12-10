@@ -23,9 +23,7 @@ window.licencaAvaliacao = function($empresaId, $area, $requerimento) {
 }
 
 window.denuncia = function($descricao){
-    console.log($descricao);
-    tinyMCE.get('modalDenuncia').setContent($descricao);
-    tinymce.get("modalDenuncia").setMode('readonly'); //desabilitar campo de texto
+    CKEDITOR.instances["summary-ckeditor"].setData($descricao)
 }
 
 window.denunciaId = function($id){
