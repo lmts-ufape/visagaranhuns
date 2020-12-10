@@ -96,7 +96,7 @@
                         </div>
                     </div>
 
-                    <div class="cardMapa">
+                    {{-- <div class="cardMapa">
                         <div class="d-flex">
                             <div class="mr-auto p-2">
                                 <div class="btn-group">
@@ -112,7 +112,7 @@
                             <div class="container" style="margin-left:3px; font-family:arial; color:red">Segunda a Sexta - 08:00-14:00</div>
                             <div class="container" style="margin-left:3px; margin-bottom:10px; font-family:arial;">(87) 3762-7071</div>
                         </div>
-                    </div>
+                    </div> --}}
 
 
                 </div>
