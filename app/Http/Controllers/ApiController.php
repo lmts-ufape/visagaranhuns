@@ -500,14 +500,13 @@ class ApiController extends Controller
                 );
                 array_push($listaDeImagens, $objFoto);
             }
-
-            $data = array(
-                'success'                   => $status,
-                'lista_inspecoes'           => $listaDeInspecoes,
-                'lista_documentos'          => $listaDeDocumentos,
-                'lista_imagens'             => $listaDeImagens,
-            );
-            echo json_encode($data);
         }
+        $data = array(
+            'success'                   => $status,
+            'lista_inspecoes'           => $listaDeInspecoes,
+            'lista_documentos'          => $listaDeDocumentos,
+            'lista_imagens'             => $listaDeImagens,
+        );
+        echo json_encode($data);
     }
 }
