@@ -241,15 +241,27 @@ class RespTecnicoController extends Controller
         $notificacoes = [];
 
         foreach ($notificacao as $indice) {
-            if ($indice->inspecao->empresas_id == $empresa->id) {
-                if ($indice->inspecao->motivo == 'Denuncia') {
-                    array_push($notificacoes, $indice);
-                } else {
-                    if($indice->inspecao->requerimento->resptecnicos_id == $rt->id){
+
+            if ($indice->inspecao->empresas_id == null) {
+                if ($indice->inspecao->denuncia->empresa_id != null) {
+                    if ($indice->inspecao->denuncia->empresa_id == $empresa->id) {
                         array_push($notificacoes, $indice);
-                    }  
+                    }
                 }
-            }          
+            } else {
+                if($indice->inspecao->requerimento->resptecnicos_id == $rt->id){
+                    array_push($notificacoes, $indice);
+                }
+            }            
+            // if ($indice->inspecao->empresas_id == $empresa->id) {
+            //     if ($indice->inspecao->motivo == 'Denuncia') {
+            //         array_push($notificacoes, $indice);
+            //     } else {
+            //         if($indice->inspecao->requerimento->resptecnicos_id == $rt->id){
+            //             array_push($notificacoes, $indice);
+            //         }  
+            //     }
+            // }
         }
         // dd($notificacoes);
 
@@ -338,7 +350,7 @@ class RespTecnicoController extends Controller
 
     public function downloadArquivo(Request $request){
 
-        return response()->download(storage_path('app/' . $request->file));
+        return response()->download(storage_path('app/public/' . $request->file));
     }
 
     public function editarArquivosEmpRt(Request $request)
@@ -559,6 +571,7 @@ class RespTecnicoController extends Controller
         $user    = User::where("email", $request->email)->first();
 
         if ($user != null) {
+
             for ($i=0; $i < count($request->area); $i++) {
                 $rtempresa = RtEmpresa::where('area_id', $request->area[$i])
                 ->where('empresa_id', $request->empresaId)->first();
@@ -657,7 +670,7 @@ class RespTecnicoController extends Controller
             foreach ($rtempresatemp as $indice) {
                 array_push($areastemp, $indice->area_id);
             }
-
+            
             for ($i=0; $i < count($areastemp); $i++) {
                 $areatipodocresp = AreaTipodocresp::where('area_id', $areastemp[$i])->get();
 
@@ -670,6 +683,7 @@ class RespTecnicoController extends Controller
                         'tipodocres_id' => $indice->tipodocresp->id,
                         'resptecnicos_id' => $respTec->id,
                     ]);
+                    // dd($checklistresp);
                 }
             }
 
@@ -680,7 +694,7 @@ class RespTecnicoController extends Controller
 
     public function baixarArquivos(Request $request)
     {
-        return response()->download(storage_path('app/'.$request->file));
+        return response()->download(storage_path('app/public/'.$request->file));
     }
 
     public function findDocRt(Request $request)

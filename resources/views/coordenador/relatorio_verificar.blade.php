@@ -52,7 +52,7 @@
                             <form id="form_relatorio_inspetor" method="POST" action="{{ route('save.relatorio') }}">
                                 @csrf
                                 <input type="hidden" name="inspecao_id" value="{{$inspecao_id}}">
-                                <textarea id="textarea_relatorio_inspetor" rows="40" name="relatorio">{{$relatorio}}</textarea>
+                                <textarea id="summary-ckeditor" rows="40" name="relatorio" disabled>{{$relatorio}}</textarea>
                             </form>
                         </div>
                         <div class="form col-md-3">
@@ -142,9 +142,14 @@
         </div>
     </div>
 </div>
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script>
+    CKEDITOR.replace( 'summary-ckeditor' );
+    </script>
 @endsection
 <script type="text/javascript">
-    window.onload= function() {
-        tinymce.get("textarea_relatorio_inspetor").setMode('readonly'); //desabilitar campo de texto
-    };
+    // window.onload= function() {
+    //     tinymce.get("textarea_relatorio_inspetor").setMode('readonly'); //desabilitar campo de texto
+    // };
 </script>

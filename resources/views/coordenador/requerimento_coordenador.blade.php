@@ -52,7 +52,7 @@
         @endif
     <div class="container" style="margin-top:2rem;margin-left:10px;">
         <div class="form-row">
-            <div class="form-group col-md-8">
+            <div class="form-group col-md-12">
                 <div class="d-flex">
                     <div class="mr-auto p-2" id="nomeEstabelecimento">
                             <div class="btn-group">
@@ -75,7 +75,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="idTabela">
+                <div id="idTabela" class="overflow-auto" style=" height: 190px; margin-bottom: 85px;">
                     <table style="width:100%">
                         <tbody_>
 
@@ -110,7 +110,7 @@
                 if (response.table_data == "") {
                     $('#filtro').hide();
                     $('#nomeEstabelecimento').hide();
-                    $('tbody_').html("<div style='margin-bottom:8rem; text-align:right; font-size:25px;'> Lista de requerimentos vazia!</div>");
+                    $('tbody_').html("<div style='margin-bottom:8rem; text-align:center; font-size:25px;'> Lista de requerimentos vazia!</div>");
                 }
                 else {
                     console.log(response.table_data);

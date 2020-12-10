@@ -256,7 +256,7 @@
             "                        <div>Tipo: <span class='textoCampo'>Denúncia</span></div>\n"+
             "                    </div>\n"+
             "                </div>\n"+
-            "               <input type='hidden' name='empresas[]' value='"+id+"' required>\n"+
+            "               <input type='hidden' name='denuncias[]' value='"+id+"' required>\n"+
             "            </div>\n"+
             "            <div style='width:140px; height:25px; text-align:right;'>\n"+
             "                <div id='cardSelecionado' class='btn-group'>\n"+

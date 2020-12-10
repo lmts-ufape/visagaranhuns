@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="p-2">
                                         <div class="dropdown">
-                                            <a href="">Abrir</a>
+                                            <a href="" data-toggle="modal" data-target="#exampleModalInfo" onclick="agentes({{$item->id}})">Abrir</a> 
                                         </div>
                                     </div>
                                 </div>
@@ -96,7 +96,7 @@
               </button>
             </div>
             <form method="POST" action="{{route('convidar.agente')}}">
-                @csrf
+                @csrf 
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="col-md-12">
@@ -118,6 +118,79 @@
           </div>
         </div>
       </div>
+
+      <!-- Modal - Infos do agente -->
+      <div class="modal fade" id="exampleModalInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Dados do Agente</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form method="POST" action="">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label></label>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="styleTituloDoInputCadastro" for="inputNome4">Nome do Usuário:<span style="color:red"></span></label>
+                            <input id="nomeAgente" type="text" class="styleInputCadastro" name="name" placeholder="" value="" disabled>
+                        </div>
+                        <div class="form-group col-md-4"  style="padding-right:15px;">
+                            <label class="styleTituloDoInputCadastro" for="inputCpfl4">Cpf:<span style="color:red"></span></label>
+                            <input id="cpfAgente" type="text" class="styleInputCadastro" placeholder="" name="cpf" value="" disabled>
+                        </div>
+                        <div class="form-group col-md-4"  style="padding-right:15px;">
+                            <label class="styleTituloDoInputCadastro" for="inputFormacao4">Formação:</label>
+                            <input id="formacaoAgente" type="text" class="styleInputCadastro" placeholder="" name="formacao" value="" disabled>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4"  style="padding-right:15px;">
+                            <label class="styleTituloDoInputCadastro" for="inputEspecializacao4">especialização:</label>
+                            <input id="especializacaoAgente" type="text" class="styleInputCadastro" placeholder="" name="especializacao" value="" disabled>
+                        </div>
+                        <div class="form-group col-md-4"  style="padding-right:15px;">
+                            <label class="styleTituloDoInputCadastro" for="inputTelefone4">Telefone:<span style="color:red"></span></label>
+                            <input id="telefoneAgente" type="text" class="styleInputCadastro" placeholder="" name="telefone" value="" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  {{-- <button type="button" class="btn btn-light">Cancelar</button> --}}
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <script type="text/javascript">
+
+        window.agentes = function($id){
+            //area
+
+            $.ajax({
+                url:'{{ config('prefixo.PREFIXO') }}encontrar/agente',
+                type:"get",
+                dataType:'json',
+                data: {"id": $id},
+                success: function(response){
+                    console.log(response);
+                    // $('tbody').html(response.table_data);
+                    document.getElementById('nomeAgente').value = response.nome;
+                    document.getElementById('cpfAgente').value = response.cpf;
+                    document.getElementById('formacaoAgente').value = response.formacao;
+                    document.getElementById('especializacaoAgente').value = response.especializacao;
+                    document.getElementById('telefoneAgente').value = response.telefone;
+                }
+            });
+        }
+      </script>
 @endsection
 
 

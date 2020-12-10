@@ -15,9 +15,9 @@ class CreateInspetorTable extends Migration
     {
         Schema::create('inspetor', function (Blueprint $table) {
             $table->id();
-            $table->string('formacao');
+            $table->string('formacao')->nullable();
             $table->string('especializacao')->nullable();
-            $table->string('cpf');
+            $table->string('cpf')->unique();
             $table->string('telefone');
 
             $table->bigInteger("user_id")->nullable();

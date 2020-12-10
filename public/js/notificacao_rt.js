@@ -1,4 +1,6 @@
 window.avisoReqRt = function($id){
-    tinyMCE.get('avisoRequerimentoRt').setContent(document.getElementById("avisoTempRequerimentoRt"+$id).value);
-    tinymce.get("avisoRequerimentoRt").setMode('readonly'); //desabilitar campo de texto
+
+    console.log("TESTE DE ACESSO!");
+    CKEDITOR.instances["summary-ckeditor"].setData(document.getElementById("avisoTempRequerimentoRt"+$id).value)
+
 }

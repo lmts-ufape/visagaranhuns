@@ -26,9 +26,11 @@ Route::get('/', function () {
 
         // $denunciasAcatado     = Denuncia::where('status', 'Acatado')->get();
         $denunciasTotal       = Denuncia::all()->count();
-        $denunciasArquivado   = Denuncia::where('status', 'Arquivado')->get();
+        $denunciasArquivado   = Denuncia::where('status', 'arquivado')->get();
+        $denunciasAceito      = Denuncia::where('status', 'aceito')->get();
         // $denunAcatado         = count($denunciasAcatado);
         $denunArquivado       = count($denunciasArquivado);
+        $denunAceito          = count($denunciasAceito);
 
         $requerimentosAprovado  = Requerimento::where('status', 'aprovado')->get();
         $requerimentosReprovado = Requerimento::where('status', 'reprovado')->get();
@@ -44,15 +46,19 @@ Route::get('/', function () {
 
         $empresasPendente      = Empresa::where('status_cadastro', 'pendente')->get();
         $empresasAprovada      = Empresa::where('status_cadastro', 'aprovado')->get();
+        $empresasTotal         = Empresa::all();
         $empPendente           = count($empresasPendente);
         $empAprovada           = count($empresasAprovada);
+        $empTotal              = count($empresasTotal);
 
         $notificacoesPendentes = Notificacao::where('status', 'pendente')->count();
         $notificacoesAprovadas = Notificacao::where('status', 'aprovado')->count();
+        $notificacoesTotal     = Notificacao::all()->count();
               
         return view('coordenador.home_coordenador',
         ['denunciasTotal'        => $denunciasTotal,
         'denunciasArquivado'     => $denunArquivado,
+        'denunciasAceito'        => $denunAceito,
         'requerimentosAprovado'  => $reqAprovado,
         'requerimentosReprovado' => $reqReprovado,
         'requerimentosPendente'  => $reqPendente,
@@ -60,8 +66,10 @@ Route::get('/', function () {
         'inspecoesCompleta'      => $inspecCompleta,
         'empresasPendente'       => $empPendente,
         'empresasAprovada'       => $empAprovada,
+        'empresasTotal'          => $empTotal,
         'notificacoesPendentes'  => $notificacoesPendentes,
         'notificacoesAprovadas'  => $notificacoesAprovadas,
+        'notificacoesTotal'      => $notificacoesTotal,
         ]);
         }
         elseif (Auth::user()->tipo == "empresa") {
@@ -118,6 +126,7 @@ Route::middleware(['OnlyAdmin'])->group(function () {
 });
 
 Route::get("/empresa/lista/cnae",  "EmpresaController@ajaxCnaes")->name("ajax.lista.cnaes.comum");
+Route::get("/empresa/dados",       "EmpresaController@dadosEmpresa")->name("ajax.dados.empresa");
 Route::get("/emcostrucao",  function () {return view('em_construcao');})->name("emconstrucao");
 Route::get("/emcostrucao2",  function () {return view('em_construcao2');})->name("emconstrucao2");
 Route::get("/emcostrucao3",  function () {return view('em_construcao3');})->name("emconstrucao3");
@@ -199,7 +208,7 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::post("/avaliar/denuncia", "CoordenadorController@avaliarDenuncia")->name("avaliar.denuncia");
 
     // Deletar inspecao
-    Route::get("/deletar/inspecao",           "CoordenadorController@deletarInspecao")->name("deletar.inspecao");
+    Route::post("/deletar/inspecao",           "CoordenadorController@deletarInspecao")->name("deletar.inspecao");
 
     // Pagina de relatorio
     Route::get('/programacao/coordenador/inspecao/relatorio', 'CoordenadorController@showRelatorio')->name('show.relatorio.coordenador');
@@ -214,6 +223,20 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::get("/listar/rts", "CoordenadorController@listarRts")->name("listar.rts"); //Listagem de responsáveis técnicos para o coordenadaor
     Route::get("/documentos/rt", "CoordenadorController@documentosRt")->name("documentos.rt");
 
+    Route::get('/coordenador/download/arquivo/rt',              'CoordenadorController@baixarArquivosRt')->name('coordenador.download.arquivo.rt');
+    Route::get('/denuncia/inspecao',                            'CoordenadorController@denunciaInspecao')->name('denuncia.inspecao');
+    Route::get('/criar/area',                                   'CoordenadorController@criarArea')->name('criar.area');
+    Route::get('/criar/cnae',                                   'CoordenadorController@criarCnae')->name('criar.cnae');
+    Route::get('/denuncia/imagens',                             'CoordenadorController@imagensDenuncia')->name('denuncia.imagens');
+    Route::get('/editar/tipodocumentos',                        'CoordenadorController@tipodocumentos')->name('editar.tipodocumentos');
+    Route::post('/editar/tipodoc',                              'CoordenadorController@editartipodoc')->name('editar.tipodoc');
+    Route::post('/criar/tipodoc',                               'CoordenadorController@criartipodoc')->name('criar.tipodoc');
+    Route::get('/editar/areas',                                 'CoordenadorController@editarArea')->name('editar.area');
+    Route::get('/buscar/tiposDocs',                             'CoordenadorController@buscarTiposDocs')->name('marcar.checkbox.tiposDocs');
+    Route::post('/area/editar',                                 'CoordenadorController@areaEditar')->name('area.editar');
+    Route::get('/encontrar/agente',                             'CoordenadorController@encontrarAgente')->name('encontrar.agente');
+    Route::get('/encontrar/inspetor',                           'CoordenadorController@encontrarInspetor')->name('encontrar.inspetor');
+    
 });
 
 // Grupo de rotas para empresa
@@ -271,6 +294,12 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get('/verificar/requerimento/inspecao',     'EmpresaController@verificarRequerimentoInspecao')->name('varificar.requerimento.inspecao');
 
     Route::get('/notificacoes/representante',          'EmpresaController@notificacoes')->name('mostrar.notificacoes');
+
+    Route::get("/empresa/documentos/rt",               "EmpresaController@documentosRt")->name("empresa.documentos.rt");
+
+    Route::post("/empresa/rt/deletar",                 "EmpresaController@deletarRespTecnico")->name("deletar.respTecnico");
+
+    Route::get('/empresa/download/arquivo/rt',         'EmpresaController@baixarArquivosRt')->name('empresa.download.arquivo.rt');
 /*
     * Cadastrar/Editar/Remove Responsável Técnico
     * Editar/Anexar dados da empresa
@@ -281,40 +310,37 @@ Route::middleware(['IsEmpresa'])->group(function () {
 
 // Grupo de rotas para inspetor
 Route::middleware(['IsInspetor'])->group(function () {
-    Route::get('/home/inspetor', 'InspetorController@home')->name('home.inspetor');
-    Route::get('/programacao/inspetor', 'InspetorController@showProgramacao')->name('show.programacao');
-    Route::get('/programacao/inspecao/album', 'InspetorController@showAlbum')->name('show.album');
-    Route::post('/delete/foto', 'InspetorController@deleteFoto')->name('delete.foto');
-    Route::post('/save/descricao', 'InspetorController@saveDescricao')->name('save.descricao');
+    Route::get('/home/inspetor',                'InspetorController@home')->name('home.inspetor');
+    Route::get('/programacao/inspetor',         'InspetorController@showProgramacao')->name('show.programacao');
+    Route::get('/programacao/inspecao/album',   'InspetorController@showAlbum')->name('show.album');
+    Route::post('/delete/foto',                 'InspetorController@deleteFoto')->name('delete.foto');
+    Route::post('/save/descricao',              'InspetorController@saveDescricao')->name('save.descricao');
     Route::get('/programacao/inspecao/relatorio', 'InspetorController@showRelatorio')->name('show.relatorio');
-    Route::post('/save/relatorio', 'InspetorController@saveRelatorio')->name('save.relatorio');
-    Route::get('/historico/inspetor', 'InspetorController@showHistorico')->name('show.historico');
-    Route::get('/criar/notificacao', 'InspetorController@criarNotificacao')->name('criar.notificacao');
-    Route::get('/verificar/notificacao', 'InspetorController@verificarNotificacao')->name('verificar.notificacao');
-    Route::post('/apagar/notificacao', 'InspetorController@apagarNotificacao')->name('apagar.notificacao');
-    Route::post('/save/notificacao', 'InspetorController@saveNotificacao')->name('save.notificacao');
+    Route::post('/save/relatorio',              'InspetorController@saveRelatorio')->name('save.relatorio');
+    Route::get('/historico/inspetor',           'InspetorController@showHistorico')->name('show.historico');
+    Route::get('/criar/notificacao',            'InspetorController@criarNotificacao')->name('criar.notificacao');
+    Route::get('/verificar/notificacao',        'InspetorController@verificarNotificacao')->name('verificar.notificacao');
+    Route::post('/apagar/notificacao',          'InspetorController@apagarNotificacao')->name('apagar.notificacao');
+    Route::post('/save/notificacao',            'InspetorController@saveNotificacao')->name('save.notificacao');
+    Route::get('/editar/inspetor/dados',        'InspetorController@alterarDados')->name('editar.dados.inspetor');
+    Route::get('/editar/inspetor/senha',        'InspetorController@alterarSenha')->name('editar.senha.inspetor');
+    Route::post('/atualizar/dados/inspetor',    'InspetorController@atualizarDados')->name('atualizar.dados.inspetor');
+    Route::post('/atualizar/senha/inspetor',    'InspetorController@atualizarSenha')->name('atualizar.senha.inspetor');
 
 });
 
 // Grupo de rotas para Agente
 Route::middleware(['IsAgente'])->group(function () {
-    Route::get('/home/agente', 'AgenteController@home')->name('home.agente');
+    Route::get('/home/agente',                                     'AgenteController@home')->name('home.agente');
     Route::get('cadastrar/agente', function () {return view('agente/cadastrar_agente');})->name('cadastrar.agente');
-    Route::get('/programacao/agente', 'AgenteController@showProgramacao')->name('show.programacao.agente');
-    Route::get('/programacao/agente/inspecao/relatorio', 'AgenteController@showRelatorio')->name('show.relatorio.agente');
+    Route::get('/programacao/agente',                              'AgenteController@showProgramacao')->name('show.programacao.agente');
+    Route::get('/programacao/agente/inspecao/relatorio',           'AgenteController@showRelatorio')->name('show.relatorio.agente');
     Route::get('/programacao/agente/inspecao/relatorio/verificar', 'AgenteController@showRelatorioVerificar')->name('show.relatorio.agente.verificar');
-    Route::post("/julgar/relatorio", "AgenteController@julgar")->name("julgar.relatorio");
-    /*
-        (WEB)
-        * Cadastrar/Editar/Deletar relatórios (Próprios)
-        * Consultar suas inspeções
-        * Cadastrar/Editar/Deletar notificações de empresas
-        (APP)
-        * Concluir inspeção (Mudar status de inspeção)
-        * Cadastrar imagens
-        * Cadastrar áudio
-        * Listar documentos anexados por empresa
-    */
+    Route::post("/julgar/relatorio",                               "AgenteController@julgar")->name("julgar.relatorio");
+    Route::get('/editar/agente/dados',                             'AgenteController@alterarDados')->name('editar.dados.agente');
+    Route::get('/editar/agente/senha',                             'AgenteController@alterarSenha')->name('editar.senha.agente');
+    Route::post('/atualizar/dados/agente',                         'AgenteController@atualizarDados')->name('atualizar.dados.agente');
+    Route::post('/atualizar/senha/agente',                         'AgenteController@atualizarSenha')->name('atualizar.senha.agente');
 });
 
 // Grupo de rotas para responsável técnico

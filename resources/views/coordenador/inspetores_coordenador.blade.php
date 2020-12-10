@@ -44,7 +44,7 @@
         </div>
     </div>
 
-    <div class="container" style="margin-top:2rem;margin-left:10px; margin-bottom:17%;">
+    <div class="container" style="margin-top:2rem;margin-left:10px; margin-bottom:22%;">
         <div class="form-row">
             <div class="form-group col-md-12">
 
@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="p-2">
                                         <div class="dropdown">
-                                            <a href="">Abrir</a>
+                                            <a href="" data-toggle="modal" data-target="#exampleModalInfo" onclick="inspetores({{$item->id}})">Abrir</a>
                                         </div>
                                     </div>
                                 </div>
@@ -118,6 +118,79 @@
           </div>
         </div>
       </div>
+
+        <!-- Modal - Infos do inspetor -->
+        <div class="modal fade" id="exampleModalInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Dados do Inspetor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <label></label>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="styleTituloDoInputCadastro" for="inputNome4">Nome do Usuário:<span style="color:red"></span></label>
+                                <input id="nomeInspetor" type="text" class="styleInputCadastro" name="name" placeholder="" value="" disabled>
+                            </div>
+                            <div class="form-group col-md-4"  style="padding-right:15px;">
+                                <label class="styleTituloDoInputCadastro" for="inputCpfl4">Cpf:<span style="color:red"></span></label>
+                                <input id="cpfInspetor" type="text" class="styleInputCadastro" placeholder="" name="cpf" value="" disabled>
+                            </div>
+                            <div class="form-group col-md-4"  style="padding-right:15px;">
+                                <label class="styleTituloDoInputCadastro" for="inputFormacao4">Formação:</label>
+                                <input id="formacaoInspetor" type="text" class="styleInputCadastro" placeholder="" name="formacao" value="" disabled>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4"  style="padding-right:15px;">
+                                <label class="styleTituloDoInputCadastro" for="inputEspecializacao4">especialização:</label>
+                                <input id="especializacaoInspetor" type="text" class="styleInputCadastro" placeholder="" name="especializacao" value="" disabled>
+                            </div>
+                            <div class="form-group col-md-4"  style="padding-right:15px;">
+                                <label class="styleTituloDoInputCadastro" for="inputTelefone4">Telefone:<span style="color:red"></span></label>
+                                <input id="telefoneInspetor" type="text" class="styleInputCadastro" placeholder="" name="telefone" value="" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        {{-- <button type="button" class="btn btn-light">Cancelar</button> --}}
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+            </div>
+
+      <script type="text/javascript">
+
+        window.inspetores = function($id){
+            //area
+
+            $.ajax({
+                url:'{{ config('prefixo.PREFIXO') }}encontrar/inspetor',
+                type:"get",
+                dataType:'json',
+                data: {"id": $id},
+                success: function(response){
+                    console.log(response);
+                    // $('tbody').html(response.table_data);
+                    document.getElementById('nomeInspetor').value = response.nome;
+                    document.getElementById('cpfInspetor').value = response.cpf;
+                    document.getElementById('formacaoInspetor').value = response.formacao;
+                    document.getElementById('especializacaoInspetor').value = response.especializacao;
+                    document.getElementById('telefoneInspetor').value = response.telefone;
+                }
+            });
+        }
+      </script>
 @endsection
 
 

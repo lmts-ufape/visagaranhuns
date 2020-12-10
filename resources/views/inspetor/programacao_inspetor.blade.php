@@ -33,7 +33,7 @@
         </div>
     </div>
 
-    <div class="barraMenu" style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
+    <div class="barraMenu" style="margin-top:2rem; margin-bottom:6rem;padding:15px;">
         <div class="container" style="margin-top:1rem;">
             <div class="form-row">
 
@@ -86,8 +86,8 @@
                                                         <div style="margin:5px;"><button type="button" class="btn btn-success" style="color:white;" disabled>Álbum</button></div>
                                                         <div style="margin:5px;"><button type="button" class="btn btn-primary" disabled>Avaliação</button></div>
                                                     @elseif ($item->relatorio_status == 'aprovado')
-                                                    <div style="margin:5px;"><button type="button" class="btn btn-success" style="color:white;" disabled>Álbum</button></div>
-                                                        <div style="margin:5px;"><a href="{{ route('show.relatorio', ['value' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-success">Aprovado</a></div>
+                                                        <div style="margin:5px;"><button type="button" class="btn btn-success" style="color:white;" disabled>Álbum</button></div>
+                                                        <div style="margin:5px;"><a href="{{ route('show.relatorio', ['value' => Crypt::encrypt($item->inspecao_id), 'relatorio_status' => $item->relatorio_status])}}" type="button" class="btn btn-success">Aprovado</a></div>
                                                     @else
                                                         <div style="margin:5px;"><a href="{{ route('show.album', ['value' => Crypt::encrypt($item->inspecao_id)]) }}" type="button" class="btn btn-success" style="color:white;">Álbum</a></div>
                                                         <div style="margin:5px;"><a href="{{ route('show.relatorio', ['value' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Criar</a></div>

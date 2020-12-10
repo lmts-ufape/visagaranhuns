@@ -12,8 +12,10 @@ use App\InspecaoFoto;
 use App\InspecaoRelatorio;
 use App\Telefone;
 use App\Notificacao;
+use Illuminate\Support\Facades\Validator;
 use Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 
 class InspetorController extends Controller
 {
@@ -26,6 +28,81 @@ class InspetorController extends Controller
     {
         $inspetores = User::where("tipo", "inspetor")->where("status_cadastro", "aprovado")->get();
         return view('coordenador/inspetores_coordenador', [ 'inspetores'  => $inspetores ]);
+    }
+
+    public function alterarDados(Request $request)
+    {
+        $inspetor = Inspetor::where('user_id', $request->user)->first();
+        // dd($inspetor);
+        return view('inspetor/editar_dados', [ 
+            'nome'            => $inspetor->user->name,
+            'cpf'             => $inspetor->cpf,
+            'formacao'        => $inspetor->formacao,
+            'especializacao'  => $inspetor->especializacao,
+            'telefone'        => $inspetor->telefone,
+        ]);
+    }
+
+    public function atualizarDados(Request $request)
+    {
+
+        $messages = [
+            'required' => 'O campo :attribute não foi passado!',
+            'string'   => 'O campo :attribute deve ser do tipo texto!',
+        ];
+
+        $validator = Validator::make($request->all(), [
+
+            'name'           => 'required|string',
+            'cpf'            => 'required|string',
+            'formacao'       => 'nullable|string',
+            'especializacao' => 'nullable|string',
+            'telefone'       => 'required|string',
+
+        ], $messages);
+
+        
+        if ($validator->fails()) {
+            return back()
+                    ->withErrors($validator);
+        }
+
+        $inspetor = Inspetor::where("user_id", Auth::user()->id)->first();
+        $user     = User::find($inspetor->user_id);
+        // dd($inspetor);
+
+        $user->name               = $request->name;
+        $inspetor->cpf            = $request->cpf;
+        $inspetor->telefone       = $request->telefone;
+        $inspetor->formacao       = $request->formacao;
+        $inspetor->especializacao = $request->especializacao;
+
+        $inspetor->save();
+        $user->save();
+
+        session()->flash('success', 'Dados atualizados!');
+        return back();
+
+    }
+
+    public function alterarSenha(Request $request)
+    {
+        // $inspetor = Inspetor::where('user_id', $request->user)->first();
+        // dd($inspetor->user->password);
+        // $senha = Crypt::decrypt($inspetor->user->password);        
+        return view('inspetor/editar_senha');
+    }
+
+    public function atualizarSenha(Request $request)
+    {
+        if(Hash::check($request->senhaAtual ,Auth::user()->password) == true && $request->novaSenha1 == $request->novaSenha2 ){
+            $user = Auth::user();
+            $user->password = Hash::make($request->novaSenha1);
+            $user->save();
+            return redirect()->back()->with('success', "Senha alterada com sucesso!");
+        }else{
+            return redirect()->back()->with('error', "Verifique suas senhas e tente novamente!");
+        }
     }
 
     public function home()
@@ -65,14 +142,28 @@ class InspetorController extends Controller
     {
         $user = User::find(Auth::user()->id);
 
-        $validator = $request->validate([
-            'nome'     => 'required|string',
-            'formacao' => 'required|string',
+        $messages = [
+            'unique'   => 'Um campo igual a :attribute já está cadastrado no sistema!',
+            'required' => 'O campo :attribute não foi passado!',
+            'string'   => 'O campo :attribute deve ser texto!',
+        ];
+
+        $validator = Validator::make($request->all(), [
+
+            'nome'           => 'required|string',
+            'formacao'       => 'nullable|string',
             'especializacao' => 'nullable|string',
-            'cpf'            => 'required|string',
+            'cpf'            => 'required|string|unique:agente,cpf',
             'telefone'       => 'required|string',
             'password'       => 'required',
-        ]);
+
+        ], $messages);
+
+        
+        if ($validator->fails()) {
+            return back()
+                    ->withErrors($validator);
+        }
 
         // Atualiza dados de user para inspetor
         $user->name = $request->nome;
@@ -229,7 +320,7 @@ class InspetorController extends Controller
                             'motivoInspecao'   => $indice->motivo,
                             'inspetor_id'      => $indice->inspetor_id,
                             'requerimento_id'  => null,
-                            'nomeEmpresa'      => $indice->empresa->nome,
+                            'nomeEmpresa'      => $indice->denuncia->empresa,
             
                             'relatorio_id'     => $relatorio->id,
                             'inspecao_id'      => $indice->id,
@@ -244,7 +335,7 @@ class InspetorController extends Controller
                             'motivoInspecao'   => $indice->motivo,
                             'inspetor_id'      => $indice->inspetor_id,
                             'requerimento_id'  => null,
-                            'nomeEmpresa'      => $indice->empresa->nome,
+                            'nomeEmpresa'      => $indice->denuncia->empresa,
             
                             'relatorio_id'     => $relatorio->id,
                             'inspecao_id'      => $indice->id,
@@ -260,7 +351,7 @@ class InspetorController extends Controller
                         'motivoInspecao'   => $indice->motivo,
                         'inspetor_id'      => $indice->inspetor_id,
                         'requerimento_id'  => null,
-                        'nomeEmpresa'      => $indice->empresa->nome,
+                        'nomeEmpresa'      => $indice->denuncia->empresa,
         
                         'relatorio_id'     => null,
                         'inspecao_id'      => $indice->id,
@@ -362,9 +453,9 @@ class InspetorController extends Controller
         $resultado = InspecaoFoto::where('inspecao_id','=', Crypt::decrypt($request->value))->orderBy('created_at','ASC')->get();
         $relatorio = InspecaoRelatorio::where('inspecao_id','=', Crypt::decrypt($request->value))->first();
         if($relatorio == null){
-            return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => ""]);
+            return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => "", 'relatorio_status' => $request->relatorio_status]);
         }else{
-            return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => $relatorio->relatorio]);
+            return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => $relatorio->relatorio, 'relatorio_status' => $request->relatorio_status]);
         }
     }
     /*

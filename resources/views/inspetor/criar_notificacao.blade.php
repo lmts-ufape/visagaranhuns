@@ -44,7 +44,7 @@
                             <form id="form_notificacao_inspetor" method="POST" action="{{ route('save.notificacao') }}">
                                 @csrf
                                 <input type="hidden" name="inspecao_id" value="{{$inspecao_id}}">
-                                <textarea id="textarea_notificacao" rows="40" name="notificacao">{{$notificacao}}</textarea>
+                                <textarea id="summary-ckeditor" rows="40" name="notificacao">{{$notificacao}}</textarea>
                             </form>
                         </div>
                     </div>
@@ -82,4 +82,9 @@
         </div>
     </div>
 </div>
+
+<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+<script>
+CKEDITOR.replace( 'summary-ckeditor' );
+</script>
 @endsection

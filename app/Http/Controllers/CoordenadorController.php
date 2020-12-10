@@ -6,10 +6,15 @@ use Illuminate\Http\Request;
 use App\Coordenador;
 use App\User;
 use App\Agente;
+use App\Area;
+use App\AreaTipodocemp;
 use App\Inspetor;
 use App\Empresa;
 use App\Docempresa;
+use App\Docresptec;
 use App\Checklistemp;
+use App\Checklistresp;
+use App\Tipodocresp;
 use App\Endereco;
 use App\Telefone;
 use App\CnaeEmpresa;
@@ -28,6 +33,8 @@ use PDF;
 use Illuminate\Support\Facades\Validator;
 use App\Denuncia;
 use App\Notificacao;
+use App\ImagemDenuncia;
+use App\Tipodocempresa;
 
 class CoordenadorController extends Controller
 {
@@ -51,9 +58,11 @@ class CoordenadorController extends Controller
     {
         // $denunciasAcatado     = Denuncia::where('status', 'Acatado')->get();
         $denunciasTotal       = Denuncia::all()->count();
-        $denunciasArquivado   = Denuncia::where('status', 'Arquivado')->get();
+        $denunciasArquivado   = Denuncia::where('status', 'arquivado')->get();
+        $denunciasAceito      = Denuncia::where('status', 'aceito')->get();
         // $denunAcatado         = count($denunciasAcatado);
         $denunArquivado       = count($denunciasArquivado);
+        $denunAceito          = count($denunciasAceito);
 
         $requerimentosAprovado  = Requerimento::where('status', 'aprovado')->get();
         $requerimentosReprovado = Requerimento::where('status', 'reprovado')->get();
@@ -69,15 +78,19 @@ class CoordenadorController extends Controller
 
         $empresasPendente      = Empresa::where('status_cadastro', 'pendente')->get();
         $empresasAprovada      = Empresa::where('status_cadastro', 'aprovado')->get();
+        $empresasTotal         = Empresa::all();
         $empPendente           = count($empresasPendente);
         $empAprovada           = count($empresasAprovada);
+        $empTotal              = count($empresasTotal);
 
         $notificacoesPendentes = Notificacao::where('status', 'pendente')->count();
         $notificacoesAprovadas = Notificacao::where('status', 'aprovado')->count();
+        $notificacoesTotal     = Notificacao::all()->count();
               
         return view('coordenador.home_coordenador',
         ['denunciasTotal'        => $denunciasTotal,
         'denunciasArquivado'     => $denunArquivado,
+        'denunciasAceito'        => $denunAceito,
         'requerimentosAprovado'  => $reqAprovado,
         'requerimentosReprovado' => $reqReprovado,
         'requerimentosPendente'  => $reqPendente,
@@ -85,21 +98,25 @@ class CoordenadorController extends Controller
         'inspecoesCompleta'      => $inspecCompleta,
         'empresasPendente'       => $empPendente,
         'empresasAprovada'       => $empAprovada,
+        'empresasTotal'          => $empTotal,
         'notificacoesPendentes'  => $notificacoesPendentes,
         'notificacoesAprovadas'  => $notificacoesAprovadas,
+        'notificacoesTotal'      => $notificacoesTotal,
         ]);
     }
 
     public function nameMethod()
     {
-        $date = date('Y-m-d');
+        $date = new \DateTime();
+        // $date = date('Y-m-d');
+        $hoje = $date->format('Y/m/d');
 
-        $inspecoes = Inspecao::where('status', 'pendente')->where('data', $date)->get();
+        $inspecoes = Inspecao::where('status', 'pendente')->where('data', $hoje)->get();
         // $inspecoes = Inspecao::where('status', 'pendente')->get();
         $inspecao = [];
         $empNome = [];
         $emps = [];
-
+        
         foreach ($inspecoes as $key) {
 
             if ($key->motivo == "Primeira Licenca" || $key->motivo == "Renovacao") {
@@ -120,19 +137,35 @@ class CoordenadorController extends Controller
 
             } elseif ($key->motivo == "Denuncia") {
 
-                $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
-                $empresa = Empresa::find($key->empresas_id);
-                
-                $obj = (object) array(
-                    'data'          => $key->data,
-                    'status'        => $key->status,
-                    'inspetor'      => $key->inspetor->user->name,
-                    'agente1'        => $inspec_agente[0]->agente->user->name,
-                    'agente2'        => $inspec_agente[1]->agente->user->name,
-                    'empresa'       => $empresa->nome,
-                    'cnae'          => "Denúncia",              
-                );
-                array_push($inspecao, $obj);
+                if ($key->empresas_id == null) {
+                    $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+                    $empresa = Empresa::find($key->empresas_id);
+                    
+                    $obj = (object) array(
+                        'data'          => $key->data,
+                        'status'        => $key->status,
+                        'inspetor'      => $key->inspetor->user->name,
+                        'agente1'       => $inspec_agente[0]->agente->user->name,
+                        'agente2'       => $inspec_agente[1]->agente->user->name,
+                        'empresa'       => $key->denuncia->empresa,
+                        'cnae'          => "Denúncia",              
+                    );
+                    array_push($inspecao, $obj);
+                } else {
+                    $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+                    $empresa = Empresa::find($key->empresas_id);
+                    
+                    $obj = (object) array(
+                        'data'          => $key->data,
+                        'status'        => $key->status,
+                        'inspetor'      => $key->inspetor->user->name,
+                        'agente1'       => $inspec_agente[0]->agente->user->name,
+                        'agente2'       => $inspec_agente[1]->agente->user->name,
+                        'empresa'       => $empresa->nome,
+                        'cnae'          => "Denúncia",              
+                    );
+                    array_push($inspecao, $obj);
+                }
             }
 
         }
@@ -145,26 +178,50 @@ class CoordenadorController extends Controller
 
         foreach ($empresas as $indice) {
             $emp = Empresa::where('nome', $indice)->first();
-            $endereco = Endereco::where('empresa_id', $emp->id)->first();
-            $telefone = Telefone::where('empresa_id', $emp->id)->first();
+            if ($emp != null) {
+                $endereco = Endereco::where('empresa_id', $emp->id)->first();
+                $telefone = Telefone::where('empresa_id', $emp->id)->first();
+    
+                $obj = (object) array(
+                    'nome'       => $emp->nome,
+                    'email'      => $emp->email,
+                    'cnpjcpf'    => $emp->cnpjcpf,
+                    'tipo'       => $emp->tipo,
+                    'cep'        => $endereco->cep,
+                    'rua'        => $endereco->rua,
+                    'numero'     => $endereco->numero,
+                    'bairro'     => $endereco->bairro,
+                    'complemento'=> $endereco->complemento,
+                    'telefone1'  => $telefone->telefone1,
+                    'telefone2'  => $telefone->telefone2,                
+                );
+    
+                array_push($emps, $obj);
+            } else {
 
-            $obj = (object) array(
-                'nome'       => $emp->nome,
-                'email'      => $emp->email,
-                'cnpjcpf'    => $emp->cnpjcpf,
-                'tipo'       => $emp->tipo,
-                'cep'        => $endereco->cep,
-                'rua'        => $endereco->rua,
-                'numero'     => $endereco->numero,
-                'bairro'     => $endereco->bairro,
-                'complemento'=> $endereco->complemento,
-                'telefone1'  => $telefone->telefone1,
-                'telefone2'  => $telefone->telefone2,                
-            );
-
-            array_push($emps, $obj);
+                $denuncia = Denuncia::where('empresa', $indice)->first();
+                // $endereco = Endereco::where('empresa_id', $emp->id)->first();
+                // $telefone = Telefone::where('empresa_id', $emp->id)->first();
+    
+                $obj = (object) array(
+                    'nome'       => $denuncia->empresa,
+                    'email'      => "Empresa não cadastrada",
+                    'cnpjcpf'    => "Empresa não cadastrada",
+                    'tipo'       => "Empresa não cadastrada",
+                    'endereco'   => $denuncia->endereco,
+                    'cep'        => "Empresa não cadastrada",
+                    'rua'        => "Empresa não cadastrada",
+                    'numero'     => "Empresa não cadastrada",
+                    'bairro'     => "Empresa não cadastrada",
+                    'complemento'=> "Empresa não cadastrada",
+                    'telefone1'  => "Empresa não cadastrada",
+                    'telefone2'  => "Empresa não cadastrada",                
+                );
+    
+                array_push($emps, $obj);
+            }
         }
-        
+
         $pdf = PDF::loadView('coordenador/inspecoes', compact('inspecao', 'emps'));
         return $pdf->setPaper('a4')->stream('inspecoes.pdf');
     }
@@ -182,6 +239,34 @@ class CoordenadorController extends Controller
         ]);
     }
 
+    public function encontrarAgente(Request $request)
+    {
+        $agente = Agente::where('user_id', $request->id)->first();
+
+        $data = array(
+            'nome'           => $agente->user->name,
+            'cpf'            => $agente->cpf,
+            'formacao'       => $agente->formacao,
+            'especializacao' => $agente->especializacao,
+            'telefone'       => $agente->telefone,
+        );
+        echo json_encode($data);        
+    }
+
+    public function encontrarInspetor(Request $request)
+    {
+        $inspetor = Inspetor::where('user_id', $request->id)->first();
+
+        $data = array(
+            'nome'           => $inspetor->user->name,
+            'cpf'            => $inspetor->cpf,
+            'formacao'       => $inspetor->formacao,
+            'especializacao' => $inspetor->especializacao,
+            'telefone'       => $inspetor->telefone,
+        );
+        echo json_encode($data);        
+    }
+
     public function encontrarRequerimento(Request $request)
     {
         $requerimento = Requerimento::find($request->requerimentoId);
@@ -196,9 +281,17 @@ class CoordenadorController extends Controller
 
     public function paginaDenuncias()
     {
-        
+        $denunciasPendentes = Denuncia::where('status', 'pendente')->orderBy('empresa', 'ASC')->get();
+        $denunciasAceito    = Denuncia::where('status', 'aceito')->orderBy('empresa', 'ASC')->get();
+        $denunciasArquivado = Denuncia::where('status', 'arquivado')->orderBy('empresa', 'ASC')->get();
+        $denunciasConcluido = Denuncia::where('status', 'concluido')->orderBy('empresa', 'ASC')->get();
 
-        return view('coordenador/denuncias');
+        return view('coordenador/denuncias', [
+            'pendente' => $denunciasPendentes,
+            'aceito'   => $denunciasAceito,
+            'arquivado'=> $denunciasArquivado,
+            'concluido'=> $denunciasConcluido,
+        ]);
     }
 
     public function cadastrarInspecao(Request $request)
@@ -211,7 +304,8 @@ class CoordenadorController extends Controller
                     'status'          => 'pendente',
                     'inspetor_id'     => $request->inspetor,
                     'requerimento_id' => $indice,
-                    'empresas_id'      => $requerimento->empresa->id,
+                    'empresas_id'     => $requerimento->empresa->id,
+                    'denuncias_id'    => null,
                     'motivo'          => $requerimento->tipo,
                     'agente1'         => $request->agente1,
                     'agente2'         => $request->agente2,
@@ -229,13 +323,14 @@ class CoordenadorController extends Controller
             }
         }
 
-        if (isset($request->empresas)) {
-            foreach ($request->empresas as $indice) {
+        if (isset($request->denuncias)) {
+            foreach ($request->denuncias as $indice) {
                 $inspecao = Inspecao::create([
                     'data'            => $request->data,
                     'status'          => 'pendente',
                     'inspetor_id'     => $request->inspetor,
-                    'empresas_id'      => $indice,
+                    'empresas_id'     => null,
+                    'denuncias_id'    => $indice,
                     'motivo'          => "Denuncia",
                     'agente1'         => $request->agente1,
                     'agente2'         => $request->agente2,
@@ -256,6 +351,63 @@ class CoordenadorController extends Controller
         session()->flash('success', 'A inspeção foi cadastrada com sucesso e agora consta para a visualização dos agentes e inspetores.');
         return back();
 
+    }
+
+    public function documentosRt(Request $request)
+    {
+        // $rtId = Crypt::decrypt($request->rt_id);
+        $rtId = Crypt::decrypt($request->rt_id);
+
+        $rt = RespTecnico::find($rtId);
+        $docsrt = Docresptec::where('resptecnicos_id', $rt->id)->get();
+        $temp = [];
+        $checkrespt = [];
+        // $docsRt = [];
+
+        $checklistresp = Checklistresp::where('resptecnicos_id', $rt->id)->orderBy('nomeDoc','ASC')->pluck('tipodocres_id');
+        for ($i=0; $i < count($checklistresp); $i++) {
+            array_push($temp, $checklistresp[$i]);
+        }
+
+        $array = array_unique($temp);
+
+        foreach ($array as $indice) {
+            array_push($checkrespt, Checklistresp::where('tipodocres_id', $indice)
+            ->where('resptecnicos_id', $rt->id)->first());
+        }
+
+        $tipodocresp = Tipodocresp::all();
+
+        // foreach ($checkrespt as $key) {
+        //     foreach ($docsrt as $indice) {
+        //         if ($key->tipodocres_id == $indice->tipodocresp_id && $key->resptecnicos_id == $indice->resptecnicos_id) {
+        //             $obj = (object) array(
+        //                 'nomeDoc'    => $key->nomeDoc,
+        //                 'anexado'    => $key->anexado,
+        //                 'caminho'    => $key->nome,
+        //             );
+        //             array_push($docsRt, $obj);
+        //         }else {
+        //             $obj = (object) array(
+        //                 'nomeDoc'    => $key->nomeDoc,
+        //                 'anexado'    => $key->anexado,
+        //                 'caminho'    => null,
+        //             );
+        //             array_push($docsRt, $obj);
+        //         }
+        //     }
+        // }
+
+        return view('coordenador/documentos_rt',[
+            'checklist' => $checkrespt,
+            'tipodocs'  => $tipodocresp,
+            'docsrt'    => $docsrt,
+        ]);
+    }
+
+    public function baixarArquivosRt(Request $request)
+    {
+        return response()->download(storage_path('app/public/'.$request->file));
     }
 
     public function historico()
@@ -282,6 +434,7 @@ class CoordenadorController extends Controller
                         'agente2'           => $inspec_agente[1]->agente->user->name,
                         'empresa'           => $requerimento->empresa->nome,
                         'cnae'              => $requerimento->cnae->descricao,
+                        'motivo'            => $key->motivo,
     
                         'relatorio_id'      => null,
                         'relatorio_status'  => null,
@@ -300,6 +453,7 @@ class CoordenadorController extends Controller
                             'agente2'             => $inspec_agente[1]->agente->user->name,
                             'empresa'             => $requerimento->empresa->nome,
                             'cnae'                => $requerimento->cnae->descricao,
+                            'motivo'              => $key->motivo,
         
                             'relatorio_id'        => $relatorio->id,
                             'relatorio_status'    => $relatorio->status,
@@ -318,6 +472,7 @@ class CoordenadorController extends Controller
                             'agente2'         => $inspec_agente[1]->agente->user->name,
                             'empresa'         => $requerimento->empresa->nome,
                             'cnae'            => $requerimento->cnae->descricao,
+                            'motivo'          => $key->motivo,
         
                             'relatorio_id'    => $relatorio->id,
                             'relatorio_status'=> $relatorio->status,
@@ -332,7 +487,8 @@ class CoordenadorController extends Controller
             } elseif ($key->motivo == "Denuncia") {
 
                 $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
-                $empresa = Empresa::find($key->empresas_id);
+                // Sem identificação de empresa no sistema
+                // $empresa = Empresa::find($key->empresas_id);
 
                 if ($relatorio == null) {
                     $obj = (object) array(
@@ -342,8 +498,9 @@ class CoordenadorController extends Controller
                         'inspetor'          => $key->inspetor->user->name,
                         'agente1'           => $inspec_agente[0]->agente->user->name,
                         'agente2'           => $inspec_agente[1]->agente->user->name,
-                        'empresa'           => $empresa->nome,
-                        'cnae'              => "Denúncia",
+                        'empresa'           => $key->denuncia->empresa,
+                        'cnae'              => "",
+                        'motivo'            => $key->motivo,
                         
                         'relatorio_id'      => null,
                         'relatorio_status'  => null,
@@ -360,8 +517,9 @@ class CoordenadorController extends Controller
                             'inspetor'           => $key->inspetor->user->name,
                             'agente1'            => $inspec_agente[0]->agente->user->name,
                             'agente2'            => $inspec_agente[1]->agente->user->name,
-                            'empresa'            => $empresa->nome,
-                            'cnae'               => "Denúncia",
+                            'empresa'            => $key->denuncia->empresa,
+                            'cnae'               => "",
+                            'motivo'             => $key->motivo,
                             
                             'relatorio_id'       => $relatorio->id,
                             'relatorio_status'   => $relatorio->status,
@@ -378,8 +536,9 @@ class CoordenadorController extends Controller
                             'inspetor'           => $key->inspetor->user->name,
                             'agente1'            => $inspec_agente[0]->agente->user->name,
                             'agente2'            => $inspec_agente[1]->agente->user->name,
-                            'empresa'            => $empresa->nome,
-                            'cnae'               => "Denúncia",
+                            'empresa'            => $key->denuncia->empresa,
+                            'cnae'               => "",
+                            'motivo'             => $key->motivo,
                             
                             'relatorio_id'       => $relatorio->id,
                             'relatorio_status'   => $relatorio->status,
@@ -477,7 +636,7 @@ class CoordenadorController extends Controller
             return redirect()->route('historico.inspecoes')->with('message', 'Este relatório foi reprovado por outro agente ou coordenador!');
         }
 
-        if ($request->decisao == true) {
+        if ($request->decisao == 'true') {
 
             $relatorio->coordenador = "aprovado";
             $relatorio->save();
@@ -490,9 +649,10 @@ class CoordenadorController extends Controller
                 $inspecao->save();
 
                 $empresa = Empresa::find($relatorio->inspecao->empresas_id);
-                $denuncias = Denuncia::where('empresa_id', $empresa->id)
-                ->where('status', 'Acatado')
-                ->update(['status' => 'Concluido']);
+                
+                if ($inspecao->denuncias_id != null) {
+                    $denuncias = Denuncia::find($inspecao->denuncias_id)->update(['status' => 'concluido']);
+                }
 
                 return redirect()->route('historico.inspecoes')->with('message', 'Relatório aprovado com sucesso!');
             }
@@ -520,7 +680,9 @@ class CoordenadorController extends Controller
 
     public function deletarInspecao(Request $request)
     {
-        $id = Crypt::decrypt($request->inspecaoId);
+
+        // $id = Crypt::decrypt($request->inspecaoId);
+        $id = $request->inspecaoId;
         $inspecao = Inspecao::find($id);
 
         $inspAgente = InspecAgente::where('inspecoes_id', $inspecao->id)->delete();
@@ -532,14 +694,14 @@ class CoordenadorController extends Controller
 
         $inspecao->delete();
 
-        session()->flash('success', 'A inspeção foi apagada com sucesso.');
+        session()->flash('success', 'A inspeção foi deletada com sucesso.');
         return back();
     }
 
     public function requerimentosAprovados()
     {
         $resultados = Requerimento::where('status', 'aprovado')->get();
-        $denuncia = Denuncia::where('status', 'Acatado')->get();
+        $denuncia = Denuncia::where('status', 'aceito')->get();
         $temp = [];
         $empresas = [];
         $denuncias = [];
@@ -553,46 +715,53 @@ class CoordenadorController extends Controller
         }
 
         foreach ($denuncia as $indice) {
-            $inspecao = Inspecao::where('requerimento_id', null)
-            ->where('empresas_id', $indice->empresa_id)
-            ->where('status', 'pendente')
-            ->first();
+            $inspecao = Inspecao::where('denuncias_id', $indice->id)->first();
             if ($inspecao == null) {
                 array_push($denuncias, $indice);
             }
         }
 
-        foreach ($denuncias as $indice) {
+        // foreach ($denuncia as $indice) {
+        //     $inspecao = Inspecao::where('requerimento_id', null)
+        //     ->where('empresas_id', $indice->empresa_id)
+        //     ->where('status', 'pendente')
+        //     ->first();
+        //     if ($inspecao == null) {
+        //         array_push($denuncias, $indice);
+        //     }
+        // }
 
-            if (count($temp) == 0) {
-                $obj = (object) array(
-                    'nome'  => $indice->empresa->nome,
-                    'id'    => $indice->empresa->id,
-                );
-                array_push($temp, $obj);   
-            }
-            else {
-                $found = false;
-                foreach ($temp as $indice2) {
-                    if ($indice->empresa->nome == $indice2->nome) {
-                        $found = true;
-                        break;
-                    }
-                }
-                if ($found == false) {
-                    $obj = (object) array(
-                        'nome'  => $indice->empresa->nome,
-                        'id'    => $indice->empresa->id,
-                    );
-                    array_push($temp, $obj);
-                }
-            }
-        }
+        // foreach ($denuncias as $indice) {
 
-        foreach ($temp as $key) {
-            $empresa = Empresa::find($key->id);
-            array_push($empresas,$empresa);
-        }
+        //     if (count($temp) == 0) {
+        //         $obj = (object) array(
+        //             'nome'  => $indice->empresa->nome,
+        //             'id'    => $indice->empresa->id,
+        //         );
+        //         array_push($temp, $obj);   
+        //     }
+        //     else {
+        //         $found = false;
+        //         foreach ($temp as $indice2) {
+        //             if ($indice->empresa->nome == $indice2->nome) {
+        //                 $found = true;
+        //                 break;
+        //             }
+        //         }
+        //         if ($found == false) {
+        //             $obj = (object) array(
+        //                 'nome'  => $indice->empresa->nome,
+        //                 'id'    => $indice->empresa->id,
+        //             );
+        //             array_push($temp, $obj);
+        //         }
+        //     }
+        // }
+
+        // foreach ($temp as $key) {
+        //     $empresa = Empresa::find($key->id);
+        //     array_push($empresas,$empresa);
+        // }
 
         $output = '';
             if(count($resultado) > 0){
@@ -620,15 +789,15 @@ class CoordenadorController extends Controller
                     ';
                 }
             }
-            if(isset($empresas)){
-                foreach($empresas as $indice){
+            if(isset($denuncias)){
+                foreach($denuncias as $indice){
                     $output .= '
                     <div class="d-flex justify-content-center cardMeuCnae" onmouseenter="mostrarBotaoAdicionarDenuncia('.$indice->id.')">
                         <div class="mr-auto p-2>OPA</div>
                             <div class="mr-auto p-2">
                                 <div class="btn-group" style="margin-bottom:-15px;">
                                     <div class="form-group" style="font-size:15px;">
-                                        <div class="textoCampo" id="empresa'.$indice->id.'">'.$indice->nome.'</div>
+                                        <div class="textoCampo" id="empresa'.$indice->id.'">'.$indice->empresa.'</div>
                                         <div>Tipo: <span class="textoCampo">Denúncia</span></div>
                                     </div>
                                 </div>
@@ -658,6 +827,57 @@ class CoordenadorController extends Controller
             echo json_encode($data);
     }
 
+    public function imagensDenuncia(Request $request)
+    {
+        $imagens = ImagemDenuncia::where('denuncias_id', $request->Id)->get();
+        $caminhos = [];
+
+        foreach ($imagens as $key) {
+            array_push($caminhos, $key->nome);
+        }
+
+        // $output = '';
+        // if($imagens != null){
+        //     foreach($imagens as $item){
+        //         $output .= '
+        //             <img src="{{asset("storage/'.$item->nome.'")}}">
+        //         ';
+        //     }
+        // }
+        // else{
+        //     $output .= '
+        //         <label></label>
+        //     ';
+        // }
+
+        $data = array(
+            'success'   => true,
+            'table_data' => $caminhos,
+        );
+        echo json_encode($data);
+    }
+
+    public function tipodocumentos(Request $request)
+    {
+        $tipodocemp = Tipodocempresa::find($request->id);
+
+        $data = array(
+            'table_data' => $tipodocemp->nome,
+        );
+
+        echo json_encode($data);
+    }
+
+    public function editartipodoc(Request $request)
+    {
+        $tipoDocemp = Tipodocempresa::find($request->idTipoDoc);
+        $tipoDocemp->nome = $request->nomeTipoDoc;
+        $tipoDocemp->save();
+
+        session()->flash('success', 'Nome do documento alterado!');
+        return back();
+    }
+
     /* Função para listar em tela todas empresas que se cadastraram
     e que o acesso não foi liberado.
     */
@@ -669,7 +889,7 @@ class CoordenadorController extends Controller
 
     public function downloadArquivo(Request $request)
     {
-        return response()->download(storage_path('app/' . $request->file));
+        return response()->download(storage_path('app/public/' . $request->file));
     }
 
     /* Função para selecionar e exibir na página a empresa que será
@@ -714,20 +934,44 @@ class CoordenadorController extends Controller
         if ($request->decisao == "true") {
 
             $denuncia = Denuncia::find($request->denunciaId);
-            $denuncia->status = "Acatado";
+            $denuncia->status = "aceito";
             $denuncia->save();
 
-            session()->flash('success', 'Denúncia acatada com sucesso!');
-            return redirect()->route('pagina.detalhes.denuncia', ['empresa' => $request->empresa]);
+            session()->flash('success', 'Denúncia aceita com sucesso!');
+            return back();
+            // return redirect()->route('pagina.detalhes.denuncia', ['empresa' => $request->empresa]);
 
         } elseif ($request->decisao == "false") {
 
             $denuncia = Denuncia::find($request->denunciaId);
-            $denuncia->status = "Arquivado";
+            $denuncia->status = "arquivado";
             $denuncia->save();
 
             session()->flash('success', 'Denúncia arquivada com sucesso!');
-            return redirect()->route('pagina.detalhes.denuncia', ['empresa' => $request->empresa]);
+            return back();
+            // return redirect()->route('pagina.detalhes.denuncia', ['empresa' => $request->empresa]);
+        }
+        
+    }
+
+    public function denunciaInspecao(Request $request)
+    {
+        $inspecao = Inspecao::where('denuncias_id', $request->denunciaId)->first();
+
+        if ($inspecao == null) {
+
+            $data = array(
+                'resultado'   => false,
+            );
+            echo json_encode($data);
+
+        } else {
+
+            $data = array(
+                'resultado'   => true,
+            );
+            echo json_encode($data);
+
         }
         
     }
@@ -919,7 +1163,7 @@ class CoordenadorController extends Controller
             if($user == null){
 
               $passwordTemporario = Str::random(8);
-              Mail::to($request->email)->send(new \App\Mail\CadastroUsuarioPorEmail($passwordTemporario, $request->tipo));
+              \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroUsuarioPorEmail($passwordTemporario, $request->tipo, $request->email));
               $user = User::create([
                 'name'            => "Inspetor",
                 'email'           => $request->email,
@@ -944,7 +1188,7 @@ class CoordenadorController extends Controller
             if($user == null){
 
               $passwordTemporario = Str::random(8);
-              Mail::to($request->email)->send(new \App\Mail\CadastroUsuarioPorEmail($passwordTemporario, $request->tipo));
+              \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroUsuarioPorEmail($passwordTemporario, $request->tipo, $request->email));
               $user = User::create([
                 'name'            => "Agente",
                 'email'           => $request->email,
@@ -1437,6 +1681,91 @@ class CoordenadorController extends Controller
 
 
         echo json_encode($data);
+    }
+
+    public function criarArea()
+    {
+        $tipos = Tipodocempresa::orderBy('nome')->get();
+        return view('coordenador/criar_area', ['tipos' => $tipos]);
+    }
+
+    public function criartipodoc(Request $request)
+    {
+
+        $messages = [
+            'required' => 'O campo :attribute não foi passado!',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'Nome' => 'required|string',
+        ], $messages);
+
+        
+        if ($validator->fails()) {
+            return back()
+                    ->withErrors($validator);
+        }
+
+        $tipodoc = Tipodocempresa::create([
+            'nome' => $request->Nome,
+        ]);
+
+        session()->flash('success', 'Novo tipo de documento cadastrado!');
+        return back();
+
+
+    }
+
+    public function criarCnae()
+    {
+        $area = Area::orderBy('nome')->get();
+        return view('coordenador/criar_cnae', ['areas' => $area]);
+    }
+
+    public function editarArea(Request $request)
+    {
+        $area = Area::find($request->areaId);
+        $areatipodocemps = AreaTipodocemp::where('area_id', $area->id)->get();
+        $tiposdocs = Tipodocempresa::orderBy('nome', 'ASC')->get();
+        
+        return view('coordenador/editar_area', ['area' => $area, 'tipos' => $tiposdocs, 'areatipodocemps' => $areatipodocemps]);
+    }
+
+    public function buscarTiposDocs(Request $request)
+    {
+        $area = Area::find($request->id);
+        $areatipodocemps = AreaTipodocemp::where('area_id', $area->id)->get();
+        $idsTiposDocs = [];
+
+        foreach ($areatipodocemps as $key) {
+            array_push($idsTiposDocs, $key->tipodocemp_id);
+        }
+
+        $data = array(
+            'nomes' => $idsTiposDocs,
+        );
+        echo json_encode($data);
+
+
+    }
+
+    public function areaEditar(Request $request)
+    {
+        $areatipodocemps = AreaTipodocemp::where('area_id', $request->idArea)->delete();
+
+        $area = Area::find($request->idArea);
+        $area->nome = $request->nomeArea;
+        $area->save();
+
+        foreach ($request->tipos as $key) {
+            $areatipodoc = AreaTipodocemp::create([
+                'area_id'       => $request->idArea,
+                'tipodocemp_id' => $key,
+            ]);
+        }
+
+        session()->flash('success', 'Edição concluída!');
+        return back();
     }
 }
 
