@@ -3,11 +3,11 @@
             <div class="col-12" style="display: flex;justify-content: center;color:white; margin-bottom:-1.5rem; padding-top:0.5rem;">
                 <ul>
                     @guest
-                        <li style="float: left; margin-right:30px;font-family:arial"><a href="" style="text-decoration: none; color:#fff;">Início</a></li>
-                        <li style="float: left; margin-right:30px;font-family:arial">A Vigilância</li>
-                        <li style="float: left; margin-right:30px;font-family:arial">Orientações</li>
-                        <li style="float: left; margin-right:30px;font-family:arial">Legislação</li>
-                        <li style="float: left; margin-right:30px;font-family:arial">Contatos</li>
+                        <li style="float: left; margin-right:30px;font-family:arial"><a href="{{ route('/') }}" style="text-decoration: none; color:#fff;">Início</a></li>
+                        <li style="float: left; margin-right:30px;font-family:arial"><a href="{{ route('emconstrucao2') }}" style="text-decoration: none; color:#fff;cursor:pointer">A Vigilância</a></li>
+                        <li style="float: left; margin-right:30px;font-family:arial"><a href="{{ route('emconstrucao2') }}" style="text-decoration: none; color:#fff;cursor:pointer">Orientações</a></li>
+                        <li style="float: left; margin-right:30px;font-family:arial"><a href="{{ route('emconstrucao3') }}" style="text-decoration: none; color:#fff;cursor:pointer">Legislação</a></li>
+                        <li style="float: left; margin-right:30px;font-family:arial"><a href="{{ route('emconstrucao4') }}" style="text-decoration: none; color:#fff;cursor:pointer">Contatos</a></li>
                         <li style="float: left; margin-right:30px;font-family:arial"></li>
                     @elseif(Auth::user()->tipo == "coordenador")
                         <li style=" float: left; margin-right:30px;font-family:arial"><a href="" style="text-decoration: none; color:#fff;cursor:pointer">Início</a></li>
