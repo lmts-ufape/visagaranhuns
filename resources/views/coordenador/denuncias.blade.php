@@ -384,6 +384,7 @@
                 for (let index = 0; index < response.table_data.length; index++) {
                     // document.getElementById("resultado-repeticao").innerHTML += "Repetição";
                     resultado = caminho.replace("$", response.table_data[index]);
+                    console.log(resultado);
                     element.innerHTML += resultado;   
                 }
             }
