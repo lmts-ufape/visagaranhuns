@@ -438,6 +438,9 @@ class ApiController extends Controller
     *   ENTRADA: token
     *   RETURN: (lista) inspecoes, documentos, imagens e comentarios
     */
+    // 
+    // 
+    // 
     public function apiAtualizarApp(Request $request){
         $user = User::where('remember_token','=',$request->token)->first();
         $inspetor = Inspetor::where('user_id','=',$user->id)->first();
