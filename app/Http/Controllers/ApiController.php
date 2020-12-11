@@ -427,7 +427,7 @@ class ApiController extends Controller
     *   RETURN: Arquivo PDF
     */
     public function apiDownloadImagemPDF(Request $request){
-        $file = 'C:/xampp/htdocs/siteVisaGaranhuns/storage/app/'.$request->caminho;
+        $file = 'C:/xampp/htdocs/siteVisaGaranhuns/storage/app/public/'.$request->caminho;
         $headers = array(
             'Content-Type: application/pdf',
           );
@@ -438,6 +438,9 @@ class ApiController extends Controller
     *   ENTRADA: token
     *   RETURN: (lista) inspecoes, documentos, imagens e comentarios
     */
+    // 
+    // 
+    // 
     public function apiAtualizarApp(Request $request){
         $user = User::where('remember_token','=',$request->token)->first();
         $inspetor = Inspetor::where('user_id','=',$user->id)->first();
