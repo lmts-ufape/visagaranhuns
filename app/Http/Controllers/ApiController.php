@@ -427,7 +427,7 @@ class ApiController extends Controller
     *   RETURN: Arquivo PDF
     */
     public function apiDownloadImagemPDF(Request $request){
-        $file = 'C:/xampp/htdocs/siteVisaGaranhuns/storage/app/'.$request->caminho;
+        $file = 'C:/xampp/htdocs/siteVisaGaranhuns/storage/app/public/'.$request->caminho;
         $headers = array(
             'Content-Type: application/pdf',
           );
