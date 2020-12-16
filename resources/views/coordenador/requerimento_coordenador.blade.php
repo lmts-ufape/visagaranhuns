@@ -39,7 +39,7 @@
             </div>
         @endif
         @if(!empty($aprovado))
-        <div class="alert alert-warning alert-block fade show">
+        <div class="alert alert-success alert-block fade show">
             <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{$aprovado}}</strong>
         </div>
@@ -75,7 +75,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="idTabela" class="overflow-auto" style=" height: 190px; margin-bottom: 85px;">
+                <div id="idTabela" class="overflow-auto" style=" height: 1090px; margin-bottom: 85px;">
                     <table style="width:100%">
                         <tbody_>
 
