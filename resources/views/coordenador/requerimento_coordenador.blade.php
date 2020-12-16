@@ -39,7 +39,7 @@
             </div>
         @endif
         @if(!empty($aprovado))
-        <div class="alert alert-warning alert-block fade show">
+        <div class="alert alert-success alert-block fade show">
             <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>{{$aprovado}}</strong>
         </div>

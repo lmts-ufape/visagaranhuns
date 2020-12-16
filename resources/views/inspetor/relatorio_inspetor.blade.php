@@ -53,7 +53,7 @@
                                 @csrf
                                 <input type="hidden" name="inspecao_id" value="{{$inspetor_id}}">
                                 <textarea id="summary-ckeditor" rows="40" name="relatorio">{{$relatorio}}</textarea>
-                            </form> 
+                            </form>
                         </div>
                         <div class="form col-md-3">
                             <div class="col barraMenu">
@@ -65,7 +65,7 @@
                                     @foreach ($album as $item)
                                         @if($item->orientation == 6 || $item->orientation == 8)
                                         <tr style="text-align: center;border: 1.5px solid #f5f5f5;">
-                                            <td style="width: 100%;" type="button" data-toggle="modal" data-target="#modaTipo1{{$item->id}}"><img src="/imagens/inspecoes/{{$item->imagemInspecao}}" alt="Logo" height="90px"/></td>
+                                            <td style="width: 100%;" type="button" data-toggle="modal" data-target="#modaTipo1{{$item->id}}"><img src="{{asset('/imagens/inspecoes/'.$item->imagemInspecao)}}" alt="Logo" height="90px"/></td>
                                         </tr>
                                         <!-- Modal TIPO 1-->
                                         <div class="modal fade" id="modaTipo1{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -80,7 +80,7 @@
                                                 <div class="modal-body">
                                                     <div class="form-row">
                                                         <div class="form-group col-md-3">
-                                                            <img src="/imagens/inspecoes/{{$item->imagemInspecao}}" alt="Logo" height="290px"/>
+                                                            <img src="{{asset('/imagens/inspecoes/'.$item->imagemInspecao)}}" alt="Logo" height="290px"/>
                                                         </div>
                                                         <div class="form-group col-md-9">
                                                             <div style="overflow: auto; height:290px;">
