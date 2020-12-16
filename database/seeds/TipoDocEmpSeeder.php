@@ -17,7 +17,7 @@ class TipoDocEmpSeeder extends Seeder
         \App\Tipodocempresa::create([ 'nome' => 'RG', 'validade' => '5']);
         \App\Tipodocempresa::create([ 'nome' => 'CPF', 'validade' => '5']);
         \App\Tipodocempresa::create([ 'nome' => 'Atestado de Regularidade do Corpo de Bombeiros', 'validade' => '5']);
-        \App\Tipodocempresa::create([ 'nome' => 'Licença Anterior', 'validade' => '5']);
+        // \App\Tipodocempresa::create([ 'nome' => 'Licença Anterior', 'validade' => '5']);
         \App\Tipodocempresa::create([ 'nome' => 'Licença Sanitaria', 'validade' => '5']);
         \App\Tipodocempresa::create([ 'nome' => 'Certificado de Detetizadora', 'validade' => '5']);
         \App\Tipodocempresa::create([ 'nome' => 'IPTU Quitado', 'validade' => '5']);
