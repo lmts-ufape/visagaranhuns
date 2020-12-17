@@ -34,99 +34,6 @@
             </div>
 
 
-
-
-
-
-    {{-- <div class="barraMenu" style="margin-top:0.7rem;"">
-        <div class="d-flex">
-            <div class="mr-auto p-2">
-                <div class="btn-group">
-                    <div style="margin-top:2.4px;margin-left:10px;font-size:15px;">Documentos - {{$item->nome}}</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @foreach ($checklist as $indice)
-        @if ($indice->areas_id == $item->id)
-        <div class="container" style="margin-bottom:1rem">
-
-            <div class="cardDocumentos">
-                <div class="d-flex justify-content-center">
-                    <div class="mr-auto p-2">
-                        <div class="form-group">
-                            <div style="font-weight:bold; color:#707070; margin-left:0px; margin-left:10px;">{{$indice->nomeDoc}}<span style="color:red">*</span></div>
-                            <div style="margin-left:10px; margin-bottom:-15px;">Data do envio: dd/mm/aaaa</div>
-                        </div>
-                    </div>
-                    @if($indice->anexado == "false")
-                        <div class="p-2">
-                            <div class="form-row">
-                                <div style="margin-top:1px;margin-right:15px;font-size:15px;">
-                                    <img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:13px;"/>
-                                    <span class="btn-sm btn-warning">Pendente</span>
-                                </div>
-                                <div style="margin-top:1px;margin-right:15px;font-size:15px;" class="dropdown show">
-                                    <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" onclick="foundChecklist({{$indice->id}},{{$empresaId}})" data-toggle="modal" data-target="#exampleModalCenter">
-                                        Anexar
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    @else
-                    <div class="p-2">
-                        <div class="form-row">
-                            <div style="margin-top:1px;margin-right:15px;font-size:15px;">
-                                <img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/>
-                                <span class="btn-sm btn-success">Anexado</span>
-                            </div>
-                            <div style="margin-top:1px;margin-right:15px;font-size:15px;" class="dropdown show">
-                                <a class="btn btn-secondary btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Ação
-                                </a>
-
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    @foreach ($docsempresa as $docempresa)
-                                        @if ($docempresa->empresa_id == $indice->empresa_id)
-                                            <a href="{{route('download.arquivo', ['file' => $docempresa->nome, "empresaId" => $empresaId, "areaId" => $item->id])}}" class="dropdown-item" href="#">Baixar</a>
-                                        @endif
-                                    @endforeach
-                                    <a class="dropdown-item" href="#">Editar</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Anexar Arquivo</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" form="arquivo" class="btn btn-primary">Anexar</button>
-                </div>
-            </div>
-            </div>
-        </div>
-        @endif
-    @endforeach --}}
-
-
     <div class="barraMenu"style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
             <div class="container" style="margin-top:1rem;">
                     <div class="form-row">
@@ -180,18 +87,29 @@
                                         @if ($indice->areas_id == $item->id)
                                             @if($indice->anexado == "false")
                                             <div class="form col-md-12">
-                                                <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/> {{$indice->nomeDoc}}
-
-                                                    {{-- <span style="color:#e1ad01">Pendente</span> --}}
+                                                @if ($indice->nomeDoc == "Licença Sanitaria")
+                                                <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/> 
+                                                    {{$indice->nomeDoc}}
                                                 </label>
+                                                @else
+                                                <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_atencao.png') }}" alt="Logo" style="margin-right:10px;"/> 
+                                                    {{$indice->nomeDoc}}*
+                                                </label>
+                                                @endif
                                             </div>
                                             @else
                                                 @foreach ($docsempresa as $docempresa)
                                                     @if ($docempresa->empresa_id == $indice->empresa_id && $docempresa->tipodocemp_id == $indice->tipodocemp_id && $docempresa->area == $indice->areas_id)
                                                         <div class="form col-md-12">
+                                                            @if ($indice->nomeDoc == "Licença Sanitaria")
                                                             <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}} -
                                                                 <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}"> Baixar Anexo</a>
                                                             </label>
+                                                            @else
+                                                            <label style="font-weight:normal;font-family: 'Roboto', sans-serif; margin-bottom:3px"><img src="{{ asset('/imagens/logo_aprovado.png') }}" alt="Logo" style="margin-right:13px;"/> {{$indice->nomeDoc}}* -
+                                                                <a href="{{route('download.arquivo', ['file' => $docempresa->nome])}}"> Baixar Anexo</a>
+                                                            </label>
+                                                            @endif
                                                             <a data-toggle="modal" data-target="#exampleModalCenter" onclick="findDoc({{$docempresa->id}})" style="cursor:pointer; color:#249BE3">- Editar Anexo</a>
                                                         </div>
                                                     @endif
