@@ -7,6 +7,7 @@ use App\Coordenador;
 use App\User;
 use App\Agente;
 use App\Area;
+use App\Cnae;
 use App\AreaTipodocemp;
 use App\Inspetor;
 use App\Empresa;
@@ -1731,6 +1732,15 @@ class CoordenadorController extends Controller
         return view('coordenador/editar_area', ['area' => $area, 'tipos' => $tiposdocs, 'areatipodocemps' => $areatipodocemps]);
     }
 
+    public function editarCnae(Request $request)
+    {
+        $cnae = Cnae::find($request->cnaeId);
+        $areaCnae = Area::where('id', $cnae->areas_id)->first();
+        $areas = Area::orderBy('nome')->get();
+        
+        return view('coordenador/editar_cnae', ['cnae' => $cnae, 'areas' => $areas, 'areaCnae' => $areaCnae]);
+    }
+
     public function buscarTiposDocs(Request $request)
     {
         $area = Area::find($request->id);
@@ -1763,6 +1773,43 @@ class CoordenadorController extends Controller
                 'tipodocemp_id' => $key,
             ]);
         }
+
+        session()->flash('success', 'Edição concluída!');
+        return back();
+    }
+
+    public function cnaeEditar(Request $request)
+    {
+        $messages = [
+            'unique'   => 'Um campo igual a :attribute já está cadastrado no sistema!',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            // 'codigo'    => 'nullable|string|unique:cnaes,codigo',
+            // 'descricao' => 'nullable|string|unique:cnaes,descricao',
+            'area'      => 'nullable|integer',
+
+        ], $messages);
+
+        
+        if ($validator->fails()) {
+            return back()
+                    ->withErrors($validator);
+        }
+
+        $cnae = Cnae::find($request->idCnae);
+
+        if (isset($request->codigo)) {
+            $cnae->codigo = $request->codigo;
+        }
+        if (isset($request->descricao)) {
+            $cnae->descricao = $request->descricao;
+        }
+        if (isset($request->area)) {
+            $cnae->areas_id = $request->area;
+        }
+
+        $cnae->save();
 
         session()->flash('success', 'Edição concluída!');
         return back();

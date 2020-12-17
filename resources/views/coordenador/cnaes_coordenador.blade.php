@@ -39,21 +39,36 @@
         <div class="row justify-content-left" style="margin-left:0px;padding-bottom:20rem;">
             @if(count($cnaes)>0)
                 @foreach ($cnaes as $item)
-                    <a href="{{ route('listagem.empresas',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;cursor:pointer;color:black;">
-                        <div class="cardArea">
-                            <div class="col-12" style="text-align:right;color:gray;margin-left:8px;">{{$item->codigo}}</div>
+                    
+                    <div class="cardArea">
+                        <div class="form-row">
+                            <div class="col-sm-8">
+                                <div class="col-12" style="text-align:left;color:gray;margin-left:-5px;margin-top:5px;">{{$item->codigo}}</div>
+                            </div>
+                            <div class="col-sm-4">
+                                <a href="{{ route('editar.cnae', ['cnaeId' => $item->id]) }}">
+                                    <img src="{{ asset('/imagens/edit.png') }}" alt="Logo" style="width:17px; height:20px;margin-left: 35px;"/>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="form-row">
                             <div class="col-12" style="margin-top:-10px;">
                                 @if(strlen($item->descricao) > 56)
                                     @php
                                         $str = substr($item->descricao, 0, 56) . '...';
                                     @endphp
-                                    <label style="width:100%; margin-top:10px;margin-left:-5px;margin-right:-20px;text-decoration:none;cursor:pointer;color:black;">{{$str}}</label>
+                                    <a href="{{ route('listagem.empresas',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;cursor:pointer;color:black;">
+                                        <label style="width:100%; margin-top:10px;margin-left:10px;margin-right:-20px;text-decoration:none;cursor:pointer;color:black;">{{$str}}</label>
+                                    </a>
                                 @else
-                                    <label style="width:100%; margin-top:10px;margin-left:-5px;margin-right:-20px;text-decoration:none;cursor:pointer;color:black;">{{$item->descricao}}</label>
-                                @endif
+                                    <a href="{{ route('listagem.empresas',["value" => Crypt::encrypt($item->id)]) }}" style="text-decoration:none;cursor:pointer;color:black;">
+                                        <label style="width:100%; margin-top:10px;margin-left:10px;margin-right:-20px;text-decoration:none;cursor:pointer;color:black;">{{$item->descricao}}</label>
+                                    </a>
+                                @endif 
                             </div>
                         </div>
-                    </a>
+                    </div>
+                    
                 @endforeach
             @else
                 <div class="col-12" style="text-align:center;color:gray;font-weight:bold;margin-top:4rem; margin-bottom:5rem;font-size:20px;font-family:Arial, Helvetica, sans-serif;">Nenhum CNAE cadastrado!</div>
