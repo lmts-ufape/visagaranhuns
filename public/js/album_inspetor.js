@@ -10,7 +10,7 @@ window.deletarImagemInspecao = function($id){
 window.modalImagemInspecao = function($id, $id_crypt, $textOriginal){
     $inspecao_id_temp = $id;
 
-    let $comentarioTextAreaFoto = tinyMCE.get('comentarioImagem'+$id).getContent();
+    let $comentarioTextAreaFoto = document.getElementById('comentarioImagem'+$id).val;
     //console.log($textOriginal, $comentarioTextAreaFoto);
     if($comentarioTextAreaFoto.length == 0){ //nenhuma modificacao e cliquei em salvar
         document.getElementById("modalSalvarComentarioFoto_InspetorCor").style.backgroundColor = '#ff0000';
