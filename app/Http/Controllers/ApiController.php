@@ -9,6 +9,7 @@ use App\Inspecao;
 use App\Inspetor;
 use App\Endereco;
 use App\Telefone;
+use App\Empresa;
 use App\InspecaoFoto;
 use App\Docempresa;
 use App\Requerimento;
@@ -24,7 +25,7 @@ class ApiController extends Controller
     *   ENTRADA: email, senha
     *   RETURN: id, nome, email e senha
     */
-    public function apiLogin(Request $request){
+    /*public function apiLogin(Request $request){
         $resultados = User::where('email','=',$request->email)->get();
         $output = '';
         $status = 'false';
@@ -129,6 +130,205 @@ class ApiController extends Controller
         }
 
 
+    }
+    */
+    public function apiLogin(Request $request){
+        $resultados = User::where('email','=',$request->email)->get();
+        $output = '';
+        $status = 'false';
+        $token = '';
+        foreach($resultados as $item){
+            if(Hash::check($request->password ,$item->password) == true && $item->tipo == "inspetor"){
+                $output =  $resultados;
+                $token = Str::random(60);
+                $status = 'true';
+
+                $resultadoAtual = User::where('email','=',$request->email)->first();
+                $resultadoAtual->remember_token = $token;
+                $resultadoAtual->save();
+
+
+                //  inspecoes
+                $user = User::where('remember_token','=',$token)->first();
+                $inspetor = Inspetor::where('user_id','=',$user->id)->first();
+                $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
+                $listaDeInspecoes = [];
+
+                foreach ($inspecoes as $indice) {
+
+                    if ($indice->denuncias_id == null) {
+
+                        $endereco = Endereco::where('empresa_id', $indice->requerimento->empresa->id)
+                        ->first();
+                        $telefone = Telefone::where('empresa_id', $indice->requerimento->empresa->id)
+                        ->first();
+
+                        //documentos
+                        $docsempresa = Docempresa::where('empresa_id', $indice->requerimento->empresa->id)->where('area', $indice->requerimento->cnae->areas_id)->get();
+                        $listaDocumentos = [];
+
+                        foreach ($docsempresa as $indicedoc) {
+                            $obj2 = (object) array(
+                                'inspecao_id'   => $indice->id,
+                                'nome'      =>  $indicedoc->tipodocemp->nome,
+                                'caminho'   =>  $indicedoc->nome,
+                                'data_emissao'=> $indicedoc->data_emissao,
+                                'data_validade'=> $indicedoc->data_validade,
+                            );
+                            array_push($listaDocumentos, $obj2);
+                        }
+
+                        //album de fotos (foto e comentario)
+                        $resultado = InspecaoFoto::where('inspecao_id','=',$indice->id)->orderBy('created_at', 'ASC')->get();
+                        $albumDeFotos = [];
+                        foreach($resultado as $item){
+                            $objFoto = (object) array(
+                                'inspecao_id'           => $item->inspecao_id,
+                                'imagemInspecao'        => $item->imagemInspecao,
+                                'nome'                  => $item->nome,
+                                'orientation'           => $item->orientation,
+                                'descricao'             => $item->descricao,
+                            );
+                            array_push($albumDeFotos, $objFoto);
+                        }
+
+                        $obj = array(
+                            'empresa_nome'  => $indice->requerimento->empresa->nome,
+                            'rua'           => $endereco->rua,
+                            'numero'        => $endereco->numero,
+                            'bairro'        => $endereco->bairro,
+                            'cep'           => $endereco->cep,
+                            'cnpjcpf'          => $indice->requerimento->empresa->cnpjcpf,
+                            'representante_legal' => $indice->requerimento->empresa->user->name,
+                            'telefone1'     => $telefone->telefone1,
+                            'telefone2'     => $telefone->telefone2,
+                            'email'         => $indice->requerimento->empresa->email,
+                            'data'          => $indice->data,
+                            'status'        => $indice->status,
+                            'tipo'          => $indice->requerimento->tipo,
+                            'descricao'     => $indice->requerimento->cnae->descricao,
+                            'inspecao_id'   => $indice->id,
+                            'listaDocumentos'=> $listaDocumentos,
+                            'albumDeFotos'=> $albumDeFotos,
+                        );
+
+                        array_push($listaDeInspecoes, $obj);
+                        $listaDocumentos = [];
+                        $albumDeFotos = [];
+
+                    }
+                    else {
+                        if ($indice->denuncia->empresa_id == null) {
+                            //album de fotos (foto e comentario)
+                            $resultado = InspecaoFoto::where('inspecao_id','=',$indice->id)->orderBy('created_at', 'ASC')->get();
+                            $albumDeFotosIF = [];
+                            foreach($resultado as $item){
+                                $objFoto = (object) array(
+                                    'inspecao_id'           => $item->inspecao_id,
+                                    'imagemInspecao'        => $item->imagemInspecao,
+                                    'nome'                  => $item->nome,
+                                    'orientation'           => $item->orientation,
+                                    'descricao'             => $item->descricao,
+                                );
+                                array_push($albumDeFotosIF, $objFoto);
+                            }
+
+                            $obj = array(
+                                'empresa_nome'  => $indice->denuncia->empresa,
+                                'endereco'      => $indice->denuncia->endereco,
+                                'numero'        => '',
+                                'bairro'        => '',
+                                'rua'           => $indice->denuncia->endereco,
+                                'cep'           => '',
+                                'cnpjcpf'       => '',
+                                'representante_legal' => '',
+                                'telefone1'     => '',
+                                'telefone2'     => '',
+                                'email'         => '',
+                                'data'          => $indice->data,
+                                'status'        => $indice->status,
+                                'tipo'        => "Denuncia-Nao-Mapeado",
+                                'descricao'        => $indice->denuncia->denuncia,
+                                'inspecao_id'   => $indice->id,
+                                'listaDocumentos'=>[],
+                                'albumDeFotos'=>$albumDeFotosIF,
+                            );
+
+                            array_push($listaDeInspecoes, $obj);
+                        }
+                        else {
+                            //album de fotos (foto e comentario)
+                            $resultado = InspecaoFoto::where('inspecao_id','=',$indice->id)->orderBy('created_at', 'ASC')->get();
+                            $albumDeFotosELSE = [];
+                            foreach($resultado as $item){
+                                $objFoto = (object) array(
+                                    'inspecao_id'           => $item->inspecao_id,
+                                    'imagemInspecao'        => $item->imagemInspecao,
+                                    'nome'                  => $item->nome,
+                                    'orientation'           => $item->orientation,
+                                    'descricao'             => $item->descricao,
+                                );
+                                array_push($albumDeFotosELSE, $objFoto);
+                            }
+                            $endereco = Endereco::where('empresa_id', $indice->denuncia->empresa_id)
+                            ->first();
+
+                            $telefone = Telefone::where('empresa_id', $indice->denuncia->empresa_id)
+                            ->first();
+
+                            $empresa = Empresa::where('id','=',$indice->denuncia->empresa_id)->first();
+
+
+                            $obj = array(
+                                'empresa_nome'  => $empresa->nome,
+                                'rua'           => $endereco->rua,
+                                'numero'        => $endereco->numero,
+                                'bairro'        => $endereco->bairro,
+                                'cep'           => $endereco->cep,
+                                'cnpjcpf'          =>$empresa->cnpjcpf,
+                                'representante_legal' =>$empresa->user->name,
+                                'telefone1'     => $telefone->telefone1,
+                                'telefone2'     => $telefone->telefone2,
+                                'email'         => $empresa->email,
+                                'data'          => $indice->data,
+                                'status'        => $indice->status,
+                                'tipo'        => $indice->motivo,
+                                'descricao'        => $indice->denuncia->denuncia,
+                                'inspecao_id'   => $indice->id,
+                                'listaDocumentos'=>[],
+                                'albumDeFotos'=> $albumDeFotosELSE,
+                            );
+
+                            array_push($listaDeInspecoes, $obj);
+                        }
+                    }
+                }
+
+                $data = array(
+                    'success'   => $status,
+                    'table_data' => $output,
+                    'token' => $token,
+                    'inspecoes' => $listaDeInspecoes,
+                    'documentos' => 0,
+                );
+
+                echo json_encode($data);
+
+
+            }
+            else {
+
+                $data = array(
+                    'success'   => "false",
+                    'table_data' => '',
+                    'token' => '',
+                    'inspecoes' => '',
+                    'documentos' => '',
+                );
+                echo json_encode($data);
+                break;
+            }
+        }
     }
     /*
     *   FUNCAO: Funcao para atualizar o token
@@ -427,7 +627,8 @@ class ApiController extends Controller
     *   RETURN: Arquivo PDF
     */
     public function apiDownloadImagemPDF(Request $request){
-        $file = 'C:/xampp/htdocs/siteVisaGaranhuns/storage/app/public/'.$request->caminho;
+        //$file = 'C:/xampp/htdocs/siteVisaGaranhuns/storage/app/public/'.$request->caminho;
+        $file = '/home/adminuag/site/visagaranhuns/storage/app/public/'.$request->caminho;
         $headers = array(
             'Content-Type: application/pdf',
           );
@@ -510,6 +711,6 @@ class ApiController extends Controller
             'lista_documentos'          => $listaDeDocumentos,
             'lista_imagens'             => $listaDeImagens,
         );
-        echo json_encode($data);
+        return $data;
     }
 }

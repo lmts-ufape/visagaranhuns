@@ -58,11 +58,11 @@
                     <div class=" col-md-4" style="margin-top: 3rem; margin-left:0px;width:100%; margin-bottom:2rem;">
                         @if($item->orientation == 6 || $item->orientation == 8)
                             <div style="width: 100%; text-align:center;">
-                                <a type="button" onclick="mostrarImagemInspecao('{{$item->imagemInspecao}}')" data-toggle="modal" data-target="#exampleImagemInspecaoModal"><img src="{{asset('/imagens/inspecoes/'.$item->imagemInspecao)}}" alt="Logo" style="padding-right:13px;" width="150px"/></a>
+                                <a type="button" onclick="mostrarImagemInspecao('{{$item->imagemInspecao}}')" data-toggle="modal" data-target="#exampleImagemInspecaoModal{{$item->id}}"><img src="{{asset('/imagens/inspecoes/'.$item->imagemInspecao)}}" alt="Logo" style="padding-right:13px;" width="150px"/></a>
                             </div>
                         @elseif($item->orientation == 1 || $item->orientation == 3)
                             <div style="width: 100%; text-align:center; margin-top:50px;">
-                                <a type="button" onclick="mostrarImagemInspecao('{{$item->imagemInspecao}}')" data-toggle="modal" data-target="#exampleImagemInspecaoModal"><img src="{{asset('/imagens/inspecoes/'.$item->imagemInspecao)}}" alt="Logo" style="padding-right:13px;" height="150px"/></a>
+                                <a type="button" onclick="mostrarImagemInspecao('{{$item->imagemInspecao}}')" data-toggle="modal" data-target="#exampleImagemInspecaoModal{{$item->id}}"><img src="{{asset('/imagens/inspecoes/'.$item->imagemInspecao)}}" alt="Logo" style="padding-right:13px;" height="150px"/></a>
                             </div>
                         @endif
                     </div>
@@ -99,7 +99,7 @@
                             <div class="modal-body">
                                 <div class="form-row">
                                     <div class="col-md-12">
-                                        <img id="imgAlbumInspecao" alt="Logo" style="padding-right:0px; width:100%"/>
+                                        <img src="{{asset('/imagens/inspecoes/'.$item->imagemInspecao)}}" alt="Logo" style="padding-right:0px; width:100%"/>
                                     </div>
                                 </div>
                             </div>
