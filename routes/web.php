@@ -232,8 +232,10 @@ Route::middleware(['IsCoordenador'])->group(function () {
     Route::post('/editar/tipodoc',                              'CoordenadorController@editartipodoc')->name('editar.tipodoc');
     Route::post('/criar/tipodoc',                               'CoordenadorController@criartipodoc')->name('criar.tipodoc');
     Route::get('/editar/areas',                                 'CoordenadorController@editarArea')->name('editar.area');
+    Route::get('/editar/cnae',                                  'CoordenadorController@editarCnae')->name('editar.cnae');
     Route::get('/buscar/tiposDocs',                             'CoordenadorController@buscarTiposDocs')->name('marcar.checkbox.tiposDocs');
     Route::post('/area/editar',                                 'CoordenadorController@areaEditar')->name('area.editar');
+    Route::post('/cnae/editar',                                 'CoordenadorController@cnaeEditar')->name('cnae.editar');
     Route::get('/encontrar/agente',                             'CoordenadorController@encontrarAgente')->name('encontrar.agente');
     Route::get('/encontrar/inspetor',                           'CoordenadorController@encontrarInspetor')->name('encontrar.inspetor');
     

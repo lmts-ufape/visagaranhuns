@@ -29,6 +29,10 @@
     <script type="text/javascript" src="{{URL::asset('js/relatorio_inspetor.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/notificacao_inspetor.js')}}" defer></script>
     <script type="text/javascript" src="{{URL::asset('js/notificacao_rt.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/valida_cpf_cnpj.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/exemplo_1.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/exemplo_2.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/exemplo_3.js')}}" defer></script>
 
     <!-- load jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
