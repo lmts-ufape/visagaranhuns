@@ -9,6 +9,7 @@ use App\Inspecao;
 use App\Inspetor;
 use App\Endereco;
 use App\Telefone;
+use App\Empresa;
 use App\InspecaoFoto;
 use App\Docempresa;
 use App\Requerimento;
@@ -218,13 +219,26 @@ class ApiController extends Controller
                     }
                     else {
                         if ($indice->denuncia->empresa_id == null) {
+                            //album de fotos (foto e comentario)
+                            $resultado = InspecaoFoto::where('inspecao_id','=',$indice->id)->orderBy('created_at', 'ASC')->get();
+                            $albumDeFotosIF = [];
+                            foreach($resultado as $item){
+                                $objFoto = (object) array(
+                                    'inspecao_id'           => $item->inspecao_id,
+                                    'imagemInspecao'        => $item->imagemInspecao,
+                                    'nome'                  => $item->nome,
+                                    'orientation'           => $item->orientation,
+                                    'descricao'             => $item->descricao,
+                                );
+                                array_push($albumDeFotosIF, $objFoto);
+                            }
 
                             $obj = array(
                                 'empresa_nome'  => $indice->denuncia->empresa,
                                 'endereco'      => $indice->denuncia->endereco,
                                 'numero'        => '',
                                 'bairro'        => '',
-                                'rua'           => '',
+                                'rua'           => $indice->denuncia->endereco,
                                 'cep'           => '',
                                 'cnpjcpf'       => '',
                                 'representante_legal' => '',
@@ -237,35 +251,52 @@ class ApiController extends Controller
                                 'descricao'        => $indice->denuncia->denuncia,
                                 'inspecao_id'   => $indice->id,
                                 'listaDocumentos'=>[],
-                                'albumDeFotos'=>[],
+                                'albumDeFotos'=>$albumDeFotosIF,
                             );
 
                             array_push($listaDeInspecoes, $obj);
-                        } else {
-
+                        }
+                        else {
+                            //album de fotos (foto e comentario)
+                            $resultado = InspecaoFoto::where('inspecao_id','=',$indice->id)->orderBy('created_at', 'ASC')->get();
+                            $albumDeFotosELSE = [];
+                            foreach($resultado as $item){
+                                $objFoto = (object) array(
+                                    'inspecao_id'           => $item->inspecao_id,
+                                    'imagemInspecao'        => $item->imagemInspecao,
+                                    'nome'                  => $item->nome,
+                                    'orientation'           => $item->orientation,
+                                    'descricao'             => $item->descricao,
+                                );
+                                array_push($albumDeFotosELSE, $objFoto);
+                            }
                             $endereco = Endereco::where('empresa_id', $indice->denuncia->empresa_id)
                             ->first();
+
                             $telefone = Telefone::where('empresa_id', $indice->denuncia->empresa_id)
                             ->first();
 
+                            $empresa = Empresa::where('id','=',$indice->denuncia->empresa_id)->first();
+
+
                             $obj = array(
-                                'empresa_nome'  => $indice->denuncia->empresa,
-                                'rua'      => $indice->denuncia->endereco,
+                                'empresa_nome'  => $empresa->nome,
+                                'rua'           => $endereco->rua,
                                 'numero'        => $endereco->numero,
                                 'bairro'        => $endereco->bairro,
                                 'cep'           => $endereco->cep,
-                                'cnpjcpf'          => $indice->requerimento->empresa->cnpjcpf,
-                                'representante_legal' => $indice->requerimento->empresa->user->name,
+                                'cnpjcpf'          =>$empresa->cnpjcpf,
+                                'representante_legal' =>$empresa->user->name,
                                 'telefone1'     => $telefone->telefone1,
                                 'telefone2'     => $telefone->telefone2,
-                                'email'         => $indice->requerimento->empresa->email,
+                                'email'         => $empresa->email,
                                 'data'          => $indice->data,
                                 'status'        => $indice->status,
                                 'tipo'        => $indice->motivo,
                                 'descricao'        => $indice->denuncia->denuncia,
                                 'inspecao_id'   => $indice->id,
                                 'listaDocumentos'=>[],
-                                'albumDeFotos'=> [],
+                                'albumDeFotos'=> $albumDeFotosELSE,
                             );
 
                             array_push($listaDeInspecoes, $obj);
@@ -596,7 +627,8 @@ class ApiController extends Controller
     *   RETURN: Arquivo PDF
     */
     public function apiDownloadImagemPDF(Request $request){
-        $file = 'C:/xampp/htdocs/siteVisaGaranhuns/storage/app/public/'.$request->caminho;
+        //$file = 'C:/xampp/htdocs/siteVisaGaranhuns/storage/app/public/'.$request->caminho;
+        $file = '/home/adminuag/site/visagaranhuns/storage/app/public/'.$request->caminho;
         $headers = array(
             'Content-Type: application/pdf',
           );
