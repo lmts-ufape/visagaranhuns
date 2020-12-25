@@ -29,6 +29,7 @@ use App\Checklistresp;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use PDF;
 
 class EmpresaController extends Controller
 {
@@ -557,6 +558,7 @@ class EmpresaController extends Controller
         $temp = [];
         $temp0 = [];
         $resultado = Empresa::find($id);
+        $pendenciaDocs = [];
 
         // Pegando todos os ids dos cnaes da empresa
         foreach ($cnaesEmpresa as $indice0) {
@@ -608,7 +610,64 @@ class EmpresaController extends Controller
             'requerimentos'     => $requerimentos,
             // 'resultados'        => $arrayResultado,
             'check'             => $check,
+            'areas'             => $areas,
         ]);
+    }
+
+    public function gerarSituacao(Request $request){
+
+        $empresa = Empresa::find($request->empresa);
+        $telefone = Telefone::where('empresa_id', $empresa->id)->first();
+        $endereco = Endereco::where('empresa_id', $empresa->id)->first();
+        $areas = [];
+        $pendenciaDocs = [];
+
+        foreach ($request->areas as $key) {
+
+            $checklist = Checklistemp::where('empresa_id', $empresa->id)
+            ->where('areas_id', $key)->get();
+
+            foreach ($checklist as $key2) {
+                if ($key2->anexado == "false") {
+    
+                    // Criando uma lista de documentos que faltam ou não anexar
+                    $docsPendencia = (object) array(
+                        'area'      => $key,
+                        'status'    => "false",
+                        'nome'      => $key2->nomeDoc,
+                    );
+                    array_push($pendenciaDocs, $docsPendencia);
+                }
+                else {
+
+                    // Criando uma lista de documentos que faltam ou não anexar
+                    $docsPendencia = (object) array(
+                        'area'      => $key,
+                        'status'    => "true",
+                        'nome'      => $key2->nomeDoc,
+                    );
+                    array_push($pendenciaDocs, $docsPendencia);
+                }
+            }
+        }
+
+        foreach ($request->areas as $indice) {
+            $area = Area::find($indice);
+
+            $obj = (object) array(
+                'areaId'      => strval($area->id),
+                'areaNome'    => $area->nome,
+            );
+
+            array_push($areas, $obj);
+        }
+
+
+        date_default_timezone_set('America/Recife');
+        $emissao = date('d/m/Y \à\s H:i:s');
+
+        $pdf = PDF::loadView('empresa/situacao_documentos', compact('areas', 'pendenciaDocs', 'empresa', 'endereco', 'telefone', 'emissao'));
+        return $pdf->setPaper('a4')->stream('documentos.pdf');
     }
 
     public function notificacoes(Request $request)
