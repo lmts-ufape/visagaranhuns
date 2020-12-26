@@ -666,6 +666,8 @@ class EmpresaController extends Controller
         date_default_timezone_set('America/Recife');
         $emissao = date('d/m/Y \à\s H:i:s');
 
+        asort($pendenciaDocs);
+
         $pdf = PDF::loadView('empresa/situacao_documentos', compact('areas', 'pendenciaDocs', 'empresa', 'endereco', 'telefone', 'emissao'));
         return $pdf->setPaper('a4')->stream('documentos.pdf');
     }

@@ -384,9 +384,8 @@ Route::middleware(['IsRespTecnico'])->group(function () {
     Route::post('/atualizar/rt/senha',              "RespTecnicoController@atualizarSenhaDeAcesso")->name('atualizar.rt');
     
     Route::get('/empresa/notificacao',              'RespTecnicoController@notificacaoEmpresa')->name('rt.notificacao.empresa');
-/*
-    * Consultar notificações
-*/
+    Route::get("/gerar/situacao/rt",                "RespTecnicoController@gerarSituacao")->name("gerar.situacao.rt");
+
 });
 
 //Adicionais

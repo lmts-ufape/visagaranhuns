@@ -220,7 +220,8 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="descricaoCNAERTreprovado" style="font-weight:bold; font-family: 'Roboto', sans-serif;"> </label>Ainda há documentos que não foram anexados! Verifique clicando <a href="{{route('rt.documentacao.empresa', ['empresa' => Crypt::encrypt($empresas->id)])}}" style="weight:500px;">aqui</a>.</div>
+                    <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="descricaoCNAERTreprovado" style="font-weight:bold; font-family: 'Roboto', sans-serif;"> </label>Ainda há documentos que não foram anexados! Verifique clicando <a href="{{route('rt.documentacao.empresa', ['empresa' => Crypt::encrypt($empresas->id)])}}" style="weight:500px;">aqui</a>.
+                    Você pode gerar um arquivo da situação documental da empresa clicando <a href="{{route('gerar.situacao.rt', ['areas' => $areas, 'empresa' => $empresas->id])}}" style="weight:500px;">aqui</a>.</div>
                 </div>
             </div>
             <div class="modal-footer">
