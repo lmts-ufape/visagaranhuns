@@ -14,13 +14,8 @@
             </div>
             <div class="mr-auto p-2 styleBarraPrincipalPC">
                 <div class="form-group">
-                    <div class="tituloBarraPrincipal">Cadastrar Responsável Técnico</div>
-                    <div>
-                        <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Estabelecimentos > {{$empresaNome}} > Cadastrar responsável técnico</div>
-                    </div>
+                    <div class="tituloBarraPrincipal">Finalizar Cadastro</div>
                 </div>
-            </div>
-            <div class="p-2">
             </div>
         </div>
     </div>
@@ -84,7 +79,7 @@
                         <div class="form-group col-md-12">
                             <div class="form-row">
                                 <div class="form-group col-md-12">
-                                    <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">SELECIONE A ÁREA DE ATUAÇÃO</label>
+                                    <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">DADOS DO RESPONSÁVEL TÉCNICO</label>
                                 </div>
                             </div>
                         </div>
@@ -94,31 +89,13 @@
 
                             <div class="form-row">
                                 <div class="form-group col-md-4">
-                                    @foreach ($areas as $item)
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="area" name="area[]" value="{{$item->id}}">
-                                            <label class="form-check-label" for="exampleCheck1">{{$item->nome}}</label>
-                                        </div>
-                                        {{-- <option value="{{$item->id}}">{{$item->nome}}</option> --}}
-                                    @endforeach
+                                    
                                 </div>
                                 <div class="form-group col-md-3">
                                 </div>
                                 <div class="form-group col-md-5">
                                     <h5>Responsáveis técnicos já cadastrados:</h5>
-                                    @if (count($respTecnicos) == 0)
-                                        <h6>Ainda não há responsáveis técnicos cadastrados</h6>
-                                    @else
-                                        <ul class="list-group">
-                                            @foreach ($rtempresa as $rtemp)
-                                                @foreach ($respTecnicos as $rt)
-                                                    @if ($rtemp->resptec_id == $rt->id)
-                                                        <li class="list-group-item">{{$rt->user->name}}: {{$rtemp->area->nome}}<button type="button" class="close" style="margin-left: 2px" data-toggle="modal" data-target="#exampleModal1" onclick="myFunction({{$rtemp->resptec_id}}, {{$rtemp->empresa_id}}, {{$rtemp->area_id}})">×</button></li>
-                                                    @endif
-                                                @endforeach
-                                            @endforeach
-                                        </ul>
-                                    @endif
+                                    
                                 </div>
                             </div>
                         </div>
@@ -168,7 +145,7 @@
 
 
         </div>
-        <input type="hidden" name="empresaId" value="{{$empresaId}}">
+
         <div class="container" style="margin-top:1rem;margin-left:10px;">
         </div>
     </form>
@@ -192,7 +169,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"style="width:100px;">Não</button>
-                <form method="POST" action="{{ route('deletar.respTecnico') }}">
+                <form method="POST" action="">
                     @csrf
                     <input type="hidden" id="idRespTecnicoDelete" name="idRespTecnico" value="">
                     <input type="hidden" id="idEmpresa"           name="idEmpresa" value="">

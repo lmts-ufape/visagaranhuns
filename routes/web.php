@@ -97,6 +97,10 @@ Auth::routes();
 Route::get('/completar/cadastro/inspetor','InspetorController@create')->name('completar.cadastro.inspetor');
 Route::post('/completar/cadastro/inspetor','InspetorController@store')->name('completar.cadastro.inspetor');
 
+// Completar cadastro do Responsável Técnico
+Route::get('/completar/cadastro/rt/criar',      'RespTecnicoController@criar')->name('completar.cadastro.rt.criar');
+Route::post('/completar/cadastro/rt/salvar',    'RespTecnicoController@salvar')->name('completar.cadastro.rt.salvar');
+
 // Completar cadastro de Agente
 Route::get('/completar/cadastro/agente','AgenteController@create')->name('completar.cadastro.agente');
 Route::post('/completar/cadastro/agente','AgenteController@store')->name('completar.cadastro.agente');
@@ -388,9 +392,7 @@ Route::middleware(['IsRespTecnico'])->group(function () {
     Route::post('/atualizar/rt/senha',              "RespTecnicoController@atualizarSenhaDeAcesso")->name('atualizar.rt');
     
     Route::get('/empresa/notificacao',              'RespTecnicoController@notificacaoEmpresa')->name('rt.notificacao.empresa');
-/*
-    * Consultar notificações
-*/
+
 });
 
 //Adicionais

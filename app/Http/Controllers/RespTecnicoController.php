@@ -566,12 +566,14 @@ class RespTecnicoController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
 
         $empresa = Empresa::find($request->empresaId);
         $user    = User::where("email", $request->email)->first();
 
         if ($user != null) {
 
+            // Verificar aqui se há algum rt já relacionado com alguma das áreas que foram escolhidas.
             for ($i=0; $i < count($request->area); $i++) {
                 $rtempresa = RtEmpresa::where('area_id', $request->area[$i])
                 ->where('empresa_id', $request->empresaId)->first();
@@ -582,6 +584,32 @@ class RespTecnicoController extends Controller
             }
 
             $resptecnico = RespTecnico::where('user_id', $user->id)->first();
+
+            if ($user->status_cadastro == "pendente") {
+
+                $passwordTemporario = Str::random(8);
+                $user->password = $passwordTemporario;
+                $user->save();
+
+                \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTEmail($request->email, $passwordTemporario, $empresa->nome));
+
+                $hoje = date('d/m/Y');
+
+                for ($i=0; $i < count($request->area); $i++) {
+                    $rtempresa = RtEmpresa::create([
+                        'horas' => $request->carga_horaria,
+                        'data_inicio' => $hoje,
+                        'status' => "ativo",
+                        'resptec_id' => $resptecnico->id,
+                        'empresa_id' => $request->empresaId,
+                        'area_id' => $request->area[$i],
+                    ]);
+                }
+
+                session()->flash('success', 'Responsável técnico convidado com sucesso!');
+                return back();
+                
+            }
 
             $validator = $request->validate([
                 'carga_horaria'  => 'required|integer',
@@ -621,33 +649,35 @@ class RespTecnicoController extends Controller
 
             $hoje = date('d/m/Y');
 
+            // Passar esse valdiator para outra parte
             $validator = $request->validate([
-                'nome'     => 'required|string',
+                // 'nome'     => 'required|string',
                 'email'    => 'required|email',
-                'formacao' => 'required|string',
-                'especializacao' => 'nullable|string',
-                'cpf'            => 'required|string',
-                'telefone'       => 'required|string',
+                // 'formacao' => 'required|string',
+                // 'especializacao' => 'nullable|string',
+                // 'cpf'            => 'required|string',
+                // 'telefone'       => 'required|string',
                 'carga_horaria'  => 'required|integer',
             ]);
 
             $passwordTemporario = Str::random(8);
 
             $user = User::create([
-                'name'            => $request->nome,
+                'name'            => "Pendente",
                 'email'           => $request->email,
                 'password'        => bcrypt($passwordTemporario),
                 'tipo'            => "rt",
-                'status_cadastro' => "aprovado",
+                'status_cadastro' => "pendente",
             ]);
 
             \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTEmail($request->email, $passwordTemporario, $empresa->nome));
 
+            // Responsável Técnico será criado em outra parte também
             $respTec = RespTecnico::create([
-                'formacao'       => $request->formacao,
-                'especializacao' => $request->especializacao,
-                'cpf'            => $request->cpf,
-                'telefone'       => $request->telefone,
+                'formacao'       => "Pendente",
+                'especializacao' => "Pendente",
+                'cpf'            => "Pendente",
+                'telefone'       => "Pendente",
                 'user_id'        => $user->id,
                 // 'area_id'        => $request->area,
                 // 'empresa_id'     => $request->empresaId,
@@ -949,5 +979,60 @@ class RespTecnicoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function criar()
+    {
+
+        $user = User::find(Auth::user()->id);
+
+        // Tela de conclusão de cadastro do responsável técnico
+        return view('responsavel_tec.cadastrar_rt')->with(["user" => $user->email]);
+    }
+
+    public function salvar(Request $request)
+    {
+
+        $user = User::find(Auth::user()->id);
+
+        $messages = [
+            'unique'   => 'Um campo igual a :attribute já está cadastrado no sistema!',
+            'required' => 'O campo :attribute não foi passado!',
+            'string'   => 'O campo :attribute deve ser texto!',
+        ];
+
+        $validator = Validator::make($request->all(), [
+
+            'nome'           => 'required|string',
+            'formacao'       => 'nullable|string',
+            'especializacao' => 'nullable|string',
+            'cpf'            => 'required|string|unique:agente,cpf',
+            'telefone'       => 'required|string',
+            'password'       => 'required',
+
+        ], $messages);
+
+        
+        if ($validator->fails()) {
+            return back()
+                    ->withErrors($validator);
+        }
+
+        // Atualiza dados de user para inspetor
+        $user->name = $request->nome;
+        $user->password = bcrypt($request->password);
+        $user->status_cadastro = "aprovado";
+        $user->save();
+
+        $inspetor = Inspetor::create([
+            'formacao'       => $request->formacao,
+            'especializacao' => $request->especializacao,
+            'cpf'            => $request->cpf,
+            'telefone'       => $request->telefone,
+            'user_id'        => $user->id,
+        ]);
+
+
+        return redirect()->route('/');
     }
 }

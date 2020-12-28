@@ -20,7 +20,13 @@ class IsRespTecnico
             return redirect()->route('login');
 
         if (Auth::user()->tipo == "rt"){
-            return $next($request);
+            if (Auth::user()->status_cadastro == "pendente") {
+                return redirect()->route('completar.cadastro.rt.criar');
+            }
+            else {
+                return $next($request);
+            }
+            // return $next($request);
         }
         abort(403);
         // return $next($request);
