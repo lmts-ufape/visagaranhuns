@@ -306,12 +306,8 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::post("/empresa/rt/deletar",                 "EmpresaController@deletarRespTecnico")->name("deletar.respTecnico");
 
     Route::get('/empresa/download/arquivo/rt',         'EmpresaController@baixarArquivosRt')->name('empresa.download.arquivo.rt');
-/*
-    * Cadastrar/Editar/Remove Responsável Técnico
-    * Editar/Anexar dados da empresa
-    * Consultar histórico de inspeções
-    * Consultar notificações
-*/
+
+    Route::get("/gerar/situacao/",                     "EmpresaController@gerarSituacao")->name("gerar.situacao");
 });
 
 // Grupo de rotas para inspetor
@@ -392,6 +388,7 @@ Route::middleware(['IsRespTecnico'])->group(function () {
     Route::post('/atualizar/rt/senha',              "RespTecnicoController@atualizarSenhaDeAcesso")->name('atualizar.rt');
     
     Route::get('/empresa/notificacao',              'RespTecnicoController@notificacaoEmpresa')->name('rt.notificacao.empresa');
+    Route::get("/gerar/situacao/rt",                "RespTecnicoController@gerarSituacao")->name("gerar.situacao.rt");
 
 });
 
