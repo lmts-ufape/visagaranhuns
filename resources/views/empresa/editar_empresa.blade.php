@@ -63,7 +63,7 @@
                             </div>
                             <div class="form-group col-md-4" style="padding-right:15px;">
                                 <label class="styleTituloDoInputCadastro"  for="inputPassword4">CNPJ/CPF:<span style="color:red">*</span></label>
-                                <input class="styleInputCadastro" type="text" class="form-control" name="cnpjcpf" placeholder="" value="{{$empresa->cnpjcpf}}" required>
+                                <input class="styleInputCadastro" type="text" class="form-control" name="cnpjcpf" id="cnpjcpf" placeholder="" value="{{$empresa->cnpjcpf}}" required>
                             </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                     <label class="styleTituloDoInputCadastro" for="inputPassword4">TIPO:<span style="color:red">*</span></label>
@@ -194,6 +194,19 @@
 <script type="text/javascript">
     var arrayTemp = [];
     window.onload= function() {
+
+        $('#cnpjcpf').blur(function(){
+            console.log("FARL!");    
+            // O CPF ou CNPJ
+            var cpf_cnpj = $(this).val();
+            
+            // Testa a validação e formata se estiver OK
+            if ( formata_cpf_cnpj( cpf_cnpj ) ) {
+                $(this).val( formata_cpf_cnpj( cpf_cnpj ) );
+            } else {
+                alert('CPF ou CNPJ inválido!');
+            }    
+        });
         // console.log({{$empresa->id}});
         $.ajax({
             url:'{{ config('prefixo.PREFIXO') }}listar/cnae/empresa',
@@ -277,6 +290,7 @@
         });
         // console.log("GW");
     }
+
 </script>
 @endsection
 

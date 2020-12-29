@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="form-group col-md-4" style="padding-right:15px;">
                                     <label class="styleTituloDoInputCadastro" for="inputPassword4">CPF:<span style="color:red">*</span></label>
-                                    <input type="text" class="styleInputCadastro" name="cpf" placeholder="" required>
+                                    <input type="text" class="styleInputCadastro" name="cpf" id="cpf" placeholder="" required>
                                 </div>
                                 <div class="form-group col-md-4" style="padding-right:15px;">
                                     <label class="styleTituloDoInputCadastro" for="inputPassword4">Formação:<span style="color:red">*</span></label>
@@ -106,4 +106,23 @@
     </form>
 </div>
 
+<script type="text/javascript">
+
+    window.onload= function() {
+
+        $('#cpf').blur(function(){
+            console.log("FARL!");    
+            // O CPF ou CNPJ
+            var cpf_cnpj = $(this).val();
+            
+            // Testa a validação e formata se estiver OK
+            if ( formata_cpf_cnpj( cpf_cnpj ) ) {
+                $(this).val( formata_cpf_cnpj( cpf_cnpj ) );
+            } else {
+                alert('CPF ou CNPJ inválido!');
+            }    
+        });
+    };
+
+</script>
 @endsection
