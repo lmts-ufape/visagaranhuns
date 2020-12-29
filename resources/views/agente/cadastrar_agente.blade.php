@@ -43,15 +43,15 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label class="styleTituloDoInputCadastro" for="inputNome4">Nome do Usuário:<span style="color:red">*</span></label>
-                    <input id="nomeAgente" type="text" class="styleInputCadastro" name="nome" placeholder="" value="" required>
+                    <input id="nome" type="text" class="styleInputCadastro" name="nome" placeholder="" value="" required>
                 </div>
                 <div class="form-group col-md-4">
                     <label class="styleTituloDoInputCadastro" for="inputNome4">CPF:<span style="color:red">*</span></label>
-                    <input id="nomeAgente" type="text" class="styleInputCadastro" name="cpf" placeholder="" value="" required>
+                    <input id="cpf" type="text" class="styleInputCadastro" name="cpf" placeholder="" value="" required>
                 </div>
                 <div class="form-group col-md-4">
                     <label class="styleTituloDoInputCadastro" for="inputNome4">Formação:<span style="color:red"></span></label>
-                    <input id="nomeAgente" type="text" class="styleInputCadastro" name="formacao" placeholder="" value="">
+                    <input id="formacao" type="text" class="styleInputCadastro" name="formacao" placeholder="" value="">
                 </div>
                 {{-- <div class="form-group col-md-4">
                     <label for="inputEmail4">Nome Completo<span style="color:red">*</span></label>
@@ -69,11 +69,11 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label class="styleTituloDoInputCadastro" for="inputNome4">Especialização:<span style="color:red"></span></label>
-                    <input id="nomeAgente" type="text" class="styleInputCadastro" name="especializacao" placeholder="" value="">
+                    <input id="especializacao" type="text" class="styleInputCadastro" name="especializacao" placeholder="" value="">
                 </div>
                 <div class="form-group col-md-4">
                     <label class="styleTituloDoInputCadastro" for="inputNome4">Telefone:<span style="color:red">*</span></label>
-                    <input id="nomeAgente" type="text" class="styleInputCadastro" name="telefone" placeholder="" value="" required>
+                    <input id="telefone" type="text" class="styleInputCadastro" name="telefone" placeholder="" value="" required>
                 </div>
                 {{-- <div class="form-group col-md-4">
                     <label for="inputEmail4">Especialização:<span style="color:red"></span></label>
@@ -113,7 +113,7 @@
                         </div> --}}
                         <div class="form-group col-md-4">
                             <label class="styleTituloDoInputCadastro" for="inputNome4">Alterar senha:<span style="color:red">*</span></label>
-                            <input id="nomeAgente" type="password" class="styleInputCadastro" name="password" placeholder="" required>
+                            <input id="password" type="password" class="styleInputCadastro" name="password" placeholder="" required>
                         </div>
                         {{-- <div class="form-group col-md-4">
                             <label for="inputPassword4">Alterar senha:<span style="color:red">*</span></label>
@@ -135,6 +135,25 @@
         </div>
     </form>
 </div>
+
+<script type="text/javascript">
+
+    window.onload= function() {
+        
+        $('#cpf').blur(function(){
+            console.log("FARL!");    
+            // O CPF ou CNPJ
+            var cpf_cnpj = $(this).val();
+            
+            // Testa a validação e formata se estiver OK
+            if ( formata_cpf_cnpj( cpf_cnpj ) ) {
+                $(this).val( formata_cpf_cnpj( cpf_cnpj ) );
+            } else {
+                alert('CPF ou CNPJ inválido!');
+            }    
+        });  
+    };
+</script>
 @endsection
 
 

@@ -6,7 +6,7 @@
  @see http://www.tutsup.com/
 */
 function verifica_cpf_cnpj ( valor ) {
-    console.log("TESTANDO");
+    console.log("SEGUNDO PASSA POR AQUI!");
     // Garante que o valor é uma string
     valor = valor.toString();
     
@@ -99,6 +99,7 @@ function calc_digitos_posicoes( digitos, posicoes = 10, soma_digitos = 0 ) {
 */
 function valida_cpf( valor ) {
 
+    console.log("TERCEIRO PASSA POR AQUI!");
     // Garante que o valor é uma string
     valor = valor.toString();
     
@@ -178,10 +179,10 @@ function valida_cnpj ( valor ) {
  @return bool true para válido, false para inválido
 */
 function valida_cpf_cnpj ( valor ) {
-
+    console.log("PRIMEIRO PASSA POR AQUI");
     // Verifica se é CPF ou CNPJ
     var valida = verifica_cpf_cnpj( valor );
-
+    console.log("RETORNA");
     // Garante que o valor é uma string
     valor = valor.toString();
     
@@ -191,18 +192,21 @@ function valida_cpf_cnpj ( valor ) {
 
     // Valida CPF
     if ( valida === 'CPF' ) {
+        console.log("ENTROU NO IF DA FUNCAO valida_cpf");
         // Retorna true para cpf válido
         return valida_cpf( valor );
     } 
     
     // Valida CNPJ
     else if ( valida === 'CNPJ' ) {
+        console.log("ENTROU NO ELSE_IF DA FUNCAO valida_cpf");
         // Retorna true para CNPJ válido
         return valida_cnpj( valor );
     } 
     
     // Não retorna nada
     else {
+        console.log("ELSE");
         return false;
     }
     
