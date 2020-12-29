@@ -102,7 +102,9 @@
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->codigo}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->descricao}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; width: 240px; color:black">{{$indice->resptecnico->user->name}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->tipo}}</th>
+                                            @if ($indice->tipo == 'Primeira Licenca')
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Primeira Licença</th>                                              
+                                            @endif
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{date('d-m-Y', strtotime($indice->data))}}</th>
                                             <input type="hidden" id="teste{{$indice->id}}" value="{{ $indice->aviso }}">
@@ -113,7 +115,9 @@
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->codigo}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; width: 240px; color:black">{{$indice->cnae->descricao}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->resptecnico->user->name}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->tipo}}</th>
+                                            @if ($indice->tipo == 'Primeira Licenca')
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Primeira Licença</th>                                              
+                                            @endif
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{date('d-m-Y', strtotime($indice->data))}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->aviso}}</th>
