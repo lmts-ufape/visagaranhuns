@@ -1008,30 +1008,28 @@ class RespTecnicoController extends Controller
             'especializacao' => 'nullable|string',
             'cpf'            => 'required|string|unique:agente,cpf',
             'telefone'       => 'required|string',
-            'password'       => 'required',
+            'senha'          => 'required',
 
         ], $messages);
 
         
         if ($validator->fails()) {
-            return back()
-                    ->withErrors($validator);
+            return back()->withErrors($validator);
         }
 
-        // Atualiza dados de user para inspetor
+        // Atualiza dados de user para o responsável técnico
         $user->name = $request->nome;
-        $user->password = bcrypt($request->password);
+        $user->password = bcrypt($request->senha);
         $user->status_cadastro = "aprovado";
         $user->save();
 
-        $inspetor = Inspetor::create([
-            'formacao'       => $request->formacao,
-            'especializacao' => $request->especializacao,
-            'cpf'            => $request->cpf,
-            'telefone'       => $request->telefone,
-            'user_id'        => $user->id,
-        ]);
-
+        // Atualizar dados do model para responsável técnico 
+        $respTecnico = RespTecnico::where('user_id', $user->id)->first();
+        $respTecnico->formacao = $request->formacao;
+        $respTecnico->especializacao = $request->especializacao;
+        $respTecnico->cpf = $request->cpf;
+        $respTecnico->telefone = $request->telefone;
+        $respTecnico->save();
 
         return redirect()->route('/');
     }
