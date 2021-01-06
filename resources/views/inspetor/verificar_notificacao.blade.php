@@ -40,12 +40,37 @@
                         <div class="form-group col-md-6">
                             <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">NOTIFICAÇÃO</label>
                         </div>
-                        <div class="form col-md-9" style="margin-top:10px;">
-                            <form id="form_notificacao_inspetor" method="POST" action="{{ route('save.notificacao') }}">
-                                @csrf
-                                <input type="hidden" name="inspecao_id" value="{{$inspecao_id}}">
-                                <textarea id="summary-ckeditor" rows="40" name="notificacao" disabled>{{$notificacao}}</textarea>
-                            </form>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <table class="table table-hover">
+                                <thead>
+                                  <tr>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Item</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Exigência</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Prazo (Qt. Dias)</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Estabelecimento</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Data</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($notificacao as $item)
+                                        <tr>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->item}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->exigencia}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->prazo}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th>
+                                            @if ($item->inspecao->empresas_id != null)
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->inspecao->empresa->nome}}</th>
+                                            @else
+                                                @if ($item->inspecao->denuncia->empresa_id != null)
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->inspecao->denuncia->empresa}}</th>
+                                                @endif                                                
+                                            @endif
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{date('d-m-Y', strtotime($item->created_at))}}</th> 
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

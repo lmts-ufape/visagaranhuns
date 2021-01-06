@@ -585,24 +585,24 @@ class CoordenadorController extends Controller
 
     public function showNotificacao(Request $request)
     {
-        $notificacao = Notificacao::where('inspecoes_id','=', Crypt::decrypt($request->inspecaoId))->orderBy('created_at','ASC')->first();
+        $notificacao = Notificacao::where('inspecoes_id','=', Crypt::decrypt($request->inspecaoId))->orderBy('created_at','ASC')->get();
 
         if($notificacao == null){
-            return view('coordenador/notificacao',['inspecao_id' => Crypt::decrypt($request->inspecaoId), 'notificacao' => $notificacao->notificacao]);
+            return view('coordenador/notificacao',['inspecao_id' => Crypt::decrypt($request->inspecaoId), 'notificacao' => $notificacao]);
         }else{
-            return view('coordenador/notificacao',['inspecao_id' => Crypt::decrypt($request->inspecaoId), 'notificacao' => $notificacao->notificacao]);
+            return view('coordenador/notificacao',['inspecao_id' => Crypt::decrypt($request->inspecaoId), 'notificacao' => $notificacao]);
         }
     }
 
     public function showNotificacaoVerificar(Request $request)
     {
 
-        $notificacao = Notificacao::where('inspecoes_id','=', Crypt::decrypt($request->inspecaoId))->first();
-
+        $notificacao = Notificacao::where('inspecoes_id','=', Crypt::decrypt($request->inspecaoId))->get();
+        // dd($notificacao);
         if($notificacao == null){
-            return view('coordenador/notificacao_verificar',['inspecao_id' => Crypt::decrypt($request->inspecaoId), 'notificacao' => $notificacao->notificacao]);
+            return view('coordenador/notificacao_verificar',['notificacao' => $notificacao]);
         }else{
-            return view('coordenador/notificacao_verificar',['inspecao_id' => Crypt::decrypt($request->inspecaoId), 'notificacao' => $notificacao->notificacao]);
+            return view('coordenador/notificacao_verificar',['notificacao' => $notificacao]);
         }
     }
 
@@ -613,15 +613,28 @@ class CoordenadorController extends Controller
 
         if ($request->decisao == 'true') {
 
-            $notificacao->status = 'aprovado';
-            $notificacao->save();
+            $notificacoes = Notificacao::where('inspecoes_id', $request->inspecao_id)->get();
+            
+            foreach ($notificacoes as $key) {
+                $key->status = "aprovado";
+                $key->save();
+            }
+            // $notificacao->status = 'aprovado';
+            // $notificacao->save();
 
             return redirect()->route('historico.inspecoes')->with('message', 'Notificação aprovada com sucesso!');
 
         } else {
 
-            $notificacao->status = 'reprovado';
-            $notificacao->save();
+            $notificacoes = Notificacao::where('inspecoes_id', $request->inspecao_id)->get();
+            
+            foreach ($notificacoes as $key) {
+                $key->status = "reprovado";
+                $key->save();
+            }
+
+            // $notificacao->status = 'reprovado';
+            // $notificacao->save();
 
             return redirect()->route('historico.inspecoes')->with('message', 'Notificação reprovada!');
         }

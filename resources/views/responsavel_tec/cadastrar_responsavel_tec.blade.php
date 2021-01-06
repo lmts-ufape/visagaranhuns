@@ -134,7 +134,7 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4" style="padding-right:15px;">
-                            <input type="number" class="styleInputCadastro" name="carga_horaria" id="carga_horaria" placeholder="" required>
+                            <input type="number" class="styleInputCadastro" name="carga_horaria" id="carga_horaria" placeholder="" max="24" required>
                         </div>
                     </div>
                     <div class="form-row">

@@ -114,7 +114,11 @@
                                             <tr>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->codigo}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; width: 240px; color:black">{{$indice->cnae->descricao}}</th>
+                                            @if ($indice->resptecnico != null)
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->resptecnico->user->name}}</th>
+                                            @else
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black"></th>
+                                            @endif
                                             @if ($indice->tipo == 'Primeira Licenca')
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Primeira Licença</th>                                              
                                             @endif

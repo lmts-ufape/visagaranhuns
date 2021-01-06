@@ -28,6 +28,7 @@ use DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use PDF;
+use App\Inspecao;
 
 class RespTecnicoController extends Controller
 {
@@ -41,6 +42,7 @@ class RespTecnicoController extends Controller
         //
     }
     public function home(){
+        
         $user = User::find(Auth::user()->id);
         $rt = RespTecnico::where('user_id', $user->id)->first();
         $notificacao = Notificacao::all();
@@ -65,34 +67,30 @@ class RespTecnicoController extends Controller
 
             $checklistPendente = Checklistemp::where('empresa_id', $indice->empresa_id)
             ->where('anexado', 'false')
-            ->where('areas_id', $indice->area_id)
+            // ->where('areas_id', $indice->area_id)
             ->get();
             $countPendente = $countPendente + count($checklistPendente);
 
             $checklistAnexado  = Checklistemp::where('empresa_id', $indice->empresa_id)
             ->where('anexado', 'true')
-            ->where('areas_id', $indice->area_id)
+            // ->where('areas_id', $indice->area_id)
             ->get();
             $countAnexado = $countAnexado + count($checklistAnexado);
         }
 
         foreach ($empresas as $key) {
             foreach ($notificacao as $indice) {
-                if ($indice->inspecao->empresas_id == $key->empresa_id) {
-                    array_push($notificacoes, $indice);
+                if ($indice->inspecao->empresas_id != null && $indice->inspecao->empresas_id == $key->empresa_id) {
+                    if ($indice->inspecao->requerimento->resptecnicos_id != null && $indice->inspecao->requerimento->resptecnicos_id == $rt->id) {
+                        array_push($notificacoesFinal, $indice);
+                    }
+                }
+                elseif ($indice->inspecao->denuncias_id != null && $indice->inspecao->denuncia->empresa_id != null && $indice->inspecao->denuncia->empresa_id == $key->empresa_id) {
+                    array_push($notificacoesFinal, $indice);
                 }
             }
         }
-
-        foreach ($notificacoes as $indice) {
-            if ($indice->inspecao->motivo == 'Denuncia') {
-                array_push($notificacoesFinal, $indice);
-            } else {
-                if($indice->inspecao->requerimento->resptecnicos_id == $rt->id){
-                    array_push($notificacoesFinal, $indice);
-                }  
-            }
-        }
+        
 
         return view('responsavel_tec/home_rt',
         ['empresas' => $empresas,
@@ -308,36 +306,35 @@ class RespTecnicoController extends Controller
         $rt = RespTecnico::where('user_id', Auth::user()->id)->first();
         $empresa = Empresa::find(Crypt::decrypt($request->empresa));
         $notificacao = Notificacao::all();
-        $notificacoes = [];
+        $inspecao = Inspecao::all();
+        // dd($notificacao);
+        $inspecoes = [];
 
-        foreach ($notificacao as $indice) {
+        foreach ($inspecao as $key) {
 
-            if ($indice->inspecao->empresas_id == null) {
-                if ($indice->inspecao->denuncia->empresa_id != null) {
-                    if ($indice->inspecao->denuncia->empresa_id == $empresa->id) {
-                        array_push($notificacoes, $indice);
-                    }
-                }
-            } else {
-                if($indice->inspecao->requerimento->resptecnicos_id == $rt->id){
-                    array_push($notificacoes, $indice);
-                }
-            }            
-            // if ($indice->inspecao->empresas_id == $empresa->id) {
-            //     if ($indice->inspecao->motivo == 'Denuncia') {
-            //         array_push($notificacoes, $indice);
-            //     } else {
-            //         if($indice->inspecao->requerimento->resptecnicos_id == $rt->id){
+            // if ($indice->inspecao->empresas_id == null) {
+            //     if ($indice->inspecao->denuncia->empresa_id != null) {
+            //         if ($indice->inspecao->denuncia->empresa_id == $empresa->id) {
             //             array_push($notificacoes, $indice);
-            //         }  
+            //         }
             //     }
-            // }
+            // } else {
+            //     if($indice->inspecao->requerimento->resptecnicos_id == $rt->id){
+            //         array_push($notificacoes, $indice);
+            //     }
+            // }            
+            if ($key->empresas_id != null && $key->empresas_id == $empresa->id && $key->requerimento->resptecnicos_id != null && $key->requerimento->resptecnicos_id == $rt->id) {
+                array_push($inspecoes, $key);
+            }
+            elseif ($key->denuncias_id != null && $key->denuncia->empresa_id != null && $key->denuncia->empresa_id == $empresa->id) {
+                array_push($inspecoes, $key);
+            }
         }
-        // dd($notificacoes);
+        // dd($inspecoes);
 
         return view('responsavel_tec/notificacao',[
-            'notificacoes' => $notificacoes,
-            'empresa'      => $empresa,
+            'inspecoes' => $inspecoes,
+            'empresa'   => $empresa,
         ]);
     }
 
@@ -636,7 +633,6 @@ class RespTecnicoController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
 
         $empresa = Empresa::find($request->empresaId);
         $user    = User::where("email", $request->email)->first();
@@ -655,16 +651,42 @@ class RespTecnicoController extends Controller
 
             $resptecnico = RespTecnico::where('user_id', $user->id)->first();
 
-            if ($user->status_cadastro == "pendente") {
+            if ($user->status_cadastro == "pendente" && $resptecnico != null) {
 
                 $passwordTemporario = Str::random(8);
-                $user->password = $passwordTemporario;
+                $user->password = bcrypt($passwordTemporario);
                 $user->save();
 
                 \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTEmail($request->email, $passwordTemporario, $empresa->nome));
 
                 $hoje = date('d/m/Y');
 
+                for ($i=0; $i < count($request->area); $i++) {
+                    $rtempresa = RtEmpresa::create([
+                        'horas'      => $request->carga_horaria,
+                        'data_inicio'=> $hoje,
+                        'status'     => "ativo",
+                        'resptec_id' => $resptecnico->id,
+                        'empresa_id' => $request->empresaId,
+                        'area_id'    => $request->area[$i],
+                    ]);
+                }
+
+                session()->flash('success', 'Responsável técnico convidado com sucesso!');
+                return back();
+                
+            }
+
+            elseif ($resptecnico != null) {
+                $validator = $request->validate([
+                    'carga_horaria'  => 'required|integer',
+                ]);
+    
+                $passwordTemporario = Str::random(8);
+                \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTcadastrado($request->email, $empresa->nome));
+    
+                $hoje = date('d/m/Y');
+    
                 for ($i=0; $i < count($request->area); $i++) {
                     $rtempresa = RtEmpresa::create([
                         'horas' => $request->carga_horaria,
@@ -675,35 +697,33 @@ class RespTecnicoController extends Controller
                         'area_id' => $request->area[$i],
                     ]);
                 }
-
+    
+                $checklistRespTecnico = Checklistresp::where('resptecnicos_id', $resptecnico->id)->exists();
+    
+                if ($checklistRespTecnico == false) {
+                    for ($i=0; $i < count($request->area); $i++) {
+                        $areatipodocresp = AreaTipodocresp::where('area_id', $request->area[$i])->get();
+        
+                        foreach ($areatipodocresp as $indice) {
+    
+                            $checklistresp = Checklistresp::create([
+                                'anexado' => 'false',
+                                'areas_id' => $request->area[$i],
+                                'nomeDoc' => $indice->tipodocresp->nome,
+                                'tipodocres_id' => $indice->tipodocresp->id,
+                                'resptecnicos_id' => $resptecnico->id,
+                            ]);
+                        }
+                    }
+                }
+    
                 session()->flash('success', 'Responsável técnico convidado com sucesso!');
                 return back();
-                
             }
-
-            $validator = $request->validate([
-                'carga_horaria'  => 'required|integer',
-            ]);
-
-            $passwordTemporario = Str::random(8);
-            \Illuminate\Support\Facades\Mail::send(new \App\Mail\CadastroRTcadastrado($request->email, $empresa->nome));
-
-            $hoje = date('d/m/Y');
-
-            for ($i=0; $i < count($request->area); $i++) {
-                $rtempresa = RtEmpresa::create([
-                    'horas' => $request->carga_horaria,
-                    'data_inicio' => $hoje,
-                    'status' => "ativo",
-                    'resptec_id' => $resptecnico->id,
-                    'empresa_id' => $request->empresaId,
-                    'area_id' => $request->area[$i],
-                ]);
+            else {
+                session()->flash('error', 'O Responsável Técnico deve concluir seu cadastro antes!');
+                return back();
             }
-
-            session()->flash('success', 'Responsável técnico convidado com sucesso!');
-            return back();
-
         }
 
         else {
@@ -746,7 +766,7 @@ class RespTecnicoController extends Controller
             $respTec = RespTecnico::create([
                 'formacao'       => "Pendente",
                 'especializacao' => "Pendente",
-                'cpf'            => "Pendente",
+                'cpf'            => Str::random(8),
                 'telefone'       => "Pendente",
                 'user_id'        => $user->id,
                 // 'area_id'        => $request->area,
@@ -1102,5 +1122,32 @@ class RespTecnicoController extends Controller
         $respTecnico->save();
 
         return redirect()->route('/');
+    }
+
+    public function encontrarNotificacoes(Request $request){
+
+        $notificacoes = Notificacao::where('inspecoes_id', $request->id)->get();
+
+        $output = '';
+        if($notificacoes->count() > 0){
+            foreach ($notificacoes as $key) {
+                $output .= '
+                <tr>
+                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">'.$key->item.'</th>
+                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">'.$key->exigencia.'</th>
+                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">'.$key->prazo.'</th>
+                </tr>
+                ';
+            }
+        }else{
+            $output .= '
+                    <label></label>
+                ';
+        }
+        $data = array(
+            'table_data' => $output,
+        );
+
+        echo json_encode($data);
     }
 }

@@ -308,6 +308,8 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::get('/empresa/download/arquivo/rt',         'EmpresaController@baixarArquivosRt')->name('empresa.download.arquivo.rt');
 
     Route::get("/gerar/situacao/",                     "EmpresaController@gerarSituacao")->name("gerar.situacao");
+
+    Route::get("/estabelecimento/encontrar/notificacoes", "EmpresaController@encontrarNotificacoes")->name("encontrar.notificacoes");
 });
 
 // Grupo de rotas para inspetor
@@ -328,6 +330,8 @@ Route::middleware(['IsInspetor'])->group(function () {
     Route::get('/editar/inspetor/senha',        'InspetorController@alterarSenha')->name('editar.senha.inspetor');
     Route::post('/atualizar/dados/inspetor',    'InspetorController@atualizarDados')->name('atualizar.dados.inspetor');
     Route::post('/atualizar/senha/inspetor',    'InspetorController@atualizarSenha')->name('atualizar.senha.inspetor');
+    Route::get('/editar/notificacao',           'InspetorController@editarNotificacao')->name('editar.notificacao');
+    Route::post('/update/notificacao',          'InspetorController@updateNotificacao')->name('update.notificacao');
 
 });
 
@@ -389,6 +393,7 @@ Route::middleware(['IsRespTecnico'])->group(function () {
     
     Route::get('/empresa/notificacao',              'RespTecnicoController@notificacaoEmpresa')->name('rt.notificacao.empresa');
     Route::get("/gerar/situacao/rt",                "RespTecnicoController@gerarSituacao")->name("gerar.situacao.rt");
+    Route::get("/estabelecimento/encontrar/notificacoes/rt", "RespTecnicoController@encontrarNotificacoes")->name("encontrar.notificacoes.rt");
 
 });
 

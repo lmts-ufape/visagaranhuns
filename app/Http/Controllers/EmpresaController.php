@@ -676,24 +676,38 @@ class EmpresaController extends Controller
     {
         $empresa = Empresa::find(Crypt::decrypt($request->value));
         $notificacao = Notificacao::all();
-        $notificacoes = [];
+        $inspecao = Inspecao::all();
+        $inspecoes = [];
 
-        foreach ($notificacao as $indice) {
-            if($indice->inspecao->requerimento_id != null) {
-                if ($indice->inspecao->requerimento->empresas_id == $empresa->id) {
-                    array_push($notificacoes, $indice);
-                }
+        foreach ($inspecao as $key) {
+            if ($key->empresas_id != null && $key->empresas_id == $empresa->id) {
+                array_push($inspecoes, $key);
             }
-            elseif ($indice->inspecao->denuncias_id != null) {
-                if ($indice->inspecao->denuncia->empresa_id == $empresa->id) {
-                    array_push($notificacoes, $indice);
-                }
-            }       
+            elseif ($key->denuncias_id != null && $key->denuncia->empresa_id != null && $key->denuncia->empresa_id == $empresa->id) {
+                array_push($inspecoes, $key);
+            }
         }
-        // dd($notificacoes);
+        
+        // dd($inspecao);
+        // $notificacoes = [];
+        // $inspecoes = [];
+
+        // foreach ($notificacao as $indice) {
+        //     if($indice->inspecao->requerimento_id != null) {
+        //         if ($indice->inspecao->requerimento->empresas_id == $empresa->id) {
+        //             array_push($notificacoes, $indice);
+        //         }
+        //     }
+        //     elseif ($indice->inspecao->denuncias_id != null) {
+        //         if ($indice->inspecao->denuncia->empresa_id == $empresa->id) {
+        //             array_push($notificacoes, $indice);
+        //         }
+        //     }       
+        // }
+        // dd($inspecoes); 
 
         return view('empresa/notificacao',[
-            'notificacoes' => $notificacoes,
+            'inspecoes'    => $inspecao,
             'empresa'      => $empresa,
         ]);
 
@@ -1432,37 +1446,37 @@ class EmpresaController extends Controller
 
         $arrayTemp = [];
         $output = '';
-            if($resultado->count() > 0){
-                foreach($resultado as $item){
-                    $output .= '
-                    <div class="d-flex justify-content-center form-gerado cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
-                        <div class="mr-auto p-2>OPA</div>
-                            <div class="mr-auto p-2" id="'.$item->id.'">'.$item->cnae->descricao.'</div>
-                            <input type="hidden" name="cnae[]" value="'.$item->cnae->id.'" required>
-                            <div style="width:140px; height:25px; text-align:right;">
-                                <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
-                                    <div class="btn btn-danger btn-sm" onclick="deletar_EditarCnaeEmpresa('.$item->id.','.$item->empresa_id.','.$item->cnae->id.')" >X</div>
-                                </div>
+        if($resultado->count() > 0){
+            foreach($resultado as $item){
+                $output .= '
+                <div class="d-flex justify-content-center form-gerado cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
+                    <div class="mr-auto p-2>OPA</div>
+                        <div class="mr-auto p-2" id="'.$item->id.'">'.$item->cnae->descricao.'</div>
+                        <input type="hidden" name="cnae[]" value="'.$item->cnae->id.'" required>
+                        <div style="width:140px; height:25px; text-align:right;">
+                            <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
+                                <div class="btn btn-danger btn-sm" onclick="deletar_EditarCnaeEmpresa('.$item->id.','.$item->empresa_id.','.$item->cnae->id.')" >X</div>
                             </div>
-                    </div>
-                    ';
-                    array_push($arrayTemp, $item->id);
-                }
-            }elseif($idEmpresa == ""){
-                $output .= '
-                        <label></label>
-                    ';
-            }else{
-                $output .= '
-                        <label></label>
-                    ';
+                        </div>
+                </div>
+                ';
+                array_push($arrayTemp, $item->id);
             }
-            $data = array(
-                'success'   => true,
-                'table_data' => $output,
-                'arrayTemp' => $arrayTemp, //atualizar o array temp
-            );
-            echo json_encode($data);
+        }elseif($idEmpresa == ""){
+            $output .= '
+                    <label></label>
+                ';
+        }else{
+            $output .= '
+                    <label></label>
+                ';
+        }
+        $data = array(
+            'success'   => true,
+            'table_data' => $output,
+            'arrayTemp' => $arrayTemp, //atualizar o array temp
+        );
+        echo json_encode($data);
     }
 
     public function apagarCnaeEmpresa(Request $request)
@@ -1547,5 +1561,32 @@ class EmpresaController extends Controller
 
         echo json_encode($data);
 
+    }
+
+    public function encontrarNotificacoes(Request $request){
+
+        $notificacoes = Notificacao::where('inspecoes_id', $request->id)->get();
+
+        $output = '';
+        if($notificacoes->count() > 0){
+            foreach ($notificacoes as $key) {
+                $output .= '
+                <tr>
+                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">'.$key->item.'</th>
+                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">'.$key->exigencia.'</th>
+                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">'.$key->prazo.'</th>
+                </tr>
+                ';
+            }
+        }else{
+            $output .= '
+                    <label></label>
+                ';
+        }
+        $data = array(
+            'table_data' => $output,
+        );
+
+        echo json_encode($data);
     }
 }
