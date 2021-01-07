@@ -88,10 +88,14 @@
 
   <hr class="line-title">
 
+  <div class="form-group col-md-12">
+    <label style="font-size:18px;margin-top:16px; margin-bottom:-5px;margin-left:-15px; font-family: 'Roboto', sans-serif;"><b>Áreas de atuação:</b></label>
+  </div>
+
   @foreach ($areas as $indice)
     
     <div class="form-group col-md-12">
-      <label style="font-size:18px;margin-top:16px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;"><b>-- {{$indice->areaNome}} --</b></label>
+      <label style="font-size:18px;margin-top:16px; margin-bottom:-5px; margin-left:-15px; font-family: 'Roboto', sans-serif;"><b>-- {{$indice->areaNome}} --</b></label>
     </div>
     @foreach ($pendenciaDocs as $indice2)
       @if ($indice2->area == $indice->areaId)
@@ -108,7 +112,7 @@
     @endforeach
   @endforeach
     
-
+  <hr class="line-title">
   <p style="text-align:left; font-size: 20px">
     <b>Data de emissão: {{$emissao}}</b> <br>
   </p>

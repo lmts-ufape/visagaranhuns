@@ -136,7 +136,11 @@
                                             <tr>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->codigo}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->descricao}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->tipo}}</th>
+                                            @if ($indice->tipo == "Primeira Licenca")
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Primeira Licença</th>
+                                            @elseif ($indice->tipo == "Renovacao")
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Renovação</th>
+                                            @endif
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{date('d-m-Y', strtotime($indice->data))}}</th>
                                             <input type="hidden" id="avisoTempRequerimentoRt{{$indice->id}}" value="{{ $indice->aviso }}">
@@ -146,7 +150,11 @@
                                             <tr>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->codigo}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->descricao}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->tipo}}</th>
+                                            @if ($indice->tipo == "Primeira Licenca")
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Primeira Licença</th>
+                                            @elseif ($indice->tipo == "Renovacao")
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Renovação</th>
+                                            @endif
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{date('d-m-Y', strtotime($indice->data))}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">{{$indice->aviso}}</th>
@@ -199,7 +207,8 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="descricaoCNAERT" style="font-weight:bold; font-family: 'Roboto', sans-serif;"></label>Os documentos para o checklist deste cnae foram todos anexados.</div>
+                    <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="descricaoCNAERT" style="font-weight:bold; font-family: 'Roboto', sans-serif;"></label>Os documentos para o checklist deste cnae foram todos anexados.
+                    Você pode gerar um arquivo da situação documental da empresa clicando <a href="{{route('gerar.situacao.rt', ['areas' => $areas, 'empresa' => $empresas->id])}}" style="weight:500px;">aqui</a>.</div>
                 </div>
             </div>
             <div class="modal-footer">
