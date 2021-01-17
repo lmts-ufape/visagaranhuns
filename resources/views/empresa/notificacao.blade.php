@@ -22,14 +22,14 @@
             </div>
         </div>
     </div>
-
+ 
     <div class="barraMenu" style="margin-top:2rem; margin-bottom:9rem;padding:15px;">
         <div class="container" style="margin-top:1rem;">
             <div class="form-row">
                 <div class="form-group col-md-12">
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">NOTIFICAÇÕES</label>
+                            <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">INSPEÇÕES</label>
                         </div>
                         @if ($message = Session::get('error'))
                             <div class="alert alert-warning alert-block fade show">
@@ -49,20 +49,26 @@
                                   <tr>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Motivo</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">CNAE</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Notificação</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Inspetor</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Notificações</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($notificacoes as $item)
+                                    @foreach($inspecoes as $item)
                                         <tr>
-                                            <input type="hidden" id="avisoTempRequerimentoRt{{$item->id}}" value="{{ $item->notificacao }}">
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->inspecao->motivo}}</th>
-                                            @if ($item->inspecao->motivo == 'Denuncia')
+                                            {{-- <input type="hidden" id="avisoTempRequerimentoRt{{$item->id}}" value="{{ $item->notificacao }}"> --}}
+                                            @if ($item->motivo == "Primeira Licenca")
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Primeira Licença</th>    
+                                            @elseif ($item->motivo == "Denuncia")
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Denúncia</th>
+                                            @endif
+                                            @if ($item->motivo == 'Denuncia')
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black"></th>
                                             @else
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->inspecao->requerimento->cnae->descricao}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->requerimento->cnae->descricao}}</th>
                                             @endif
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="avisoReqRt('{{$item->id}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->inspetor->user->name}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="notificacoes('{{$item->id}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -80,7 +86,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background-color:#2a9df4;">
-                    <img src="{{ asset('/imagens/logo_atencao3.png') }}" width="30px;" alt="Logo" style=" margin-right:15px; margin-top:10px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Notificação</h5>
+                    <img src="{{ asset('/imagens/logo_atencao3.png') }}" width="30px;" alt="Logo" style=" margin-right:15px; margin-top:10px;"/><h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Notificações</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -88,82 +94,42 @@
             <form id="formRequerimento" method="POST" action="{{ route('cadastrar.requerimento') }}">
                 @csrf
                 <div class="modal-body">
-                    <div class="row">
-                        <div id="avisoReq" class="col-12" style="font-family: 'Roboto', sans-serif; margin-bottom:10px;">Descrição da notificação:</div>
-                        <div class="col-12"><textarea name="avisoRequerimentoRt" id="summary-ckeditor" cols="30" rows="10" disabled></textarea></div>
+                    <div class="form col-md-12" style="margin-top:-10px;">
+                        <table class="table table-hover">
+                            <thead> 
+                                <tr>
+                                <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Item</th>
+                                <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Exigência</th>
+                                <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Prazo (Qt. Dias)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody">                                
+                                
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-        </form>
+            </form>
         </div>
     </div>
 </div>
 
-<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-<script>
-CKEDITOR.replace( 'summary-ckeditor' );
+<script type="text/javascript">
+    
+    window.notificacoes = function($id){
+        
+        $.ajax({
+            url:'{{ config('prefixo.PREFIXO') }}estabelecimento/encontrar/notificacoes',
+            type:"get",
+            dataType:'json',
+            data: {"id": $id},
+            success: function(response){
+                console.log(response.table_data);
+                $('#tbody').html(response.table_data);
+            }
+        });
+    }
+
 </script>
 
 @endsection
-
-<script type="text/javascript">
-    window.statusCNAERequisicaoRT = function($flag, $descricao, $aviso, $idCnae, $respTecnico, $empresa){
-
-    $.ajax({
-        url:'{{ config('prefixo.PREFIXO') }}cnae/encontrar',
-        type:"get",
-        dataType:'json',
-        data: {'cnaeId': $idCnae,
-               'respTecnico': $respTecnico,
-               'empresa': $empresa,
-        },
-        success: function(response){
-            console.log(response.tipo);
-            if (response.tipo == "Primeira Licenca") {
-                console.log("Primeira Licenca");
-                if (response.valor == "pendente") {
-                    $("option[value='Primeira Licenca']").prop("disabled", true);
-                    $("option[value='Renovacao']").prop("disabled", true);
-                }else if (response.valor == "aprovado") {
-                    $("option[value='Primeira Licenca']").prop("disabled", true);
-                    $("option[value='Renovacao']").prop("disabled", false);
-                }else {
-                    $("option[value='Primeira Licenca']").prop("disabled", false);
-                    $("option[value='Renovacao']").prop("disabled", true);
-                }
-            }else if (response.tipo == "Renovacao"){
-                console.log("Renovacao");
-                if (response.valor == "pendente") {
-                    $("option[value='Primeira Licenca']").prop("disabled", true);
-                    $("option[value='Renovacao']").prop("disabled", true);
-                }else if (response.valor == "aprovado") {
-                    $("option[value='Primeira Licenca']").prop("disabled", true);
-                    $("option[value='Renovacao']").prop("disabled", false);
-                }else {
-                    $("option[value='Primeira Licenca']").prop("disabled", true);
-                    $("option[value='Renovacao']").prop("disabled", false);
-                }
-            }else if (response.tipo == "nenhum") {
-                console.log("Né");
-                $("option[value='Primeira Licenca']").prop("disabled", false);
-                $("option[value='Renovacao']").prop("disabled", true);
-            }
-        }
-    });
-
-    if($flag == "reprovado"){
-
-        document.getElementById('descricaoCNAERTreprovado').innerHTML = $descricao;
-        document.getElementById('avisoCNAERTreprovado').innerHTML = $aviso;
-
-    }else if($flag == "aprovado"){
-
-        document.getElementById('descricaoCNAERT').innerHTML = $descricao;
-
-    }else if($flag == "criarRequisicao"){
-
-        document.getElementById('criarRequerimentoCNAERT').innerHTML = $descricao;
-        document.getElementById('idCnaeRequerimentoRT').value = $idCnae;
-    }
-}
-
-</script>

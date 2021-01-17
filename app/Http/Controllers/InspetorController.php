@@ -242,6 +242,21 @@ class InspetorController extends Controller
         }
     }
 
+    public function editarNotificacao(Request $request)
+    {
+
+        $inspecao = Inspecao::find(Crypt::decrypt($request->inspecao));
+        $notificacao = Notificacao::where('inspecoes_id','=', $inspecao->id)->get();
+
+        if($notificacao == null){
+            return view('inspetor/editar_notificacao', ['inspecao_id' => $inspecao->id, 'notificacao' => ""]);
+            // return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => ""]);
+        }else{
+            return view('inspetor/editar_notificacao', ['inspecao_id' => $inspecao->id, 'notificacao' => $notificacao]);
+            // return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => $relatorio->relatorio]);
+        }
+    }
+
     public function saveNotificacao(Request $request)
     {
         $verifica = Notificacao::where('inspecoes_id','=',$request->inspecao_id)->exists();
@@ -249,22 +264,78 @@ class InspetorController extends Controller
 
         if($verifica == true){ //atualizo
             
-            $atualizar = Notificacao::where('inspecoes_id','=',$request->inspecao_id)->first();
-            $atualizar->update(['notificacao'=>$request->notificacao]);
-            $atualizar->status = "pendente";
+            // $atualizar = Notificacao::where('inspecoes_id','=',$request->inspecao_id)->first();
+            // $atualizar->update(['notificacao'=>$request->notificacao]);
+            // $atualizar->status = "pendente";
 
-            $atualizar->save();
-            return redirect()->route('show.programacao')->with('success', "Notificação foi atualizada com sucesso e reenviada para nova análise do coordenador!");
+            // $atualizar->save();
+            // return redirect()->route('show.programacao')->with('success', "Notificação foi atualizada com sucesso e reenviada para nova análise do coordenador!");
+
         }else{ //salvo
-            
-            $notificacao = new Notificacao;
-            $notificacao->inspecoes_id = $request->inspecao_id;
-            $notificacao->notificacao = $request->notificacao;
-            $notificacao->status = "pendente";
 
-            $notificacao->save();
+            for ($i=0; $i < count($request->item); $i++) {
+
+                $notificacao = new Notificacao;
+                $notificacao->inspecoes_id = $request->inspecao_id;
+                $notificacao->exigencia = $request->exigencia[$i];
+                $notificacao->status = "pendente";
+                $notificacao->item = $request->item[$i];
+                $notificacao->prazo = $request->prazo[$i];
+                $notificacao->save();
+            }
+
             return redirect()->route('show.programacao')->with('success', "Notificação foi salva e enviada para análise do coordenador!");
         }
+    }
+
+    public function updateNotificacao(Request $request)
+    {
+
+        if (!isset($request->item) || !isset($request->exigencia) || !isset($request->prazo)) {
+            session()->flash('error', 'Lista de notificações anteriormente criada não pode estar vazia!');
+            return back();
+        }
+
+        $verifica = Notificacao::where('inspecoes_id','=',$request->inspecao_id)->delete();
+        // $numAgentes = InspecAgente::where('inspecoes_id',$request->inspecao_id)->count();
+
+        for ($i=0; $i < count($request->item); $i++) {
+
+            $notificacao = new Notificacao;
+            $notificacao->inspecoes_id = $request->inspecao_id;
+            $notificacao->exigencia = $request->exigencia[$i];
+            $notificacao->status = "pendente";
+            $notificacao->item = $request->item[$i];
+            $notificacao->prazo = $request->prazo[$i];
+            $notificacao->save();
+        }
+
+        return redirect()->route('show.programacao')->with('success', "As notificações foram atualizadas e voltaram para análise do coordenador!");
+
+        // if($verifica == true){
+            
+            // $atualizar = Notificacao::where('inspecoes_id','=',$request->inspecao_id)->first();
+            // $atualizar->update(['notificacao'=>$request->notificacao]);
+            // $atualizar->status = "pendente";
+
+            // $atualizar->save();
+            // return redirect()->route('show.programacao')->with('success', "Notificação foi atualizada com sucesso e reenviada para nova análise do coordenador!");
+
+        // }else{
+
+        //     for ($i=0; $i < count($request->item); $i++) {
+
+        //         $notificacao = new Notificacao;
+        //         $notificacao->inspecoes_id = $request->inspecao_id;
+        //         $notificacao->exigencia = $request->exigencia[$i];
+        //         $notificacao->status = "pendente";
+        //         $notificacao->item = $request->item[$i];
+        //         $notificacao->prazo = $request->prazo[$i];
+        //         $notificacao->save();
+        //     }
+
+        //     return redirect()->route('show.programacao')->with('success', "Notificação foi salva e enviada para análise do coordenador!");
+        // }
     }
 
     public function inspecoes(Request $request)
@@ -417,9 +488,9 @@ class InspetorController extends Controller
 
     public function verificarNotificacao(Request $request)
     {
-        $notificacao = Notificacao::where('inspecoes_id','=', Crypt::decrypt($request->inspecao))->first();
+        $notificacao = Notificacao::where('inspecoes_id','=', Crypt::decrypt($request->inspecao))->get();
 
-        return view('inspetor/verificar_notificacao',['inspecao_id' => Crypt::decrypt($request->inspecao), 'notificacao' => $notificacao->notificacao, 'notificacao_id' => $notificacao->id]);
+        return view('inspetor/verificar_notificacao',['inspecao_id' => Crypt::decrypt($request->inspecao), 'notificacao' => $notificacao]);
     }
 
     /*

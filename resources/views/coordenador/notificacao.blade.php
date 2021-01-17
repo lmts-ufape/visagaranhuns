@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('content') 
 <div class="container">
     <div class="barraMenu">
         <div class="d-flex justify-content-center">
@@ -48,12 +48,27 @@
                         <div class="form-group col-md-6">
                             <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">NOTIFICAÇÃO</label>
                         </div>
-                        <div class="form col-md-9" style="margin-top:10px;">
-                            <form id="form_relatorio_inspetor">
-                                @csrf
-                                <input type="hidden" name="inspecao_id" value="{{$inspecao_id}}">
-                                <textarea id="summary-ckeditor" rows="40" name="notificacao">{{$notificacao}}</textarea>
-                            </form>
+                        <div class="form col-md-12" style="margin-top:-10px;">
+                            <table class="table table-hover">
+                                <thead>
+                                  <tr>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Item</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Exigência</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Prazo</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($notificacao as $item)
+                                        <tr>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->item}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->exigencia}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->prazo}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

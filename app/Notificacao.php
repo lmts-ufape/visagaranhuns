@@ -13,7 +13,7 @@ class Notificacao extends Model
      * @var array
      */
     protected $fillable = [
-        'status', 'notificacao', 'inspecoes_id'
+        'status', 'item', 'exigencia', 'prazo', 'inspecoes_id'
     ];
 
     public function inspecao() {

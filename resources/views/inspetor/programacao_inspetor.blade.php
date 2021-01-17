@@ -42,13 +42,13 @@
                         <div class="form-group col-md-12">
                             <label style="font-size:19px;margin-top:5px;margin-bottom:5px; font-family: 'Roboto', sans-serif;">INSPEÇÕES</label>
                         </div>
-                        @if ($message = Session::get('success'))
-                            <div class="alert alert-success alert-block fade show" style="margin-top:1rem;">
-                                <button type="button" class="close" data-dismiss="alert">×</button>
-                                <strong>{{$message}}</strong>
-                            </div>
-                        @endif
                         <div class="form col-md-12" style="margin-top:-10px;">
+                            @if ($message = Session::get('success'))
+                                <div class="alert alert-success alert-block fade show" style="margin-top:1rem;">
+                                    <button type="button" class="close" data-dismiss="alert">×</button>
+                                    <strong>{{$message}}</strong> 
+                                </div>
+                            @endif
                             @if(count($inspecoes)>0)
                                 <table class="table table-responsive-lg table-hover" style="width: 100%;">
                                     <thead>
@@ -113,7 +113,7 @@
                                                         </div>
                                                     @elseif ($item->notificacao_status == 'reprovado')
                                                         <div class="btn-group">
-                                                            <div style="margin:5px;"><a href="{{ route('criar.notificacao', ['inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-danger">Reprovado</a></div>
+                                                            <div style="margin:5px;"><a href="{{ route('editar.notificacao', ['inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-danger">Reprovado</a></div>
                                                             {{-- <div style="margin:5px;"><button type="button" class="btn btn-danger" disabled>Apagar</button></div> --}}
                                                         </div>
                                                     @endif

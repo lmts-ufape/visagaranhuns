@@ -86,13 +86,13 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Código</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">CNAE</th>
-                                      <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Tipo</th>
-                                      <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
-                                      <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Data</th>
-                                      <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Aviso</th>
-
+                                        <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Código</th>
+                                        <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold;">CNAE</th>
+                                        <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Resp. Técnico</th>
+                                        <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Tipo</th>
+                                        <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Status</th>
+                                        <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; color:black; font-weight:bold">Data</th>
+                                        <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Aviso</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -101,7 +101,12 @@
                                             <tr>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->codigo}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->descricao}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->tipo}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; width: 240px; color:black">{{$indice->resptecnico->user->name}}</th>
+                                            @if ($indice->tipo == 'Primeira Licenca')
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Primeira Licença</th>
+                                            @elseif ($indice->tipo == "Renovacao")
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Renovação</th>
+                                            @endif
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{date('d-m-Y', strtotime($indice->data))}}</th>
                                             <input type="hidden" id="teste{{$indice->id}}" value="{{ $indice->aviso }}">
@@ -110,8 +115,17 @@
                                         @else
                                             <tr>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->codigo}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->cnae->descricao}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->tipo}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; width: 240px; color:black">{{$indice->cnae->descricao}}</th>
+                                            @if ($indice->resptecnico != null)
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->resptecnico->user->name}}</th>
+                                            @else
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black"></th>
+                                            @endif
+                                            @if ($indice->tipo == 'Primeira Licenca')
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Primeira Licença</th>
+                                            @elseif ($indice->tipo == "Renovacao")
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Renovação</th>
+                                            @endif
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->status}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{date('d-m-Y', strtotime($indice->data))}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$indice->aviso}}</th>
@@ -163,7 +177,8 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="descricaoCNAERT" style="font-weight:bold; font-family: 'Roboto', sans-serif;"></label>Os documentos para o checklist deste cnae foram todos anexados.</div>
+                    <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="descricaoCNAERT" style="font-weight:bold; font-family: 'Roboto', sans-serif;"></label>Os documentos para o checklist deste cnae foram todos anexados.
+                        Você pode gerar um arquivo da situação documental da empresa clicando <a href="{{route('gerar.situacao', ['areas' => $areas, 'empresa' => $empresas->id])}}" style="weight:500px;">aqui</a>.</div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -185,7 +200,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="descricaoCNAERTreprovado" style="font-weight:bold; font-family: 'Roboto', sans-serif;"> </label>Ainda há documentos que não foram anexados! Verifique clicando <a href="{{route('pagina.mostrar.documentacao', ['value' => Crypt::encrypt($empresas->id)])}}" style="weight:500px;">aqui</a>. 
-                        Contudo, você pode criar um novo requerimento para uma licença.</div>
+                        Você pode gerar um arquivo da situação documental da empresa clicando <a href="{{route('gerar.situacao', ['areas' => $areas, 'empresa' => $empresas->id])}}" style="weight:500px;">aqui</a>.</div>
                 </div>
             </div>
             <div class="modal-footer">

@@ -52,7 +52,7 @@
                             <form id="form_relatorio_inspetor" method="POST" action="{{ route('save.relatorio') }}">
                                 @csrf
                                 <input type="hidden" name="inspecao_id" value="{{$inspetor_id}}">
-                                <textarea id="summary-ckeditor" rows="40" name="relatorio">{{$relatorio}}</textarea>
+                                <textarea id="summary-ckeditor" rows="80" name="relatorio">{{$relatorio}}</textarea>
                             </form>
                         </div>
                         <div class="form col-md-3">
@@ -160,7 +160,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-row">
-                    <div class="col-12" ><label id="modalTextoRelatorio_InspetorTexto" style="font-family: 'Roboto', sans-serif;font-weight:bold; margin-bottom:1rem;">Tem certeza que deseja salvar o relatório</label></div>
+                    <div class="col-12" ><label id="modalTextoRelatorio_InspetorTexto" style="font-family: 'Roboto', sans-serif;font-weight:bold; margin-bottom:1rem;">Tem certeza que deseja salvar o relatório?</label></div>
                 </div>
             </div>
             <div class="modal-footer">

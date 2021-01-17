@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Area;
 use App\AreaTipodocemp;
+use App\AreaTipodocresp;
 
 class AreaController extends Controller
 {
@@ -54,6 +55,17 @@ class AreaController extends Controller
                 'tipodocemp_id' => $key,
             ]);
         }
+
+        $areaTipoDocEmp = AreaTipodocresp::create(['area_id' => $area->id, 'tipodocresp_id'=> "1",]);
+        $areaTipoDocEmp = AreaTipodocresp::create(['area_id' => $area->id, 'tipodocresp_id'=> "2",]);
+        $areaTipoDocEmp = AreaTipodocresp::create(['area_id' => $area->id, 'tipodocresp_id'=> "3",]);
+        $areaTipoDocEmp = AreaTipodocresp::create(['area_id' => $area->id, 'tipodocresp_id'=> "4",]);
+        $areaTipoDocEmp = AreaTipodocresp::create(['area_id' => $area->id, 'tipodocresp_id'=> "5",]);
+        $areaTipoDocEmp = AreaTipodocresp::create(['area_id' => $area->id, 'tipodocresp_id'=> "6",]);
+        $areaTipoDocEmp = AreaTipodocresp::create(['area_id' => $area->id, 'tipodocresp_id'=> "7",]);
+        $areaTipoDocEmp = AreaTipodocresp::create(['area_id' => $area->id, 'tipodocresp_id'=> "8",]);
+        $areaTipoDocEmp = AreaTipodocresp::create(['area_id' => $area->id, 'tipodocresp_id'=> "9",]);
+        $areaTipoDocEmp = AreaTipodocresp::create(['area_id' => $area->id, 'tipodocresp_id'=> "10",]);
 
         session()->flash('success', 'Área foi cadastrada!');
         return back();

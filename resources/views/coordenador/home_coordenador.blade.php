@@ -153,44 +153,46 @@
             </div>
         </div>
         </a>
-        <div class="cardDashboard">
-            <div class="container">
-                <div class="form-row">
-                    <div class="col-12" style="margin-bottom:0.5rem;">
-                        <img src="{{ asset('/imagens/logo_papel.png') }}" alt="Logo" style="width:17px; height:20px; margin-top:-5px; margin-right:5px;"/>
-                        <label class="cardDashboard_titulo">Notificação</label>
-                    </div>
-                    {{-- <div class="cardDashboard_titulo" style="text-align:center; width:100%; margin-top:40%; font-size:60px">0</div> --}}
-                    <div class="col-12">
-                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.7px">Notificações pendentes</label>
-                        <div class="form-group">
-                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$notificacoesPendentes}}</div>
+        <a href="{{ route('historico.inspecoes') }}" style="text-decoration:none;cursor:pointer;color:black;">
+            <div class="cardDashboard">
+                <div class="container">
+                    <div class="form-row">
+                        <div class="col-12" style="margin-bottom:0.5rem;">
+                            <img src="{{ asset('/imagens/logo_papel.png') }}" alt="Logo" style="width:17px; height:20px; margin-top:-5px; margin-right:5px;"/>
+                            <label class="cardDashboard_titulo">Notificação</label>
                         </div>
-                    </div>
-                    <div class="col-12">
-                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Notificações aprovadas</label>
-                        <div class="form-group">
-                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$notificacoesAprovadas}}</div>
+                        {{-- <div class="cardDashboard_titulo" style="text-align:center; width:100%; margin-top:40%; font-size:60px">0</div> --}}
+                        <div class="col-12">
+                            <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.7px">Notificações pendentes</label>
+                            <div class="form-group">
+                                <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$notificacoesPendentes}}</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12">
-                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Total de Notificações</label>
-                        <div class="form-group">
-                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$notificacoesTotal}}</div>
+                        <div class="col-12">
+                            <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Notificações aprovadas</label>
+                            <div class="form-group">
+                                <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$notificacoesAprovadas}}</div>
+                            </div>
                         </div>
-                    </div>
-                    {{-- <div class="col-12">
-                        <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Cadastros aprovados</label>
-                        <div class="form-group">
-                            <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$empresasAprovada}}</div>
-                        </div> --}}
-                    </div>
+                        <div class="col-12">
+                            <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Total de Notificações</label>
+                            <div class="form-group">
+                                <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$notificacoesTotal}}</div>
+                            </div>
+                        </div>
+                        {{-- <div class="col-12">
+                            <label class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:13.2px">Cadastros aprovados</label>
+                            <div class="form-group">
+                                <div class="cardDashboard_titulo" style="text-align:center; width:100%; font-size:20px">{{$empresasAprovada}}</div>
+                            </div> --}}
+                        </div>
 
-                    {{-- <div class="col-12" style="font-size:13.5px">Pendentes</div>
-                    <div class="col-12" style="margin-top:2.0rem;font-size:60px;text-align:center;font-weight:lighter;font-family:monospace;color:gray">65</div> --}}
+                        {{-- <div class="col-12" style="font-size:13.5px">Pendentes</div>
+                        <div class="col-12" style="margin-top:2.0rem;font-size:60px;text-align:center;font-weight:lighter;font-family:monospace;color:gray">65</div> --}}
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
 
     </div>
 </div>

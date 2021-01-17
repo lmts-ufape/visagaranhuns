@@ -97,6 +97,10 @@ Auth::routes();
 Route::get('/completar/cadastro/inspetor','InspetorController@create')->name('completar.cadastro.inspetor');
 Route::post('/completar/cadastro/inspetor','InspetorController@store')->name('completar.cadastro.inspetor');
 
+// Completar cadastro do Responsável Técnico
+Route::get('/completar/cadastro/rt/criar',      'RespTecnicoController@criar')->name('completar.cadastro.rt.criar');
+Route::post('/completar/cadastro/rt/salvar',    'RespTecnicoController@salvar')->name('completar.cadastro.rt.salvar');
+
 // Completar cadastro de Agente
 Route::get('/completar/cadastro/agente','AgenteController@create')->name('completar.cadastro.agente');
 Route::post('/completar/cadastro/agente','AgenteController@store')->name('completar.cadastro.agente');
@@ -302,12 +306,10 @@ Route::middleware(['IsEmpresa'])->group(function () {
     Route::post("/empresa/rt/deletar",                 "EmpresaController@deletarRespTecnico")->name("deletar.respTecnico");
 
     Route::get('/empresa/download/arquivo/rt',         'EmpresaController@baixarArquivosRt')->name('empresa.download.arquivo.rt');
-/*
-    * Cadastrar/Editar/Remove Responsável Técnico
-    * Editar/Anexar dados da empresa
-    * Consultar histórico de inspeções
-    * Consultar notificações
-*/
+
+    Route::get("/gerar/situacao/",                     "EmpresaController@gerarSituacao")->name("gerar.situacao");
+
+    Route::get("/estabelecimento/encontrar/notificacoes", "EmpresaController@encontrarNotificacoes")->name("encontrar.notificacoes");
 });
 
 // Grupo de rotas para inspetor
@@ -328,6 +330,8 @@ Route::middleware(['IsInspetor'])->group(function () {
     Route::get('/editar/inspetor/senha',        'InspetorController@alterarSenha')->name('editar.senha.inspetor');
     Route::post('/atualizar/dados/inspetor',    'InspetorController@atualizarDados')->name('atualizar.dados.inspetor');
     Route::post('/atualizar/senha/inspetor',    'InspetorController@atualizarSenha')->name('atualizar.senha.inspetor');
+    Route::get('/editar/notificacao',           'InspetorController@editarNotificacao')->name('editar.notificacao');
+    Route::post('/update/notificacao',          'InspetorController@updateNotificacao')->name('update.notificacao');
 
 });
 
@@ -388,9 +392,9 @@ Route::middleware(['IsRespTecnico'])->group(function () {
     Route::post('/atualizar/rt/senha',              "RespTecnicoController@atualizarSenhaDeAcesso")->name('atualizar.rt');
     
     Route::get('/empresa/notificacao',              'RespTecnicoController@notificacaoEmpresa')->name('rt.notificacao.empresa');
-/*
-    * Consultar notificações
-*/
+    Route::get("/gerar/situacao/rt",                "RespTecnicoController@gerarSituacao")->name("gerar.situacao.rt");
+    Route::get("/estabelecimento/encontrar/notificacoes/rt", "RespTecnicoController@encontrarNotificacoes")->name("encontrar.notificacoes.rt");
+
 });
 
 //Adicionais

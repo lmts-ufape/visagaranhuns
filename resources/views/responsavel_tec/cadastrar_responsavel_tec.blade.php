@@ -14,7 +14,7 @@
             </div>
             <div class="mr-auto p-2 styleBarraPrincipalPC">
                 <div class="form-group">
-                    <div class="tituloBarraPrincipal">Cadastrar responsável técnico</div>
+                    <div class="tituloBarraPrincipal">Cadastrar Responsável Técnico</div>
                     <div>
                         <div style="margin-left:10px; font-size:13px;margin-top:2px; margin-bottom:-15px;color:gray;">Início > Estabelecimentos > {{$empresaNome}} > Cadastrar responsável técnico</div>
                     </div>
@@ -29,7 +29,7 @@
         @csrf
         <div class="barraMenu" style="margin-top:2rem; margin-bottom:4rem;padding:15px;">
                 <div class="container" style="margin-top:1rem;">
-                    <div class="form-row">
+                    {{-- <div class="form-row">
                         <div class="form-group col-md-12">
                             <div class="form-row">
                                 <div class="form-group col-md-12">
@@ -37,7 +37,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     @if ($message = Session::get('error'))
                             <div class="alert alert-warning alert-block fade show">
                                 <button type="button" class="close" data-dismiss="alert">×</button>
@@ -50,7 +50,7 @@
                                 <strong>{{$message}}</strong>
                             </div>
                     @endif
-                    <div class="form-row">
+                    {{-- <div class="form-row">
                         <div class="form-group col-md-4" style="padding-right:15px;">
                             <label class="styleTituloDoInputCadastro" for="inputEmail4">Nome Completo<span style="color:red">*</span></label>
                             <input type="text" class="styleInputCadastro" name="nome" placeholder="" required>
@@ -79,7 +79,7 @@
                             <label class="styleTituloDoInputCadastro" for="inputEmail4">Carga horária:<span style="color:red">*</span></label>
                             <input type="number" class="styleInputCadastro" name="carga_horaria" id="carga_horaria" placeholder="" required>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <div class="form-row">
@@ -121,6 +121,20 @@
                                     @endif
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label style="font-size:19px;margin-top:10px; margin-bottom:-5px; font-family: 'Roboto', sans-serif;">CARGA HORÁRIA<span style="color:red">*</span></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4" style="padding-right:15px;">
+                            <input type="number" class="styleInputCadastro" name="carga_horaria" id="carga_horaria" placeholder="" max="24" required>
                         </div>
                     </div>
                     <div class="form-row">

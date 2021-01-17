@@ -65,7 +65,7 @@
                             <div class="form-row">
                                 <div class="form-group col-md-4"  style="padding-right:15px;">
                                     <label class="styleTituloDoInputCadastro" for="inputEmail4">Nome da nova área:<span style="color:red">*</span></label>
-                                    <input type="text" class="styleInputCadastro" name="nomeArea" id="nomeArea" placeholder="">
+                                    <input type="text" class="styleInputCadastro" name="nomeArea" id="nomeArea" placeholder="" required>
                                 </div>
                             </div>
                             <div class="form-row">
