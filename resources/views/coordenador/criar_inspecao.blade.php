@@ -159,14 +159,13 @@
 
 <script type="text/javascript">
     window.onload= function() {
-
         $.ajax({
-            url:'{{ config('prefixo.PREFIXO') }}requerimentos/aprovados',
+            url:'{{ route('requerimentos.aprovados') }}',
             type:"get",
             dataType:'json',
             // data: {"filtro": "all" },
             success: function(response){
-                console.log(response.table_data);
+                // console.log(response.table_data);
                 $('tbody').html(response.table_data);
             }
         });
