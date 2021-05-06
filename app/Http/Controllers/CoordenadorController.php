@@ -308,19 +308,17 @@ class CoordenadorController extends Controller
                     'empresas_id'     => $requerimento->empresa->id,
                     'denuncias_id'    => null,
                     'motivo'          => $requerimento->tipo,
-                    'agente1'         => $request->agente1,
-                    'agente2'         => $request->agente2,
                 ]);
     
-                $temp1 = InspecAgente::create([
-                    'inspecoes_id'  => $inspecao->id,
-                    'agente_id'     => $request->agente1,
-                ]);
-        
-                $temp2 = InspecAgente::create([
-                    'inspecoes_id'  => $inspecao->id,
-                    'agente_id'     => $request->agente2,
-                ]);
+                foreach ($request->agenteRequired as $agente) {
+                    $inspecao->agentes()->attach($agente);
+                }
+
+                if ($request->agenteOpt != null) {
+                    foreach ($request->agenteOpt as $agente) {
+                        $inspecao->agentes()->attach($agente);
+                    }
+                }
             }
         }
 
@@ -333,19 +331,17 @@ class CoordenadorController extends Controller
                     'empresas_id'     => null,
                     'denuncias_id'    => $indice,
                     'motivo'          => "Denuncia",
-                    'agente1'         => $request->agente1,
-                    'agente2'         => $request->agente2,
                 ]);
     
-                $temp1 = InspecAgente::create([
-                    'inspecoes_id'  => $inspecao->id,
-                    'agente_id'     => $request->agente1,
-                ]);
-        
-                $temp2 = InspecAgente::create([
-                    'inspecoes_id'  => $inspecao->id,
-                    'agente_id'     => $request->agente2,
-                ]);
+                foreach ($request->agenteRequired as $agente) {
+                    $inspecao->agentes()->attach($agente);
+                }
+
+                if ($request->agenteOpt != null) {
+                    foreach ($request->agenteOpt as $agente) {
+                        $inspecao->agentes()->attach($agente);
+                    }
+                }
             }
         }
 

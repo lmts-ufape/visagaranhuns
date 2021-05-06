@@ -102,7 +102,7 @@
 <script type="text/javascript">
     window.onload= function() {
         $.ajax({
-            url:'{{ config('prefixo.PREFIXO') }}requerimento',
+            url:'{{ config('prefixo.PREFIXO') }}/requerimento',
             type:"get",
             dataType:'json',
             data: {"filtro": "all" },
@@ -126,7 +126,7 @@
         var $opcao = $('option:selected', historySelectList).val();
         // console.log($opcao);
         $.ajax({
-            url:'{{ config('prefixo.PREFIXO') }}requerimento',
+            url:'{{ config('prefixo.PREFIXO') }}/requerimento',
             type:"get",
             dataType:'json',
             data: {"id_area": $opcao},
@@ -149,7 +149,7 @@
         }
 
         $.ajax({
-            url:'{{ config('prefixo.PREFIXO') }}requerimento',
+            url:'{{ config('prefixo.PREFIXO') }}/requerimento',
             type:"get",
             dataType:'json',
             data: {"filtro": $filtro },

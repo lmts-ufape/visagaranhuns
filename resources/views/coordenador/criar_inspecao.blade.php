@@ -75,7 +75,7 @@
                             </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 1:<span style="color:red">*</span></label>
-                                <select class="form-control agentes" name="agente1" id="agente1" onchange="retirarAgente(this)" required>
+                                <select class="form-control agentes" name="agenteRequired[]" id="agente1" onchange="retirarAgente(this)" required>
                                     <option value="" data-default disabled selected> -- Selecione -- </option>
                                     @foreach ($agentes as $item)
                                         <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
@@ -84,7 +84,7 @@
                             </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 2:<span style="color:red">*</span></label>
-                                <select class="form-control agentes" name="agente2" id="agente2" onchange="retirarAgente(this)" required>
+                                <select class="form-control agentes" name="agenteRequired[]" id="agente2" onchange="retirarAgente(this)" required>
                                     <option value="" data-default disabled selected> -- Selecione -- </option>
                                     @foreach ($agentes as $item)
                                         <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
@@ -99,7 +99,7 @@
                             </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 3:</label>
-                                <select class="form-control agentes" name="agente3" id="agente3" onchange="retirarAgente(this)">
+                                <select class="form-control agentes" name="agenteOpt[]" id="agente3" onchange="retirarAgente(this)">
                                     <option value="" data-default disabled selected> -- Selecione -- </option>
                                     @foreach ($agentes as $item)
                                         <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
@@ -108,7 +108,7 @@
                             </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 4:</label>
-                                <select class="form-control agentes" name="agente4" id="agente4" onchange="retirarAgente(this)">
+                                <select class="form-control agentes" name="agenteOpt[]" id="agente4" onchange="retirarAgente(this)">
                                     <option value="" data-default disabled selected> -- Selecione -- </option>
                                     @foreach ($agentes as $item)
                                         <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
@@ -197,7 +197,7 @@
         if(arrayTemp.findIndex(element => element == $id) == -1){ //condicao para add o requerimento na lista
 
             $.ajax({
-                url:'{{ config('prefixo.PREFIXO') }}encontrar/requerimento',
+                url:'{{ config('prefixo.PREFIXO') }}/encontrar/requerimento',
                 type:"get",
                 dataType:'json',
                 data: {"requerimentoId": $id},
