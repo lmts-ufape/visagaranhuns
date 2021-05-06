@@ -16,8 +16,8 @@ class Inspecao extends Model
         'data', 'status', 'motivo', 'agente1', 'agente2', 'inspetor_id', 'requerimento_id', 'empresas_id', 'denuncias_id'
     ];
 
-    public function agente() {
-        return $this->belongsToMany("\App\Agente");
+    public function agentes() {
+        return $this->belongsToMany("\App\Agente", 'inspecao_agentes', 'inspecao_id', 'agente_id');
     }
 
     public function inspetor() {

@@ -21,6 +21,6 @@ class Agente extends Model
     }
 
     public function inspecao() {
-        return $this->hasMany("\App\Inspecao");
+        return $this->belongsToMany("\App\Inspecao", 'inspecao_agentes', 'agente_id', 'inspecao_id');
     }
 }
