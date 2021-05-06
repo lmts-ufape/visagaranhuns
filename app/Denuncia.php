@@ -17,7 +17,7 @@ class Denuncia extends Model
         'empresa', 'endereco', 'status', 'denuncia', 'empresa_id',
     ];
 
-    public function empresa() {
+    public function empresaRelacionamento() {
         return $this->belongsTo("\App\Empresa", 'empresa_id');
     }
 }

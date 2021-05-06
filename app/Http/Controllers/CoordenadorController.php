@@ -50,6 +50,7 @@ class CoordenadorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function create()
     {
         //
@@ -111,119 +112,140 @@ class CoordenadorController extends Controller
         $date = new \DateTime();
         // $date = date('Y-m-d');
         $hoje = $date->format('Y/m/d');
-
         $inspecoes = Inspecao::where('status', 'pendente')->where('data', $hoje)->get();
-        // $inspecoes = Inspecao::where('status', 'pendente')->get();
-        $inspecao = [];
-        $empNome = [];
-        $emps = [];
-        
-        foreach ($inspecoes as $key) {
-
-            if ($key->motivo == "Primeira Licenca" || $key->motivo == "Renovacao") {
-
-                $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
-                $requerimento  = Requerimento::where('id', $key->requerimento_id)->first();
-    
-                $obj = (object) array(
-                    'data'          => $key->data,
-                    'status'        => $key->status,
-                    'inspetor'      => $key->inspetor->user->name,
-                    'agente1'        => $inspec_agente[0]->agente->user->name,
-                    'agente2'        => $inspec_agente[1]->agente->user->name,
-                    'empresa'       => $requerimento->empresa->nome,
-                    'cnae'          => $requerimento->cnae->descricao,              
-                );
-                array_push($inspecao, $obj);
-
-            } elseif ($key->motivo == "Denuncia") {
-
-                if ($key->empresas_id == null) {
-                    $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
-                    $empresa = Empresa::find($key->empresas_id);
-                    
-                    $obj = (object) array(
-                        'data'          => $key->data,
-                        'status'        => $key->status,
-                        'inspetor'      => $key->inspetor->user->name,
-                        'agente1'       => $inspec_agente[0]->agente->user->name,
-                        'agente2'       => $inspec_agente[1]->agente->user->name,
-                        'empresa'       => $key->denuncia->empresa,
-                        'cnae'          => "Denúncia",              
-                    );
-                    array_push($inspecao, $obj);
+        $emps = collect();
+        foreach ($inspecoes as $inspecao) {
+            $emp = null;
+            if ($inspecao->empresa != null) {
+                $emp = $inspecao->empresa;
+            } else if ($inspecao->denuncia != null) {
+                if ($inspecao->denuncia->empresaRelacionamento == null) {
+                    $emp = new Empresa();
+                    $emp->nome          = $inspecao->denuncia->empresa;
+                    $emp->email         = "Empresa não cadastrada";
+                    $emp->cnpjcpf       = "Empresa não cadastrada";
+                    $emp->tipo          = "Empresa não cadastrada";
+                    $emp->endereco      = $inspecao->denuncia->endereco;
+                    $emp->cep           = "Empresa não cadastrada";
+                    $emp->rua           = "Empresa não cadastrada";
+                    $emp->numero        = "Empresa não cadastrada";
+                    $emp->bairro        = "Empresa não cadastrada";
+                    $emp->complemento   = "Empresa não cadastrada";
+                    $emp->telefone1     = "Empresa não cadastrada";
+                    $emp->telefone2     = "Empresa não cadastrada"; 
                 } else {
-                    $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
-                    $empresa = Empresa::find($key->empresas_id);
-                    
-                    $obj = (object) array(
-                        'data'          => $key->data,
-                        'status'        => $key->status,
-                        'inspetor'      => $key->inspetor->user->name,
-                        'agente1'       => $inspec_agente[0]->agente->user->name,
-                        'agente2'       => $inspec_agente[1]->agente->user->name,
-                        'empresa'       => $empresa->nome,
-                        'cnae'          => "Denúncia",              
-                    );
-                    array_push($inspecao, $obj);
+                    $emp = $inspecao->denuncia->empresaRelacionamento;
                 }
             }
-
-        }
-        // dd($inspecao);
-        foreach ($inspecao as $indice) {
-            array_push($empNome, $indice->empresa);
-        }
-
-        $empresas = array_unique($empNome);
-
-        foreach ($empresas as $indice) {
-            $emp = Empresa::where('nome', $indice)->first();
             if ($emp != null) {
-                $endereco = Endereco::where('empresa_id', $emp->id)->first();
-                $telefone = Telefone::where('empresa_id', $emp->id)->first();
-    
-                $obj = (object) array(
-                    'nome'       => $emp->nome,
-                    'email'      => $emp->email,
-                    'cnpjcpf'    => $emp->cnpjcpf,
-                    'tipo'       => $emp->tipo,
-                    'cep'        => $endereco->cep,
-                    'rua'        => $endereco->rua,
-                    'numero'     => $endereco->numero,
-                    'bairro'     => $endereco->bairro,
-                    'complemento'=> $endereco->complemento,
-                    'telefone1'  => $telefone->telefone1,
-                    'telefone2'  => $telefone->telefone2,                
-                );
-    
-                array_push($emps, $obj);
-            } else {
-
-                $denuncia = Denuncia::where('empresa', $indice)->first();
-                // $endereco = Endereco::where('empresa_id', $emp->id)->first();
-                // $telefone = Telefone::where('empresa_id', $emp->id)->first();
-    
-                $obj = (object) array(
-                    'nome'       => $denuncia->empresa,
-                    'email'      => "Empresa não cadastrada",
-                    'cnpjcpf'    => "Empresa não cadastrada",
-                    'tipo'       => "Empresa não cadastrada",
-                    'endereco'   => $denuncia->endereco,
-                    'cep'        => "Empresa não cadastrada",
-                    'rua'        => "Empresa não cadastrada",
-                    'numero'     => "Empresa não cadastrada",
-                    'bairro'     => "Empresa não cadastrada",
-                    'complemento'=> "Empresa não cadastrada",
-                    'telefone1'  => "Empresa não cadastrada",
-                    'telefone2'  => "Empresa não cadastrada",                
-                );
-    
-                array_push($emps, $obj);
+                $emps->push($emp);
             }
         }
+        // $inspecoes = Inspecao::where('status', 'pendente')->get();
+        // $inspecao = [];
+        // $empNome = [];
+        // $emps = [];
+        
+        // foreach ($inspecoes as $key) {
 
-        $pdf = PDF::loadView('coordenador/inspecoes', compact('inspecao', 'emps'));
+        //     if ($key->motivo == "Primeira Licenca" || $key->motivo == "Renovacao") {
+
+        //         $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+        //         $requerimento  = Requerimento::where('id', $key->requerimento_id)->first();
+    
+        //         $obj = (object) array(
+        //             'data'          => $key->data,
+        //             'status'        => $key->status,
+        //             'inspetor'      => $key->inspetor->user->name,
+        //             'empresa'       => $requerimento->empresa->nome,
+        //             'cnae'          => $requerimento->cnae->descricao,              
+        //         );
+        //         array_push($inspecao, $obj);
+
+        //     } elseif ($key->motivo == "Denuncia") {
+
+        //         if ($key->empresas_id == null) {
+        //             $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+        //             $empresa = Empresa::find($key->empresas_id);
+                    
+        //             $obj = (object) array(
+        //                 'data'          => $key->data,
+        //                 'status'        => $key->status,
+        //                 'inspetor'      => $key->inspetor->user->name,
+        //                 'empresa'       => $key->denuncia->empresa,
+        //                 'cnae'          => "Denúncia",              
+        //             );
+        //             array_push($inspecao, $obj);
+        //         } else {
+        //             $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+        //             $empresa = Empresa::find($key->empresas_id);
+                    
+        //             $obj = (object) array(
+        //                 'data'          => $key->data,
+        //                 'status'        => $key->status,
+        //                 'inspetor'      => $key->inspetor->user->name,
+        //                 'empresa'       => $empresa->nome,
+        //                 'cnae'          => "Denúncia",              
+        //             );
+        //             array_push($inspecao, $obj);
+        //         }
+        //     }
+
+        // }
+        // // dd($inspecao);
+        // foreach ($inspecao as $indice) {
+        //     array_push($empNome, $indice->empresa);
+        // }
+
+        // $empresas = array_unique($empNome);
+
+        // foreach ($empresas as $indice) {
+        //     $emp = Empresa::where('nome', $indice)->first();
+        //     if ($emp != null) {
+        //         $endereco = Endereco::where('empresa_id', $emp->id)->first();
+        //         $telefone = Telefone::where('empresa_id', $emp->id)->first();
+    
+        //         $obj = (object) array(
+        //             'nome'       => $emp->nome,
+        //             'email'      => $emp->email,
+        //             'cnpjcpf'    => $emp->cnpjcpf,
+        //             'tipo'       => $emp->tipo,
+        //             'cep'        => $endereco->cep,
+        //             'rua'        => $endereco->rua,
+        //             'numero'     => $endereco->numero,
+        //             'bairro'     => $endereco->bairro,
+        //             'complemento'=> $endereco->complemento,
+        //             'telefone1'  => $telefone->telefone1,
+        //             'telefone2'  => $telefone->telefone2,                
+        //         );
+    
+        //         array_push($emps, $obj);
+        //     } else {
+
+        //         $denuncia = Denuncia::where('empresa', $indice)->first();
+        //         // $endereco = Endereco::where('empresa_id', $emp->id)->first();
+        //         // $telefone = Telefone::where('empresa_id', $emp->id)->first();
+    
+        //         $obj = (object) array(
+        //             'nome'       => $denuncia->empresa,
+        //             'email'      => "Empresa não cadastrada",
+        //             'cnpjcpf'    => "Empresa não cadastrada",
+        //             'tipo'       => "Empresa não cadastrada",
+        //             'endereco'   => $denuncia->endereco,
+        //             'cep'        => "Empresa não cadastrada",
+        //             'rua'        => "Empresa não cadastrada",
+        //             'numero'     => "Empresa não cadastrada",
+        //             'bairro'     => "Empresa não cadastrada",
+        //             'complemento'=> "Empresa não cadastrada",
+        //             'telefone1'  => "Empresa não cadastrada",
+        //             'telefone2'  => "Empresa não cadastrada",                
+        //         );
+    
+        //         array_push($emps, $obj);
+        //     }
+        // }
+
+        $pdf = PDF::loadView('coordenador/inspecoes', compact('inspecoes', 'emps'));
         return $pdf->setPaper('a4')->stream('inspecoes.pdf');
     }
 
@@ -410,147 +432,135 @@ class CoordenadorController extends Controller
     public function historico()
     {
         $inspecoes = Inspecao::all();
-        $temp = [];
+        // $temp = [];
         
-        foreach ($inspecoes as $key) {
-            $relatorio = InspecaoRelatorio::where('inspecao_id', $key->id)->first();
-            $notificacao = Notificacao::where('inspecoes_id', $key->id)->first();
+        // foreach ($inspecoes as $key) {
+        //     $relatorio = InspecaoRelatorio::where('inspecao_id', $key->id)->first();
+        //     $notificacao = Notificacao::where('inspecoes_id', $key->id)->first();
 
-            if ($key->motivo == "Primeira Licenca" || $key->motivo == "Renovacao") {
+        //     if ($key->motivo == "Primeira Licenca" || $key->motivo == "Renovacao") {
 
-                $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
-                $requerimento  = Requerimento::where('id', $key->requerimento_id)->first();
+        //         $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+        //         $requerimento  = Requerimento::where('id', $key->requerimento_id)->first();
 
-                if ($relatorio == null) {
-                    $obj = (object) array(
-                        'id'                => $key->id,
-                        'data'              => $key->data,
-                        'status'            => $key->status,
-                        'inspetor'          => $key->inspetor->user->name,
-                        'agente1'           => $inspec_agente[0]->agente->user->name,
-                        'agente2'           => $inspec_agente[1]->agente->user->name,
-                        'empresa'           => $requerimento->empresa->nome,
-                        'cnae'              => $requerimento->cnae->descricao,
-                        'motivo'            => $key->motivo,
+        //         if ($relatorio == null) {
+        //             $obj = (object) array(
+        //                 'id'                => $key->id,
+        //                 'data'              => $key->data,
+        //                 'status'            => $key->status,
+        //                 'inspetor'          => $key->inspetor->user->name,
+        //                 'empresa'           => $requerimento->empresa->nome,
+        //                 'cnae'              => $requerimento->cnae->descricao,
+        //                 'motivo'            => $key->motivo,
     
-                        'relatorio_id'      => null,
-                        'relatorio_status'  => null,
-                        'notificacao_id'    => null,
-                        'notificacao_status'=> null,
-                    );
-                    array_push($temp, $obj);
-                } else {
-                    if ($notificacao != null) {
-                        $obj = (object) array(
-                            'id'                  => $key->id,
-                            'data'                => $key->data,
-                            'status'              => $key->status,
-                            'inspetor'            => $key->inspetor->user->name,
-                            'agente1'             => $inspec_agente[0]->agente->user->name,
-                            'agente2'             => $inspec_agente[1]->agente->user->name,
-                            'empresa'             => $requerimento->empresa->nome,
-                            'cnae'                => $requerimento->cnae->descricao,
-                            'motivo'              => $key->motivo,
+        //                 'relatorio_id'      => null,
+        //                 'relatorio_status'  => null,
+        //                 'notificacao_id'    => null,
+        //                 'notificacao_status'=> null,
+        //             );
+        //             array_push($temp, $obj);
+        //         } else {
+        //             if ($notificacao != null) {
+        //                 $obj = (object) array(
+        //                     'id'                  => $key->id,
+        //                     'data'                => $key->data,
+        //                     'status'              => $key->status,
+        //                     'inspetor'            => $key->inspetor->user->name,
+        //                     'empresa'             => $requerimento->empresa->nome,
+        //                     'cnae'                => $requerimento->cnae->descricao,
+        //                     'motivo'              => $key->motivo,
         
-                            'relatorio_id'        => $relatorio->id,
-                            'relatorio_status'    => $relatorio->status,
-                            'coordenador'         => $relatorio->coordenador,
-                            'notificacao_id'      => $notificacao->id,
-                            'notificacao_status'  => $notificacao->status,
-                        );
-                        array_push($temp, $obj);
-                    } else {
-                        $obj = (object) array(
-                            'id'              => $key->id,
-                            'data'            => $key->data,
-                            'status'          => $key->status,
-                            'inspetor'        => $key->inspetor->user->name,
-                            'agente1'         => $inspec_agente[0]->agente->user->name,
-                            'agente2'         => $inspec_agente[1]->agente->user->name,
-                            'empresa'         => $requerimento->empresa->nome,
-                            'cnae'            => $requerimento->cnae->descricao,
-                            'motivo'          => $key->motivo,
+        //                     'relatorio_id'        => $relatorio->id,
+        //                     'relatorio_status'    => $relatorio->status,
+        //                     'coordenador'         => $relatorio->coordenador,
+        //                     'notificacao_id'      => $notificacao->id,
+        //                     'notificacao_status'  => $notificacao->status,
+        //                 );
+        //                 array_push($temp, $obj);
+        //             } else {
+        //                 $obj = (object) array(
+        //                     'id'              => $key->id,
+        //                     'data'            => $key->data,
+        //                     'status'          => $key->status,
+        //                     'inspetor'        => $key->inspetor->user->name,
+        //                     'empresa'         => $requerimento->empresa->nome,
+        //                     'cnae'            => $requerimento->cnae->descricao,
+        //                     'motivo'          => $key->motivo,
         
-                            'relatorio_id'    => $relatorio->id,
-                            'relatorio_status'=> $relatorio->status,
-                            'coordenador'     => $relatorio->coordenador,
-                            'notificacao_id'      => null,
-                            'notificacao_status'  => null,
-                        );
-                        array_push($temp, $obj);
-                    }
-                }
+        //                     'relatorio_id'    => $relatorio->id,
+        //                     'relatorio_status'=> $relatorio->status,
+        //                     'coordenador'     => $relatorio->coordenador,
+        //                     'notificacao_id'      => null,
+        //                     'notificacao_status'  => null,
+        //                 );
+        //                 array_push($temp, $obj);
+        //             }
+        //         }
 
-            } elseif ($key->motivo == "Denuncia") {
+        //     } elseif ($key->motivo == "Denuncia") {
 
-                $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
-                // Sem identificação de empresa no sistema
-                // $empresa = Empresa::find($key->empresas_id);
+        //         $inspec_agente = InspecAgente::where('inspecoes_id', $key->id)->get();
+        //         // Sem identificação de empresa no sistema
+        //         // $empresa = Empresa::find($key->empresas_id);
 
-                if ($relatorio == null) {
-                    $obj = (object) array(
-                        'id'                => $key->id,
-                        'data'              => $key->data,
-                        'status'            => $key->status,
-                        'inspetor'          => $key->inspetor->user->name,
-                        'agente1'           => $inspec_agente[0]->agente->user->name,
-                        'agente2'           => $inspec_agente[1]->agente->user->name,
-                        'empresa'           => $key->denuncia->empresa,
-                        'cnae'              => "",
-                        'motivo'            => $key->motivo,
+        //         if ($relatorio == null) {
+        //             $obj = (object) array(
+        //                 'id'                => $key->id,
+        //                 'data'              => $key->data,
+        //                 'status'            => $key->status,
+        //                 'inspetor'          => $key->inspetor->user->name,
+        //                 'empresa'           => $key->denuncia->empresa,
+        //                 'cnae'              => "",
+        //                 'motivo'            => $key->motivo,
                         
-                        'relatorio_id'      => null,
-                        'relatorio_status'  => null,
-                        'notificacao_id'    => null,
-                        'notificacao_status'=> null,
-                    );
-                    array_push($temp, $obj);
-                } else {
-                    if ($notificacao != null) {
-                        $obj = (object) array(
-                            'id'                 => $key->id,
-                            'data'               => $key->data,
-                            'status'             => $key->status,
-                            'inspetor'           => $key->inspetor->user->name,
-                            'agente1'            => $inspec_agente[0]->agente->user->name,
-                            'agente2'            => $inspec_agente[1]->agente->user->name,
-                            'empresa'            => $key->denuncia->empresa,
-                            'cnae'               => "",
-                            'motivo'             => $key->motivo,
+        //                 'relatorio_id'      => null,
+        //                 'relatorio_status'  => null,
+        //                 'notificacao_id'    => null,
+        //                 'notificacao_status'=> null,
+        //             );
+        //             array_push($temp, $obj);
+        //         } else {
+        //             if ($notificacao != null) {
+        //                 $obj = (object) array(
+        //                     'id'                 => $key->id,
+        //                     'data'               => $key->data,
+        //                     'status'             => $key->status,
+        //                     'inspetor'           => $key->inspetor->user->name,
+        //                     'empresa'            => $key->denuncia->empresa,
+        //                     'cnae'               => "",
+        //                     'motivo'             => $key->motivo,
                             
-                            'relatorio_id'       => $relatorio->id,
-                            'relatorio_status'   => $relatorio->status,
-                            'coordenador'        => $relatorio->coordenador,
-                            'notificacao_id'     => $notificacao->id,
-                            'notificacao_status' => $notificacao->status,
-                        );
-                        array_push($temp, $obj);
-                    } else {
-                        $obj = (object) array(
-                            'id'                 => $key->id,
-                            'data'               => $key->data,
-                            'status'             => $key->status,
-                            'inspetor'           => $key->inspetor->user->name,
-                            'agente1'            => $inspec_agente[0]->agente->user->name,
-                            'agente2'            => $inspec_agente[1]->agente->user->name,
-                            'empresa'            => $key->denuncia->empresa,
-                            'cnae'               => "",
-                            'motivo'             => $key->motivo,
+        //                     'relatorio_id'       => $relatorio->id,
+        //                     'relatorio_status'   => $relatorio->status,
+        //                     'coordenador'        => $relatorio->coordenador,
+        //                     'notificacao_id'     => $notificacao->id,
+        //                     'notificacao_status' => $notificacao->status,
+        //                 );
+        //                 array_push($temp, $obj);
+        //             } else {
+        //                 $obj = (object) array(
+        //                     'id'                 => $key->id,
+        //                     'data'               => $key->data,
+        //                     'status'             => $key->status,
+        //                     'inspetor'           => $key->inspetor->user->name,
+        //                     'empresa'            => $key->denuncia->empresa,
+        //                     'cnae'               => "",
+        //                     'motivo'             => $key->motivo,
                             
-                            'relatorio_id'       => $relatorio->id,
-                            'relatorio_status'   => $relatorio->status,
-                            'coordenador'        => $relatorio->coordenador,
-                            'notificacao_id'     => null,
-                            'notificacao_status' => null,
-                        );
-                        array_push($temp, $obj);
-                    }
-                }
-            }
-        }
+        //                     'relatorio_id'       => $relatorio->id,
+        //                     'relatorio_status'   => $relatorio->status,
+        //                     'coordenador'        => $relatorio->coordenador,
+        //                     'notificacao_id'     => null,
+        //                     'notificacao_status' => null,
+        //                 );
+        //                 array_push($temp, $obj);
+        //             }
+        //         }
+        //     }
+        // }
         
         return view('coordenador.historico_inspecao')->with([
-            "inspecoes" => $temp,
+            "inspecoes" => $inspecoes,
         ]);
 
     }
