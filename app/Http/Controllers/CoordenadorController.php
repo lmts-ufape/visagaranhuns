@@ -137,7 +137,7 @@ class CoordenadorController extends Controller
                     $emp = $inspecao->denuncia->empresaRelacionamento;
                 }
             }
-            if ($emp != null) {
+            if ($emp != null && !($emps->contains($emp))) {
                 $emps->push($emp);
             }
         }

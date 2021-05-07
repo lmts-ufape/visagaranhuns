@@ -23,4 +23,8 @@ class Agente extends Model
     public function inspecao() {
         return $this->belongsToMany("\App\Inspecao", 'inspec_agente', 'agente_id', 'inspecoes_id');
     }
+
+    public function relatorios() {
+        return $this->belongsToMany('\App\Agente', 'relatorio_agentes', 'agente_id', 'relatorio_id')->withPivot('aprovacao');
+    }
 }

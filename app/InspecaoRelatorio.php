@@ -19,4 +19,8 @@ class InspecaoRelatorio extends Model
     public function inspecao() {
         return $this->belongsTo("\App\Inspecao", 'inspecao_id');
     }
+
+    public function agentes() {
+        return $this->belongsToMany('\App\Agente', 'relatorio_agentes', 'relatorio_id', 'agente_id')->withPivot('aprovacao');
+    }
 }
