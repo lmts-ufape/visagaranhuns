@@ -65,35 +65,43 @@
                                             <tr>
                                                 <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                     <div class="btn-form">
-                                                        <div style="font-weight:bold;">{{$item->nomeEmpresa}}</div>
-                                                        <div>{{$item->motivoInspecao}}</div>
+                                                        @if($item->empresa != null)
+                                                            <div style="font-weight:bold;">{{$item->empresa->nome}}</div>
+                                                        @elseif($item->denuncia != null)
+                                                            @if($item->denuncia->empresaRelacionamento != null) 
+                                                                <div style="font-weight:bold;">{{$item->denuncia->empresaRelacionamento->nome}}</div>
+                                                            @else
+                                                                <div style="font-weight:bold;">{{$item->denuncia->empresa}}</div>
+                                                            @endif
+                                                        @endif
+
+                                                        <div>{{$item->motivo}}</div>
                                                         @if ($item->motivoInspecao == "Denuncia")
-                                                        <div></div>
+                                                            <div></div>
                                                         @else
-                                                        <div>{{$item->cnae}}</div>
+                                                            <div>{{$item->cnae}}</div>
                                                         @endif
                                                     </div>
                                                 </th>
                                                 <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{ date( 'd/m/Y' , strtotime($item->data))}}</th>
-                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->statusInspecao}}</th>
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th>
                                                 <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                     <div class="btn-group">
-                                                        @if ($item->relatorio_id == null)
-                                                        <div style="margin:5px;"><button type="button" class="btn btn-warning" disabled>Não Finalizado</button></div>
+                                                        @if ($item->relatorio == null)
+                                                            <div style="margin:5px;"><button type="button" class="btn btn-warning" disabled>Não Finalizado</button></div>
                                                         @else
-                                                            @if ($item->relatorio_status == "reprovado")
-                                                                <div style="margin:5px;"><a href="{{ route('show.relatorio.agente.verificar', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-danger">Reprovado</a></div>
-                                                                {{-- <div style="margin:5px;"><a type="button" class="btn btn-danger">Reprovado</a></div> --}}
-                                                            @elseif (isset($item->agente1) && $item->agente1 == "avaliacao")
-                                                                <div style="margin:5px;"><a href="{{ route('show.relatorio.agente', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Avaliar</a></div>
-                                                            @elseif (isset($item->agente1) && $item->agente1 == "aprovado")
-                                                                <div style="margin:5px;"><a href="{{ route('show.relatorio.agente.verificar', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-success">Aprovado</a></div>
-                                                                {{-- <div style="margin:5px;"><a type="button" class="btn btn-success">Aprovado</a></div> --}}
-                                                            @elseif (isset($item->agente2) && $item->agente2 == "avaliacao")
-                                                                <div style="margin:5px;"><a href="{{ route('show.relatorio.agente', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-primary">Avaliar</a></div>
-                                                            @elseif (isset($item->agente2) && $item->agente2 == "aprovado")
-                                                                <div style="margin:5px;"><a href="{{ route('show.relatorio.agente.verificar', ['relatorio' => Crypt::encrypt($item->relatorio_id), 'inspecao' => Crypt::encrypt($item->inspecao_id)])}}" type="button" class="btn btn-success">Aprovado</a></div>                                                            
-                                                                {{-- <div style="margin:5px;"><a type="button" class="btn btn-success">Aprovado</a></div> --}}
+                                                            @if ($item->relatorio->status == "reprovado")
+                                                                <div style="margin:5px;"><a href="{{ route('show.relatorio.agente.verificar', ['relatorio' => Crypt::encrypt($item->relatorio->id), 'inspecao' => Crypt::encrypt($item->id)])}}" type="button" class="btn btn-danger">Reprovado</a></div>
+                                                            @else
+                                                                @if($item->relatorio->agentes()->where('aprovacao', 'reprovado')->count() > 0)
+                                                                    <div style="margin:5px;"><a href="{{ route('show.relatorio.agente.verificar', ['relatorio' => Crypt::encrypt($item->relatorio->id), 'inspecao' => Crypt::encrypt($item->id)])}}" type="button" class="btn btn-danger">Reprovado</a></div>
+                                                                @else 
+                                                                    @if ($item->relatorio->agentes()->where([['aprovacao', 'aprovado'], ['agente_id', auth()->user()->agente->id]])->exists())
+                                                                        <div style="margin:5px;"><a href="{{ route('show.relatorio.agente.verificar', ['relatorio' => Crypt::encrypt($item->relatorio->id), 'inspecao' => Crypt::encrypt($item->id)])}}" type="button" class="btn btn-success">Aprovado</a></div>
+                                                                    @else 
+                                                                        <div style="margin:5px;"><a href="{{ route('show.relatorio.agente', ['relatorio' => Crypt::encrypt($item->relatorio->id), 'inspecao' => Crypt::encrypt($item->id)])}}" type="button" class="btn btn-primary">Avaliar</a></div>
+                                                                    @endif
+                                                                @endif
                                                             @endif
                                                         @endif
                                                     </div>

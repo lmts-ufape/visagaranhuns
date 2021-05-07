@@ -156,18 +156,18 @@ class AgenteController extends Controller
         $agente = Agente::where('user_id','=',Auth::user()->id)->first();
         $inspecao = Inspecao::find($request->inspecao_id);
         $relatorio = InspecaoRelatorio::find($request->relatorio_id);
-
         if ($relatorio->status == 'reprovado') {
             return redirect()->route('show.programacao.agente')->with('message', 'Este relatório foi reprovado por outro agente!');
         }
 
         if ($request->decisao == 'true') {
+            if ($relatorio->agentes->contains('id', $agente->id)){
+                $agente->relatorios()->updateExistingPivot($relatorio->id, ['aprovacao' => 'aprovado']);
 
-            if ($agente->id == $relatorio->inspecao->agente1){
-                $relatorio->agente1 = "aprovado";
-                $relatorio->save();
+                $numAgentes = $relatorio->agentes()->count();
+                $numAgentesAprovado = $relatorio->agentes()->where('aprovacao', 'aprovado')->count();
 
-                if($relatorio->agente1 == "aprovado" && $relatorio->agente2 == "aprovado" && $relatorio->coordenador == "aprovado"){
+                if($numAgentes == $numAgentesAprovado && $relatorio->coordenador == "aprovado"){
                     $relatorio->status = "aprovado";
                     $relatorio->save();
 
@@ -185,35 +185,12 @@ class AgenteController extends Controller
 
                 return redirect()->route('show.programacao.agente')->with('message', 'Relatório aprovado com sucesso!');
             }
-            else {
-
-                $relatorio->agente2 = "aprovado";
-                $relatorio->save();
-
-                if($relatorio->agente1 == "aprovado" && $relatorio->agente2 == "aprovado" && $relatorio->coordenador == "aprovado"){
-                    $relatorio->status = "aprovado";
-                    $relatorio->save();
-
-                    $inspecao->status = "aprovado";
-                    $inspecao->save();
-
-                    $empresa = Empresa::find($relatorio->inspecao->empresas_id);
-
-                    if ($inspecao->denuncias_id != null) {
-                        $denuncias = Denuncia::find($inspecao->denuncias_id)->update(['status' => 'concluido']);
-                    }
-
-                    return redirect()->route('show.programacao.agente')->with('message', 'Relatório aprovado com sucesso!');
-                }
-
-                return redirect()->route('show.programacao.agente')->with('message', 'Relatório aprovado com sucesso!');
-            }
-
         } else {
 
             $relatorio->status = "reprovado";
-            $relatorio->agente1 = "reprovado";
-            $relatorio->agente2 = "reprovado";
+            foreach ($relatorio->agentes as $agente) {
+                $agente->relatorios()->updateExistingPivot($relatorio->id, ['aprovacao' => 'reprovado']);
+            }
             $relatorio->coordenador = "reprovado";
             $relatorio->save();
 
@@ -225,112 +202,112 @@ class AgenteController extends Controller
     public function showProgramacao()
     {
         $agente = Agente::where('user_id','=',Auth::user()->id)->first();
-        $inspAgentes = InspecAgente::where('agente_id',$agente->id)->get();
-        $inspecoes = []; //Lista de objetos com inspeções e relatorios
+        $inspAgentes = $agente->inspecao;
+        // $inspecoes = []; //Lista de objetos com inspeções e relatorios
 
-        foreach ($inspAgentes as $indice) {
-            $inspecao = Inspecao::find($indice->inspecoes_id);
-            $relatorio = InspecaoRelatorio::where('inspecao_id', $inspecao->id)
-            ->first();
+        // foreach ($inspAgentes as $indice) {
+        //     $inspecao = Inspecao::find($indice->inspecoes_id);
+        //     $relatorio = InspecaoRelatorio::where('inspecao_id', $inspecao->id)
+        //     ->first();
 
-            if ($inspecao->requerimento_id == null) {
-                if ($relatorio != null) {
-                    if ($agente->id == $relatorio->inspecao->agente1) {
-                        $obj = (object) array(
-                            'data'             => $inspecao->data,
-                            'statusInspecao'   => $inspecao->status,
-                            'motivoInspecao'   => $inspecao->motivo,
-                            'inspetor_id'      => $inspecao->inspetor_id,
-                            'requerimento_id'  => null,
-                            'nomeEmpresa'      => $inspecao->denuncia->empresa,
+        //     if ($inspecao->requerimento_id == null) {
+        //         if ($relatorio != null) {
+        //             if ($agente->id == $relatorio->inspecao->agente1) {
+        //                 $obj = (object) array(
+        //                     'data'             => $inspecao->data,
+        //                     'statusInspecao'   => $inspecao->status,
+        //                     'motivoInspecao'   => $inspecao->motivo,
+        //                     'inspetor_id'      => $inspecao->inspetor_id,
+        //                     'requerimento_id'  => null,
+        //                     'nomeEmpresa'      => $inspecao->denuncia->empresa,
             
-                            'relatorio_id'     => $relatorio->id,
-                            'inspecao_id'      => $inspecao->id,
-                            'relatorio_status' => $relatorio->status,
-                            'agente1'          => $relatorio->agente1,
-                        );
-                        array_push($inspecoes, $obj);
-                    } else {
-                        $obj = (object) array(
-                            'data'             => $inspecao->data,
-                            'statusInspecao'   => $inspecao->status,
-                            'motivoInspecao'   => $inspecao->motivo,
-                            'inspetor_id'      => $inspecao->inspetor_id,
-                            'requerimento_id'  => null,
-                            'nomeEmpresa'      => $inspecao->denuncia->empresa,
+        //                     'relatorio_id'     => $relatorio->id,
+        //                     'inspecao_id'      => $inspecao->id,
+        //                     'relatorio_status' => $relatorio->status,
+        //                     'agente1'          => $relatorio->agente1,
+        //                 );
+        //                 array_push($inspecoes, $obj);
+        //             } else {
+        //                 $obj = (object) array(
+        //                     'data'             => $inspecao->data,
+        //                     'statusInspecao'   => $inspecao->status,
+        //                     'motivoInspecao'   => $inspecao->motivo,
+        //                     'inspetor_id'      => $inspecao->inspetor_id,
+        //                     'requerimento_id'  => null,
+        //                     'nomeEmpresa'      => $inspecao->denuncia->empresa,
             
-                            'relatorio_id'     => $relatorio->id,
-                            'inspecao_id'      => $inspecao->id,
-                            'relatorio_status' => $relatorio->status,
-                            'agente2'          => $relatorio->agente2,
-                        );
-                        array_push($inspecoes, $obj);
-                    }
-                } else {
-                    $obj = (object) array(
-                        'data'             => $inspecao->data,
-                        'statusInspecao'   => $inspecao->status,
-                        'motivoInspecao'   => $inspecao->motivo,
-                        'inspetor_id'      => $inspecao->inspetor_id,
-                        'requerimento_id'  => null,
-                        'nomeEmpresa'      => $inspecao->denuncia->empresa,
+        //                     'relatorio_id'     => $relatorio->id,
+        //                     'inspecao_id'      => $inspecao->id,
+        //                     'relatorio_status' => $relatorio->status,
+        //                     'agente2'          => $relatorio->agente2,
+        //                 );
+        //                 array_push($inspecoes, $obj);
+        //             }
+        //         } else {
+        //             $obj = (object) array(
+        //                 'data'             => $inspecao->data,
+        //                 'statusInspecao'   => $inspecao->status,
+        //                 'motivoInspecao'   => $inspecao->motivo,
+        //                 'inspetor_id'      => $inspecao->inspetor_id,
+        //                 'requerimento_id'  => null,
+        //                 'nomeEmpresa'      => $inspecao->denuncia->empresa,
         
-                        'relatorio_id'     => null,
-                        'inspecao_id'      => $inspecao->id,
-                    );
-                    array_push($inspecoes, $obj);
-                }
-            }else {
-                if ($relatorio != null) {
-                    if ($agente->id == $relatorio->inspecao->agente1) {
-                        $obj = (object) array(
-                            'data'             => $inspecao->data,
-                            'statusInspecao'   => $inspecao->status,
-                            'motivoInspecao'   => $inspecao->motivo,
-                            'inspetor_id'      => $inspecao->inspetor_id,
-                            'cnae'             => $inspecao->requerimento->cnae->descricao,
-                            'nomeEmpresa'      => $inspecao->empresa->nome,
+        //                 'relatorio_id'     => null,
+        //                 'inspecao_id'      => $inspecao->id,
+        //             );
+        //             array_push($inspecoes, $obj);
+        //         }
+        //     }else {
+        //         if ($relatorio != null) {
+        //             if ($agente->id == $relatorio->inspecao->agente1) {
+        //                 $obj = (object) array(
+        //                     'data'             => $inspecao->data,
+        //                     'statusInspecao'   => $inspecao->status,
+        //                     'motivoInspecao'   => $inspecao->motivo,
+        //                     'inspetor_id'      => $inspecao->inspetor_id,
+        //                     'cnae'             => $inspecao->requerimento->cnae->descricao,
+        //                     'nomeEmpresa'      => $inspecao->empresa->nome,
             
-                            'relatorio_id'     => $relatorio->id,
-                            'inspecao_id'      => $inspecao->id,
-                            'relatorio_status' => $relatorio->status,
-                            'agente1'          => $relatorio->agente1,
-                        );
-                        array_push($inspecoes, $obj);
-                    } else {
-                        $obj = (object) array(
-                            'data'             => $inspecao->data,
-                            'statusInspecao'   => $inspecao->status,
-                            'motivoInspecao'   => $inspecao->motivo,
-                            'inspetor_id'      => $inspecao->inspetor_id,
-                            'cnae'             => $inspecao->requerimento->cnae->descricao,
-                            'nomeEmpresa'      => $inspecao->empresa->nome,
+        //                     'relatorio_id'     => $relatorio->id,
+        //                     'inspecao_id'      => $inspecao->id,
+        //                     'relatorio_status' => $relatorio->status,
+        //                     'agente1'          => $relatorio->agente1,
+        //                 );
+        //                 array_push($inspecoes, $obj);
+        //             } else {
+        //                 $obj = (object) array(
+        //                     'data'             => $inspecao->data,
+        //                     'statusInspecao'   => $inspecao->status,
+        //                     'motivoInspecao'   => $inspecao->motivo,
+        //                     'inspetor_id'      => $inspecao->inspetor_id,
+        //                     'cnae'             => $inspecao->requerimento->cnae->descricao,
+        //                     'nomeEmpresa'      => $inspecao->empresa->nome,
             
-                            'relatorio_id'     => $relatorio->id,
-                            'inspecao_id'      => $inspecao->id,
-                            'relatorio_status' => $relatorio->status,
-                            'agente2'          => $relatorio->agente2,
-                        );
-                        array_push($inspecoes, $obj);
-                    }
-                } else {
-                    $obj = (object) array(
-                        'data'             => $inspecao->data,
-                        'statusInspecao'   => $inspecao->status,
-                        'motivoInspecao'   => $inspecao->motivo,
-                        'inspetor_id'      => $inspecao->inspetor_id,
-                        'cnae'             => $inspecao->requerimento->cnae->descricao,
-                        'nomeEmpresa'      => $inspecao->empresa->nome,
+        //                     'relatorio_id'     => $relatorio->id,
+        //                     'inspecao_id'      => $inspecao->id,
+        //                     'relatorio_status' => $relatorio->status,
+        //                     'agente2'          => $relatorio->agente2,
+        //                 );
+        //                 array_push($inspecoes, $obj);
+        //             }
+        //         } else {
+        //             $obj = (object) array(
+        //                 'data'             => $inspecao->data,
+        //                 'statusInspecao'   => $inspecao->status,
+        //                 'motivoInspecao'   => $inspecao->motivo,
+        //                 'inspetor_id'      => $inspecao->inspetor_id,
+        //                 'cnae'             => $inspecao->requerimento->cnae->descricao,
+        //                 'nomeEmpresa'      => $inspecao->empresa->nome,
         
-                        'relatorio_id'     => null,
-                        'inspecao_id'      => $inspecao->id,
-                    );
-                    array_push($inspecoes, $obj);
-                }
-            }
-        }
+        //                 'relatorio_id'     => null,
+        //                 'inspecao_id'      => $inspecao->id,
+        //             );
+        //             array_push($inspecoes, $obj);
+        //         }
+        //     }
+        // }
 
-        return view('agente/programacao_agente', ['inspecoes' => $inspecoes]);
+        return view('agente/programacao_agente', ['inspecoes' => $inspAgentes]);
     }
 
     /**

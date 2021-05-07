@@ -95,21 +95,21 @@
                                             {{-- <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                 <a href="{{ route('show.relatorio.coordenador') }}" type="button" class="btn btn-primary">Avaliar</a>
                                             </th> --}}
-                                            @if ($item->relatorio_status == null)
+                                            @if ($item->relatorio == null)
                                             <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">
                                                 <button type="button" class="btn btn-warning" disabled>Não Finalizado</button>
                                             </th>                                                
                                             @else
-                                                @if ($item->relatorio_status == "reprovado")
+                                                @if ($item->relatorio->status == "reprovado")
                                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">
                                                     <a href="{{ route('show.relatorio.coordenador.verificar', ['relatorio_id' => Crypt::encrypt($item->relatorio_id), 'inspecao_id' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-danger">Reprovado</a>
                                                     {{-- <button type="button" class="btn btn-success">Reprovado</button> --}}
                                                 </th>
-                                                @elseif ($item->coordenador == "avaliacao")
+                                                @elseif ($item->relatorio->coordenador == "avaliacao")
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">
                                                         <a href="{{ route('show.relatorio.coordenador', ['relatorio_id' => Crypt::encrypt($item->relatorio_id), 'inspecao_id' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-primary">Avaliar</a>
                                                     </th>
-                                                @elseif ($item->coordenador == "aprovado")
+                                                @elseif ($item->relatorio->coordenador == "aprovado")
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">
                                                         <a href="{{ route('show.relatorio.coordenador.verificar', ['relatorio_id' => Crypt::encrypt($item->relatorio_id), 'inspecao_id' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-success">Aprovado</a>
                                                         {{-- <button type="button" class="btn btn-success">Aprovado</button> --}}

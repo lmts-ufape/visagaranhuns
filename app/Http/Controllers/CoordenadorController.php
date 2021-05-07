@@ -661,7 +661,10 @@ class CoordenadorController extends Controller
             $relatorio->coordenador = "aprovado";
             $relatorio->save();
 
-            if($relatorio->agente1 == "aprovado" && $relatorio->agente2 == "aprovado" && $relatorio->coordenador == "aprovado"){
+            $numAgentes = $relatorio->agentes()->count();
+            $numAgentesAprovado = $relatorio->agentes()->where('aprovacao', 'aprovado')->count();
+
+            if($numAgentes == $numAgentesAprovado && $relatorio->coordenador == "aprovado"){
                 $relatorio->status = "aprovado";
                 $relatorio->save();
 
@@ -686,8 +689,9 @@ class CoordenadorController extends Controller
             $relatorio->save();
 
             $relatorio->status = "reprovado";
-            $relatorio->agente1 = "reprovado";
-            $relatorio->agente2 = "reprovado";
+            foreach ($relatorio->agentes as $agente) {
+                $agente->relatorios()->updateExistingPivot($relatorio->id, ['aprovacao' => 'reprovado']);
+            }
             $relatorio->coordenador = "reprovado";
             $relatorio->save();
 
