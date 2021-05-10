@@ -117,20 +117,19 @@
                                                 @endif
                                             @endif
                                             <td class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">
-
-                                                @if ($item->notificacao_status == null)
+                                                @if ($item->notificacoes == null || $item->notificacoes->count() <= 0)
                                                     <button type="button" class="btn btn-primary" disabled>
                                                         Notificação
                                                     </button>
-                                                @elseif ($item->notificacao_status == 'pendente')
+                                                @elseif ($item->notificacoes->contains('status','pendente'))
                                                     <a href="{{ route('show.notificacao.coordenador', ['inspecaoId' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-primary">
                                                         Avaliar
                                                     </a>
-                                                @elseif ($item->notificacao_status == 'aprovado')
+                                                @elseif ($item->notificacoes->contains('status','aprovado'))
                                                     <a href="{{ route('show.notificacao.coordenador.verificar', ['inspecaoId' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-success">
                                                         Aprovado
                                                     </a>
-                                                @elseif ($item->notificacao_status == 'reprovado')
+                                                @elseif ($item->notificacoes->contains('status','reprovado'))
                                                     <a href="{{ route('show.notificacao.coordenador.verificar', ['inspecaoId' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-danger">
                                                         Reprovado
                                                     </a>

@@ -35,4 +35,12 @@ class Inspecao extends Model
     public function denuncia() {
         return $this->belongsTo("\App\Denuncia", 'denuncias_id');
     }
+
+    public function relatorio() {
+        return $this->hasOne("\App\InspecaoRelatorio", 'inspecao_id');
+    }
+
+    public function notificacoes() {
+        return $this->hasMany("\App\Notificacao", 'inspecoes_id');
+    }
 }
