@@ -326,11 +326,14 @@ class CoordenadorController extends Controller
 
         if (isset($request->denuncias)) {
             foreach ($request->denuncias as $indice) {
+
+                $denuncia = Denuncia::where('id', $indice)->first();
+            
                 $inspecao = Inspecao::create([
                     'data'            => $request->data,
                     'status'          => 'pendente',
                     'inspetor_id'     => $request->inspetor,
-                    'empresas_id'     => null,
+                    'empresas_id'     => $denuncia->empresa_id,
                     'denuncias_id'    => $indice,
                     'motivo'          => "Denuncia",
                     'agente1'         => $request->agente1,
