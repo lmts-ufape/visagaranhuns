@@ -1565,7 +1565,7 @@ class EmpresaController extends Controller
 
     public function encontrarNotificacoes(Request $request){
 
-        $notificacoes = Notificacao::where('inspecoes_id', $request->id)->get();
+        $notificacoes = Notificacao::where([['inspecoes_id', $request->id], ['status', 'aprovado']])->get();
 
         $output = '';
         if($notificacoes->count() > 0){
