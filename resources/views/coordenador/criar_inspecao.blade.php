@@ -197,7 +197,7 @@
         if(arrayTemp.findIndex(element => element == $id) == -1){ //condicao para add o requerimento na lista
 
             $.ajax({
-                url:'{{ config('prefixo.PREFIXO') }}/encontrar/requerimento',
+                url:'{{ config('prefixo.PREFIXO') }}encontrar/requerimento',
                 type:"get",
                 dataType:'json',
                 data: {"requerimentoId": $id},
