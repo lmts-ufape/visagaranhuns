@@ -448,6 +448,15 @@ class ApiController extends Controller
     private function getAllInspecao(Request $request)
     {
         $user = User::where('remember_token', '=', $request->token)->first();
+
+        if (is_null($user)) {
+            return array(
+                'lista_inspecoes'           => [],
+                'lista_documentos'          => [],
+                'lista_imagens'             => [],
+            );
+        }
+
         $inspetor = Inspetor::where('user_id', '=', $user->id)->first();
         $inspecoes = Inspecao::where('inspetor_id', $inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
 
@@ -514,7 +523,7 @@ class ApiController extends Controller
                     'descricao'     => $indice->requerimento->cnae->descricao,
                     'inspecao_id'   => $indice->id,
                 );
-                array_push($data, $obj);
+                array_push($listaDeInspecoes, $obj);
             }
 
             if (!is_null($indice->empresas_id)) {
