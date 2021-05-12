@@ -75,7 +75,7 @@
                             </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 1:<span style="color:red">*</span></label>
-                                <select class="form-control agentes" name="agenteRequired[]" id="agente1" onchange="retirarAgente(this)" required>
+                                <select class="form-control agentes" name="agenteRequired[]" id="agente1" onchange="retirarAgente()" required>
                                     <option value="" data-default disabled selected> -- Selecione -- </option>
                                     @foreach ($agentes as $item)
                                         <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
@@ -84,7 +84,7 @@
                             </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 2:<span style="color:red">*</span></label>
-                                <select class="form-control agentes" name="agenteRequired[]" id="agente2" onchange="retirarAgente(this)" required>
+                                <select class="form-control agentes" name="agenteRequired[]" id="agente2" onchange="retirarAgente()" required>
                                     <option value="" data-default disabled selected> -- Selecione -- </option>
                                     @foreach ($agentes as $item)
                                         <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
@@ -99,7 +99,7 @@
                             </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 3:</label>
-                                <select class="form-control agentes" name="agenteOpt[]" id="agente3" onchange="retirarAgente(this)">
+                                <select class="form-control agentes" name="agenteOpt[]" id="agente3" onchange="retirarAgente()">
                                     <option value="" data-default disabled selected> -- Selecione -- </option>
                                     @foreach ($agentes as $item)
                                         <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
@@ -108,7 +108,7 @@
                             </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 4:</label>
-                                <select class="form-control agentes" name="agenteOpt[]" id="agente4" onchange="retirarAgente(this)">
+                                <select class="form-control agentes" name="agenteOpt[]" id="agente4" onchange="retirarAgente()">
                                     <option value="" data-default disabled selected> -- Selecione -- </option>
                                     @foreach ($agentes as $item)
                                         <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
@@ -305,19 +305,28 @@
     //     agente2 = y;
     // }
 
-    function retirarAgente(select) {
-        var optionSelecionado = select.options[select.selectedIndex];
-        optionSelecionado.disabled = false;
+    function retirarAgente() {
+
+        var agentesSelecionados = [];
         var selectsAgentes = document.getElementsByClassName('agentes');
 
         for(var i = 0; i < selectsAgentes.length; i++) {
-            if (selectsAgentes[i] != select) {
-                for(var j = 0; j < selectsAgentes[i].children.length; j++) {
-                    if (selectsAgentes[i].children[j].value == optionSelecionado.value) {
-                        selectsAgentes[i].children[j].disabled = true;
-                    }
+            
+            var optionSelecionadoTemp = selectsAgentes[i].options[selectsAgentes[i].selectedIndex];
+            if (optionSelecionadoTemp.value != "") {
+                agentesSelecionados.push(optionSelecionadoTemp.value);
+            }
+        }
+        
+        for(var i = 0; i < selectsAgentes.length; i++) { 
+            for (var j = 1; j < selectsAgentes[i].children.length; j++) {
+                if (agentesSelecionados.includes(selectsAgentes[i].children[j].value)) {
+                    selectsAgentes[i].children[j].disabled = true;
+                } else {
+                    selectsAgentes[i].children[j].disabled = false;
                 }
             }
         }
+
     }
 </script>
