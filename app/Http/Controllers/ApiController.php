@@ -42,12 +42,12 @@ class ApiController extends Controller
                 $status = 'true';
 
                 $resultadoAtual = User::where('email','=',$request->email)->first();
-                $resultadoAtual->remember_token = $token;
+                $resultadoAtual->app_token = $token;
                 $resultadoAtual->save();
 
 
                 //  inspecoes
-        $user = User::where('remember_token','=',$token)->first();
+        $user = User::where('app_token','=',$token)->first();
         $inspetor = Inspetor::where('user_id','=',$user->id)->first();
         $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
         $listaDeInspecoes = [];
@@ -150,7 +150,7 @@ class ApiController extends Controller
                 $status = 'true';
 
                 $resultadoAtual = User::where('email', '=', $request->email)->first();
-                $resultadoAtual->remember_token = $token;
+                $resultadoAtual->app_token = $token;
                 $resultadoAtual->save();
 
                 $request->token = $token;
@@ -188,7 +188,7 @@ class ApiController extends Controller
     */
     public function apiRefresh(Request $request)
     {
-        $resultados = User::where('remember_token', '=', $request->token)->first();
+        $resultados = User::where('app_token', '=', $request->token)->first();
         $output = '';
         $status = 'false';
         $token = '';
@@ -197,8 +197,8 @@ class ApiController extends Controller
             $token = Str::random(60);
             $status = 'true';
 
-            $resultadoAtual = User::where('remember_token', '=', $request->token)->first();
-            $resultadoAtual->remember_token = $token;
+            $resultadoAtual = User::where('app_token', '=', $request->token)->first();
+            $resultadoAtual->app_token = $token;
             $resultadoAtual->save();
         }
         $data = array(
@@ -222,7 +222,7 @@ class ApiController extends Controller
     public function apiDonwloadInspecoesAgente(Request $request)
     {
 
-        $user = User::where('remember_token', '=', $request->token)->first();
+        $user = User::where('app_token', '=', $request->token)->first();
         $agente = Agente::where('user_id', '=', $user->id)->first();
         $inspecAgentes = InspecAgente::where('agente_id', $agente->id)->orderBy('id', 'ASC')->get();
         // $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
@@ -387,7 +387,7 @@ class ApiController extends Controller
     */
     public function apiDownloadDoc(Request $request)
     {
-        $user = User::where('remember_token', '=', $request->token)->first();
+        $user = User::where('app_token', '=', $request->token)->first();
         $inspetor = Inspetor::where('user_id', '=', $user->id)->first();
         $inspecoes = Inspecao::where('inspetor_id', $inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
         //$inspecao = Inspecao::find($request->inspecao_id);
@@ -447,7 +447,7 @@ class ApiController extends Controller
 
     private function getAllInspecao(Request $request)
     {
-        $user = User::where('remember_token', '=', $request->token)->first();
+        $user = User::where('app_token', '=', $request->token)->first();
 
         if (is_null($user)) {
             return array(
@@ -563,6 +563,8 @@ class ApiController extends Controller
             'lista_documentos'          => $listaDeDocumentos,
             'lista_imagens'             => $listaDeImagens,
         );
+
+        Log::info($data);
 
         return $data;
     }

@@ -27,14 +27,14 @@ class InspetorController extends Controller
     public function listarInspetores()
     {
         $inspetores = User::where("tipo", "inspetor")->where("status_cadastro", "aprovado")->get();
-        return view('coordenador/inspetores_coordenador', [ 'inspetores'  => $inspetores ]);
+        return view('coordenador/inspetores_coordenador', ['inspetores'  => $inspetores]);
     }
 
     public function alterarDados(Request $request)
     {
         $inspetor = Inspetor::where('user_id', $request->user)->first();
         // dd($inspetor);
-        return view('inspetor/editar_dados', [ 
+        return view('inspetor/editar_dados', [
             'nome'            => $inspetor->user->name,
             'cpf'             => $inspetor->cpf,
             'formacao'        => $inspetor->formacao,
@@ -61,10 +61,10 @@ class InspetorController extends Controller
 
         ], $messages);
 
-        
+
         if ($validator->fails()) {
             return back()
-                    ->withErrors($validator);
+                ->withErrors($validator);
         }
 
         $inspetor = Inspetor::where("user_id", Auth::user()->id)->first();
@@ -82,7 +82,6 @@ class InspetorController extends Controller
 
         session()->flash('success', 'Dados atualizados!');
         return back();
-
     }
 
     public function alterarSenha(Request $request)
@@ -95,28 +94,28 @@ class InspetorController extends Controller
 
     public function atualizarSenha(Request $request)
     {
-        if(Hash::check($request->senhaAtual ,Auth::user()->password) == true && $request->novaSenha1 == $request->novaSenha2 ){
+        if (Hash::check($request->senhaAtual, Auth::user()->password) == true && $request->novaSenha1 == $request->novaSenha2) {
             $user = Auth::user();
             $user->password = Hash::make($request->novaSenha1);
             $user->save();
             return redirect()->back()->with('success', "Senha alterada com sucesso!");
-        }else{
+        } else {
             return redirect()->back()->with('error', "Verifique suas senhas e tente novamente!");
         }
     }
 
     public function home()
     {
-        $token = User::where('id','=',Auth::user()->id)->first();
-        $inspetor = Inspetor::where('user_id','=',Auth::user()->id)->first();
-        $pendente = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->count();
-        $aprovado = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'aprovado')->orderBy('data', 'ASC')->count();
+        $token = User::where('id', '=', Auth::user()->id)->first();
+        $inspetor = Inspetor::where('user_id', '=', Auth::user()->id)->first();
+        $pendente = Inspecao::where('inspetor_id', $inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->count();
+        $aprovado = Inspecao::where('inspetor_id', $inspetor->id)->where('status', 'aprovado')->orderBy('data', 'ASC')->count();
 
-        $aviso = $token->remember_token;
-        if($aviso == null){
-            return view('inspetor.home_inspetor',['pendente' => $pendente, 'aprovado' => $aprovado, 'aviso' => 0]);
-        }else{
-            return view('inspetor.home_inspetor',['pendente' => $pendente, 'aprovado' => $aprovado, 'aviso' => 1]);
+        $aviso = $token->app_token;
+        if ($aviso == null) {
+            return view('inspetor.home_inspetor', ['pendente' => $pendente, 'aprovado' => $aprovado, 'aviso' => 0]);
+        } else {
+            return view('inspetor.home_inspetor', ['pendente' => $pendente, 'aprovado' => $aprovado, 'aviso' => 1]);
         }
     }
 
@@ -159,10 +158,10 @@ class InspetorController extends Controller
 
         ], $messages);
 
-        
+
         if ($validator->fails()) {
             return back()
-                    ->withErrors($validator);
+                ->withErrors($validator);
         }
 
         // Atualiza dados de user para inspetor
@@ -231,12 +230,12 @@ class InspetorController extends Controller
     public function criarNotificacao(Request $request)
     {
         $inspecao = Inspecao::find(Crypt::decrypt($request->inspecao));
-        $notificacao = Notificacao::where('inspecoes_id','=', $inspecao->id)->first();
+        $notificacao = Notificacao::where('inspecoes_id', '=', $inspecao->id)->first();
 
-        if($notificacao == null){
+        if ($notificacao == null) {
             return view('inspetor/criar_notificacao', ['inspecao_id' => $inspecao->id, 'notificacao' => ""]);
             // return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => ""]);
-        }else{
+        } else {
             return view('inspetor/criar_notificacao', ['inspecao_id' => $inspecao->id, 'notificacao' => $notificacao->notificacao]);
             // return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => $relatorio->relatorio]);
         }
@@ -246,12 +245,12 @@ class InspetorController extends Controller
     {
 
         $inspecao = Inspecao::find(Crypt::decrypt($request->inspecao));
-        $notificacao = Notificacao::where('inspecoes_id','=', $inspecao->id)->get();
+        $notificacao = Notificacao::where('inspecoes_id', '=', $inspecao->id)->get();
 
-        if($notificacao == null){
+        if ($notificacao == null) {
             return view('inspetor/editar_notificacao', ['inspecao_id' => $inspecao->id, 'notificacao' => ""]);
             // return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => ""]);
-        }else{
+        } else {
             return view('inspetor/editar_notificacao', ['inspecao_id' => $inspecao->id, 'notificacao' => $notificacao]);
             // return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => $relatorio->relatorio]);
         }
@@ -259,11 +258,11 @@ class InspetorController extends Controller
 
     public function saveNotificacao(Request $request)
     {
-        $verifica = Notificacao::where('inspecoes_id','=',$request->inspecao_id)->exists();
+        $verifica = Notificacao::where('inspecoes_id', '=', $request->inspecao_id)->exists();
         // $numAgentes = InspecAgente::where('inspecoes_id',$request->inspecao_id)->count();
 
-        if($verifica == true){ //atualizo
-            
+        if ($verifica == true) { //atualizo
+
             // $atualizar = Notificacao::where('inspecoes_id','=',$request->inspecao_id)->first();
             // $atualizar->update(['notificacao'=>$request->notificacao]);
             // $atualizar->status = "pendente";
@@ -271,9 +270,9 @@ class InspetorController extends Controller
             // $atualizar->save();
             // return redirect()->route('show.programacao')->with('success', "Notificação foi atualizada com sucesso e reenviada para nova análise do coordenador!");
 
-        }else{ //salvo
+        } else { //salvo
 
-            for ($i=0; $i < count($request->item); $i++) {
+            for ($i = 0; $i < count($request->item); $i++) {
 
                 $notificacao = new Notificacao;
                 $notificacao->inspecoes_id = $request->inspecao_id;
@@ -296,10 +295,10 @@ class InspetorController extends Controller
             return back();
         }
 
-        $verifica = Notificacao::where('inspecoes_id','=',$request->inspecao_id)->delete();
+        $verifica = Notificacao::where('inspecoes_id', '=', $request->inspecao_id)->delete();
         // $numAgentes = InspecAgente::where('inspecoes_id',$request->inspecao_id)->count();
 
-        for ($i=0; $i < count($request->item); $i++) {
+        for ($i = 0; $i < count($request->item); $i++) {
 
             $notificacao = new Notificacao;
             $notificacao->inspecoes_id = $request->inspecao_id;
@@ -313,13 +312,13 @@ class InspetorController extends Controller
         return redirect()->route('show.programacao')->with('success', "As notificações foram atualizadas e voltaram para análise do coordenador!");
 
         // if($verifica == true){
-            
-            // $atualizar = Notificacao::where('inspecoes_id','=',$request->inspecao_id)->first();
-            // $atualizar->update(['notificacao'=>$request->notificacao]);
-            // $atualizar->status = "pendente";
 
-            // $atualizar->save();
-            // return redirect()->route('show.programacao')->with('success', "Notificação foi atualizada com sucesso e reenviada para nova análise do coordenador!");
+        // $atualizar = Notificacao::where('inspecoes_id','=',$request->inspecao_id)->first();
+        // $atualizar->update(['notificacao'=>$request->notificacao]);
+        // $atualizar->status = "pendente";
+
+        // $atualizar->save();
+        // return redirect()->route('show.programacao')->with('success', "Notificação foi atualizada com sucesso e reenviada para nova análise do coordenador!");
 
         // }else{
 
@@ -341,14 +340,14 @@ class InspetorController extends Controller
     public function inspecoes(Request $request)
     {
         $inspecoes = Inspecao::where('inspetor_id', 1)
-        ->where('status', 'pendente')->get();
+            ->where('status', 'pendente')->get();
         $temp = [];
 
         foreach ($inspecoes as $indice) {
             $endereco = Endereco::where('empresa_id', $indice->requerimento->empresa->id)
-            ->first();
+                ->first();
             $telefone = Telefone::where('empresa_id', $indice->requerimento->empresa->id)
-            ->first();
+                ->first();
 
             $obj = (object) array(
                 'empresa_nome'  => $indice->requerimento->empresa->nome,
@@ -372,14 +371,15 @@ class InspetorController extends Controller
     * ENTRADA:
     * SAIDA: Listar inspecoes programadas para o inspetor
     */
-    public function showProgramacao(){
-        $inspetor = Inspetor::where('user_id','=',Auth::user()->id)->first();
-        $inspecao = Inspecao::where('inspetor_id',$inspetor->id)->orderBy('data', 'ASC')->get();
+    public function showProgramacao()
+    {
+        $inspetor = Inspetor::where('user_id', '=', Auth::user()->id)->first();
+        $inspecao = Inspecao::where('inspetor_id', $inspetor->id)->orderBy('data', 'ASC')->get();
         $inspecoes = [];
 
         foreach ($inspecao as $indice) {
             $relatorio = InspecaoRelatorio::where('inspecao_id', $indice->id)
-            ->first();
+                ->first();
             $notificacao = Notificacao::where('inspecoes_id', $indice->id)->first();
 
             if ($indice->requerimento_id == null) {
@@ -392,7 +392,7 @@ class InspetorController extends Controller
                             'inspetor_id'      => $indice->inspetor_id,
                             'requerimento_id'  => null,
                             'nomeEmpresa'      => $indice->denuncia->empresa,
-            
+
                             'relatorio_id'     => $relatorio->id,
                             'inspecao_id'      => $indice->id,
                             'relatorio_status' => $relatorio->status,
@@ -407,7 +407,7 @@ class InspetorController extends Controller
                             'inspetor_id'      => $indice->inspetor_id,
                             'requerimento_id'  => null,
                             'nomeEmpresa'      => $indice->denuncia->empresa,
-            
+
                             'relatorio_id'     => $relatorio->id,
                             'inspecao_id'      => $indice->id,
                             'relatorio_status' => $relatorio->status,
@@ -423,7 +423,7 @@ class InspetorController extends Controller
                         'inspetor_id'      => $indice->inspetor_id,
                         'requerimento_id'  => null,
                         'nomeEmpresa'      => $indice->denuncia->empresa,
-        
+
                         'relatorio_id'     => null,
                         'inspecao_id'      => $indice->id,
                         'relatorio_status' => null,
@@ -431,7 +431,7 @@ class InspetorController extends Controller
                     );
                     array_push($inspecoes, $obj);
                 }
-            }else {
+            } else {
                 if ($relatorio != null) {
                     if ($notificacao != null) {
                         $obj = (object) array(
@@ -441,7 +441,7 @@ class InspetorController extends Controller
                             'inspetor_id'      => $indice->inspetor_id,
                             'cnae'             => $indice->requerimento->cnae->descricao,
                             'nomeEmpresa'      => $indice->empresa->nome,
-            
+
                             'relatorio_id'     => $relatorio->id,
                             'inspecao_id'      => $indice->id,
                             'relatorio_status' => $relatorio->status,
@@ -456,7 +456,7 @@ class InspetorController extends Controller
                             'inspetor_id'      => $indice->inspetor_id,
                             'cnae'             => $indice->requerimento->cnae->descricao,
                             'nomeEmpresa'      => $indice->empresa->nome,
-            
+
                             'relatorio_id'     => $relatorio->id,
                             'inspecao_id'      => $indice->id,
                             'relatorio_status' => $relatorio->status,
@@ -472,7 +472,7 @@ class InspetorController extends Controller
                         'inspetor_id'      => $indice->inspetor_id,
                         'cnae'             => $indice->requerimento->cnae->descricao,
                         'nomeEmpresa'      => $indice->empresa->nome,
-        
+
                         'relatorio_id'     => null,
                         'inspecao_id'      => $indice->id,
                         'relatorio_status' => null,
@@ -488,9 +488,9 @@ class InspetorController extends Controller
 
     public function verificarNotificacao(Request $request)
     {
-        $notificacao = Notificacao::where('inspecoes_id','=', Crypt::decrypt($request->inspecao))->get();
+        $notificacao = Notificacao::where('inspecoes_id', '=', Crypt::decrypt($request->inspecao))->get();
 
-        return view('inspetor/verificar_notificacao',['inspecao_id' => Crypt::decrypt($request->inspecao), 'notificacao' => $notificacao]);
+        return view('inspetor/verificar_notificacao', ['inspecao_id' => Crypt::decrypt($request->inspecao), 'notificacao' => $notificacao]);
     }
 
     /*
@@ -498,8 +498,9 @@ class InspetorController extends Controller
     * ENTRADA: inspecao_id
     * SAIDA: listagem com as imagens da camera
     */
-    public function showAlbum(Request $request){
-        $resultado = InspecaoFoto::where('inspecao_id','=', Crypt::decrypt($request->value))->orderBy('created_at','ASC')->get();
+    public function showAlbum(Request $request)
+    {
+        $resultado = InspecaoFoto::where('inspecao_id', '=', Crypt::decrypt($request->value))->orderBy('created_at', 'ASC')->get();
         return view('inspetor/album_inspetor', ['album' => $resultado]);
     }
     /*
@@ -507,12 +508,13 @@ class InspetorController extends Controller
     * ENTRADA: inspecao_id, imagem_id
     * SAIDA:
     */
-    public function deleteFoto(Request $request){
+    public function deleteFoto(Request $request)
+    {
         $nomeDoArquivo = "";
-        $resultado = InspecaoFoto::where('id','=',Crypt::decrypt($request->value))->first();
+        $resultado = InspecaoFoto::where('id', '=', Crypt::decrypt($request->value))->first();
         $nomeDoArquivo = $resultado->imagemInspecao;
         $resultado->delete();
-        unlink("imagens/inspecoes/".$nomeDoArquivo);
+        unlink("imagens/inspecoes/" . $nomeDoArquivo);
         return redirect()->back()->with('success', "Foto deletada com sucesso!");
     }
     /*
@@ -520,13 +522,14 @@ class InspetorController extends Controller
     * ENTRADA: inspecao_id
     * SAIDA:
     */
-    public function showRelatorio(Request $request){
-        $resultado = InspecaoFoto::where('inspecao_id','=', Crypt::decrypt($request->value))->orderBy('created_at','ASC')->get();
-        $relatorio = InspecaoRelatorio::where('inspecao_id','=', Crypt::decrypt($request->value))->first();
-        if($relatorio == null){
-            return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => "", 'relatorio_status' => $request->relatorio_status]);
-        }else{
-            return view('inspetor/relatorio_inspetor',['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => $relatorio->relatorio, 'relatorio_status' => $request->relatorio_status]);
+    public function showRelatorio(Request $request)
+    {
+        $resultado = InspecaoFoto::where('inspecao_id', '=', Crypt::decrypt($request->value))->orderBy('created_at', 'ASC')->get();
+        $relatorio = InspecaoRelatorio::where('inspecao_id', '=', Crypt::decrypt($request->value))->first();
+        if ($relatorio == null) {
+            return view('inspetor/relatorio_inspetor', ['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => "", 'relatorio_status' => $request->relatorio_status]);
+        } else {
+            return view('inspetor/relatorio_inspetor', ['album' => $resultado, 'inspetor_id' => Crypt::decrypt($request->value), 'relatorio' => $relatorio->relatorio, 'relatorio_status' => $request->relatorio_status]);
         }
     }
     /*
@@ -534,9 +537,10 @@ class InspetorController extends Controller
     * ENTRADA:
     * SAIDA:
     */
-    public function showHistorico(){
-        $inspetor = Inspetor::where('user_id','=',Auth::user()->id)->first();
-        $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'concluido')->orderBy('data', 'ASC')->get();
+    public function showHistorico()
+    {
+        $inspetor = Inspetor::where('user_id', '=', Auth::user()->id)->first();
+        $inspecoes = Inspecao::where('inspetor_id', $inspetor->id)->where('status', 'concluido')->orderBy('data', 'ASC')->get();
         return view('inspetor/historico_inspetor', ['inspecoes' => $inspecoes]);
     }
     /*
@@ -544,32 +548,34 @@ class InspetorController extends Controller
     * ENTRADA: inspecao_id, descricao
     * SAIDA:
     */
-    public function saveDescricao(Request $request){
-        $resultado = InspecaoFoto::where('id','=',$request->inspecao_id)->first();
+    public function saveDescricao(Request $request)
+    {
+        $resultado = InspecaoFoto::where('id', '=', $request->inspecao_id)->first();
         $resultado->descricao = $request->descricao;
         $resultado->save();
-        return redirect()->back()->with('success'.$resultado->id, "Comentário salvo com sucesso!");
+        return redirect()->back()->with('success' . $resultado->id, "Comentário salvo com sucesso!");
     }
     /*
     * FUNCAO: salvar/atualizar o relatorio
     * ENTRADA: relatorio
     * SAIDA:
     */
-    public function saveRelatorio(Request $request){
+    public function saveRelatorio(Request $request)
+    {
 
-        $verifica = InspecaoRelatorio::where('inspecao_id','=',$request->inspecao_id)->exists();
-        $numAgentes = InspecAgente::where('inspecoes_id',$request->inspecao_id)->count();
+        $verifica = InspecaoRelatorio::where('inspecao_id', '=', $request->inspecao_id)->exists();
+        $numAgentes = InspecAgente::where('inspecoes_id', $request->inspecao_id)->count();
 
-        if($verifica == true){ //atualizo
-            $atualizar = InspecaoRelatorio::where('inspecao_id','=',$request->inspecao_id)->first();
-            $atualizar->update(['relatorio'=>$request->relatorio]);
+        if ($verifica == true) { //atualizo
+            $atualizar = InspecaoRelatorio::where('inspecao_id', '=', $request->inspecao_id)->first();
+            $atualizar->update(['relatorio' => $request->relatorio]);
             $atualizar->status = "avaliacao";
             $atualizar->agente1 = "avaliacao";
             $atualizar->agente2 = "avaliacao";
             $atualizar->coordenador = "avaliacao";
             $atualizar->save();
             return redirect()->route('show.programacao')->with('success', "Relatório atualizado com sucesso e reenviado para nova análise dos avaliadores!");
-        }else{ //salvo
+        } else { //salvo
 
             $relatorio = new InspecaoRelatorio;
             $relatorio->inspecao_id = $request->inspecao_id;
