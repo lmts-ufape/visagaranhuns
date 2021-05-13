@@ -318,7 +318,7 @@ class CoordenadorController extends Controller
     }
 
     public function cadastrarInspecao(Request $request)
-    {
+    {   
         if (isset($request->requerimentos)) {
             foreach ($request->requerimentos as $indice) {
                 $requerimento = Requerimento::find($indice);
@@ -333,12 +333,16 @@ class CoordenadorController extends Controller
                 ]);
     
                 foreach ($request->agenteRequired as $agente) {
-                    $inspecao->agentes()->attach($agente);
+                    if ($agente != null) {
+                        $inspecao->agentes()->attach($agente);
+                    }
                 }
 
                 if ($request->agenteOpt != null) {
                     foreach ($request->agenteOpt as $agente) {
-                        $inspecao->agentes()->attach($agente);
+                        if ($agente != null) {
+                            $inspecao->agentes()->attach($agente);
+                        }
                     }
                 }
             }
@@ -708,10 +712,10 @@ class CoordenadorController extends Controller
         // $id = Crypt::decrypt($request->inspecaoId);
         $id = $request->inspecaoId;
         $inspecao = Inspecao::find($id);
-
+        
         $inspAgente = InspecAgente::where('inspecoes_id', $inspecao->id)->delete();
 
-        if ($inspecao == null || $inspAgente == null) {
+        if ($inspecao == null || $inspAgente === null) {
             session()->flash('error', 'Inspeção não encontrada ou Agente por inspeção não encontrado!');
             return back();
         }
