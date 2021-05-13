@@ -67,7 +67,7 @@
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Inspetor:<span style="color:red">*</span></label>
                                 <select class="form-control" name="inspetor" required>
-                                    <option value="" data-default disabled selected> -- Selecione -- </option>
+                                    <option value="" data-default selected> -- Selecione -- </option>
                                     @foreach ($inspetores as $item)
                                         <option value="{{$item->id}}">{{$item->user->name}}</option>
                                     @endforeach
@@ -77,7 +77,7 @@
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 1:<span style="color:red">*</span></label>
                                 <input name="agenteRequired[]" type="hidden" id="agente1">
                                 <select class="form-control agentes" id="agente1" onchange="retirarAgente(this, 1)" required>
-                                    <option value="" data-default disabled selected> -- Selecione -- </option>
+                                    <option value="" data-default selected> -- Selecione -- </option>
                                     @foreach ($agentes as $item)
                                         <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
                                     @endforeach
@@ -87,7 +87,7 @@
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 2:<span style="color:red">*</span></label>
                                 <input name="agenteRequired[]" type="hidden" id="agente2">
                                 <select class="form-control agentes" id="agente2" onchange="retirarAgente(this, 2)" required>
-                                    <option value="" data-default disabled selected> -- Selecione -- </option>
+                                    <option value="" data-default selected> -- Selecione -- </option>
                                     @foreach ($agentes as $item)
                                         <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
                                     @endforeach
@@ -103,7 +103,7 @@
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 3:</label>
                                 <input name="agenteOpt[]" type="hidden" id="agente3">
                                 <select class="form-control agentes" onchange="retirarAgente(this, 3)">
-                                    <option value="" data-default disabled selected> -- Selecione -- </option>
+                                    <option value="" data-default selected> -- Selecione -- </option>
                                     @foreach ($agentes as $item)
                                         <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
                                     @endforeach
@@ -113,7 +113,7 @@
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 4:</label>
                                 <input name="agenteOpt[]" type="hidden" id="agente4">
                                 <select class="form-control agentes" onchange="retirarAgente(this, 4)">
-                                    <option value="" data-default disabled selected> -- Selecione -- </option>
+                                    <option value="" data-default selected> -- Selecione -- </option>
                                     @foreach ($agentes as $item)
                                         <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
                                     @endforeach
