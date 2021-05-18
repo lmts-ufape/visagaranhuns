@@ -61,8 +61,7 @@
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold; margin-right:30px;">Data</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Status</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Inspetor</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Agente</th>
-                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Agente</th>
+                                    <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Agentes</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Empresa</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Motivo</th>
                                     <th scope="col" class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black; font-weight:bold">Cnae</th>
@@ -76,30 +75,41 @@
                                         <tr>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{date('d-m-Y', strtotime($item->data))}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{$item->status}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{$item->inspetor}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{$item->agente1}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{$item->agente2}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{$item->empresa}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{$item->inspetor->user->name}}</th>
+                                            <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">
+                                                @foreach ($item->agentes as $agente)
+                                                    {{$agente->user->name}}<br>
+                                                @endforeach
+                                            </th>
+                                            @if ($item->empresa != null)
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{$item->empresa->nome}}</th>
+                                            @elseif ($item->denuncia != null)
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{$item->denuncia->empresa}}</th>
+                                            @endif
                                             <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">{{$item->motivo}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:left; vertical-align:middle; color:black">{{$item->cnae}}</th>
+                                            @if ($item->requerimento != null) 
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:left; vertical-align:middle; color:black">{{$item->requerimento->cnae->descricao}}</th>
+                                            @else 
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:left; vertical-align:middle; color:black"></th>
+                                            @endif
                                             {{-- <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">
                                                 <a href="{{ route('show.relatorio.coordenador') }}" type="button" class="btn btn-primary">Avaliar</a>
                                             </th> --}}
-                                            @if ($item->relatorio_status == null)
+                                            @if ($item->relatorio == null)
                                             <th class="subtituloBarraPrincipal" style="font-size:15px;  text-align:center; vertical-align:middle; color:black">
                                                 <button type="button" class="btn btn-warning" disabled>Não Finalizado</button>
                                             </th>                                                
                                             @else
-                                                @if ($item->relatorio_status == "reprovado")
+                                                @if ($item->relatorio->status == "reprovado")
                                                 <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">
                                                     <a href="{{ route('show.relatorio.coordenador.verificar', ['relatorio_id' => Crypt::encrypt($item->relatorio_id), 'inspecao_id' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-danger">Reprovado</a>
                                                     {{-- <button type="button" class="btn btn-success">Reprovado</button> --}}
                                                 </th>
-                                                @elseif ($item->coordenador == "avaliacao")
+                                                @elseif ($item->relatorio->coordenador == "avaliacao")
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">
                                                         <a href="{{ route('show.relatorio.coordenador', ['relatorio_id' => Crypt::encrypt($item->relatorio_id), 'inspecao_id' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-primary">Avaliar</a>
                                                     </th>
-                                                @elseif ($item->coordenador == "aprovado")
+                                                @elseif ($item->relatorio->coordenador == "aprovado")
                                                     <th class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">
                                                         <a href="{{ route('show.relatorio.coordenador.verificar', ['relatorio_id' => Crypt::encrypt($item->relatorio_id), 'inspecao_id' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-success">Aprovado</a>
                                                         {{-- <button type="button" class="btn btn-success">Aprovado</button> --}}
@@ -107,20 +117,19 @@
                                                 @endif
                                             @endif
                                             <td class="subtituloBarraPrincipal" style="font-size:15px; text-align:center; vertical-align:middle; color:black">
-
-                                                @if ($item->notificacao_status == null)
+                                                @if ($item->notificacoes == null || $item->notificacoes->count() <= 0)
                                                     <button type="button" class="btn btn-primary" disabled>
                                                         Notificação
                                                     </button>
-                                                @elseif ($item->notificacao_status == 'pendente')
+                                                @elseif ($item->notificacoes->contains('status','pendente'))
                                                     <a href="{{ route('show.notificacao.coordenador', ['inspecaoId' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-primary">
                                                         Avaliar
                                                     </a>
-                                                @elseif ($item->notificacao_status == 'aprovado')
+                                                @elseif ($item->notificacoes->contains('status','aprovado'))
                                                     <a href="{{ route('show.notificacao.coordenador.verificar', ['inspecaoId' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-success">
                                                         Aprovado
                                                     </a>
-                                                @elseif ($item->notificacao_status == 'reprovado')
+                                                @elseif ($item->notificacoes->contains('status','reprovado'))
                                                     <a href="{{ route('show.notificacao.coordenador.verificar', ['inspecaoId' => Crypt::encrypt($item->id)]) }}" type="button" class="btn btn-danger">
                                                         Reprovado
                                                     </a>

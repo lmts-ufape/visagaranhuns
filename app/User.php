@@ -46,4 +46,8 @@ class User extends Authenticatable
     {
         $this->notify(new meuResetDeSenha($token));
     }
+
+    public function agente() {
+        return $this->hasOne("\App\Agente", 'user_id');
+    }
 }

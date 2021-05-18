@@ -13,11 +13,11 @@ class Inspecao extends Model
      * @var array
      */
     protected $fillable = [
-        'data', 'status', 'motivo', 'agente1', 'agente2', 'inspetor_id', 'requerimento_id', 'empresas_id', 'denuncias_id'
+        'data', 'status', 'motivo', 'inspetor_id', 'requerimento_id', 'empresas_id', 'denuncias_id'
     ];
 
-    public function agente() {
-        return $this->belongsToMany("\App\Agente");
+    public function agentes() {
+        return $this->belongsToMany("\App\Agente", 'inspec_agente', 'inspecoes_id', 'agente_id');
     }
 
     public function inspetor() {
@@ -34,5 +34,13 @@ class Inspecao extends Model
 
     public function denuncia() {
         return $this->belongsTo("\App\Denuncia", 'denuncias_id');
+    }
+
+    public function relatorio() {
+        return $this->hasOne("\App\InspecaoRelatorio", 'inspecao_id');
+    }
+
+    public function notificacoes() {
+        return $this->hasMany("\App\Notificacao", 'inspecoes_id');
     }
 }

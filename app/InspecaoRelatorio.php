@@ -13,10 +13,14 @@ class InspecaoRelatorio extends Model
      * @var array
      */
     protected $fillable = [
-        'inspecao_id', 'relatorio', 'status', 'agente1', 'agente2', 'coordenador'  
+        'inspecao_id', 'relatorio', 'status', 'coordenador'  
     ];
 
     public function inspecao() {
         return $this->belongsTo("\App\Inspecao", 'inspecao_id');
+    }
+
+    public function agentes() {
+        return $this->belongsToMany('\App\Agente', 'relatorio_agentes', 'relatorio_id', 'agente_id')->withPivot('aprovacao');
     }
 }

@@ -3,8 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class InspecAgente extends Model
+class InspecAgente extends Pivot
 {
     protected $table = 'inspec_agente';
     /**
@@ -12,15 +13,5 @@ class InspecAgente extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'inspecoes_id', 'agente_id',
-    ];
-
-    public function inspecao() {
-        return $this->belongsTo("\App\Inspecao",'inspecoes_id');
-    }
-
-    public function agente() {
-        return $this->belongsTo("\App\Agente");
-    }
+    public $incrementing = true;
 }

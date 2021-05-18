@@ -20,8 +20,6 @@ class CreateInspecaoRelatoriosTable extends Migration
             $table->longText("relatorio");
             $table->string("status");
             // $table->integer("num_aprovacao")->nullable();
-            $table->string("agente1");
-            $table->string("agente2");
             $table->string("coordenador");
 
             $table->bigInteger("inspecao_id")->nullable();

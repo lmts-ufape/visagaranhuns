@@ -61,14 +61,20 @@
                                                 <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Primeira Licença</th>    
                                             @elseif ($item->motivo == "Denuncia")
                                                 <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Denúncia</th>
+                                            @elseif ($item->motivo == "Renovacao")
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Renovação</th>
                                             @endif
                                             @if ($item->motivo == 'Denuncia')
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black"></th>
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black"></th>
                                             @else
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->requerimento->cnae->descricao}}</th>
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->requerimento->cnae->descricao}}</th>
                                             @endif
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->inspetor->user->name}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="notificacoes('{{$item->id}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
+                                            @if($item->notificacoes->contains('status', 'aprovado'))
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black"><button type="button" class="btn btn-primary btn-sm" style="font-size:15px;" onclick="notificacoes('{{$item->id}}')" data-toggle="modal" data-target="#exampleModalCenter">Abrir</button></th>
+                                            @else
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">Em análise</th>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>

@@ -67,7 +67,11 @@
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->exigencia}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->prazo}}</th>
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->status}}</th>
-                                            <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->inspecao->empresa->nome}}</th>
+                                            @if($item->inspecao->empresa != null) 
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->inspecao->empresa->nome}}</th>
+                                            @elseif($item->inspecao->denuncia != null)
+                                                <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{$item->inspecao->denuncia->empresa}}</th>
+                                            @endif
                                             <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">{{date('d-m-Y', strtotime($item->created_at))}}</th> 
                                         </tr>
                                     @endforeach
