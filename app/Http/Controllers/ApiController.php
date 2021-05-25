@@ -564,8 +564,6 @@ class ApiController extends Controller
             'lista_imagens'             => $listaDeImagens,
         );
 
-        Log::info($data);
-
         return $data;
     }
 }
