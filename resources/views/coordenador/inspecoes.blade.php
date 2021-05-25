@@ -104,7 +104,7 @@
         <b>CNPJ/CPF: {{$indice->cnpjcpf}}</b>
       </div>
       <div class="col-6" style="margin-left: 300px; line-height: 10px;">
-        <b>CEP: {{$indice->cep}}</b>
+        <b>CEP: {{$indice->endereco->cep}}</b>
       </div>      
     </div>
     <div class="row">
@@ -112,28 +112,28 @@
         <b>Tipo: {{$indice->tipo}}</b>
       </div>
       <div class="col-6" style="margin-left: 300px; line-height: 10px;">
-        <b>Bairro: {{$indice->bairro}}</b>
+        <b>Bairro: {{$indice->endereco->bairro}}</b>
       </div>      
     </div>
     <div class="row">
       <div class="col-6" style="line-height: 10px">
-        <b>Email: {{$indice->email}}</b>
+        <b>Email: {{$indice->user->email}}</b>
       </div>
       <div class="col-6" style="margin-left: 300px; line-height: 10px;">
-        <b>Rua: {{$indice->rua}}</b>
+        <b>Rua: {{$indice->endereco->rua}}</b>
       </div>      
     </div>
     <div class="row">
       <div class="col-6" style="line-height: 10px">
-        <b>Telefone 1: {{$indice->telefone1}}</b>
+        <b>Telefone 1: {{$indice->telefone[0]->telefone1}}</b>
       </div>
       <div class="col-6" style="margin-left: 300px; line-height: 10px;">
-        <b>Complemento: {{$indice->complemento}}</b>
+        <b>Complemento: {{$indice->endereco->complemento}}</b>
       </div>      
     </div>
     <div class="row">
       <div class="col-6" style="line-height: 10px">
-        <b>Telefone 2: {{$indice->telefone2}}</b>
+        <b>Telefone 2: {{$indice->telefone[0]->telefone2}}</b>
       </div>
       <div class="col-6" style="margin-left: 300px; line-height: 10px;">
         <b></b>
@@ -148,21 +148,63 @@
         <tr>
           <th scope="col">Data</th>
           <th scope="col">Inspetor</th>
-          <th scope="col">Agente 1</th>
-          <th scope="col">Agente 2</th>
+          <th scope="col">Agentes</th>
           <th scope="col">Cnae</th>
           <th scope="col">Status</th>
         </tr>
       </thead>
-      @foreach ($inspecao as $item)
-        @if ($item->empresa == $indice->nome)
+      @foreach ($inspecoes as $item)
+        @if ($item->empresa != null && $item->empresa->nome == $indice->nome)
           <tbody>
             <tr>
               <td>{{date('d-m-Y', strtotime($item->data))}}</td>
-              <td>{{$item->inspetor}}</td>
-              <td>{{$item->agente1}}</td>
-              <td>{{$item->agente2}}</td>
-              <td>{{$item->cnae}}</td>
+              <td>{{$item->inspetor->user->name}}</td>
+              <td>
+              @foreach ($item->agentes as $agente)
+                {{$agente->user->name}}<br>
+              @endforeach
+              </td>
+              @if ($item->requerimento != null)
+                <td>{{$item->requerimento->cnae->descricao}}</td>
+              @else
+                <td></td>
+              @endif
+              <td>{{$item->status}}</td>
+            </tr>   
+          </tbody>
+        @elseif ($item->denuncia->empresaRelacionamento != null && $item->denuncia->empresaRelacionamento->nome == $indice->nome)
+          <tbody>
+            <tr>
+              <td>{{date('d-m-Y', strtotime($item->data))}}</td>
+              <td>{{$item->inspetor->user->name}}</td>
+              <td>
+              @foreach ($item->agentes as $agente)
+                {{$agente->user->name}}<br>
+              @endforeach
+              </td>
+              @if ($item->requerimento != null)
+                <td>{{$item->requerimento->cnae->descricao}}</td>
+              @else
+                <td></td>
+              @endif
+              <td>{{$item->status}}</td>
+            </tr>   
+          </tbody>
+        @elseif ($item->denuncia->empresaRelacionamento == null && $item->denuncia->empresa == $indice->nome)
+          <tbody>
+            <tr>
+              <td>{{date('d-m-Y', strtotime($item->data))}}</td>
+              <td>{{$item->inspetor->user->name}}</td>
+              <td>
+              @foreach ($item->agentes as $agente)
+                {{$agente->user->name}}<br>
+              @endforeach
+              </td>
+              @if ($item->requerimento != null)
+                <td>{{$item->requerimento->cnae->descricao}}</td>
+              @else
+                <td></td>
+              @endif
               <td>{{$item->status}}</td>
             </tr>   
           </tbody>

@@ -107,6 +107,20 @@ class CoordenadorSeeder extends Seeder
             'tipo' => 'agente',
             'status_cadastro' => 'aprovado',
         ]);
+        \App\User::create([
+            'name' => 'agente3',
+            'email' => 'agente3@teste.com',
+            'password' => Hash::make('123456'),
+            'tipo' => 'agente',
+            'status_cadastro' => 'aprovado',
+        ]);
+        \App\User::create([
+            'name' => 'agente4',
+            'email' => 'agente4@teste.com',
+            'password' => Hash::make('123456'),
+            'tipo' => 'agente',
+            'status_cadastro' => 'aprovado',
+        ]);
 
         \App\Inspetor::create([
             'formacao' => 'Doc1',
@@ -130,6 +144,22 @@ class CoordenadorSeeder extends Seeder
             'cpf' => Hash::make('123456'),
             'telefone' => '87981692110',
             'user_id' => '5',
+        ]);
+
+        \App\Agente::create([
+            'formacao' => 'Doc7',
+            'especializacao' => 'Doc8',
+            'cpf' => Hash::make('123456'),
+            'telefone' => '87981692110',
+            'user_id' => '6',
+        ]);
+
+        \App\Agente::create([
+            'formacao' => 'Doc9',
+            'especializacao' => 'Doc10',
+            'cpf' => Hash::make('123456'),
+            'telefone' => '87981692110',
+            'user_id' => '7',
         ]);
         
         \App\CnaeEmpresa::create([ 'empresa_id' => '1', 'cnae_id' => '1' ]);

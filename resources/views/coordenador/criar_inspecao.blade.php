@@ -67,7 +67,7 @@
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Inspetor:<span style="color:red">*</span></label>
                                 <select class="form-control" name="inspetor" required>
-                                    <option value="" data-default disabled selected> -- Selecione -- </option>
+                                    <option value="" data-default selected> -- Selecione -- </option>
                                     @foreach ($inspetores as $item)
                                         <option value="{{$item->id}}">{{$item->user->name}}</option>
                                     @endforeach
@@ -75,8 +75,9 @@
                             </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 1:<span style="color:red">*</span></label>
-                                <select class="form-control" name="agente1" id="agente1" onchange="agent1()" required>
-                                    <option value="" data-default disabled selected> -- Selecione -- </option>
+                                <input name="agenteRequired[]" type="hidden" id="agente1">
+                                <select class="form-control agentes" id="agente1" onchange="retirarAgente(this, 1)" required>
+                                    <option value="" data-default selected> -- Selecione -- </option>
                                     @foreach ($agentes as $item)
                                         <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
                                     @endforeach
@@ -84,8 +85,9 @@
                             </div>
                             <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
                                 <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 2:<span style="color:red">*</span></label>
-                                <select class="form-control" name="agente2" id="agente2" onchange="agent2()" required>
-                                    <option value="" data-default disabled selected> -- Selecione -- </option>
+                                <input name="agenteRequired[]" type="hidden" id="agente2">
+                                <select class="form-control agentes" id="agente2" onchange="retirarAgente(this, 2)" required>
+                                    <option value="" data-default selected> -- Selecione -- </option>
                                     @foreach ($agentes as $item)
                                         <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
                                     @endforeach
@@ -96,6 +98,26 @@
                                     <label class="styleTituloDoInputCadastro">Data de Inspeção:*</label>
                                     <input class="form-control" type="date" name="data" required>
                                 </div>
+                            </div>
+                            <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
+                                <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 3:</label>
+                                <input name="agenteOpt[]" type="hidden" id="agente3">
+                                <select class="form-control agentes" onchange="retirarAgente(this, 3)">
+                                    <option value="" data-default selected> -- Selecione -- </option>
+                                    @foreach ($agentes as $item)
+                                        <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4" style="padding-right:10px; margin-top:-7px;">
+                                <label class="styleTituloDoInputCadastro" for="inputPassword4">Agente 4:</label>
+                                <input name="agenteOpt[]" type="hidden" id="agente4">
+                                <select class="form-control agentes" onchange="retirarAgente(this, 4)">
+                                    <option value="" data-default selected> -- Selecione -- </option>
+                                    @foreach ($agentes as $item)
+                                        <option id="y{{$item->id}}" value="{{$item->id}}">{{$item->user->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -265,25 +287,52 @@
             "    </div>\n";
     }
 
-    agente1 = null;
-    agente2 = null;
+    // agente1 = null;
+    // agente2 = null;
 
-    function agent1() {
+    // function agent1() {
 
-        $('#agente2 option[id=y'+ this.agente1 +']').prop('disabled', false);
+    //     $('#agente2 option[id=y'+ this.agente1 +']').prop('disabled', false);
 
-        var x = $("#agente1 option:selected").val();
-        $('#agente2 option[id=y'+ x +']').prop('disabled', true);
-        agente1 = x;
+    //     var x = $("#agente1 option:selected").val();
+    //     $('#agente2 option[id=y'+ x +']').prop('disabled', true);
+    //     agente1 = x;
 
-    }
+    // }
 
-    function agent2() {
+    // function agent2() {
 
-        $('#agente1 option[id=y'+ this.agente2 +']').prop('disabled', false);
+    //     $('#agente1 option[id=y'+ this.agente2 +']').prop('disabled', false);
 
-        var y = $("#agente2 option:selected").val();
-        $('#agente1 option[id=y'+ y +']').prop('disabled', true);
-        agente2 = y;
+    //     var y = $("#agente2 option:selected").val();
+    //     $('#agente1 option[id=y'+ y +']').prop('disabled', true);
+    //     agente2 = y;
+    // }
+
+    function retirarAgente(select, id) {
+        var optSelected = select.options[select.selectedIndex];
+        var inputSelected = document.getElementById("agente"+id);
+        var agentesSelecionados = [];
+        var selectsAgentes = document.getElementsByClassName('agentes');
+
+        for(var i = 0; i < selectsAgentes.length; i++) {
+            
+            var optionSelecionadoTemp = selectsAgentes[i].options[selectsAgentes[i].selectedIndex];
+            if (optionSelecionadoTemp.value != "") {
+                agentesSelecionados.push(optionSelecionadoTemp.value);
+            }
+        }
+        
+        for(var i = 0; i < selectsAgentes.length; i++) { 
+            for (var j = 0; j < selectsAgentes[i].children.length; j++) {
+                if (agentesSelecionados.includes(selectsAgentes[i].children[j].value)) {
+                    selectsAgentes[i].children[j].disabled = true;
+                } else {
+                    selectsAgentes[i].children[j].disabled = false;
+                }
+            }
+        }
+
+        inputSelected.value = optSelected.value;
     }
 </script>

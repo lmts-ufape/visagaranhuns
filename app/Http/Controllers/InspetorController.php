@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Inspetor;
 use App\User;
 use App\Inspecao;
-use App\InspecAgente;
 use App\Endereco;
 use App\InspecaoFoto;
 use App\InspecaoRelatorio;
@@ -564,8 +563,7 @@ class InspetorController extends Controller
     {
 
         $verifica = InspecaoRelatorio::where('inspecao_id', '=', $request->inspecao_id)->exists();
-        $numAgentes = InspecAgente::where('inspecoes_id', $request->inspecao_id)->count();
-
+        $inspecao = Inspecao::find($request->inspecao_id);
         if ($verifica == true) { //atualizo
             $atualizar = InspecaoRelatorio::where('inspecao_id', '=', $request->inspecao_id)->first();
             $atualizar->update(['relatorio' => $request->relatorio]);
@@ -581,11 +579,13 @@ class InspetorController extends Controller
             $relatorio->inspecao_id = $request->inspecao_id;
             $relatorio->relatorio = $request->relatorio;
             $relatorio->status = "avaliacao";
-            $relatorio->agente1 = "avaliacao";
-            $relatorio->agente2 = "avaliacao";
             $relatorio->coordenador = "avaliacao";
-
             $relatorio->save();
+
+            foreach ($inspecao->agentes as $agente) {
+                $relatorio->agentes()->attach($agente->id, ['aprovacao' => 'avaliacao']);
+            }
+
             return redirect()->route('show.programacao')->with('success', "Relatório salvo com sucesso e enviado para análise dos avaliadores!");
         }
     }
