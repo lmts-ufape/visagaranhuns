@@ -300,7 +300,6 @@
             dataType:'json',
             data: {"id": $id},
             success: function(response){
-                console.log(response.data_emissao);
                 $('#editarDoc').val(response.nome);
                 $('#data_emissao_edit').val(response.data_emissao);
                 $('#data_validade_edit').val(response.data_validade);

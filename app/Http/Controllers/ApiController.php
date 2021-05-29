@@ -424,7 +424,6 @@ class ApiController extends Controller
     */
     public function apiDownloadImagemPDF(Request $request)
     {
-        //$file = 'C:/xampp/htdocs/siteVisaGaranhuns/storage/app/public/'.$request->caminho;
         $file = '/home/adminuag/site/visagaranhuns/storage/app/public/' . $request->caminho;
         $headers = array(
             'Content-Type: application/pdf',
