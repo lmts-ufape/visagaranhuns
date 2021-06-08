@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Agente;
 use App\Checklistemp;
+use App\Denuncia;
 use Illuminate\Http\Request;
 use App\User;
 use App\Inspecao;
@@ -12,11 +14,14 @@ use App\Telefone;
 use App\Empresa;
 use App\InspecaoFoto;
 use App\Docempresa;
+use App\InspecAgente;
 use App\Requerimento;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Svg\Tag\Rect;
 use Intervention\Image\ImageManagerStatic as Image;
+use stdClass;
 
 class ApiController extends Controller
 {
@@ -37,12 +42,12 @@ class ApiController extends Controller
                 $status = 'true';
 
                 $resultadoAtual = User::where('email','=',$request->email)->first();
-                $resultadoAtual->remember_token = $token;
+                $resultadoAtual->app_token = $token;
                 $resultadoAtual->save();
 
 
                 //  inspecoes
-        $user = User::where('remember_token','=',$token)->first();
+        $user = User::where('app_token','=',$token)->first();
         $inspetor = Inspetor::where('user_id','=',$user->id)->first();
         $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
         $listaDeInspecoes = [];
@@ -132,191 +137,36 @@ class ApiController extends Controller
 
     }
     */
-    public function apiLogin(Request $request){
-        $resultados = User::where('email','=',$request->email)->get();
+    public function apiLogin(Request $request)
+    {
+        $resultados = User::where('email', '=', $request->email)->get();
         $output = '';
         $status = 'false';
         $token = '';
-        foreach($resultados as $item){
-            if(Hash::check($request->password ,$item->password) == true && $item->tipo == "inspetor"){
+        foreach ($resultados as $item) {
+            if (Hash::check($request->password, $item->password) == true && $item->tipo == "inspetor") {
                 $output =  $resultados;
                 $token = Str::random(60);
                 $status = 'true';
 
-                $resultadoAtual = User::where('email','=',$request->email)->first();
-                $resultadoAtual->remember_token = $token;
+                $resultadoAtual = User::where('email', '=', $request->email)->first();
+                $resultadoAtual->app_token = $token;
                 $resultadoAtual->save();
 
+                $request->token = $token;
 
-                //  inspecoes
-                $user = User::where('remember_token','=',$token)->first();
-                $inspetor = Inspetor::where('user_id','=',$user->id)->first();
-                $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
-                $listaDeInspecoes = [];
-
-                foreach ($inspecoes as $indice) {
-
-                    if ($indice->denuncias_id == null) {
-
-                        $endereco = Endereco::where('empresa_id', $indice->requerimento->empresa->id)
-                        ->first();
-                        $telefone = Telefone::where('empresa_id', $indice->requerimento->empresa->id)
-                        ->first();
-
-                        //documentos
-                        $docsempresa = Docempresa::where('empresa_id', $indice->requerimento->empresa->id)->where('area', $indice->requerimento->cnae->areas_id)->get();
-                        $listaDocumentos = [];
-
-                        foreach ($docsempresa as $indicedoc) {
-                            $obj2 = (object) array(
-                                'inspecao_id'   => $indice->id,
-                                'nome'      =>  $indicedoc->tipodocemp->nome,
-                                'caminho'   =>  $indicedoc->nome,
-                                'data_emissao'=> $indicedoc->data_emissao,
-                                'data_validade'=> $indicedoc->data_validade,
-                            );
-                            array_push($listaDocumentos, $obj2);
-                        }
-
-                        //album de fotos (foto e comentario)
-                        $resultado = InspecaoFoto::where('inspecao_id','=',$indice->id)->orderBy('created_at', 'ASC')->get();
-                        $albumDeFotos = [];
-                        foreach($resultado as $item){
-                            $objFoto = (object) array(
-                                'inspecao_id'           => $item->inspecao_id,
-                                'imagemInspecao'        => $item->imagemInspecao,
-                                'nome'                  => $item->nome,
-                                'orientation'           => $item->orientation,
-                                'descricao'             => $item->descricao,
-                            );
-                            array_push($albumDeFotos, $objFoto);
-                        }
-
-                        $obj = array(
-                            'empresa_nome'  => $indice->requerimento->empresa->nome,
-                            'rua'           => $endereco->rua,
-                            'numero'        => $endereco->numero,
-                            'bairro'        => $endereco->bairro,
-                            'cep'           => $endereco->cep,
-                            'cnpjcpf'          => $indice->requerimento->empresa->cnpjcpf,
-                            'representante_legal' => $indice->requerimento->empresa->user->name,
-                            'telefone1'     => $telefone->telefone1,
-                            'telefone2'     => $telefone->telefone2,
-                            'email'         => $indice->requerimento->empresa->email,
-                            'data'          => $indice->data,
-                            'status'        => $indice->status,
-                            'tipo'          => $indice->requerimento->tipo,
-                            'descricao'     => $indice->requerimento->cnae->descricao,
-                            'inspecao_id'   => $indice->id,
-                            'listaDocumentos'=> $listaDocumentos,
-                            'albumDeFotos'=> $albumDeFotos,
-                        );
-
-                        array_push($listaDeInspecoes, $obj);
-                        $listaDocumentos = [];
-                        $albumDeFotos = [];
-
-                    }
-                    else {
-                        if ($indice->denuncia->empresa_id == null) {
-                            //album de fotos (foto e comentario)
-                            $resultado = InspecaoFoto::where('inspecao_id','=',$indice->id)->orderBy('created_at', 'ASC')->get();
-                            $albumDeFotosIF = [];
-                            foreach($resultado as $item){
-                                $objFoto = (object) array(
-                                    'inspecao_id'           => $item->inspecao_id,
-                                    'imagemInspecao'        => $item->imagemInspecao,
-                                    'nome'                  => $item->nome,
-                                    'orientation'           => $item->orientation,
-                                    'descricao'             => $item->descricao,
-                                );
-                                array_push($albumDeFotosIF, $objFoto);
-                            }
-
-                            $obj = array(
-                                'empresa_nome'  => $indice->denuncia->empresa,
-                                'endereco'      => $indice->denuncia->endereco,
-                                'numero'        => '',
-                                'bairro'        => '',
-                                'rua'           => $indice->denuncia->endereco,
-                                'cep'           => '',
-                                'cnpjcpf'       => '',
-                                'representante_legal' => '',
-                                'telefone1'     => '',
-                                'telefone2'     => '',
-                                'email'         => '',
-                                'data'          => $indice->data,
-                                'status'        => $indice->status,
-                                'tipo'        => "Denuncia-Nao-Mapeado",
-                                'descricao'        => $indice->denuncia->denuncia,
-                                'inspecao_id'   => $indice->id,
-                                'listaDocumentos'=>[],
-                                'albumDeFotos'=>$albumDeFotosIF,
-                            );
-
-                            array_push($listaDeInspecoes, $obj);
-                        }
-                        else {
-                            //album de fotos (foto e comentario)
-                            $resultado = InspecaoFoto::where('inspecao_id','=',$indice->id)->orderBy('created_at', 'ASC')->get();
-                            $albumDeFotosELSE = [];
-                            foreach($resultado as $item){
-                                $objFoto = (object) array(
-                                    'inspecao_id'           => $item->inspecao_id,
-                                    'imagemInspecao'        => $item->imagemInspecao,
-                                    'nome'                  => $item->nome,
-                                    'orientation'           => $item->orientation,
-                                    'descricao'             => $item->descricao,
-                                );
-                                array_push($albumDeFotosELSE, $objFoto);
-                            }
-                            $endereco = Endereco::where('empresa_id', $indice->denuncia->empresa_id)
-                            ->first();
-
-                            $telefone = Telefone::where('empresa_id', $indice->denuncia->empresa_id)
-                            ->first();
-
-                            $empresa = Empresa::where('id','=',$indice->denuncia->empresa_id)->first();
-
-
-                            $obj = array(
-                                'empresa_nome'  => $empresa->nome,
-                                'rua'           => $endereco->rua,
-                                'numero'        => $endereco->numero,
-                                'bairro'        => $endereco->bairro,
-                                'cep'           => $endereco->cep,
-                                'cnpjcpf'          =>$empresa->cnpjcpf,
-                                'representante_legal' =>$empresa->user->name,
-                                'telefone1'     => $telefone->telefone1,
-                                'telefone2'     => $telefone->telefone2,
-                                'email'         => $empresa->email,
-                                'data'          => $indice->data,
-                                'status'        => $indice->status,
-                                'tipo'        => $indice->motivo,
-                                'descricao'        => $indice->denuncia->denuncia,
-                                'inspecao_id'   => $indice->id,
-                                'listaDocumentos'=>[],
-                                'albumDeFotos'=> $albumDeFotosELSE,
-                            );
-
-                            array_push($listaDeInspecoes, $obj);
-                        }
-                    }
-                }
+                $inspecoes = $this->getAllInspecao($request);
 
                 $data = array(
                     'success'   => $status,
                     'table_data' => $output,
                     'token' => $token,
-                    'inspecoes' => $listaDeInspecoes,
+                    'inspecoes' => $inspecoes,
                     'documentos' => 0,
                 );
 
                 echo json_encode($data);
-
-
-            }
-            else {
+            } else {
 
                 $data = array(
                     'success'   => "false",
@@ -330,23 +180,25 @@ class ApiController extends Controller
             }
         }
     }
+
     /*
     *   FUNCAO: Funcao para atualizar o token
     *   ENTRADA: token
     *   RETURN: token
     */
-    public function apiRefresh(Request $request){
-        $resultados = User::where('remember_token','=',$request->token)->first();
+    public function apiRefresh(Request $request)
+    {
+        $resultados = User::where('app_token', '=', $request->token)->first();
         $output = '';
         $status = 'false';
         $token = '';
-        if(isset($resultados)==1){
+        if (isset($resultados) == 1) {
             $output =  $resultados;
             $token = Str::random(60);
             $status = 'true';
 
-            $resultadoAtual = User::where('remember_token','=',$request->token)->first();
-            $resultadoAtual->remember_token = $token;
+            $resultadoAtual = User::where('app_token', '=', $request->token)->first();
+            $resultadoAtual->app_token = $token;
             $resultadoAtual->save();
         }
         $data = array(
@@ -361,76 +213,17 @@ class ApiController extends Controller
     *   ENTRADA: token
     *   RETURN: lista de inspecoes
     */
-    public function apiDonwloadInspecoes(Request $request){
-
-        $user = User::where('remember_token','=',$request->token)->first();
-        $inspetor = Inspetor::where('user_id','=',$user->id)->first();
-        $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
-        $temp = [];
-
-        foreach ($inspecoes as $indice) {
-            if ($indice->requerimento_id == null) {
-                $endereco = Endereco::where('empresa_id', $indice->empresas_id)
-                ->first();
-                $telefone = Telefone::where('empresa_id', $indice->empresas_id)
-                ->first();
-
-                $obj = (object) array(
-                    'empresa_nome'  => $indice->empresa->nome,
-                    'rua'           => $endereco->rua,
-                    'numero'        => $endereco->numero,
-                    'bairro'        => $endereco->bairro,
-                    'cep'           => $endereco->cep,
-                    'cnpjcpf'          => $indice->empresa->cnpjcpf,
-                    'representante_legal' => $indice->empresa->user->name,
-                    'telefone1'     => $telefone->telefone1,
-                    'telefone2'     => $telefone->telefone2,
-                    'email'         => $indice->empresa->email,
-                    'data'          => $indice->data,
-                    'status'        => $indice->status,
-                    'tipo'          => $indice->motivo,
-                    // 'descricao'     => $indice->requerimento->cnae->descricao,
-                    'inspecao_id'   => $indice->id,
-                );
-                array_push($temp, $obj);
-            } else {
-                $endereco = Endereco::where('empresa_id', $indice->requerimento->empresa->id)
-                ->first();
-                $telefone = Telefone::where('empresa_id', $indice->requerimento->empresa->id)
-                ->first();
-
-                $obj = (object) array(
-                    'empresa_nome'  => $indice->requerimento->empresa->nome,
-                    'rua'           => $endereco->rua,
-                    'numero'        => $endereco->numero,
-                    'bairro'        => $endereco->bairro,
-                    'cep'           => $endereco->cep,
-                    'cnpjcpf'          => $indice->requerimento->empresa->cnpjcpf,
-                    'representante_legal' => $indice->requerimento->empresa->user->name,
-                    'telefone1'     => $telefone->telefone1,
-                    'telefone2'     => $telefone->telefone2,
-                    'email'         => $indice->requerimento->empresa->email,
-                    'data'          => $indice->data,
-                    'status'        => $indice->status,
-                    'tipo'          => $indice->requerimento->tipo,
-                    'descricao'     => $indice->requerimento->cnae->descricao,
-                    'inspecao_id'   => $indice->id,
-                );
-                array_push($temp, $obj);
-            }
-
-        }
-        $data = array(
-            'success'   => 'true',
-            'table_data' => $temp,
-        );
+    public function apiDonwloadInspecoes(Request $request)
+    {
+        $data = $this->getAllInspecao($request);
         return $data;
     }
 
-    public function apiDonwloadInspecoesAgente(Request $request){
+    public function apiDonwloadInspecoesAgente(Request $request)
+    {
 
-        $user = User::where('remember_token','=',$request->token)->first();
-        $agente = Agente::where('user_id','=',$user->id)->first();
+        $user = User::where('app_token', '=', $request->token)->first();
+        $agente = Agente::where('user_id', '=', $user->id)->first();
         $inspecAgentes = InspecAgente::where('agente_id', $agente->id)->orderBy('id', 'ASC')->get();
         // $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
         $temp = [];
@@ -438,9 +231,9 @@ class ApiController extends Controller
         foreach ($inspecAgentes as $indice) {
             if ($indice->inspecao->requerimento_id == null) {
                 $endereco = Endereco::where('empresa_id', $indice->inspecao->empresa->id)
-                ->first();
+                    ->first();
                 $telefone = Telefone::where('empresa_id', $indice->inspecao->empresa->id)
-                ->first();
+                    ->first();
 
                 $obj = (object) array(
                     'empresa_nome'  => $indice->inspecao->empresa->nome,
@@ -462,9 +255,9 @@ class ApiController extends Controller
                 array_push($temp, $obj);
             } else {
                 $endereco = Endereco::where('empresa_id', $indice->inspecao->requerimento->empresa->id)
-                ->first();
+                    ->first();
                 $telefone = Telefone::where('empresa_id', $indice->inspecao->requerimento->empresa->id)
-                ->first();
+                    ->first();
 
                 $obj = (object) array(
                     'empresa_nome'  => $indice->inspecao->requerimento->empresa->nome,
@@ -485,7 +278,6 @@ class ApiController extends Controller
                 );
                 array_push($temp, $obj);
             }
-
         }
         $data = array(
             'success'   => 'true',
@@ -498,16 +290,17 @@ class ApiController extends Controller
     *   ENTRADA: inspecao_id, imagem
     *   RETURN: confirmacao que a imagem foi salva
     */
-    public function apiSaveImg(Request $request){
+    public function apiSaveImg(Request $request)
+    {
         $comentario = "";
-        if($request->comentario != null){
+        if ($request->comentario != null) {
             $comentario = $request->comentario;
         }
 
         $destinationPath = public_path('imagens/inspecoes');
-        $image1=$request->photo;
-        $_image1 = rand().'.jpeg';
-        $image1->move($destinationPath,$_image1);
+        $image1 = $request->photo;
+        $_image1 = rand() . '.jpeg';
+        $image1->move($destinationPath, $_image1);
 
         $fotoDaInspecao = new InspecaoFoto;
         $fotoDaInspecao->imagemInspecao = $_image1;
@@ -517,7 +310,7 @@ class ApiController extends Controller
         $fotoDaInspecao->nome = "$request->nome";
         $fotoDaInspecao->save();
 
-        $resultadoImg = InspecaoFoto::where('inspecao_id','=',$request->id)->where('nome','=',$request->nome)->exists();
+        $resultadoImg = InspecaoFoto::where('inspecao_id', '=', $request->id)->where('nome', '=', $request->nome)->exists();
         $data = array(
             'status'   => $resultadoImg,
         );
@@ -528,20 +321,21 @@ class ApiController extends Controller
     * ENTRADA: inspecao_id, nome, comentario
     * SAIDA: true ou false
     */
-    public function apiSaveComentario(Request $request){
+    public function apiSaveComentario(Request $request)
+    {
         //SALVO O COMENTARIO
-        $InspecaoFoto = InspecaoFoto::where('inspecao_id','=',$request->id)->where('nome','=',$request->nome)->first();
+        $InspecaoFoto = InspecaoFoto::where('inspecao_id', '=', $request->id)->where('nome', '=', $request->nome)->first();
         $InspecaoFoto->descricao = $request->comentario;
         $InspecaoFoto->save();
 
         //VERIFICO SE FOI SALVO
-        $resultadoComentario = InspecaoFoto::where('inspecao_id','=',$request->id)->where('nome','=',$request->nome)->first();
-        if($resultadoComentario->descricao != "" || $resultadoComentario->descricao == $request->comentario){
+        $resultadoComentario = InspecaoFoto::where('inspecao_id', '=', $request->id)->where('nome', '=', $request->nome)->first();
+        if ($resultadoComentario->descricao != "" || $resultadoComentario->descricao == $request->comentario) {
             $data = array(
                 'status'   => true,
             );
             return $data;
-        }else{
+        } else {
             $data = array(
                 'status'   => false,
             );
@@ -553,26 +347,27 @@ class ApiController extends Controller
     *
     *
     */
-    public function apiVerifica(Request $request){
-        $resultadoImg = InspecaoFoto::where('inspecao_id','=',$request->inspecao_id)->where('nome','=',$request->nome)->exists();
-        $resultado = InspecaoFoto::where('inspecao_id','=',$request->inspecao_id)->where('nome','=',$request->nome)->where('descricao','=',$request->comentario)->exists();
+    public function apiVerifica(Request $request)
+    {
+        $resultadoImg = InspecaoFoto::where('inspecao_id', '=', $request->inspecao_id)->where('nome', '=', $request->nome)->exists();
+        $resultado = InspecaoFoto::where('inspecao_id', '=', $request->inspecao_id)->where('nome', '=', $request->nome)->where('descricao', '=', $request->comentario)->exists();
 
         $data = array(
             'imagem'   => $resultadoImg,
             'comentario' => $resultado,
         );
         return $data;
-
     }
     /*
     *   FUNCAO: Enviar para o app as imagens por inspecao
     *   ENTRADA: inspecao_id
     *   RETURN: lista com os nome das imagens
     */
-    public function apiDownloadImg(Request $request){
-        $resultado = InspecaoFoto::where('inspecao_id','=',$request->inspecao_id)->get();
+    public function apiDownloadImg(Request $request)
+    {
+        $resultado = InspecaoFoto::where('inspecao_id', '=', $request->inspecao_id)->get();
         $temp = [];
-        foreach($resultado as $item){
+        foreach ($resultado as $item) {
             $obj = (object) array(
                 'inspecao_id'           => $item->inspecao_id,
                 'imagemInspecao'        => $item->imagemInspecao,
@@ -590,29 +385,30 @@ class ApiController extends Controller
     *   ENTRADA: inspecao_id
     *   RETURN: lista com os nome dos documentos
     */
-    public function apiDownloadDoc(Request $request){
-        $user = User::where('remember_token','=',$request->token)->first();
-        $inspetor = Inspetor::where('user_id','=',$user->id)->first();
-        $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
+    public function apiDownloadDoc(Request $request)
+    {
+        $user = User::where('app_token', '=', $request->token)->first();
+        $inspetor = Inspetor::where('user_id', '=', $user->id)->first();
+        $inspecoes = Inspecao::where('inspetor_id', $inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
         //$inspecao = Inspecao::find($request->inspecao_id);
         $documentos = [];
-        foreach($inspecoes as $item){
+        foreach ($inspecoes as $item) {
             $docsempresa = Docempresa::where('empresa_id', $item->requerimento->empresa->id)->where('area', $item->requerimento->cnae->areas_id)->get();
 
             foreach ($docsempresa as $indice) {
                 $obj = (object) array(
-                    'inspecao_id'=> $item->id,
+                    'inspecao_id' => $item->id,
                     'nome'      =>  $indice->tipodocemp->nome,
                     'caminho'   =>  $indice->nome,
                 );
                 array_push($documentos, $obj);
             }
-            if(count($documentos)>0){
+            if (count($documentos) > 0) {
                 $data = array(
                     'success'   => 'true',
                     'table_data' => $documentos,
                 );
-            }else{
+            } else {
                 $data = array(
                     'success'   => 'false',
                     'table_data' => $documentos,
@@ -626,12 +422,12 @@ class ApiController extends Controller
     *   ENTRADA: caminho
     *   RETURN: Arquivo PDF
     */
-    public function apiDownloadImagemPDF(Request $request){
-        //$file = 'C:/xampp/htdocs/siteVisaGaranhuns/storage/app/public/'.$request->caminho;
-        $file = '/home/adminuag/site/visagaranhuns/storage/app/public/'.$request->caminho;
+    public function apiDownloadImagemPDF(Request $request)
+    {
+        $file = '/home/adminuag/site/visagaranhuns/storage/app/public/' . $request->caminho;
         $headers = array(
             'Content-Type: application/pdf',
-          );
+        );
         return response()->download($file, 'filename.pdf', $headers);
     }
     /*
@@ -642,59 +438,114 @@ class ApiController extends Controller
     //
     //
     //
-    public function apiAtualizarApp(Request $request){
-        $user = User::where('remember_token','=',$request->token)->first();
-        $inspetor = Inspetor::where('user_id','=',$user->id)->first();
-        $inspecoes = Inspecao::where('inspetor_id',$inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
-        $status = 'false';
+    public function apiAtualizarApp(Request $request)
+    {
+        $data = $this->getAllInspecao($request);
+        return $data;
+    }
+
+    private function getAllInspecao(Request $request)
+    {
+        $user = User::where('app_token', '=', $request->token)->first();
+
+        if (is_null($user)) {
+            return array(
+                'lista_inspecoes'           => [],
+                'lista_documentos'          => [],
+                'lista_imagens'             => [],
+            );
+        }
+
+        $inspetor = Inspetor::where('user_id', '=', $user->id)->first();
+        $inspecoes = Inspecao::where('inspetor_id', $inspetor->id)->where('status', 'pendente')->orderBy('data', 'ASC')->get();
 
         $listaDeInspecoes = [];
         $listaDeDocumentos = [];
         $listaDeImagens = [];
 
-        //inspecoes
-        foreach($inspecoes as $inspecao){
+        foreach ($inspecoes as $indice) {
 
-            $endereco = Endereco::where('empresa_id', $inspecao->requerimento->empresa->id)
-            ->first();
-            $telefone = Telefone::where('empresa_id', $inspecao->requerimento->empresa->id)
-            ->first();
+            $endereco = $telefone = $denuncia = $empresa = null;
 
-            $objInspecao = (object) array(
-                    'inspecao_id'           => $inspecao->id,
-                    'empresa_nome'          => $inspecao->requerimento->empresa->nome,
-                    'rua'                   => $endereco->rua,
-                    'numero'                => $endereco->numero,
-                    'bairro'                => $endereco->bairro,
-                    'cep'                   => $endereco->cep,
-                    'cnpjcpf'               => $inspecao->requerimento->empresa->cnpjcpf,
-                    'representante_legal'   => $inspecao->requerimento->empresa->user->name,
-                    'telefone1'             => $telefone->telefone1,
-                    'telefone2'             => $telefone->telefone2,
-                    'email'                 => $inspecao->requerimento->empresa->email,
-                    'data'                  => $inspecao->data,
-                    'status'                => $inspecao->status,
-                    'tipo'                  => $inspecao->requerimento->tipo,
-                    'descricao'             => $inspecao->requerimento->cnae->descricao,
-            );
-            array_push($listaDeInspecoes, $objInspecao);
+            if ($indice->requerimento_id == null) {
+                if (!is_null($indice->empresas_id)) {
+                    $endereco = Endereco::where('empresa_id', $indice->empresas_id)
+                        ->first();
+                    $telefone = Telefone::where('empresa_id', $indice->empresas_id)
+                        ->first();
 
-            //documentos
-            $docsempresa = Docempresa::where('empresa_id', $inspecao->requerimento->empresa->id)->where('area', $inspecao->requerimento->cnae->areas_id)->get();
-            foreach ($docsempresa as $indicedoc) {
-                $obj2 = (object) array(
-                    'inspecao_id'           => $inspecao->id,
-                    'nome'                  => $indicedoc->tipodocemp->nome,
-                    'caminho'               => $indicedoc->nome,
-                    'data_emissao'          => $indicedoc->data_emissao,
-                    'data_validade'         => $indicedoc->data_validade,
+                    $empresa = Empresa::where('id', $indice->empresas_id)->first();
+
+                    $userEmpresa = User::where('id', $empresa->user_id)->first();
+                }
+
+                $denuncia = Denuncia::where('id', $indice->denuncias_id)->first();
+
+                $obj = (object) array(
+                    'empresa_nome'          => $empresa ? $empresa->nome : $denuncia->empresa,
+                    'rua'                   => $empresa ? $endereco->rua : $denuncia->endereco,
+                    'numero'                => $empresa ? $endereco->numero : "",
+                    'bairro'                => $empresa ? $endereco->bairro : "",
+                    'cep'                   => $empresa ? $endereco->cep : "",
+                    'cnpjcpf'               => $empresa ? $empresa->cnpjcpf : "",
+                    'representante_legal'   => $empresa ? $userEmpresa->name : "",
+                    'telefone1'             => $empresa ? $telefone->telefone1 : "",
+                    'telefone2'             => $empresa ? $telefone->telefone2 : "",
+                    'email'                 => $empresa ? $empresa->email : "",
+                    'data'                  => $indice->data,
+                    'status'                => $indice->status,
+                    'tipo'                  => "Denuncia",
+                    'descricao'             => $denuncia->denuncia,
+                    'inspecao_id'           => $indice->id,
                 );
-                array_push($listaDeDocumentos, $obj2);
+                array_push($listaDeInspecoes, $obj);
+            } else {
+                $endereco = Endereco::where('empresa_id', $indice->requerimento->empresa->id)
+                    ->first();
+                $telefone = Telefone::where('empresa_id', $indice->requerimento->empresa->id)
+                    ->first();
+
+                $obj = (object) array(
+                    'empresa_nome'  => $indice->requerimento->empresa->nome,
+                    'rua'           => $endereco->rua,
+                    'numero'        => $endereco->numero,
+                    'bairro'        => $endereco->bairro,
+                    'cep'           => $endereco->cep,
+                    'cnpjcpf'          => $indice->requerimento->empresa->cnpjcpf,
+                    'representante_legal' => $indice->requerimento->empresa->user->name,
+                    'telefone1'     => $telefone->telefone1,
+                    'telefone2'     => $telefone->telefone2,
+                    'email'         => $indice->requerimento->empresa->email,
+                    'data'          => $indice->data,
+                    'status'        => $indice->status,
+                    'tipo'          => $indice->requerimento->tipo,
+                    'descricao'     => $indice->requerimento->cnae->descricao,
+                    'inspecao_id'   => $indice->id,
+                );
+                array_push($listaDeInspecoes, $obj);
             }
 
-            //imagem e comentario
-            $resultado = InspecaoFoto::where('inspecao_id','=',$inspecao->id)->orderBy('created_at', 'ASC')->get();
-            foreach($resultado as $item){
+            if (!is_null($indice->empresas_id)) {
+                $docsempresa = $indice->requerimento_id == null ?
+                    Docempresa::where('empresa_id', $empresa->id)->get() :
+                    Docempresa::where('empresa_id', $indice->requerimento->empresa->id)->where('area', $indice->requerimento->cnae->areas_id)->get();
+
+                foreach ($docsempresa as $indicedoc) {
+                    $obj2 = (object) array(
+                        'inspecao_id'           => $indice->id,
+                        'nome'                  => $indicedoc->tipodocemp->nome,
+                        'caminho'               => $indicedoc->nome,
+                        'data_emissao'          => $indicedoc->data_emissao,
+                        'data_validade'         => $indicedoc->data_validade,
+                    );
+                    array_push($listaDeDocumentos, $obj2);
+                }
+            } else {
+                array_push($listaDeDocumentos, new stdClass());
+            }
+
+            $resultado = InspecaoFoto::where('inspecao_id', '=', $indice->id)->orderBy('created_at', 'ASC')->get();
+            foreach ($resultado as $item) {
                 $objFoto = (object) array(
                     'inspecao_id'           => $item->inspecao_id,
                     'imagemInspecao'        => $item->imagemInspecao,
@@ -705,12 +556,13 @@ class ApiController extends Controller
                 array_push($listaDeImagens, $objFoto);
             }
         }
+
         $data = array(
-            'success'                   => $status,
             'lista_inspecoes'           => $listaDeInspecoes,
             'lista_documentos'          => $listaDeDocumentos,
             'lista_imagens'             => $listaDeImagens,
         );
+
         return $data;
     }
 }

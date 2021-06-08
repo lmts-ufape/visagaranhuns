@@ -12,7 +12,6 @@ use App\Docresptec;
 use App\Requerimento;
 use App\Area;
 use App\Cnae;
-use Illuminate\Support\Str;
 use App\CnaeEmpresa;
 use App\RespTecnico;
 use App\RtEmpresa;
@@ -43,14 +42,15 @@ class EmpresaController extends Controller
 
         $cnaeEmp = CnaeEmpresa::where("cnae_id", Crypt::decrypt($request->value))->get();
         $empresas = array();
-        foreach($cnaeEmp as $indice){
+        foreach ($cnaeEmp as $indice) {
             $empresa = Empresa::find($indice->empresa_id);
             array_push($empresas, $empresa);
         }
         return view('coordenador/empresas_coordenador', ['empresas' => $empresas]);
     }
 
-    public function listarResponsavelTec(){
+    public function listarResponsavelTec()
+    {
 
         $empresas = Empresa::where("user_id", Auth::user()->id);
         return view('empresa/responsavel_tec_empresa');
@@ -64,13 +64,13 @@ class EmpresaController extends Controller
         $empresa = Auth::user()->empresa;
         foreach ($empresa as $indice) {
             $checklistPendente = Checklistemp::where('empresa_id', $indice->id)
-            ->where('anexado', 'false')
-            ->get();
+                ->where('anexado', 'false')
+                ->get();
             $countPendente = $countPendente + count($checklistPendente);
 
             $checklistAnexado  = Checklistemp::where('empresa_id', $indice->id)
-            ->where('anexado', 'true')
-            ->get();
+                ->where('anexado', 'true')
+                ->get();
             $countAnexado = $countAnexado + count($checklistAnexado);
         }
         // dd($countPendente);
@@ -87,14 +87,16 @@ class EmpresaController extends Controller
         }
 
         $totalNotificacao = count($notificacoes);
-        
-        return view('empresa.home_empresa',
-        [
-            "empresas"         => $empresa,
-            'anexados'         => $countAnexado,
-            'pendentes'        => $countPendente,
-            'totalNotificacao' => $totalNotificacao,
-        ]);
+
+        return view(
+            'empresa.home_empresa',
+            [
+                "empresas"         => $empresa,
+                'anexados'         => $countAnexado,
+                'pendentes'        => $countPendente,
+                'totalNotificacao' => $totalNotificacao,
+            ]
+        );
     }
 
     /**
@@ -119,7 +121,7 @@ class EmpresaController extends Controller
 
         $userFind = User::where('email', $request->email)->first();
 
-        if($userFind != null){
+        if ($userFind != null) {
             session()->flash('error', 'Já existe um usuário no sistema com este email!');
             return back();
         }
@@ -149,10 +151,10 @@ class EmpresaController extends Controller
             'cep'      => 'required|string',
         ], $messages);
 
-        
+
         if ($validator->fails()) {
             return back()
-                    ->withErrors($validator);
+                ->withErrors($validator);
         }
 
         if ($request['cnae'] == null) {
@@ -200,7 +202,7 @@ class EmpresaController extends Controller
         // Área para cadastro de cnaes
         $cnae = $request['cnae'];
 
-        for($i = 0; $i < count($cnae); $i++) {
+        for ($i = 0; $i < count($cnae); $i++) {
             $cnaes = Cnae::find($cnae[$i]);
             $cnaeEmpresa = CnaeEmpresa::create([
                 'empresa_id' => $empresa->id,
@@ -221,7 +223,7 @@ class EmpresaController extends Controller
         foreach ($cnaes as $indice) {
             array_push($areas, $indice->areas_id);
         }
-        
+
         $areas_cont = array_count_values($areas);
         $resultAreas = array_unique($areas);
 
@@ -232,7 +234,7 @@ class EmpresaController extends Controller
             array_push($areas_cont_ordenado, $indice);
         }
 
-        for ($i=0; $i < count($areasOrdenado); $i++) {
+        for ($i = 0; $i < count($areasOrdenado); $i++) {
             $areatipodocemp = AreaTipodocemp::where('area_id', $areasOrdenado[$i])->get();
 
             foreach ($areatipodocemp as $indice) {
@@ -261,16 +263,18 @@ class EmpresaController extends Controller
     *   TELA: empresa/editar_meus_dados
     *
     */
-    public function editarMeusDados(){
+    public function editarMeusDados()
+    {
         $user = Auth::user();
-        return view('empresa/editar_meus_dados',["nome"=>$user->name, "email"=>$user->email]);
+        return view('empresa/editar_meus_dados', ["nome" => $user->name, "email" => $user->email]);
     }
     /*
     *   FUNCAO: atualizar o nome do usuario
     *   REQUEST: name
     *
     */
-    public function atualizarMeusDados(Request $request){
+    public function atualizarMeusDados(Request $request)
+    {
         $validator = $request->validate([
             'name'     => 'required|string',
         ]);
@@ -284,24 +288,25 @@ class EmpresaController extends Controller
     *   REQUEST: senhaAtual, novaSenha1, novaSenha2
     *
     */
-    public function atualizarSenhaDeAcesso(Request $request){
-        if(Hash::check($request->senhaAtual ,Auth::user()->password) == true && $request->novaSenha1 == $request->novaSenha2 ){
+    public function atualizarSenhaDeAcesso(Request $request)
+    {
+        if (Hash::check($request->senhaAtual, Auth::user()->password) == true && $request->novaSenha1 == $request->novaSenha2) {
             $user = Auth::user();
             $user->password = Hash::make($request->novaSenha1);
             $user->save();
             return redirect()->back()->with('success', "Senha alterada com sucesso!");
-        }else{
+        } else {
             return redirect()->back()->with('error', "Verifique suas senhas e tente novamente!");
         }
     }
 
     public function adicionarEmpresa(Request $request)
     {
-        
+
         $user_id = Auth::user()->id;
         $empRepetida = Empresa::where('nome', $request->nome)->first();
 
-        if($empRepetida != null){
+        if ($empRepetida != null) {
             return redirect()->route('confirma.cadastro');
         }
 
@@ -327,10 +332,10 @@ class EmpresaController extends Controller
             'complemento' => 'nullable|string',
         ], $messages);
 
-        
+
         if ($validator->fails()) {
             return back()
-                    ->withErrors($validator);
+                ->withErrors($validator);
         }
 
         $empresa = Empresa::create([
@@ -366,7 +371,7 @@ class EmpresaController extends Controller
         $cnae = $request['cnae'];
 
 
-        for($i = 0; $i < count($cnae); $i++) {
+        for ($i = 0; $i < count($cnae); $i++) {
             $cnaes = Cnae::find($cnae[$i]);
             $cnaeEmpresa = CnaeEmpresa::create([
                 'empresa_id' => $empresa->id,
@@ -421,7 +426,7 @@ class EmpresaController extends Controller
         //     }
         // }
 
-        for ($i=0; $i < count($areasOrdenado); $i++) {
+        for ($i = 0; $i < count($areasOrdenado); $i++) {
             $areatipodocemp = AreaTipodocemp::where('area_id', $areasOrdenado[$i])->get();
 
             foreach ($areatipodocemp as $indice) {
@@ -439,7 +444,6 @@ class EmpresaController extends Controller
                     'tipodocemp_id' => $indice->tipodocemp->id,
                     'empresa_id' => $empresa->id,
                 ]);
-
             }
         }
 
@@ -448,19 +452,19 @@ class EmpresaController extends Controller
 
     public function baixarArquivosRt(Request $request)
     {
-        return response()->download(storage_path('app/public/'.$request->file));
+        return response()->download(storage_path('app/public/' . $request->file));
     }
 
     public function deletarRespTecnico(Request $request)
     {
         // $docs         = Docresptec::where('resptecnicos_id', $request->idRespTecnico)->delete();
         // $checklist    = Checklistresp::where('resptecnicos_id', $request->idRespTecnico)->delete();
-        
+
         $rtempresa       = RtEmpresa::where('empresa_id', $request->idEmpresa)
-        ->where('resptec_id', $request->idRespTecnico)
-        ->where('area_id', $request->idArea)
-        ->delete();
-        
+            ->where('resptec_id', $request->idRespTecnico)
+            ->where('area_id', $request->idArea)
+            ->delete();
+
         // $respTecnico  = RespTecnico::find($request->idRespTecnico);
         // $user         = User::find($respTecnico->user_id);
 
@@ -472,7 +476,6 @@ class EmpresaController extends Controller
 
         session()->flash('success', 'Responsável Técnico Removido!');
         return back();
-
     }
 
     /**
@@ -514,7 +517,7 @@ class EmpresaController extends Controller
         //     }
         // }
 
-        return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' =>$telefone, 'cnae' => $cnaeEmpresa, 'rt' => $resptecnicos]);
+        return view('coordenador/show_empresa_coordenador', ['empresa' => $empresa, 'endereco' => $endereco, 'telefone' => $telefone, 'cnae' => $cnaeEmpresa, 'rt' => $resptecnicos]);
     }
 
     public function cadastrarRequerimento(Request $request)
@@ -551,7 +554,7 @@ class EmpresaController extends Controller
         // $areas = RtEmpresa::where("resptec_id",$rt->id)->pluck('area_id');
         $cnaesEmpresa = CnaeEmpresa::where("empresa_id", $id)->get();
         $requerimentos = Requerimento::where('empresas_id', $empresa->id)
-        ->orderBy('created_at', 'desc')->get();
+            ->orderBy('created_at', 'desc')->get();
         $areasIds = [];
         $check = [];
         $cnaes = [];
@@ -579,13 +582,13 @@ class EmpresaController extends Controller
         foreach ($areas as $key) {
             $pendencia = "completo";
             $checklist = Checklistemp::where('empresa_id', $empresa->id)
-            ->where('areas_id', $key)->get();
+                ->where('areas_id', $key)->get();
             foreach ($checklist as $key2) {
                 if ($key2->anexado == "false") {
                     $pendencia = "pendente";
                 }
             }
-    
+
             if ($pendencia == "completo") {
                 $obj = (object) array(
                     'area'      => $key,
@@ -601,7 +604,7 @@ class EmpresaController extends Controller
             }
         }
 
-        return view('empresa/requerimento_empresa',[
+        return view('empresa/requerimento_empresa', [
             'nome'              => $empresa->nome,
             'cnaes'             => $cnaes,
             // 'resptecnico'       => $rt->id,
@@ -614,7 +617,8 @@ class EmpresaController extends Controller
         ]);
     }
 
-    public function gerarSituacao(Request $request){
+    public function gerarSituacao(Request $request)
+    {
 
         $empresa = Empresa::find($request->empresa);
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
@@ -625,11 +629,11 @@ class EmpresaController extends Controller
         foreach ($request->areas as $key) {
 
             $checklist = Checklistemp::where('empresa_id', $empresa->id)
-            ->where('areas_id', $key)->get();
+                ->where('areas_id', $key)->get();
 
             foreach ($checklist as $key2) {
                 if ($key2->anexado == "false") {
-    
+
                     // Criando uma lista de documentos que faltam ou não anexar
                     $docsPendencia = (object) array(
                         'area'      => $key,
@@ -637,8 +641,7 @@ class EmpresaController extends Controller
                         'nome'      => $key2->nomeDoc,
                     );
                     array_push($pendenciaDocs, $docsPendencia);
-                }
-                else {
+                } else {
 
                     // Criando uma lista de documentos que faltam ou não anexar
                     $docsPendencia = (object) array(
@@ -682,12 +685,11 @@ class EmpresaController extends Controller
         foreach ($inspecao as $key) {
             if ($key->empresas_id != null && $key->empresas_id == $empresa->id) {
                 array_push($inspecoes, $key);
-            }
-            elseif ($key->denuncias_id != null && $key->denuncia->empresa_id != null && $key->denuncia->empresa_id == $empresa->id) {
+            } elseif ($key->denuncias_id != null && $key->denuncia->empresa_id != null && $key->denuncia->empresa_id == $empresa->id) {
                 array_push($inspecoes, $key);
             }
         }
-        
+
         // dd($inspecao);
         // $notificacoes = [];
         // $inspecoes = [];
@@ -706,33 +708,33 @@ class EmpresaController extends Controller
         // }
         // dd($inspecoes); 
 
-        return view('empresa/notificacao',[
+        return view('empresa/notificacao', [
             'inspecoes'    => $inspecao,
             'empresa'      => $empresa,
         ]);
-
     }
 
     /**
      * Listar empresas
      * View: empresa/listar_empresas.blade.php
-    */
-    public function listarEmpresas(Request $request){
+     */
+    public function listarEmpresas(Request $request)
+    {
         //Preciso da função para carregar a página
         // $empresa = Empresa::where('user_id', Crypt::decrypt($request->user))->paginate(20);
         // return view('empresa/listar_empresas',['empresas' => $empresa]);
-        if($request->tipo == 'estabelecimentos'){
+        if ($request->tipo == 'estabelecimentos') {
             $empresa = Empresa::where('user_id', Crypt::decrypt($request->user))->paginate(20);
-            return view('empresa/listar_empresas',['empresas' => $empresa, 'tipo' => 'estabelecimentos']);
-        }elseif($request->tipo == 'documentacao'){
+            return view('empresa/listar_empresas', ['empresas' => $empresa, 'tipo' => 'estabelecimentos']);
+        } elseif ($request->tipo == 'documentacao') {
             $empresa = Empresa::where('user_id', Crypt::decrypt($request->user))->paginate(20);
-            return view('empresa/listar_empresas',['empresas' => $empresa, 'tipo' => 'documentacao']);
-        }elseif($request->tipo == 'requerimento'){
+            return view('empresa/listar_empresas', ['empresas' => $empresa, 'tipo' => 'documentacao']);
+        } elseif ($request->tipo == 'requerimento') {
             $empresa = Empresa::where('user_id', Crypt::decrypt($request->user))->paginate(20);
-            return view('empresa/listar_empresas',['empresas' => $empresa, 'tipo' => 'requerimentos']);
-        }elseif($request->tipo == 'notificacao'){
+            return view('empresa/listar_empresas', ['empresas' => $empresa, 'tipo' => 'requerimentos']);
+        } elseif ($request->tipo == 'notificacao') {
             $empresa = Empresa::where('user_id', Crypt::decrypt($request->user))->paginate(20);
-            return view('empresa/listar_empresas',['empresas' => $empresa, 'tipo' => 'notificacao']);
+            return view('empresa/listar_empresas', ['empresas' => $empresa, 'tipo' => 'notificacao']);
         }
     }
 
@@ -744,7 +746,7 @@ class EmpresaController extends Controller
      */
     public function editarEmpresa(Request $request)
     {
-    
+
         $empresa = Empresa::find($request->empresaId);
         $user = User::find(Auth::user()->id);
         $telefone = Telefone::where('empresa_id', $empresa->id)->first();
@@ -771,8 +773,8 @@ class EmpresaController extends Controller
         }
 
         $verificarCnaes = array_count_values($request->cnae);
-        foreach($verificarCnaes as $key => $value){
-            if($value > 1){
+        foreach ($verificarCnaes as $key => $value) {
+            if ($value > 1) {
                 session()->flash('error', 'Atenção! Há um cnae repetido na sua lista de cnaes.');
                 return back();
             }
@@ -805,29 +807,28 @@ class EmpresaController extends Controller
             array_push($temp, $indice);
         }
 
-        for ($i=0; $i < count($cnae); $i++) {
-            if(!in_array($cnae[$i], $temp)){
+        for ($i = 0; $i < count($cnae); $i++) {
+            if (!in_array($cnae[$i], $temp)) {
 
                 $cnaeTemp = Cnae::find($cnae[$i]);
 
                 // Verifica se a area especifica desse novo cnae adicionado já é uma área na checklist dessa empresa
                 $checklist = Checklistemp::where('empresa_id', $request->empresaId)
-                ->where('areas_id', $cnaeTemp->areas_id)->first();
+                    ->where('areas_id', $cnaeTemp->areas_id)->first();
 
                 // Caso sim, apenas incrementa o numero de cnaes associado a essa area
-                if($checklist != null){
+                if ($checklist != null) {
 
                     $checklist = Checklistemp::where('empresa_id', $request->empresaId)
-                    ->where('areas_id', $cnaeTemp->areas_id)->update(['num_cnae' => $checklist->num_cnae + 1]);
-    
+                        ->where('areas_id', $cnaeTemp->areas_id)->update(['num_cnae' => $checklist->num_cnae + 1]);
+
                     $cnaeEmpresa = CnaeEmpresa::create([
                         'empresa_id' => $empresa->id,
                         'cnae_id' => $cnae[$i],
                     ]);
-
                 }
                 // Caso não, cria a checklist dessa nova área que antes não havia, para esta empresa
-                else{
+                else {
                     $areatipodocemp = AreaTipodocemp::where('area_id', $cnaeTemp->areas_id)->get();
 
                     foreach ($areatipodocemp as $indice) {
@@ -854,10 +855,9 @@ class EmpresaController extends Controller
                 }
             }
         }
- 
+
         session()->flash('success', 'Os dados da empresa foram atualizados!');
         return back();
-
     }
 
     public function edit(Request $request)
@@ -912,7 +912,6 @@ class EmpresaController extends Controller
 
 
         return view('empresa/editar_empresa', ["empresa" => $empresa, "areas" => $areas]);
-        
     }
 
     /**
@@ -933,10 +932,10 @@ class EmpresaController extends Controller
     {
 
         $requerimento = Requerimento::where('empresas_id', $request->empresa)
-        // ->where('resptecnicos_id', 1)
-        ->where('cnae_id', $request->cnaeId)
-        ->orderBy('created_at', 'desc')
-        ->first();
+            // ->where('resptecnicos_id', 1)
+            ->where('cnae_id', $request->cnaeId)
+            ->orderBy('created_at', 'desc')
+            ->first();
 
         if ($requerimento == null) {
             $data = array(
@@ -945,8 +944,7 @@ class EmpresaController extends Controller
             );
 
             echo json_encode($data);
-
-        }else {
+        } else {
             $data = array(
                 'tipo'    => $requerimento->tipo,
                 'valor'   => $requerimento->status,
@@ -972,36 +970,36 @@ class EmpresaController extends Controller
 
     public function baixarArquivos(Request $request)
     {
-        return response()->download(storage_path('app/public/'.$request->arquivo));
+        return response()->download(storage_path('app/public/' . $request->arquivo));
     }
 
     public function editarArquivos(Request $request)
     {
         $validatedData = $request->validate([
-
             'arquivo' => ['nullable', 'file', 'mimes:pdf', 'max:5000'],
-
         ]);
-        
+
         $docempresa = Docempresa::where("nome", $request->file)
-        ->where('empresa_id', $request->empresa_id)->first();
+            ->where('empresa_id', $request->empresa_id)->first();
 
         if ($docempresa == null) {
             session()->flash('error', 'Erro ao procurar arquivo que será substituido!');
             return back();
         }
 
-        if($request->arquivo != null) {
+        if ($request->arquivo != null) {
+
+            $tipodocempresa = $docempresa->tipodocemp_id;
 
             Storage::delete($docempresa->nome);
 
             $fileDocemp = $request->arquivo;
-    
+
             // $pathDocemp = 'empresas/' . $docempresa->empresa_id . '/' . $docempresa->tipodocemp_id . '/';
-            $pathDocemp = 'empresas/' . $request->empresa_id . '/' . $docempresa->area . '/' . $request->tipodocempresa . '/';
-    
+            $pathDocemp = 'empresas/' . $request->empresa_id . '/' . $docempresa->area . '/' . $tipodocempresa . '/';
+
             $nomeDocemp = $request->arquivo->getClientOriginalName();
-    
+
             $docempresa->nome = $pathDocemp . $nomeDocemp;
             if ($request->data_emissao_editar != null) {
                 $docempresa->data_emissao = $request->data_emissao_editar;
@@ -1010,13 +1008,12 @@ class EmpresaController extends Controller
                 $docempresa->data_validade = $request->data_validade_editar;
             }
             $docempresa->save();
-    
+
             Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
-    
+
             session()->flash('success', 'Arquivo salvo com sucesso!');
             return back();
-
-        }else {
+        } else {
 
             if ($request->data_emissao_editar != null) {
                 $docempresa->data_emissao = $request->data_emissao_editar;
@@ -1029,8 +1026,6 @@ class EmpresaController extends Controller
             session()->flash('success', 'Datas atualizadas!');
             return back();
         }
-
-
     }
 
     public function anexarArquivos(Request $request)
@@ -1051,22 +1046,22 @@ class EmpresaController extends Controller
             'data_validade'  => 'nullable|date',
         ], $messages);
 
-        
+
         if ($validator->fails()) {
             return back()
-                    ->withErrors($validator);
+                ->withErrors($validator);
         }
 
-        if($request->tipodocempresa == "Tipos de documentos"){
+        if ($request->tipodocempresa == "Tipos de documentos") {
             session()->flash('error', 'Selecione um documento!');
             return back();
-        }elseif($request->arquivo == null){
+        } elseif ($request->arquivo == null) {
             session()->flash('error', 'Selecione um aquivo e tente novamente!');
             return back();
         }
 
         $checklist = Checklistemp::where('tipodocemp_id', $request->tipodocempresa)
-        ->where('empresa_id', $request->empresaId)->where('areas_id', $request->area)->first();
+            ->where('empresa_id', $request->empresaId)->where('areas_id', $request->area)->first();
 
         if ($checklist == null) {
             session()->flash('error', 'O tipo de documento específico não consta em sua checklist!');
@@ -1110,7 +1105,7 @@ class EmpresaController extends Controller
         //     $docempresa->save();
 
         //     Storage::putFileAs($pathDocemp, $fileDocemp, $nomeDocemp);
-            
+
         //     session()->flash('success', 'Arquivo salvo com sucesso!');
         //     return back();
 
@@ -1131,7 +1126,6 @@ class EmpresaController extends Controller
         // return view('empresa.home_empresa');
         session()->flash('success', 'O arquivo foi anexado com sucesso!');
         return back();
-
     }
 
     /**
@@ -1144,7 +1138,8 @@ class EmpresaController extends Controller
     {
         //
     }
-    public function paginaCadastrarEmpresa(){
+    public function paginaCadastrarEmpresa()
+    {
         // dd("opa");
         $areas = Area::orderBy('nome', 'ASC')->get();
         return view('empresa/cadastrar_empresa', ['areas' => $areas]);
@@ -1156,7 +1151,8 @@ class EmpresaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showEmpresa(Request $request){
+    public function showEmpresa(Request $request)
+    {
         $id = Crypt::decrypt($request->value);
         $empresa = Empresa::find($id);
         $endereco = Endereco::where('empresa_id', $empresa->id)->first();
@@ -1170,17 +1166,18 @@ class EmpresaController extends Controller
         foreach ($rtempresa as $indice) {
             array_push($resptecnicos, RespTecnico::find($indice->resptec_id));
         }
- 
+
         $temp = array_unique($resptecnicos);
 
-        return view('empresa/show_empresa',['empresa' => $empresa,
-         'endereco'         => $endereco,
-         'telefone'         => $telefone,
-         'cnae'             => $cnaeEmpresa,
-         'respTecnico'      => $temp,
-         'empresaId'        => $empresa->id,
-         'empresa_status'   => $empresa->status_cadastro,
-         ]);
+        return view('empresa/show_empresa', [
+            'empresa' => $empresa,
+            'endereco'         => $endereco,
+            'telefone'         => $telefone,
+            'cnae'             => $cnaeEmpresa,
+            'respTecnico'      => $temp,
+            'empresaId'        => $empresa->id,
+            'empresa_status'   => $empresa->status_cadastro,
+        ]);
     }
 
     public function documentosRt(Request $request)
@@ -1194,8 +1191,8 @@ class EmpresaController extends Controller
         $checkrespt = [];
         // $docsRt = [];
 
-        $checklistresp = Checklistresp::where('resptecnicos_id', $rt->id)->orderBy('nomeDoc','ASC')->pluck('tipodocres_id');
-        for ($i=0; $i < count($checklistresp); $i++) {
+        $checklistresp = Checklistresp::where('resptecnicos_id', $rt->id)->orderBy('nomeDoc', 'ASC')->pluck('tipodocres_id');
+        for ($i = 0; $i < count($checklistresp); $i++) {
             array_push($temp, $checklistresp[$i]);
         }
 
@@ -1203,7 +1200,7 @@ class EmpresaController extends Controller
 
         foreach ($array as $indice) {
             array_push($checkrespt, Checklistresp::where('tipodocres_id', $indice)
-            ->where('resptecnicos_id', $rt->id)->first());
+                ->where('resptecnicos_id', $rt->id)->first());
         }
 
         $tipodocresp = Tipodocresp::all();
@@ -1228,20 +1225,21 @@ class EmpresaController extends Controller
         //     }
         // }
 
-        return view('empresa/documentos_rt',[
+        return view('empresa/documentos_rt', [
             'checklist' => $checkrespt,
             'tipodocs'  => $tipodocresp,
             'docsrt'    => $docsrt,
         ]);
     }
 
-    public function showDocumentacao(Request $request){
+    public function showDocumentacao(Request $request)
+    {
 
         $idEmpresa = Crypt::decrypt($request->value);
         $empresa = Empresa::where('id', $idEmpresa)->first();
         $docsempresa = Docempresa::where('empresa_id', $empresa->id)->get();
         $cnaempresa = CnaeEmpresa::where("empresa_id", $idEmpresa)->pluck('cnae_id');
-        $tipos = Tipodocempresa::orderBy('nome','ASC')->get();
+        $tipos = Tipodocempresa::orderBy('nome', 'ASC')->get();
         $cnaes = [];
         $areas = [];
         $area = [];
@@ -1261,7 +1259,7 @@ class EmpresaController extends Controller
             array_push($area, Area::find($indice));
         }
 
-        $checklisttemp = Checklistemp::where('empresa_id', $empresa->id)->orderBy('nomeDoc','ASC')->get();
+        $checklisttemp = Checklistemp::where('empresa_id', $empresa->id)->orderBy('nomeDoc', 'ASC')->get();
         $checklist = [];
         // dd($checklisttemp);
         // for ($i=0; $i < count($checklisttemp); $i++) {
@@ -1286,104 +1284,109 @@ class EmpresaController extends Controller
         //         }
         //     }
         // }
-        
 
-        return view('empresa/documentacao_empresa',['nome'=>$empresa->nome,
-        'areas' => $area,
-        'empresaId' => $empresa->id,
-        'checklist' => $checklisttemp,
-        'docsempresa' => $docsempresa,
-        'tipos' => $tipos
+
+        return view('empresa/documentacao_empresa', [
+            'nome' => $empresa->nome,
+            'areas' => $area,
+            'empresaId' => $empresa->id,
+            'checklist' => $checklisttemp,
+            'docsempresa' => $docsempresa,
+            'tipos' => $tipos
         ]);
     }
-    public function ajaxCnaes(Request $request){
+    public function ajaxCnaes(Request $request)
+    {
         $this->listar($request->id_area);
     }
-    public function listar($idArea){
-        $resultado = Cnae::where('areas_id','=',$idArea)->orderBy('descricao', 'ASC')->get();
+    public function listar($idArea)
+    {
+        $resultado = Cnae::where('areas_id', '=', $idArea)->orderBy('descricao', 'ASC')->get();
         // return view('coordenador/cnaes_coordenador', ['cnaes' => $cnaes]);
         $output = '';
-            if($resultado->count() > 0){
-                foreach($resultado as $item){
-                    $output .= '
-                    <div class="d-flex justify-content-center cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
+        if ($resultado->count() > 0) {
+            foreach ($resultado as $item) {
+                $output .= '
+                    <div class="d-flex justify-content-center cardMeuCnae" onmouseenter="mostrarBotaoAdicionar(' . $item->id . ')">
                         <div class="mr-auto p-2>OPA</div>
-                            <div class="mr-auto p-2" id="'.$item->id.'">'.$item->descricao.'</div>
+                            <div class="mr-auto p-2" id="' . $item->id . '">' . $item->descricao . '</div>
                             <div style="width:140px; height:25px; text-align:right;">
-                                <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
-                                    <div class="btn btn-success btn-sm"  onclick="add('.$item->id.')" >Adicionar</div>
+                                <div id="cardSelecionado' . $item->id . '" class="btn-group" style="display:none;">
+                                    <div class="btn btn-success btn-sm"  onclick="add(' . $item->id . ')" >Adicionar</div>
                                 </div>
                             </div>
 
                     </div>
 
                     ';
-                }
-            }elseif($idArea == ""){
-                $output .= '
+            }
+        } elseif ($idArea == "") {
+            $output .= '
                         <label></label>
                     ';
-            }else{
-                $output .= '
+        } else {
+            $output .= '
                         <label>vazio</label>
                     ';
-            }
-            $data = array(
-                'success'   => true,
-                'table_data' => $output,
-            );
-            echo json_encode($data);
+        }
+        $data = array(
+            'success'   => true,
+            'table_data' => $output,
+        );
+        echo json_encode($data);
     }
     /*
     * Função para add cnae
     * Tela: editar_empresa.blade
     */
-    public function ajaxAddCnae_editarEmpresa(Request $request){
+    public function ajaxAddCnae_editarEmpresa(Request $request)
+    {
         $this->listarCnae_editarEmpresa($request->id_area);
     }
-    public function listarCnae_editarEmpresa($idArea){
-        $resultado = Cnae::where('areas_id','=',$idArea)->orderBy('descricao', 'ASC')->get();
+    public function listarCnae_editarEmpresa($idArea)
+    {
+        $resultado = Cnae::where('areas_id', '=', $idArea)->orderBy('descricao', 'ASC')->get();
         // return view('coordenador/cnaes_coordenador', ['cnaes' => $cnaes]);
         $output = '';
-            if($resultado->count() > 0){
-                foreach($resultado as $item){
-                    $output .= '
-                    <div class="d-flex justify-content-center cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
+        if ($resultado->count() > 0) {
+            foreach ($resultado as $item) {
+                $output .= '
+                    <div class="d-flex justify-content-center cardMeuCnae" onmouseenter="mostrarBotaoAdicionar(' . $item->id . ')">
                         <div class="mr-auto p-2>OPA</div>
-                            <div class="mr-auto p-2" id="'.$item->id.'">'.$item->descricao.'</div>
+                            <div class="mr-auto p-2" id="' . $item->id . '">' . $item->descricao . '</div>
                             <div style="width:140px; height:25px; text-align:right;">
-                                <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
-                                    <div class="btn btn-success btn-sm"  onclick="add_EditarCnaeEmpresa('.$item->id.')" >Adicionar</div>
+                                <div id="cardSelecionado' . $item->id . '" class="btn-group" style="display:none;">
+                                    <div class="btn btn-success btn-sm"  onclick="add_EditarCnaeEmpresa(' . $item->id . ')" >Adicionar</div>
                                 </div>
                             </div>
 
                     </div>
 
                     ';
-                }
-            }elseif($idArea == ""){
-                $output .= '
+            }
+        } elseif ($idArea == "") {
+            $output .= '
                         <label></label>
                     ';
-            }else{
-                $output .= '
+        } else {
+            $output .= '
                         <label>vazio</label>
                     ';
-            }
-            $data = array(
-                'success'   => true,
-                'table_data' => $output,
-                // 'arrayTemp' => $arrayTemp, //atualizar o array temp
-            );
-            echo json_encode($data);
+        }
+        $data = array(
+            'success'   => true,
+            'table_data' => $output,
+            // 'arrayTemp' => $arrayTemp, //atualizar o array temp
+        );
+        echo json_encode($data);
     }
 
     public function verificarRequerimentoInspecao(Request $request)
     {
         $requerimento = Requerimento::where('empresas_id', $request->empresaId)
-        ->where('cnae_id', $request->cnaeId)
-        ->orderBy('created_at', 'desc')
-        ->first();
+            ->where('cnae_id', $request->cnaeId)
+            ->orderBy('created_at', 'desc')
+            ->first();
 
         if ($requerimento == null) {
             $data = array(
@@ -1396,7 +1399,6 @@ class EmpresaController extends Controller
                 'success'  => true,
             );
             echo json_encode($data);
-
         } elseif ($requerimento->status == "aprovado") {
             $inspecao = Inspecao::where('requerimento_id', $requerimento->id)->first();
 
@@ -1411,7 +1413,7 @@ class EmpresaController extends Controller
                         'success'  => false,
                     );
                     echo json_encode($data);
-                }elseif ($inspecao->status == "reprovado") {
+                } elseif ($inspecao->status == "reprovado") {
                     $data = array(
                         'success'  => false,
                     );
@@ -1432,41 +1434,42 @@ class EmpresaController extends Controller
     }
 
 
-     /*
+    /*
     * Função para mostrar na tela os cnaes da empresa
     * Tela: editar_empresa.blade
     */
-    public function ajaxCnaesEmpresa(Request $request){
+    public function ajaxCnaesEmpresa(Request $request)
+    {
 
         $this->listarCnaes($request->id_empresa);
-
     }
-    public function listarCnaes($idEmpresa){
+    public function listarCnaes($idEmpresa)
+    {
         $resultado = CnaeEmpresa::where('empresa_id', $idEmpresa)->get();
 
         $arrayTemp = [];
         $output = '';
-        if($resultado->count() > 0){
-            foreach($resultado as $item){
+        if ($resultado->count() > 0) {
+            foreach ($resultado as $item) {
                 $output .= '
-                <div class="d-flex justify-content-center form-gerado cardMeuCnae" onmouseenter="mostrarBotaoAdicionar('.$item->id.')">
+                <div class="d-flex justify-content-center form-gerado cardMeuCnae" onmouseenter="mostrarBotaoAdicionar(' . $item->id . ')">
                     <div class="mr-auto p-2>OPA</div>
-                        <div class="mr-auto p-2" id="'.$item->id.'">'.$item->cnae->descricao.'</div>
-                        <input type="hidden" name="cnae[]" value="'.$item->cnae->id.'" required>
+                        <div class="mr-auto p-2" id="' . $item->id . '">' . $item->cnae->descricao . '</div>
+                        <input type="hidden" name="cnae[]" value="' . $item->cnae->id . '" required>
                         <div style="width:140px; height:25px; text-align:right;">
-                            <div id="cardSelecionado'.$item->id.'" class="btn-group" style="display:none;">
-                                <div class="btn btn-danger btn-sm" onclick="deletar_EditarCnaeEmpresa('.$item->id.','.$item->empresa_id.','.$item->cnae->id.')" >X</div>
+                            <div id="cardSelecionado' . $item->id . '" class="btn-group" style="display:none;">
+                                <div class="btn btn-danger btn-sm" onclick="deletar_EditarCnaeEmpresa(' . $item->id . ',' . $item->empresa_id . ',' . $item->cnae->id . ')" >X</div>
                             </div>
                         </div>
                 </div>
                 ';
                 array_push($arrayTemp, $item->id);
             }
-        }elseif($idEmpresa == ""){
+        } elseif ($idEmpresa == "") {
             $output .= '
                     <label></label>
                 ';
-        }else{
+        } else {
             $output .= '
                     <label></label>
                 ';
@@ -1487,33 +1490,32 @@ class EmpresaController extends Controller
 
         // Encontra o primeiro item da checklist da area do cnae que foi apagado na lista (Página de editar estabelecimento, lista da direita)
         $checklist = Checklistemp::where('empresa_id', $request->empresaId)
-        ->where('areas_id', $area)->first();
+            ->where('areas_id', $area)->first();
 
         if ($checklist->num_cnae == 1) {
             // Remove uma área da checklist da empresa, quando não ouver mais cnaes escolhido durante o cadastro, relacionados a essa área
             $checklist = Checklistemp::where('empresa_id', $request->empresaId)
-            ->where('areas_id', $area)->delete();
+                ->where('areas_id', $area)->delete();
 
             // Remover também registro da tabela "rtempresa"
             $rtempresa = RtEmpresa::where('empresa_id', $request->empresaId)
-            ->where('area_id', $area)->delete();
+                ->where('area_id', $area)->delete();
 
             // Remove o cnae da empresa
             $delete = CnaeEmpresa::destroy($request->idCnaeEmp);
 
             // Removendo os documentos que foram anexados a essa área
             $docsempresa = Docempresa::where('empresa_id', $request->empresaId)
-            ->where('area', $area)->delete();
+                ->where('area', $area)->delete();
 
             $data = array(
                 'valor'   => "Área Removida",
             );
             echo json_encode($data);
-        }
-        elseif ($checklist->num_cnae > 1) {
+        } elseif ($checklist->num_cnae > 1) {
             // Decrementa em 1 o numero de cnaes relacionados a essa area. Dado que um cnae foi removido da lista
             $checklist = Checklistemp::where('empresa_id', $request->empresaId)
-            ->where('areas_id', $area)->update(['num_cnae' => $checklist->num_cnae - 1]);
+                ->where('areas_id', $area)->update(['num_cnae' => $checklist->num_cnae - 1]);
 
             // Remove o cnae da empresa
             $delete = CnaeEmpresa::destroy($request->idCnaeEmp);
@@ -1523,8 +1525,8 @@ class EmpresaController extends Controller
             );
             echo json_encode($data);
         }
-        
-        
+
+
 
         // $data = array(
         //     'success'   => true,
@@ -1533,7 +1535,8 @@ class EmpresaController extends Controller
         // echo json_encode($data);
     }
 
-    public function foundChecklist(Request $request){
+    public function foundChecklist(Request $request)
+    {
         $empresa = Empresa::find($request->empresaId);
         $checklist = Checklistemp::find($request->checklistId);
 
@@ -1545,7 +1548,8 @@ class EmpresaController extends Controller
         return $data;
     }
 
-    public function downloadArquivo(Request $request){
+    public function downloadArquivo(Request $request)
+    {
         return response()->download(storage_path('app/public/' . $request->file));
     }
 
@@ -1560,25 +1564,25 @@ class EmpresaController extends Controller
         );
 
         echo json_encode($data);
-
     }
 
-    public function encontrarNotificacoes(Request $request){
+    public function encontrarNotificacoes(Request $request)
+    {
 
         $notificacoes = Notificacao::where([['inspecoes_id', $request->id], ['status', 'aprovado']])->get();
 
         $output = '';
-        if($notificacoes->count() > 0){
+        if ($notificacoes->count() > 0) {
             foreach ($notificacoes as $key) {
                 $output .= '
                 <tr>
-                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">'.$key->item.'</th>
-                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">'.$key->exigencia.'</th>
-                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">'.$key->prazo.'</th>
+                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">' . $key->item . '</th>
+                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">' . $key->exigencia . '</th>
+                    <th class="subtituloBarraPrincipal" style="font-size:15px; color:black">' . $key->prazo . '</th>
                 </tr>
                 ';
             }
-        }else{
+        } else {
             $output .= '
                     <label></label>
                 ';

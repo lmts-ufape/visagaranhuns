@@ -112,7 +112,7 @@ class DenunciaController extends Controller
                     'empresa_id'      => null,
                     'status'          => "pendente",
                 ]);
-    
+                
                 session()->flash('success', 'Sua denúncia foi cadastrada!');
                 return back();
 

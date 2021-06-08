@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('tipo');
             $table->string('status_cadastro');
             $table->rememberToken();
+            $table->string('app_token', 100)->nullable();
             $table->timestamps();
         });
     }
